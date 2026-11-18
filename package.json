@@ -5,8 +5,12 @@
   "type": "module",
   "description": "A React 19 component library and design system.",
   "files": [
-    "dist/lib"
+    "dist/lib",
+    ".agents/skills/chartreuse/SKILL.md"
   ],
+  "bin": {
+    "chartreuse": "./dist/lib/chartreuse-cli.mjs"
+  },
   "main": "./dist/lib/chartreuse.js",
   "module": "./dist/lib/chartreuse.js",
   "types": "./dist/lib/index.d.ts",
@@ -27,7 +31,8 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173",
     "build": "tsc --noEmit && vite build && npm run build:lib",
-    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && vite build --config vite.cli.config.ts",
+    "query": "node dist/lib/chartreuse-cli.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "test": "npm run build:lib && node --test test/*.test.mjs",
     "release:prepare": "node scripts/prepare-release.mjs"

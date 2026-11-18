@@ -3,6 +3,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const registry = 'https://npm.pkg.github.com';
+const skillPath = '.agents/skills/chartreuse/SKILL.md';
 const identifier = '(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)';
 const versionPattern = new RegExp(`^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-${identifier}(?:\\.${identifier})*)?(?:\\+[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*)?$`);
 
@@ -42,19 +43,22 @@ export async function prepareRelease({ root = process.cwd(), repository, tag, pr
   if (lock.version !== source.version || lock.packages?.['']?.version !== source.version) {
     throw new Error('package-lock.json must use the same version as package.json.');
   }
-  const targets = new Set([source.main, source.module, source.types, ...exportTargets(source.exports)].filter(Boolean));
+  const targets = new Set([source.main, source.module, source.types, ...exportTargets(source.exports), ...exportTargets(source.bin)].filter(Boolean));
   for (const target of targets) {
     if (typeof target !== 'string' || !target.startsWith('./dist/lib/') || target.split('/').includes('..')) {
       throw new Error(`Release entry must be inside dist/lib: ${target}`);
     }
     if (!(await stat(path.join(root, target))).isFile()) throw new Error(`Missing release entry: ${target}`);
   }
+  const skill = await readFile(path.join(root, skillPath));
 
   const directory = path.join(root, 'dist/github-package');
   await rm(directory, { recursive: true, force: true });
   await mkdir(path.join(directory, 'dist'), { recursive: true });
   await cp(path.join(root, 'dist/lib'), path.join(directory, 'dist/lib'), { recursive: true });
   await cp(path.join(root, 'README.md'), path.join(directory, 'README.md'));
+  await mkdir(path.join(directory, path.dirname(skillPath)), { recursive: true });
+  await writeFile(path.join(directory, skillPath), skill);
   await writeFile(path.join(directory, 'package.json'), `${JSON.stringify(metadata.manifest, null, 2)}\n`);
   return { ...metadata, directory };
 }

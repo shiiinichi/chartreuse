@@ -5,11 +5,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { prepareRelease, releaseMetadata } from '../scripts/prepare-release.mjs';
 
+const skillPath = '.agents/skills/chartreuse/SKILL.md';
 const source = {
   name: '@chartreuse/ui', version: '1.0.0', private: true, type: 'module',
   main: './dist/lib/chartreuse.js', types: './dist/lib/index.d.ts',
+  bin: { chartreuse: './dist/lib/chartreuse-cli.mjs' },
   exports: { '.': { types: './dist/lib/index.d.ts', import: './dist/lib/chartreuse.js' }, './styles.css': './dist/lib/chartreuse.css' },
-  files: ['dist/lib'], scripts: { dev: 'vite' }, devDependencies: { vite: '8.3.5' },
+  files: ['dist/lib', skillPath], scripts: { dev: 'vite' }, devDependencies: { vite: '8.3.5' },
   dependencies: { 'lucide-react': '1.61.0' }, peerDependencies: { react: '^19.0.0', 'react-dom': '^19.0.0' },
 };
 
@@ -20,6 +22,7 @@ test('release metadata scopes the package to its GitHub owner and preserves its 
   assert.equal(manifest.publishConfig.registry, 'https://npm.pkg.github.com');
   assert.equal(manifest.publishConfig.access, 'restricted');
   assert.deepEqual(manifest.exports, source.exports);
+  assert.deepEqual(manifest.bin, source.bin);
   assert.deepEqual(manifest.peerDependencies, source.peerDependencies);
   assert.deepEqual(manifest.dependencies, source.dependencies);
   for (const field of ['private', 'scripts', 'devDependencies', 'packageManager']) assert.ok(!(field in manifest));
@@ -47,22 +50,34 @@ test('prereleases use next and never replace the latest distribution tag', () =>
   assert.equal(releaseMetadata({ ...source, version: '1.0.0+build.4' }, 'example/library', 'v1.0.0+build.4').distTag, 'latest');
 });
 
-test('the staged package includes built exports and README without docs, source, or development scripts', async t => {
+test('the staged package includes the built exports, CLI, agent skill, and README', async t => {
   const root = await mkdtemp(path.join(os.tmpdir(), 'chartreuse-release-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   await mkdir(path.join(root, 'dist/lib'), { recursive: true });
   await writeFile(path.join(root, 'package.json'), JSON.stringify(source));
   await writeFile(path.join(root, 'package-lock.json'), JSON.stringify({ version: source.version, packages: { '': { version: source.version } } }));
   await writeFile(path.join(root, 'README.md'), '# Package documentation');
-  for (const name of ['chartreuse.js', 'index.d.ts', 'chartreuse.css']) await writeFile(path.join(root, 'dist/lib', name), name);
+  const skill = '---\nname: chartreuse\ndescription: Query the Chartreuse CLI.\n---\n';
+  await mkdir(path.join(root, path.dirname(skillPath)), { recursive: true });
+  await writeFile(path.join(root, skillPath), skill);
+  const entries = ['chartreuse.js', 'index.d.ts', 'chartreuse.css', 'chartreuse-cli.mjs'];
+  for (const name of entries) await writeFile(path.join(root, 'dist/lib', name), name);
   const release = await prepareRelease({ root, repository: 'example/library', tag: 'v1.0.0' });
   const manifest = JSON.parse(await readFile(path.join(release.directory, 'package.json'), 'utf8'));
   assert.equal(manifest.name, '@example/chartreuse');
+  assert.deepEqual(manifest.bin, source.bin);
   assert.equal(await readFile(path.join(release.directory, 'README.md'), 'utf8'), '# Package documentation');
-  for (const name of ['chartreuse.js', 'index.d.ts', 'chartreuse.css']) {
+  assert.equal(await readFile(path.join(release.directory, skillPath), 'utf8'), skill);
+  for (const name of entries) {
     assert.equal(await readFile(path.join(release.directory, 'dist/lib', name), 'utf8'), name);
   }
   assert.deepEqual(JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')), source);
+  await rm(path.join(root, skillPath));
+  await assert.rejects(prepareRelease({ root, repository: 'example/library', tag: 'v1.0.0' }), /SKILL\.md/);
+  await writeFile(path.join(root, skillPath), skill);
+  await rm(path.join(root, source.bin.chartreuse));
+  await assert.rejects(prepareRelease({ root, repository: 'example/library', tag: 'v1.0.0' }), /chartreuse-cli\.mjs/);
+  await writeFile(path.join(root, source.bin.chartreuse), 'chartreuse-cli.mjs');
   await rm(path.join(root, 'dist/lib/chartreuse.css'));
   await assert.rejects(prepareRelease({ root, repository: 'example/library', tag: 'v1.0.0' }), /ENOENT/);
   await writeFile(path.join(root, 'package-lock.json'), JSON.stringify({ version: '0.9.0' }));

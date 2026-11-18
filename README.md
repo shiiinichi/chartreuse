@@ -64,6 +64,38 @@ export default function App() {
 
 The documentation bundles Inter locally. Consumers can bundle `@fontsource-variable/inter`, supply Inter, or override `--cr-font-sans`; system font fallbacks are included. Buttons and native form controls accept React 19 ref props directly. Interactive components require a client boundary in React Server Component applications.
 
+## Query Chartreuse from the terminal
+
+The `chartreuse` command ships with the UI package. It reads the component reference and design guidance for that installed version and runs offline.
+
+```sh
+npm exec --offline --no -- chartreuse list --format json
+npm exec --offline --no -- chartreuse search 'folder path' --format json
+npm exec --offline --no -- chartreuse info PathSelector --format json
+npm exec --offline --no -- chartreuse demo PathSelector
+npm exec --offline --no -- chartreuse token Grid --format json
+npm exec --offline --no -- chartreuse guide layout --format json
+```
+
+`search` ranks names, summaries, and notes and returns up to ten matches. Use `info` for props, defaults, native attributes, and implementation notes. `demo` prints the documented TSX example. Run `token` for shared CSS variables or supply a component name to see its styling hooks. Run `guide` to list topics, including layout guidance and application patterns such as `settings-editor`.
+
+JSON responses carry `schemaVersion` and `chartreuseVersion`. Successful queries write `data` to stdout. Errors write a structured `error` to stderr and exit with status 1 for unavailable references or 2 for invalid usage.
+
+To try the CLI from this repository, run `npm run build:lib` and then `npm run --silent query -- info Button --format json`.
+
+### Chartreuse agent skill
+
+The [Chartreuse skill](.agents/skills/chartreuse/SKILL.md) is available to Codex in this repository. Invoke it with a prompt such as `$chartreuse Which component should I use to enter a repository folder path?`
+
+For a consuming project, copy the bundled skill into its repository after installing a Chartreuse release that includes it. Run these commands from the project root.
+
+```sh
+mkdir -p .agents/skills/chartreuse
+cp node_modules/@chartreuse/ui/.agents/skills/chartreuse/SKILL.md .agents/skills/chartreuse/
+```
+
+The skill queries the CLI installed in the app or workspace where the agent is working.
+
 ## Publish a release
 
 The [publishing workflow](.github/workflows/publish-package.yml) runs when a GitHub release is published. It checks out the release tag, installs from `package-lock.json`, builds the documentation and library, runs the tests, prepares the owner-scoped distribution, and validates the exact tarball before publishing it to `https://npm.pkg.github.com`. Publishing uses the workflow's `GITHUB_TOKEN` with `packages: write`; no npm token or additional publishing secret is needed.
@@ -74,7 +106,7 @@ The [publishing workflow](.github/workflows/publish-package.yml) runs when a Git
 
 The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact without publishing. Enable that input to publish the validated artifact. Already published versions cannot be overwritten; issue a new version for each release. Prerelease versions and GitHub prereleases use the `next` distribution tag; other releases use `latest`.
 
-The source manifest retains `@chartreuse/ui` and `private: true`. Release preparation creates a separate manifest under `dist/github-package` with the repository owner's scope, the GitHub registry, and repository metadata. It omits development dependencies and scripts. Only the built library and README are packaged; documentation pages and source files are excluded.
+The source manifest retains `@chartreuse/ui` and `private: true`. Release preparation creates a separate manifest under `dist/github-package` with the repository owner's scope, the GitHub registry, and repository metadata. It omits development dependencies and scripts. The package includes the built library, offline CLI, agent skill, and README.
 
 For CI consumers, use a `GITHUB_TOKEN` with `packages: read` after granting that repository access in the package's Actions settings, or supply a suitable classic token as `NODE_AUTH_TOKEN`. The same `.npmrc` and npm alias work with `npm ci` after committing the consuming application's lockfile.
 
