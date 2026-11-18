@@ -23,19 +23,20 @@ The documentation is emitted to `dist/site`; the ES module library, declarations
 
 ## Use the library
 
-Releases publish an npm package to [GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry). An npmjs account is not required. GHCR stores container images and is not used to distribute this library.
+Releases publish the private npm package [@shiiinichi/chartreuse](https://github.com/users/shiiinichi/packages/npm/package/chartreuse).
 
-The published name is `@OWNER/chartreuse`, where `OWNER` is the lowercase GitHub user or organization that owns the repository. After the first release has been published, add this configuration to the consuming application's `.npmrc`, replacing `OWNER`:
+### Local installation
 
-```ini
-@OWNER:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-```
-
-Set `NODE_AUTH_TOKEN` in the installation environment to a GitHub personal access token (classic) with `read:packages` and access to the package. GitHub Packages requires authentication for public packages as well. Then install an alias to preserve the documented `@chartreuse/ui` imports:
+Create a [classic personal access token](https://github.com/settings/tokens/new?scopes=read%3Apackages) with `read:packages` from a GitHub account with read access to the package. Sign in once per machine.
 
 ```sh
-npm install @chartreuse/ui@npm:@OWNER/chartreuse@^1.0.0
+npm login --scope=@shiiinichi --registry=https://npm.pkg.github.com --auth-type=legacy
+```
+
+Enter your GitHub username and use the token at the password prompt. npm saves the credentials and registry mapping in your user-level `~/.npmrc`. In each consuming project, install the package under the `@chartreuse/ui` alias.
+
+```sh
+npm install '@chartreuse/ui@npm:@shiiinichi/chartreuse@^1.0.0'
 ```
 
 React and React DOM 19 are peer dependencies supplied by the consuming application. The package includes the ES module entry, CSS, declarations, and the `tokens` subpath.
@@ -63,6 +64,23 @@ export default function App() {
 ```
 
 The documentation bundles Inter locally. Consumers can bundle `@fontsource-variable/inter`, supply Inter, or override `--cr-font-sans`; system font fallbacks are included. Buttons and native form controls accept React 19 ref props directly. Interactive components require a client boundary in React Server Component applications.
+
+### GitHub Actions installation
+
+Grant the consuming repository **Read** under **Manage Actions access** in the [package settings](https://github.com/users/shiiinichi/packages/npm/package/chartreuse). Commit the consuming project's `package.json` and `package-lock.json` after installation. Set `contents: read` and `packages: read` on the job, then use these steps after checkout.
+
+```yaml
+- uses: actions/setup-node@v6
+  with:
+    node-version: '24'
+    registry-url: https://npm.pkg.github.com
+    scope: '@shiiinichi'
+- run: npm ci
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If the consuming repository cannot be granted package access, set `NODE_AUTH_TOKEN` from a workflow secret containing a classic token with `read:packages` and access to the package.
 
 ## Query Chartreuse from the terminal
 
@@ -107,8 +125,6 @@ The [publishing workflow](.github/workflows/publish-package.yml) runs when a Git
 The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact without publishing. Enable that input to publish the validated artifact. Already published versions cannot be overwritten; issue a new version for each release. Prerelease versions and GitHub prereleases use the `next` distribution tag; other releases use `latest`.
 
 The source manifest retains `@chartreuse/ui` and `private: true`. Release preparation creates a separate manifest under `dist/github-package` with the repository owner's scope, the GitHub registry, and repository metadata. It omits development dependencies and scripts. The package includes the built library, offline CLI, agent skill, and README.
-
-For CI consumers, use a `GITHUB_TOKEN` with `packages: read` after granting that repository access in the package's Actions settings, or supply a suitable classic token as `NODE_AUTH_TOKEN`. The same `.npmrc` and npm alias work with `npm ci` after committing the consuming application's lockfile.
 
 ## Components
 
