@@ -295,7 +295,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'NumberInput', componentTokens: [], globalTokens: globals(fieldGlobals, names('color-border color-subtle')),
-    notes: ['No component-owned CSS variables are declared. NumberInput renders shared .cr-field/.cr-input/.cr-field-error/.cr-required classes; number-input.css adds stepper surface/border/motion/focus consumption.', 'Stepper width, input end padding, hover row proportions, and coarse-pointer targets are literal CSS. Hover redistributes the fixed rail height; reduced-motion removes transitions without additional motion tokens.'],
+    notes: ['No component-owned CSS variables are declared. NumberInput renders shared .cr-field/.cr-input/.cr-field-error/.cr-required classes; number-input.css adds stepper surface/border/motion/focus consumption.', 'Size presets share the Button minimum heights. On touch, each step button is 44px wide and follows the input height.', 'Hover redistributes the fixed rail height. Reduced motion disables transitions.'],
   },
   {
     component: 'Stat', componentTokens: statHooks,

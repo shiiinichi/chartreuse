@@ -1,10 +1,12 @@
 import { useEffect, useId, useImperativeHandle, useRef, useState } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import type { ControlSize } from './control-size';
 import './number-input.css';
 
 export interface NumberInputProps extends Omit<ComponentPropsWithRef<'input'>, 'type' | 'size' | 'children' | 'value' | 'defaultValue' | 'onChange'> {
   label: string;
+  size?: ControlSize;
   value?: number | null;
   defaultValue?: number | null;
   onValueChange?: (value: number | null) => void;
@@ -27,7 +29,7 @@ function draftNumber(value: string): number | null {
 }
 
 /** Native number editing with steppers revealed only while the field is active. */
-export function NumberInput({ label, value, defaultValue = null, onValueChange, hint, error, className, id: suppliedId, ref, disabled, readOnly, required, step, ...props }: NumberInputProps) {
+export function NumberInput({ label, size = 'md', value, defaultValue = null, onValueChange, hint, error, className, id: suppliedId, ref, disabled, readOnly, required, step, ...props }: NumberInputProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const input = useRef<HTMLInputElement>(null);
@@ -83,7 +85,7 @@ export function NumberInput({ label, value, defaultValue = null, onValueChange, 
 
   return <div className={['cr-field', 'cr-number-input', className].filter(Boolean).join(' ')}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
-    <div className="cr-number-input-control" data-steppers={hasSteppers || undefined}>
+    <div className="cr-number-input-control" data-cr-input-size={size} data-steppers={hasSteppers || undefined}>
       <input {...props} ref={input} id={id} type="number" className="cr-input cr-number-input-native" value={inputText} step={step} disabled={disabled} readOnly={readOnly} required={required} data-cr-autofocus={props.autoFocus || undefined} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} onChange={event => report(event.currentTarget)} />
       {hasSteppers && <div className="cr-number-input-steppers" role="group" aria-label={`${label} step controls`}>
         <button type="button" className="cr-number-input-step" aria-label={`Increase ${label}`} aria-controls={id} onPointerDown={event => { if (event.button === 0) { event.preventDefault(); input.current?.focus({ preventScroll: true }); } }} onClick={() => changeStep(1)}><ChevronUp size={13} aria-hidden="true" /></button>

@@ -17,6 +17,7 @@ export const numberInputReferences: ComponentReference[] = [
   defaultValue={1.5} min={0} max={5} step={0.25} />`,
     props: [
       { name: 'label', type: 'string', required: true, description: 'Visible label associated with the native number input. It also names the increase and decrease actions.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The control size. Use the same size on a Button to match the input height.' },
       { name: 'value', type: 'number | null', description: 'Controlled numeric value. Use null for empty; use finite numbers.' },
       { name: 'defaultValue', type: 'number | null', defaultValue: 'null', description: 'Initial uncontrolled number and form-reset value. null starts empty.' },
       { name: 'onValueChange', type: '(value: number | null) => void', description: 'Receives numeric typing and step-command values. Empty or incomplete native edits report null. Uncontrolled reset reports defaultValue.' },
@@ -43,7 +44,7 @@ export const numberInputReferences: ComponentReference[] = [
       'Empty and incomplete edits report null. Keep numeric state nullable, and let the input retain its editing text rather than formatting every change.',
       'Use value with onValueChange for controlled state or defaultValue for internal state. Reset controlled values from the form owner’s onReset handler.',
       'The stepper rail reserves its space, so revealing it does not move text or resize the field. On hover, the upper step grows downward or the lower step grows upward by sharing the rail’s fixed height. Both stay inside the input edge; reduced motion disables animation.',
-      'Coarse-pointer layouts use adjacent 44px step targets and the shared 16px input type size. Read-only, disabled, and step="any" fields do not show custom steppers.',
+      'On touch, the step buttons sit side by side with 44px widths and follow the field height. The input uses the shared 16px font size. Read-only, disabled, and step="any" fields do not show custom steppers.',
     ],
   },
 ];

@@ -1,6 +1,6 @@
 @layer cr-components {
   .cr-number-input-control { position: relative; min-inline-size: 0; }
-  .cr-number-input-native { appearance: textfield; -moz-appearance: textfield; }
+  .cr-number-input-native { display: block; appearance: textfield; -moz-appearance: textfield; }
   .cr-number-input-native::-webkit-inner-spin-button, .cr-number-input-native::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
   .cr-number-input-control[data-steppers] > .cr-number-input-native { padding-inline-end: 42px; }
   .cr-number-input-steppers { position: absolute; inset-block: 1px; inset-inline-end: 1px; display: grid; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); inline-size: 28px; border-inline-start: 1px solid var(--cr-color-border); border-start-end-radius: calc(var(--cr-radius-md) - 1px); border-end-end-radius: calc(var(--cr-radius-md) - 1px); overflow: clip; color: var(--cr-color-muted); background: var(--cr-color-surface); opacity: 0; visibility: hidden; pointer-events: none; transform: scaleX(.82); transform-origin: right center; transition: opacity var(--cr-duration-fast), transform var(--cr-duration-fast), grid-template-rows var(--cr-duration-fast); }
@@ -13,13 +13,14 @@
   .cr-number-input-step:focus-visible { z-index: 2; outline: 2px solid var(--cr-color-focus); outline-offset: -2px; color: var(--cr-color-text); background: var(--cr-color-subtle); }
   .cr-number-input:dir(rtl) .cr-number-input-steppers { transform-origin: left center; }
   @media (hover: hover) and (pointer: fine) {
-    .cr-number-input-steppers:has(> .cr-number-input-step:first-child:hover) { grid-template-rows: minmax(0, 1.12fr) minmax(0, .88fr); }
-    .cr-number-input-steppers:has(> .cr-number-input-step:last-child:hover) { grid-template-rows: minmax(0, .88fr) minmax(0, 1.12fr); }
+    /* Keep the compact rail's glyphs and separator within their targets. */
+    .cr-number-input-steppers:has(> .cr-number-input-step:first-child:hover) { grid-template-rows: minmax(0, 1.12fr) minmax(14px, .88fr); }
+    .cr-number-input-steppers:has(> .cr-number-input-step:last-child:hover) { grid-template-rows: minmax(14px, .88fr) minmax(0, 1.12fr); }
   }
   @media (pointer: coarse) {
     .cr-number-input-control[data-steppers] > .cr-number-input-native { padding-inline-end: 100px; }
     .cr-number-input-steppers { inset-block: 0; inset-inline-end: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 1fr; inline-size: 88px; }
-    .cr-number-input-step { min-inline-size: 44px; min-block-size: 44px; }
+    .cr-number-input-step { min-inline-size: 44px; }
     .cr-number-input-step:first-child { border-block-end: 0; border-inline-end: 1px solid var(--cr-color-border); border-start-end-radius: 0; }
   }
   @media (prefers-reduced-motion: reduce) { .cr-number-input-steppers, .cr-number-input-step { transition: none; transform: none; } }
