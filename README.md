@@ -36,7 +36,7 @@ npm login --scope=@shiiinichi --registry=https://npm.pkg.github.com --auth-type=
 Enter your GitHub username and use the token at the password prompt. npm saves the credentials and registry mapping in your user-level `~/.npmrc`. In each consuming project, install the package under the `@chartreuse/ui` alias.
 
 ```sh
-npm install '@chartreuse/ui@npm:@shiiinichi/chartreuse@^1.1.0'
+npm install '@chartreuse/ui@npm:@shiiinichi/chartreuse@^1.2.0'
 ```
 
 React and React DOM 19 are peer dependencies supplied by the consuming application. The package includes the ES module entry, CSS, declarations, and the `tokens` subpath.
@@ -118,9 +118,10 @@ The skill queries the CLI installed in the app or workspace where the agent is w
 
 The [publishing workflow](.github/workflows/publish-package.yml) runs when a GitHub release is published. It checks out the release tag, installs from `package-lock.json`, builds the documentation and library, runs the tests, prepares the owner-scoped distribution, and validates the exact tarball before publishing it to `https://npm.pkg.github.com`. Publishing uses the workflow's `GITHUB_TOKEN` with `packages: write`; no npm token or additional publishing secret is needed.
 
-1. Push the repository, including the workflow, to GitHub. The workflow derives the package owner and repository link from `github.repository`.
-2. Publish a GitHub release with a tag matching `v<package.json version>`. The tagged commit must include the workflow. Use `npm version patch`, `minor`, or `major` to update both `package.json` and `package-lock.json`.
-3. Keep the repository and package private. The workflow checks both before publishing and verifies package visibility after publishing. Give consuming repositories access under the package's Actions settings and grant user access as needed.
+1. Use `npm version patch`, `minor`, or `major` with `--no-git-tag-version` to update `package.json` and `package-lock.json`. Add the release to the documentation's [Changelog](src/docs/Pages.tsx).
+2. Push the release commit, including the workflow, to GitHub. The workflow derives the package owner and repository link from `github.repository`.
+3. Publish a GitHub release with a tag matching `v<package.json version>`.
+4. Keep the repository and package private. The workflow checks both before publishing and verifies package visibility after publishing. Give consuming repositories access under the package's Actions settings and grant user access as needed.
 
 The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact without publishing. Enable that input to publish the validated artifact. Already published versions cannot be overwritten; issue a new version for each release. Prerelease versions and GitHub prereleases use the `next` distribution tag; other releases use `latest`.
 

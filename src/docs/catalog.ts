@@ -5,6 +5,9 @@ import type { ComponentReference } from './reference/types';
 import { componentSidebarIcons } from './sidebar-icons';
 import { samplePatternDefinitions } from './pattern-definitions';
 import type { SamplePatternId } from './pattern-definitions';
+import { version as chartreuseVersion } from '../../package.json';
+
+export { chartreuseVersion };
 
 export type LegacyPageId = 'overview' | 'getting-started' | 'changelog' | 'colors' | 'typography' | 'spacing' | 'elevation' | 'icons' | 'buttons' | 'forms' | 'fieldsets' | 'badges' | 'cards' | 'markdown' | 'disclosures' | 'navigation' | 'modals' | 'drawers' | 'feedback' | 'task-board' | 'agent-monitor' | 'workspace' | 'page-panels';
 export type ComponentPageId = `components/${string}`;
@@ -32,7 +35,7 @@ export const pages: Page[] = [
   { id: 'overview', label: 'Overview', group: 'Start here', icon: Grid2X2, description: 'React components, design tokens, and interface patterns.' },
   { id: 'getting-started', label: 'Getting started', group: 'Start here', icon: BookOpen, description: 'Build and package the library, install its archive, and import components and styles.' },
   { id: 'common-props', label: 'Common DOM props', group: 'Start here', icon: Braces, description: 'A single reference for inherited attributes, events, and explicitly supported native refs.' },
-  { id: 'changelog', label: 'Changelog', group: 'Start here', icon: History, description: 'Release history and changes to the component library and documentation.', tag: '1.0' },
+  { id: 'changelog', label: 'Changelog', group: 'Start here', icon: History, description: 'Release history and changes to the component library and documentation.', tag: chartreuseVersion.split('.').slice(0, 2).join('.') },
   { id: 'colors', label: 'Color', group: 'Foundations', icon: Palette, description: 'Brand palette, semantic color roles, and light and dark theme tokens.' },
   { id: 'typography', label: 'Typography', group: 'Foundations', icon: Type, description: 'Inter font sizes, weights, line heights, and type scale previews.' },
   { id: 'spacing', label: 'Spacing', group: 'Foundations', icon: Ruler, description: 'Four-pixel spacing tokens for padding, gaps, and layout.' },
@@ -64,7 +67,7 @@ export const iconList = { Activity, BookOpen, Box, Braces, CircleDot, ClipboardL
 
 export const snippets = {
   registry: `# .npmrc: replace OWNER with the lowercase GitHub repository owner\n@OWNER:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}`,
-  install: `npm install @chartreuse/ui@npm:@OWNER/chartreuse@^1.0.0`,
+  install: `npm install @chartreuse/ui@npm:@OWNER/chartreuse@^${chartreuseVersion}`,
   basic: `import { Button, TextField, ToastProvider } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ToastProvider>\n      <TextField label="Task name" placeholder="Enter a task title" />\n      <Button>Create task</Button>\n    </ToastProvider>\n  );\n}`,
   buttons: `<Button icon={Plus}>Create task</Button>\n<Button variant="secondary">View workspace</Button>\n<Button variant="accent" iconRight={ArrowRight}>Get started</Button>\n<Button variant="ghost">Cancel</Button>\n<Button variant="danger">Delete task</Button>`,
   forms: `<TextField\n  label="Task name"\n  name="title"\n  placeholder="Enter a task title"\n  required\n/>\n<Select label="Priority" name="priority">\n  <option>Medium</option>\n  <option>High</option>\n</Select>\n<Switch label="Live updates" defaultChecked />`,

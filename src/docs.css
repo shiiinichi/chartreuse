@@ -447,7 +447,9 @@
   .getting-started-steps { --cr-sequence-gap: 38px; --cr-sequence-column-gap: 24px; margin-block: 38px; }
   .getting-started-steps h2 { font-size: 19px; font-weight: 500; letter-spacing: -.6px; }
   .getting-started-steps .cr-sequence-body > p { color: var(--cr-color-muted); font-size: 11px; line-height: 1.9; max-inline-size: 650px; }
-  .release-heading { display: flex; justify-content: space-between; gap: 16px; align-items: center; color: var(--cr-color-muted); font-size: 11px; margin-block-end: 24px; }
+  .release-list { display: grid; gap: var(--cr-space-8); }
+  .release-heading { display: flex; gap: 16px; align-items: center; color: var(--cr-color-muted); font-size: 11px; margin-block-end: 24px; }
+  .release-heading > time { margin-inline-start: auto; }
   .release-card { display: grid; grid-template-columns: 180px 1fr; border: 1px solid var(--cr-color-border); background: var(--cr-color-surface); border-radius: 9px; overflow: hidden; }
   .release-version { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 40px; padding: 30px; background: #024340; color: #dbffad; font-size: 30px; font-weight: 450; letter-spacing: -.05em; }
   .release-version .cr-brand-mark { inline-size: 70px; block-size: 70px; }

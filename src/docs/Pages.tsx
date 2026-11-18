@@ -2,7 +2,7 @@ import { lazy, Suspense, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { ArrowRight, ArrowUpRight, Bell, Check, CheckCheck, CheckCircle2, ChevronDown, CircleCheck, Code2, Copy, Feather, Layers, LayoutDashboard, Network, Search, Settings, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Alert, Avatar, AvatarGroup, Badge, Breadcrumbs, BrandMark, Button, CalloutBanner, Card, Checkbox, Dialog, Divider, EmptyState, Progress, Skeleton, Spinner, Steps, Switch, Tabs, TextField, colors, radii, spacing, tokens, typography, useToast } from '../system';
-import { componentCount, iconList, snippets } from './catalog';
+import { chartreuseVersion, componentCount, iconList, snippets } from './catalog';
 import type { Page, PageId } from './catalog';
 import { AgentMonitor, ButtonDemo, FormDemo, TaskBoard, TaskPreview } from './Demos';
 import { ModalsPage } from './ModalsPage';
@@ -36,7 +36,7 @@ function HeroArt() {
 export function Overview({ navigate }: { navigate: Navigate }) {
   const notify = useToast();
   return <><section className="hero"><div className="hero-copy"><div className="hero-eyebrow"><span />REACT COMPONENT LIBRARY</div><h1>React UI<br /><span>components.</span></h1><p>React 19 components, CSS variables, and composable interface patterns.</p><div className="hero-buttons"><Button iconRight={ArrowRight} onClick={() => navigate('buttons')}>Browse components</Button><Button variant="ghost" onClick={() => navigate('getting-started')}>Get started<ArrowUpRight size={15} aria-hidden="true" /></Button></div></div><HeroArt /></section>
-    <div className="system-facts"><span><span className="fact-number">{componentCount}</span>React components</span><span><Code2 size={15} aria-hidden="true" />Built with React 19</span><span><CircleCheck size={15} aria-hidden="true" />TypeScript props</span><span><span className="cr-status-dot" />Version 1.0.0</span></div>
+    <div className="system-facts"><span><span className="fact-number">{componentCount}</span>React components</span><span><Code2 size={15} aria-hidden="true" />Built with React 19</span><span><CircleCheck size={15} aria-hidden="true" />TypeScript props</span><span><span className="cr-status-dot" />Version {chartreuseVersion}</span></div>
     <section className="overview-section"><SectionTitle title="Design foundations" description="Color, typography, and spacing tokens used by the component library." action="Explore foundations" onAction={() => navigate('colors')} /><div className="foundation-grid">
       <button className="foundation-card color-foundation" type="button" onClick={() => navigate('colors')}><div className="mini-palette"><span /><span /><span /><span /><span /></div><div className="foundation-card-text"><div><h3>Color palette</h3><p>Brand colors and semantic theme tokens.</p></div><ArrowUpRight size={15} aria-hidden="true" /></div></button>
       <button className="foundation-card type-foundation" type="button" onClick={() => navigate('typography')}><div className="type-foundation-sample"><span>Aa</span><div>Type scale<br /><span>Inter · Variable font</span></div></div><div className="foundation-card-text"><div><h3>Typography</h3><p>Font sizes, weights, and line heights.</p></div><ArrowUpRight size={15} aria-hidden="true" /></div></button>
@@ -44,7 +44,7 @@ export function Overview({ navigate }: { navigate: Navigate }) {
     </div></section>
     <section className="overview-section"><SectionTitle title="Component examples" description="Interactive previews with React usage examples." action="Browse components" onAction={() => navigate('buttons')} /><div className="overview-showcases"><Showcase align="center" headingLevel={3} title="Buttons" description="Variants, sizes, and interaction states." code={snippets.buttons} toolbar={<><span>5 variants · 3 sizes</span><button type="button" onClick={() => navigate('buttons')}>View component<ArrowUpRight size={12} aria-hidden="true" /></button></>}><ButtonDemo compact /></Showcase><Showcase align="center" headingLevel={3} title="Task card" description="Task metadata, status, and progress." code={snippets.cards} className="task-showcase" toolbar={<><span>TaskCard preview</span><button type="button" onClick={() => navigate('components/task-card')}>View component<ArrowUpRight size={12} aria-hidden="true" /></button></>}><div className="task-preview-wrap"><TaskPreview /></div></Showcase><Showcase align="center" headingLevel={3} title="Form controls" description="Labeled inputs and selection controls." code={snippets.forms}><FormDemo compact /></Showcase><Showcase align="center" headingLevel={3} title="Status & activity" description="Task status and agent context usage." code={snippets.agent}><div className="status-demo"><div className="demo-row"><Badge dot>To do</Badge><Badge tone="info" dot>In progress</Badge><Badge tone="warning" dot>In review</Badge><Badge tone="success" icon={Check}>Done</Badge></div><AgentMonitor compact /></div></Showcase></div></section>
     <div className="overview-section"><CalloutBanner eyebrow="WORKSPACE PATTERN" title="Task board composition" description="Combine task cards, tabs, form controls, and status indicators in a workspace example." action={<Button variant="ghost" iconRight={ArrowRight} onClick={() => navigate('workspace')}>View workspace pattern</Button>} /></div>
-    <div className="overview-note"><Feather size={15} aria-hidden="true" /><span>Component library, design tokens, and documentation for version 1.0.0.</span><button type="button" onClick={() => { notify('Opening the version 1.0 release notes.', 'info'); navigate('changelog'); }}>Release notes<ArrowUpRight size={12} aria-hidden="true" /></button></div>
+    <div className="overview-note"><Feather size={15} aria-hidden="true" /><span>Component library, design tokens, and documentation for version {chartreuseVersion}.</span><button type="button" onClick={() => { notify('Opening the version ' + chartreuseVersion + ' release notes.', 'info'); navigate('changelog'); }}>Release notes<ArrowUpRight size={12} aria-hidden="true" /></button></div>
   </>;
 }
 
@@ -148,7 +148,7 @@ function ComponentNotes({ notes }: { notes: string[] }) {
 
 function GettingStarted({ navigate }: { navigate: Navigate }) {
   return <>
-    <div className="getting-started-banner"><BrandMark /><div><h2>Install and configure Chartreuse</h2><p>React 19 components with TypeScript props and a shared CSS stylesheet.</p></div><Badge>v1.0.0</Badge></div>
+    <div className="getting-started-banner"><BrandMark /><div><h2>Install and configure Chartreuse</h2><p>React 19 components with TypeScript props and a shared CSS stylesheet.</p></div><Badge>v{chartreuseVersion}</Badge></div>
     <Steps className="getting-started-steps" aria-label="Get started with Chartreuse" items={[
       { id: 'install', title: <h2>Configure package access and install</h2>, content: <><p>After a release is published to GitHub Packages, configure the consuming application's .npmrc. Replace OWNER with the lowercase GitHub repository owner and set NODE_AUTH_TOKEN to a GitHub classic token with read:packages and package access. The npm alias preserves @chartreuse/ui imports.</p><CodeBlock language="ini" code={snippets.registry} /><CodeBlock language="sh" code={snippets.install} /></> },
       { id: 'compose', title: <h2>Import components and styles</h2>, content: <><p>Import @chartreuse/ui/styles.css once at your application entry. Wrap components that use notifications in ToastProvider.</p><CodeBlock code={snippets.basic} /></> },
@@ -158,6 +158,65 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
   </>;
 }
 
+const releases = [
+  {
+    version: '1.2.0',
+    date: '2026-11-19',
+    title: 'Conversation and control sizing',
+    summary: 'A clearer conversation layout, refinements to agent activity, and consistent form control sizes.',
+    changes: [
+      'TextField, Select, NumberInput, and Autocomplete now support small, medium, and large sizes that match Button. The default is medium.',
+      'Conversation groups agent activity with the corresponding reply and places user messages in subdued cards. Message timestamps share a trailing edge.',
+      'AgentActivity places the chevron after the activity count. The header stays transparent on hover by default. Set headerHighlight="hover" for a subtle background.',
+      'Expanded activity details show the event title when there is no description or visible output.',
+    ],
+  },
+  {
+    version: '1.1.0',
+    date: '2026-11-18',
+    title: 'Offline CLI and agent skill',
+    summary: 'Query the reference for your installed version of Chartreuse from the terminal.',
+    changes: [
+      'The chartreuse CLI searches components and returns props, usage examples, design tokens, and layout guidance.',
+      'Commands support structured JSON output for agents and scripts.',
+      'The private package includes the Chartreuse skill for Codex.',
+    ],
+  },
+  {
+    version: '1.0.0',
+    date: '2026-11-18',
+    title: 'Initial release',
+    summary: 'Initial release of the Chartreuse component library and documentation.',
+    changes: [
+      'The original evergreen, chartreuse, and paper palette, with semantic light and dark themes.',
+      '58 React 19 components with TypeScript props and a standalone library build.',
+      'A four-pixel spacing scale, Inter typography, shared radii, and three elevations.',
+      'Interactive task board, workspace, and agent monitor examples.',
+      'Keyboard navigation, native dialogs, labeled controls, and reduced-motion support.',
+      'Searchable documentation, copyable examples, and exportable design tokens.',
+    ],
+  },
+];
+
+const releaseDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+
 function Changelog() {
-  return <><div className="release-heading"><Badge tone="success" dot>Latest release</Badge><span>November 17, 2026</span></div><article className="release-card"><div className="release-version"><span>1.0.0</span><BrandMark /></div><div><h2>Initial release</h2><p>Initial release of the Chartreuse component library and documentation.</p><Divider /><h3>Included in this release</h3><ul>{['The original evergreen, chartreuse, and paper palette, with semantic light and dark themes.', `${componentCount} React 19 components with TypeScript props and a standalone library build.`, 'A four-pixel spacing scale, Inter typography, shared radii, and three elevations.', 'Interactive task board, workspace, and agent monitor examples.', 'Keyboard navigation, native dialogs, labeled controls, and reduced-motion support.', 'Searchable documentation, copyable examples, and exportable design tokens.'].map(text => <li key={text}><CheckCircle2 size={15} aria-hidden="true" />{text}</li>)}</ul></div></article></>;
+  return <div className="release-list">
+    {releases.map(({ version, date, title, summary, changes }, index) => <section key={version}>
+      <div className="release-heading">
+        {index === 0 && <Badge tone="success" dot>Latest release</Badge>}
+        <time dateTime={date}>{releaseDate.format(new Date(date))}</time>
+      </div>
+      <article className="release-card">
+        <div className="release-version"><span>{version}</span><BrandMark /></div>
+        <div>
+          <h2>{title}</h2>
+          <p>{summary}</p>
+          <Divider />
+          <h3>Included in this release</h3>
+          <ul>{changes.map(text => <li key={text}><CheckCircle2 size={15} aria-hidden="true" />{text}</li>)}</ul>
+        </div>
+      </article>
+    </section>)}
+  </div>;
 }
