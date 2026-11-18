@@ -1,0 +1,5 @@
+@layer docs-ui {
+  .grid-spacer-examples { --docs-example-min: 40rem; display: flex; flex-direction: column; gap: 24px; min-inline-size: 0; }
+  .grid-spacer-example { display: flex; flex-direction: column; gap: 16px; min-inline-size: 0; inline-size: var(--grid-demo-width, 100%); max-inline-size: 100%; }
+  .grid-spacer-example > p { margin: 0; max-inline-size: 76ch; font-size: 13px; line-height: 1.8; color: var(--cr-color-muted); }
+}

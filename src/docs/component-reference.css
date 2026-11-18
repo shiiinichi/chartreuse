@@ -1,0 +1,70 @@
+@layer docs-ui {
+  .documentation-breadcrumbs { min-inline-size: 0; font: inherit; }
+  .documentation-breadcrumbs > ol { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; list-style: none; margin: 0; padding: 0; }
+  .documentation-breadcrumbs li { display: inline-flex; align-items: center; gap: 10px; }
+  .documentation-breadcrumbs a { color: var(--cr-color-muted); text-decoration: none; text-underline-offset: 3px; }
+  .documentation-breadcrumbs a:hover, .documentation-breadcrumbs a:focus-visible { text-decoration: underline; }
+  .documentation-breadcrumbs [aria-current='page'] { color: var(--cr-color-text); font-weight: 550; }
+  .component-reference { min-inline-size: 0; }
+  .component-reference .document-title-row > h1 { min-inline-size: 0; max-inline-size: 100%; overflow-wrap: anywhere; }
+  .component-reference-section { margin-block: 36px; min-inline-size: 0; }
+  .component-section-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-block-end: 18px; }
+  .component-section-heading > h2, .component-reference-notes > h2 { display: flex; align-items: center; gap: 9px; margin: 0; font-size: 22px; font-weight: 550; line-height: 1.5; letter-spacing: -.55px; }
+  .component-section-heading > span { color: var(--cr-color-muted); font-size: 12px; }
+  .component-reference-playground { min-inline-size: 0; }
+  .component-reference-playground .showcase-header { padding: 18px 24px; }
+  .component-reference-playground .showcase-header > div:first-child { flex: 1 1 auto; min-inline-size: 0; }
+  .component-reference-playground .showcase-header :is(h2, h3) { font-size: 13px; line-height: 1.5; }
+  .component-reference-playground .showcase-header p { font-size: 12px; line-height: 1.7; }
+  .component-reference-playground .showcase-actions { flex-shrink: 0; }
+  .component-reference-playground .showcase-code .code-block pre { font-size: 13px; line-height: 1.8; }
+  .component-reference-section > .code-block { margin-block: 16px; }
+  .component-reference-section > .code-block pre { font-size: 13px; line-height: 1.8; }
+  .component-api-scroll { max-inline-size: 100%; max-block-size: min(680px, 75dvh); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); scrollbar-width: thin; }
+  .component-api-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  .component-api-table { inline-size: 100%; min-inline-size: 760px; border-collapse: separate; border-spacing: 0; text-align: start; font-size: 13px; line-height: 1.75; }
+  .component-api-table thead { position: sticky; inset-block-start: 0; z-index: 2; }
+  .component-api-table th, .component-api-table td { padding: 14px 16px; vertical-align: top; border-block-end: 1px solid var(--cr-color-border); }
+  .component-api-table thead th { background: var(--cr-color-subtle); color: var(--cr-color-text); font-weight: 550; text-align: start; }
+  .component-api-table thead th:first-child { position: sticky; inset-inline-start: 0; z-index: 3; }
+  .component-api-table tbody th { position: sticky; inset-inline-start: 0; z-index: 1; min-inline-size: 145px; background: var(--cr-color-surface); font-weight: 500; text-align: start; }
+  .component-api-table td:nth-child(2) { min-inline-size: 230px; color: var(--cr-color-muted); }
+  .component-api-table td:nth-child(3) { min-inline-size: 200px; }
+  .component-api-table td:nth-child(4) { min-inline-size: 90px; }
+  .component-api-table code { font: 400 13px/1.75 var(--cr-font-mono); color: var(--cr-color-text); overflow-wrap: anywhere; }
+  .component-api-table tbody th > code { font-weight: 500; }
+  .component-api-table tbody tr:last-child > :is(th, td) { border-block-end: 0; }
+  .component-api-table tbody tr:hover > :is(th, td) { background: var(--cr-color-canvas); }
+  .component-api-required { display: block; color: var(--cr-color-danger); font-size: 12px; margin-block-start: 5px; }
+  .component-native-contract { padding: 22px 24px; margin-block-start: 22px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); font-size: 13px; line-height: 1.8; }
+  .component-native-contract h3 { margin: 0 0 12px; font-size: 15px; font-weight: 550; }
+  .component-native-contract p { margin: 0; color: var(--cr-color-muted); }
+  .component-native-contract p + p { margin-block-start: 12px; }
+  .component-native-contract code { font-size: 13px; overflow-wrap: anywhere; }
+  .component-native-contract > a { display: inline-flex; align-items: center; gap: 7px; margin-block: 15px 12px; font-size: 13px; text-underline-offset: 4px; }
+  .component-native-reminder { font-size: 13px; }
+  .component-reference-notes > ul { padding-inline-start: 20px; margin-block: 18px 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .component-reference-notes li + li { margin-block-start: 10px; }
+  .component-common-intro { max-inline-size: 75ch; margin-block-end: 24px; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .reference-demo-stack { display: flex; flex-direction: column; gap: 22px; min-inline-size: 0; }
+  .reference-demo-stack > p { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .component-reference-playground[data-component='Divider'] .showcase-preview > .reference-demo-stack { gap: 0; }
+  .reference-demo-narrow { inline-size: 100%; max-inline-size: 520px; }
+  .reference-range { display: flex; flex-direction: column; gap: 12px; inline-size: min(100%, 360px); font-size: 13px; color: var(--cr-color-muted); }
+  .reference-range > input { inline-size: 100%; margin: 0; accent-color: var(--cr-color-primary); }
+  .reference-card-example { inline-size: min(100%, 380px); padding: 28px; }
+  .reference-card-example > h3 { margin-block: 22px 10px; font-size: 18px; font-weight: 550; }
+  .reference-card-example > p { margin-block-end: 22px; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .reference-brand-marks { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 40px; }
+  .reference-brand-marks > .reference-brand-small { inline-size: 20px; block-size: 20px; }
+  .reference-brand-marks > .reference-brand-large { inline-size: 64px; block-size: 64px; }
+  .reference-skeleton-example { display: flex; flex-direction: column; gap: 16px; min-block-size: 100px; padding: 20px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-canvas); }
+  .reference-skeleton-example > .cr-skeleton:last-child { inline-size: 60%; }
+  .reference-skeleton-example > h3 { font-size: 15px; font-weight: 550; }
+  .reference-skeleton-example > p { margin: 0; font-size: 13px; color: var(--cr-color-muted); }
+  @media (max-width: 600px) {
+    .component-reference-playground .showcase-header { padding: 16px 24px; }
+    .component-native-contract { padding: 20px; }
+    .component-section-heading > h2, .component-reference-notes > h2 { font-size: 21px; }
+  }
+}

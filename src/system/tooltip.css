@@ -1,0 +1,20 @@
+@layer cr-base, cr-tokens, cr-components;
+
+@layer cr-components {
+  .cr-tooltip-trigger { display: inline-flex; max-inline-size: 100%; min-inline-size: 0; vertical-align: middle; }
+  .cr-tooltip { position: fixed; inset: auto; left: var(--cr-tooltip-left, 0px); top: var(--cr-tooltip-top, 0px); inline-size: max-content; max-inline-size: min(17.5rem, var(--cr-tooltip-available-width, calc(100vw - 16px))); box-sizing: border-box; margin: 0; padding: 0; border: 1px solid transparent; border-radius: var(--cr-radius-md); background: var(--cr-color-text); color: var(--cr-color-surface); box-shadow: var(--cr-shadow-md); font: 400 .75rem/1.6 var(--cr-font-sans); white-space: normal; overflow: visible; overflow-wrap: anywhere; z-index: 1100; pointer-events: auto; }
+  .cr-tooltip[hidden], .cr-tooltip[data-open='false'] { display: none !important; }
+  .cr-tooltip[data-open='true'] { display: block; }
+  .cr-tooltip-content { box-sizing: border-box; max-block-size: var(--cr-tooltip-available-height, calc(100dvh - 18px)); padding: var(--cr-space-2) var(--cr-space-3); border-radius: inherit; overflow: auto; }
+  .cr-tooltip::after { content: ''; position: absolute; pointer-events: auto; }
+  .cr-tooltip[data-side='top']::after { inset-inline: 0; inset-block-start: 100%; block-size: 8px; }
+  .cr-tooltip[data-side='bottom']::after { inset-inline: 0; inset-block-end: 100%; block-size: 8px; }
+  .cr-tooltip[data-side='left']::after { inset-block: 0; left: 100%; inline-size: 8px; }
+  .cr-tooltip[data-side='right']::after { inset-block: 0; right: 100%; inline-size: 8px; }
+  .cr-tooltip[data-arrow='true']::before { content: ''; position: absolute; inline-size: 6px; block-size: 6px; background: inherit; rotate: 45deg; pointer-events: none; }
+  .cr-tooltip[data-arrow='true'][data-side='top']::before { left: calc(var(--cr-tooltip-arrow-x) - 3px); top: calc(100% - 3px); }
+  .cr-tooltip[data-arrow='true'][data-side='bottom']::before { left: calc(var(--cr-tooltip-arrow-x) - 3px); top: -3px; }
+  .cr-tooltip[data-arrow='true'][data-side='left']::before { top: calc(var(--cr-tooltip-arrow-y) - 3px); left: calc(100% - 3px); }
+  .cr-tooltip[data-arrow='true'][data-side='right']::before { top: calc(var(--cr-tooltip-arrow-y) - 3px); left: -3px; }
+  @media (forced-colors: active) { .cr-tooltip { background: CanvasText; color: Canvas; border-color: CanvasText; } }
+}

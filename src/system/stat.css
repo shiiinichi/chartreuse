@@ -1,0 +1,22 @@
+@layer cr-components {
+  /* Public styling hooks: label-color, value-color, value-size, description-color. */
+  .cr-stat { box-sizing: border-box; min-inline-size: 0; max-inline-size: 100%; color: var(--cr-color-text); font: 400 .8125rem/1.65 var(--cr-font-sans); overflow-wrap: anywhere; }
+  .cr-stat-content { display: flex; flex-direction: column; gap: var(--cr-space-2); min-inline-size: 0; margin: 0; }
+  .cr-stat-label { margin: 0; color: var(--cr-stat-label-color, var(--cr-color-muted)); font-size: .8125rem; line-height: 1.65; }
+  .cr-stat-value { position: relative; display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--cr-space-1); min-inline-size: 0; min-block-size: 1.25em; margin: 0; color: var(--cr-stat-value-color, var(--cr-stat-tone-color, var(--cr-color-text))); font-size: var(--cr-stat-value-size, 2rem); font-weight: 550; line-height: 1.25; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
+  .cr-stat-number { min-inline-size: 0; max-inline-size: 100%; }
+  :where(.cr-stat-prefix, .cr-stat-suffix) { min-inline-size: 0; max-inline-size: 100%; font-size: .625em; font-weight: 500; line-height: 1.5; letter-spacing: 0; }
+  .cr-stat-icon { align-self: center; color: inherit; }
+  .cr-stat-description { min-inline-size: 0; margin-block-start: var(--cr-space-3); color: var(--cr-stat-description-color, var(--cr-color-muted)); font-size: .75rem; line-height: 1.75; }
+  .cr-stat-description > :first-child { margin-block-start: 0; }
+  .cr-stat-description > :last-child { margin-block-end: 0; }
+  .cr-stat-action { min-inline-size: 0; margin-block-start: var(--cr-space-4); }
+  .cr-stat-skeleton { align-self: center; inline-size: min(100%, 7ch); block-size: .8em; }
+  /* Internal tone selection; use --cr-stat-value-color for an intentional override. */
+  .cr-stat[data-tone='neutral'] { --cr-stat-tone-color: var(--cr-color-text); }
+  .cr-stat[data-tone='info'] { --cr-stat-tone-color: var(--cr-color-info); }
+  .cr-stat[data-tone='success'] { --cr-stat-tone-color: var(--cr-color-success); }
+  .cr-stat[data-tone='warning'] { --cr-stat-tone-color: var(--cr-color-warning); }
+  .cr-stat[data-tone='danger'] { --cr-stat-tone-color: var(--cr-color-danger); }
+  @media (forced-colors: active) { .cr-stat-value { color: CanvasText; } }
+}

@@ -1,0 +1,5 @@
+@layer docs-ui {
+  .breadcrumbs-demo { display: flex; flex-direction: column; gap: 22px; inline-size: 100%; min-inline-size: 0; }
+  .breadcrumbs-demo > .cr-field { inline-size: 100%; max-inline-size: 240px; }
+  .breadcrumbs-demo-preview { min-inline-size: 0; padding: 23px 24px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
+}

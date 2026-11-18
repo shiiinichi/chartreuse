@@ -1,0 +1,10 @@
+@layer docs-content {
+  .form-example-gallery { --docs-example-min: 42rem; }
+  .form-demo-stack { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; }
+  .form-demo-intro { margin: 0 0 var(--cr-space-6); max-inline-size: 78ch; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .form-demo-intro a { color: var(--cr-color-text); text-underline-offset: 3px; }
+  .form-demo-feedback { margin: 0; min-inline-size: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+  .form-demo-feedback[data-error] { color: var(--cr-color-danger); }
+  .form-demo-result { margin: 0; padding: var(--cr-space-4); min-inline-size: 0; max-inline-size: 100%; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); color: var(--cr-color-text); font: 12px/1.8 var(--cr-font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .form-demo-frame { box-sizing: border-box; max-inline-size: 100%; min-inline-size: 0; padding: var(--cr-space-4); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); }
+}

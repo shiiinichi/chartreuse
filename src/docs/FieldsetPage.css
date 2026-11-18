@@ -1,0 +1,19 @@
+@layer docs-ui {
+  .fieldset-page-intro { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; margin-block-end: 25px; }
+  .fieldset-page-intro > p { max-inline-size: 65ch; color: var(--cr-color-muted); font-size: 13px; line-height: 1.9; }
+  .fieldset-page-intro code { color: var(--cr-color-text); font-size: 12px; }
+  .fieldset-demo { inline-size: 100%; max-inline-size: 850px; }
+  .fieldset-demo-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-block-end: 28px; }
+  .fieldset-demo-toolbar > span { color: var(--cr-color-muted); font-size: 12px; }
+  .fieldset-demo-form { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; }
+  .fieldset-demo-form-compact { gap: var(--cr-space-4); }
+  .fieldset-rule-meta { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+  .fieldset-mode-hint { margin: var(--cr-space-2) 0 0; color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; }
+  .fieldset-demo-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .fieldset-example-status { color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; }
+  .fieldset-example-status:not(:empty) { margin-block-start: 22px; }
+  .fieldset-empty { border: 1px dashed var(--cr-color-border); border-radius: var(--cr-radius-lg); }
+  @media (max-width: 600px) {
+    .fieldset-demo-toolbar { align-items: flex-start; }
+  }
+}

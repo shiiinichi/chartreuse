@@ -1,0 +1,24 @@
+@layer docs-content {
+  .core-scenarios { display: grid; gap: var(--cr-space-6); min-inline-size: 0; }
+  .core-example-stack { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-4); min-inline-size: 0; max-inline-size: 100%; }
+  .core-empty-state-stack { align-items: safe center; }
+  .core-example-stack > :is(.cr-alert, .cr-field, .cr-tabs) { inline-size: 100%; max-inline-size: 100%; }
+  .core-example-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--cr-space-3); min-inline-size: 0; }
+  .core-example-field { inline-size: min(100%, 520px); min-inline-size: 0; }
+  .core-example-result, .core-example-note { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+  .core-example-result { min-block-size: 1.8em; }
+  .core-example-card { inline-size: min(100%, 380px); min-inline-size: 0; padding: var(--cr-space-6); }
+  .core-example-card > :is(h3, h4) { margin: 0 0 var(--cr-space-3); font-size: 18px; line-height: 1.5; font-weight: 550; }
+  .core-example-card > p { margin: 0 0 var(--cr-space-4); color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .core-example-card-header, .core-example-card-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-3); }
+  .core-example-card-header > h4 { margin: 0; font-size: 16px; line-height: 1.5; font-weight: 550; }
+  .core-example-card-section { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .core-example-brand-size { display: grid; justify-items: start; gap: var(--cr-space-2); margin: 0; color: var(--cr-color-text); }
+  .core-example-brand-size > figcaption { color: var(--cr-color-muted); font: 12px/1.5 var(--cr-font-mono); }
+  .core-example-brand-surface { display: flex; align-items: center; gap: var(--cr-space-3); min-inline-size: 0; padding: var(--cr-space-6); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); color: var(--cr-color-text); background: var(--cr-color-surface); font-size: 13px; }
+  .core-example-brand-surface[data-tone='brand'] { color: var(--cr-chartreuse); background: var(--cr-evergreen); border-color: var(--cr-evergreen); }
+  .core-example-brand-surface > svg { flex: none; inline-size: 32px; block-size: 32px; }
+  .core-example-placeholder { display: flex; align-items: flex-start; gap: var(--cr-space-4); min-inline-size: 0; }
+  .core-example-placeholder-lines { display: grid; flex: 1; gap: var(--cr-space-3); min-inline-size: 0; }
+  .core-example-inline-status { display: inline-flex; align-items: center; gap: var(--cr-space-3); color: var(--cr-color-muted); font-size: 13px; }
+}

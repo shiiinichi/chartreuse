@@ -1,0 +1,5 @@
+@layer docs-ui {
+  .autocomplete-demo { display: flex; flex-direction: column; gap: 20px; inline-size: 100%; max-inline-size: 540px; }
+  .autocomplete-demo-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+  .autocomplete-demo-actions > span { min-inline-size: 0; }
+}

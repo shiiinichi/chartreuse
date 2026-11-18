@@ -1,0 +1,27 @@
+@layer cr-components {
+  .cr-autocomplete-control { position: relative; display: flex; align-items: center; }
+  .cr-autocomplete-control > svg { position: absolute; inset-inline-start: 12px; color: var(--cr-color-muted); pointer-events: none; }
+  .cr-autocomplete-control > .cr-input { padding-inline: 36px 70px; }
+  .cr-autocomplete-actions { position: absolute; inset-inline-end: 5px; display: inline-flex; align-items: center; gap: 0; }
+  .cr-autocomplete-actions > button { display: grid; place-items: center; min-inline-size: 28px; min-block-size: 28px; padding: 4px; border: 0; border-radius: 4px; background: transparent; color: var(--cr-color-muted); cursor: pointer; }
+  .cr-autocomplete-actions > button:hover:not(:disabled) { background: var(--cr-color-subtle); color: var(--cr-color-text); }
+  .cr-autocomplete-actions > button:disabled { opacity: .5; cursor: not-allowed; }
+  .cr-autocomplete-popup { position: fixed; left: var(--cr-ac-left); right: auto; top: var(--cr-ac-top); bottom: var(--cr-ac-bottom); inline-size: var(--cr-ac-width); max-inline-size: calc(100vw - 16px); max-block-size: var(--cr-ac-max-height); box-sizing: border-box; margin: 0; padding: 5px; border: 1px solid var(--cr-color-input-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); color: var(--cr-color-text); box-shadow: var(--cr-shadow-lg); font: 400 .8125rem/1.5 var(--cr-font-sans); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; z-index: 1000; }
+  .cr-autocomplete-popup[data-open='false'] { display: none; }
+  .cr-autocomplete-popup[data-open='true'] { display: block; }
+  .cr-autocomplete-option { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-block-size: 38px; padding: 9px 10px; border: 1px solid transparent; border-radius: 5px; cursor: pointer; }
+  .cr-autocomplete-option > span { min-inline-size: 0; }
+  .cr-autocomplete-option strong { display: block; font-size: 12px; line-height: 1.5; font-weight: 500; }
+  .cr-autocomplete-option small { display: block; color: var(--cr-color-muted); font-size: 10px; line-height: 1.6; margin-block-start: 3px; }
+  .cr-autocomplete-option[aria-selected='true'] { background: var(--cr-color-success-bg); border-color: var(--cr-color-border); }
+  .cr-autocomplete-option[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
+  .cr-autocomplete-empty { padding: 18px 12px; color: var(--cr-color-muted); font-size: 11px; line-height: 1.7; }
+  @media (pointer: coarse) {
+    .cr-autocomplete-control > .cr-input { min-block-size: 48px; padding-inline-end: 88px; }
+    .cr-autocomplete-actions > button { min-inline-size: 40px; min-block-size: 44px; }
+    .cr-autocomplete-option { min-block-size: 44px; }
+  }
+  @media (forced-colors: active) {
+    .cr-autocomplete-option[aria-selected='true'] { border-color: Highlight; }
+  }
+}

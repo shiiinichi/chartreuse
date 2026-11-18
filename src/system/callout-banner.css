@@ -1,0 +1,44 @@
+@layer cr-components {
+  .cr-callout-banner {
+    --cr-color-text: var(--cr-paper);
+    --cr-color-muted: #fffdf6c2;
+    --cr-color-primary: var(--cr-chartreuse);
+    --cr-color-on-primary: var(--cr-evergreen);
+    --cr-color-surface: var(--cr-evergreen);
+    --cr-color-subtle: #14534a;
+    --cr-color-border: #48766b;
+    --cr-color-input-border: #b9d29f;
+    --cr-color-focus: var(--cr-chartreuse);
+    container: cr-callout-banner / inline-size;
+    box-sizing: border-box;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--cr-radius-lg);
+    background: var(--cr-evergreen);
+    color: var(--cr-paper);
+    font: 400 .8125rem/1.8 var(--cr-font-sans);
+  }
+  .cr-callout-banner-layout { display: flex; align-items: center; justify-content: space-between; gap: 36px; padding: 32px 40px; }
+  .cr-callout-banner-content { min-inline-size: 0; max-inline-size: 65ch; }
+  .cr-callout-banner-eyebrow { margin: 0 0 10px; color: #dbffadc7; font-size: .6875rem; font-weight: 500; line-height: 1.5; letter-spacing: .11em; text-transform: uppercase; }
+  .cr-callout-banner-content > h2 { margin: 0; color: var(--cr-paper); font-size: 28px; font-weight: 450; line-height: 1.3; letter-spacing: -.8px; text-wrap: balance; overflow-wrap: anywhere; }
+  .cr-callout-banner-description { max-inline-size: 52ch; margin-block-start: 11px; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .cr-callout-banner-description > :first-child { margin-block-start: 0; }
+  .cr-callout-banner-description > :last-child { margin-block-end: 0; }
+  .cr-callout-banner-action { --cr-color-text: var(--cr-chartreuse); display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-block-start: 20px; }
+  .cr-callout-banner-action > .cr-button { max-inline-size: 100%; white-space: normal; text-align: start; }
+  .cr-callout-banner-action > .cr-button > svg { flex-shrink: 0; }
+  .cr-callout-banner-action > a { color: var(--cr-chartreuse); text-underline-offset: 4px; }
+  .cr-callout-banner-action > .cr-button[data-variant='ghost'] { margin-inline-start: -12px; padding-inline: 12px; }
+  .cr-callout-banner-artwork { display: grid; place-items: center; flex: 0 0 auto; min-inline-size: 0; max-inline-size: 25%; color: var(--cr-chartreuse); }
+  .cr-callout-banner-artwork > .cr-brand-mark { inline-size: 112px; block-size: 112px; rotate: -7deg; }
+  .cr-callout-banner-artwork > :where(img, svg) { max-inline-size: 100%; }
+  @container cr-callout-banner (width < 600px) {
+    .cr-callout-banner-layout { align-items: flex-start; gap: 20px; padding: 28px 24px; }
+    .cr-callout-banner-content > h2 { font-size: 25px; }
+    .cr-callout-banner-artwork { margin-block-start: 22px; }
+    .cr-callout-banner-artwork > .cr-brand-mark { inline-size: 42px; block-size: 42px; }
+    .cr-callout-banner-content { flex: 1 1 auto; }
+  }
+  @media (forced-colors: active) { .cr-callout-banner { border-color: CanvasText; } }
+}

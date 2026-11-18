@@ -1,0 +1,11 @@
+@layer docs-ui {
+  .slider-demo { gap: var(--cr-space-6); min-inline-size: 0; }
+  .slider-demo-primary { display: flex; align-items: center; flex-wrap: wrap; gap: var(--cr-space-6); }
+  .slider-demo-primary > .cr-slider { flex: 1 1 220px; }
+  .slider-demo-stroke { display: grid; place-items: center; flex: 1 1 160px; min-inline-size: 0; block-size: 72px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); color: var(--cr-color-text); }
+  .slider-demo-stroke > svg { display: block; inline-size: 140px; max-inline-size: 90%; block-size: 48px; }
+  .slider-demo-form { margin: 0; padding-block: var(--cr-space-6); border-block: 1px solid var(--cr-color-border); }
+  .slider-demo-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--cr-space-2); margin-block-start: var(--cr-space-4); }
+  .slider-demo-saved { margin: var(--cr-space-3) 0 0; color: var(--cr-color-muted); font: 400 .75rem/1.7 var(--cr-font-sans); overflow-wrap: anywhere; }
+  .slider-demo-states { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--cr-space-6); min-inline-size: 0; }
+}

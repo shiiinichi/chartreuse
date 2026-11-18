@@ -1,0 +1,8 @@
+export type SamplePatternId = 'settings-editor' | 'record-search' | 'record-detail' | 'metrics-dashboard';
+
+export const samplePatternDefinitions: { id: SamplePatternId; label: string; description: string; notes: string[] }[] = [
+  { id: 'settings-editor', label: 'Settings editor', description: 'Tabbed settings with draft state, validation, and save or discard actions.', notes: ['The saved snapshot and editable draft are separate React state values.', 'Validation selects the tab containing the first invalid field before focusing it.', 'Footer buttons use native form association. Input groups use Grid.'] },
+  { id: 'record-search', label: 'Record search', description: 'Submitted query and filters with result counts, empty results, and record dialogs.', notes: ['Draft filter values are applied on native form submission.', 'The fixture contains typed records; filtering does not issue a network request.', 'Each result has a detail action, and the empty state resets the filters.'] },
+  { id: 'record-detail', label: 'Record details', description: 'Review metadata, validation, checklist progress, discussion, and activity history.', notes: ['Approval requires completion of the review checklist.', 'Saving metadata and submitting comments append activity entries.', 'Reset restores the initial record, checklist, comments, and activity.'] },
+  { id: 'metrics-dashboard', label: 'Metrics dashboard', description: 'Filtered run metrics, USD costs, service reliability, and refresh state.', notes: ['Metrics are calculated from an in-memory run dataset.', 'Refresh simulates a new run; all metric sections update from the same data.', 'Reset and unmount cancel the pending refresh timer. Monetary values use USD.'] },
+];

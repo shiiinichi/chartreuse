@@ -1,0 +1,9 @@
+@layer docs-ui {
+  .segmented-control-demo { gap: 28px; min-inline-size: 0; }
+  .segmented-control-demo-example { display: flex; align-items: center; flex-wrap: wrap; gap: 20px 28px; }
+  .segmented-control-demo-selected { display: flex; align-items: center; gap: 10px; min-block-size: 40px; color: var(--cr-color-muted); font-size: 13px; }
+  .segmented-control-demo-selected > svg { color: var(--cr-color-text); }
+  .segmented-control-demo-form { display: flex; flex-direction: column; gap: 18px; min-inline-size: 0; max-inline-size: 520px; padding-block-start: 24px; border-block-start: 1px solid var(--cr-color-border); }
+  .segmented-control-demo-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .segmented-control-demo-status { margin: 0; color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; }
+}

@@ -1,0 +1,56 @@
+@layer docs-content {
+  .record-search-pattern {
+    container: record-search-pattern / inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cr-space-6);
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    color: var(--cr-color-text);
+  }
+
+  .record-search-pattern > *,
+  .record-search-pattern-results > *,
+  .record-search-pattern-list > li { min-inline-size: 0; max-inline-size: 100%; }
+  .record-search-pattern-introduction { flex: 1 1 20rem; }
+  .record-search-pattern-heading { margin: 0; font-size: 1rem; font-weight: 550; line-height: 1.5; }
+  .record-search-pattern-introduction p { margin: var(--cr-space-2) 0 0; color: var(--cr-color-muted); font-size: .8125rem; line-height: 1.8; }
+  .record-search-pattern-form .cr-form-actions { align-self: stretch; }
+  .record-search-pattern-form .cr-input { min-block-size: 3rem; font-size: 1rem; }
+  .record-search-pattern .cr-button,
+  .record-search-pattern-dialog .cr-button { min-block-size: 3rem; white-space: normal; }
+  .record-search-pattern-filter-feedback { margin: calc(-1 * var(--cr-space-3)) 0 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.7; overflow-wrap: anywhere; }
+
+  .record-search-pattern-results { display: flex; flex-direction: column; gap: var(--cr-space-4); }
+  .record-search-pattern-results-title { margin: 0; font-size: .9375rem; line-height: 1.5; font-weight: 550; }
+  .record-search-pattern-result-count { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--cr-space-2) var(--cr-space-4); margin: 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.7; overflow-wrap: anywhere; }
+  .record-search-pattern-result-count strong { color: var(--cr-color-text); font-weight: 550; }
+  .record-search-pattern-list { display: flex; flex-direction: column; gap: var(--cr-space-4); margin: 0; padding: 0; list-style: none; }
+  .record-search-pattern-result { display: flex; flex-direction: column; gap: var(--cr-space-4); min-inline-size: 0; padding: var(--cr-space-5); }
+  .record-search-pattern-record-heading { flex: 1 1 18rem; min-inline-size: 0; }
+  .record-search-pattern-record-heading h4 { margin: var(--cr-space-2) 0 0; font-size: .9375rem; line-height: 1.6; font-weight: 550; overflow-wrap: anywhere; }
+  .record-search-pattern-reference { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--cr-space-2) var(--cr-space-3); margin: 0; color: var(--cr-color-muted); font-size: .6875rem; line-height: 1.6; }
+  .record-search-pattern-reference code { font-family: var(--cr-font-mono); font-size: inherit; }
+  .record-search-pattern-summary { margin: 0; color: var(--cr-color-muted); font-size: .8125rem; line-height: 1.8; overflow-wrap: anywhere; }
+  .record-search-pattern-metadata { display: flex; flex-wrap: wrap; gap: var(--cr-space-3) var(--cr-space-6); margin: 0; min-inline-size: 0; }
+  .record-search-pattern-metadata > div { min-inline-size: 0; }
+  .record-search-pattern-metadata dt,
+  .record-search-pattern-detail-metadata dt { color: var(--cr-color-muted); font-size: .6875rem; line-height: 1.6; }
+  .record-search-pattern-metadata dd,
+  .record-search-pattern-detail-metadata dd { margin: var(--cr-space-1) 0 0; font-size: .75rem; line-height: 1.7; overflow-wrap: anywhere; }
+  .record-search-pattern-empty { min-inline-size: 0; }
+  .record-search-pattern-empty .cr-empty-state { padding-inline: var(--cr-space-4); }
+  .record-search-pattern-empty .cr-empty-state > .cr-button { max-inline-size: 100%; }
+
+  .record-search-pattern-details { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-4); min-inline-size: 0; }
+  .record-search-pattern-details h3 { margin: 0; font-size: .9375rem; font-weight: 550; line-height: 1.5; }
+  .record-search-pattern-details > p { margin: 0; color: var(--cr-color-muted); font-size: .8125rem; line-height: 1.8; overflow-wrap: anywhere; }
+  .record-search-pattern-detail-metadata { display: flex; flex-wrap: wrap; gap: var(--cr-space-4) var(--cr-space-6); align-self: stretch; margin: 0; padding-block-start: var(--cr-space-4); border-block-start: 1px solid var(--cr-color-border); }
+  .record-search-pattern-detail-metadata > div { flex: 1 1 10rem; min-inline-size: 0; }
+  .record-search-pattern-detail-metadata code { font-family: var(--cr-font-mono); font-size: inherit; }
+  .record-search-pattern-dialog .cr-dialog-header h2 { overflow-wrap: anywhere; }
+
+  @container record-search-pattern (inline-size < 480px) {
+    .record-search-pattern-result { padding: var(--cr-space-4); }
+  }
+}

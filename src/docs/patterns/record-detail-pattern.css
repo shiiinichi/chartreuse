@@ -1,0 +1,55 @@
+@layer docs-content {
+  .record-detail-pattern { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; max-inline-size: 100%; color: var(--cr-color-text); font: 400 .8125rem/1.7 var(--cr-font-sans); }
+  .record-detail-pattern-header :where(h2, p), .record-detail-pattern-card > h3, .record-detail-pattern-card-heading > h3, .record-detail-pattern-metadata, .record-detail-pattern-save > p, .record-detail-pattern-activity .cr-activity-item-content p { margin: 0; }
+  .record-detail-pattern :where(h2, h3, p, dd, code, legend) { overflow-wrap: anywhere; }
+  .record-detail-pattern-navigation { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-3); min-inline-size: 0; }
+  .record-detail-pattern-navigation > * { min-inline-size: 0; max-inline-size: 100%; }
+  .record-detail-pattern .cr-breadcrumbs ol { flex-wrap: wrap; }
+  .record-detail-pattern-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-4); }
+  .record-detail-pattern-header > div { flex: 1 1 24rem; min-inline-size: 0; }
+  .record-detail-pattern-header h2 { max-inline-size: 32ch; font-size: clamp(1.25rem, 1rem + .8vw, 1.625rem); font-weight: 550; line-height: 1.35; }
+  .record-detail-pattern-identifier { margin-block-end: var(--cr-space-2); color: var(--cr-color-muted); font: 500 .6875rem/1.5 var(--cr-font-mono); }
+  .record-detail-pattern-header > div > p:last-child { max-inline-size: 70ch; margin-block-start: var(--cr-space-3); color: var(--cr-color-muted); }
+  .record-detail-pattern-header > .cr-badge { flex: none; }
+  .record-detail-pattern-layout { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--cr-space-5); min-inline-size: 0; }
+  .record-detail-pattern-main { display: flex; flex: 2 1 28rem; flex-direction: column; gap: var(--cr-space-5); min-inline-size: 0; max-inline-size: 100%; }
+  .record-detail-pattern-side { display: flex; flex: 1 1 18rem; flex-direction: column; gap: var(--cr-space-5); min-inline-size: 0; max-inline-size: 100%; }
+  .record-detail-pattern-card { display: flex; flex-direction: column; gap: var(--cr-space-5); min-inline-size: 0; max-inline-size: 100%; padding: clamp(var(--cr-space-4), 2vw, var(--cr-space-6)); }
+  .record-detail-pattern-card > h3, .record-detail-pattern-card-heading > h3 { display: flex; align-items: center; gap: var(--cr-space-2); font-size: .9375rem; font-weight: 550; line-height: 1.5; }
+  .record-detail-pattern-card-heading > h3 > svg { flex: none; }
+  .record-detail-pattern-card-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-2); min-inline-size: 0; }
+  .record-detail-pattern-metadata { display: flex; flex-wrap: wrap; gap: var(--cr-space-5) var(--cr-space-6); min-inline-size: 0; }
+  .record-detail-pattern-metadata > div { flex: 1 1 9rem; min-inline-size: 0; }
+  .record-detail-pattern-metadata dt { margin-block-end: var(--cr-space-2); color: var(--cr-color-muted); font-size: .6875rem; line-height: 1.5; }
+  .record-detail-pattern-metadata dd { display: flex; align-items: center; min-block-size: 26px; min-inline-size: 0; margin: 0; font-size: .75rem; }
+  .record-detail-pattern-metadata code { font-family: var(--cr-font-mono); font-size: .6875rem; }
+  .record-detail-pattern-metadata .cr-avatar-person { min-inline-size: 0; }
+  .record-detail-pattern-content > .cr-tabs { min-inline-size: 0; }
+  .record-detail-pattern .cr-tab-list { gap: var(--cr-space-4); }
+  .record-detail-pattern .cr-tab-content { padding-block-end: 0; }
+  .record-detail-pattern-discussion { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; }
+  .record-detail-pattern-composer { display: flex; flex-direction: column; gap: var(--cr-space-2); min-inline-size: 0; padding-block-start: var(--cr-space-5); border-block-start: 1px solid var(--cr-color-border); }
+  .record-detail-pattern-comment-label { font-size: .75rem; font-weight: 550; }
+  .record-detail-pattern-review-form { display: flex; flex-direction: column; gap: var(--cr-space-5); min-inline-size: 0; }
+  .record-detail-pattern-checks { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+  .record-detail-pattern-checks legend { padding: 0; font-size: .75rem; font-weight: 550; }
+  .record-detail-pattern-check-list { display: flex; flex-direction: column; gap: var(--cr-space-3); margin-block-start: var(--cr-space-3); }
+  .record-detail-pattern-check-list .cr-checkbox { align-items: flex-start; min-inline-size: 0; }
+  .record-detail-pattern-check-list .cr-checkbox > input { margin-block-start: .2rem; flex: none; }
+  .record-detail-pattern-check-list .cr-checkbox > span { min-inline-size: 0; overflow-wrap: anywhere; }
+  .record-detail-pattern-save { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-3); }
+  .record-detail-pattern-save > p { color: var(--cr-color-muted); font-size: .6875rem; line-height: 1.7; }
+  .record-detail-pattern-activity { display: flex; flex-direction: column; gap: var(--cr-space-5); min-inline-size: 0; margin: 0; padding: 0; list-style: none; }
+  .record-detail-pattern-activity > li { min-inline-size: 0; }
+  .record-detail-pattern-activity .cr-activity-item { min-inline-size: 0; }
+  .record-detail-pattern-activity .cr-activity-item-title { font-size: .75rem; }
+  .record-detail-pattern-activity .cr-activity-item-content p { color: var(--cr-color-muted); font-size: .75rem; line-height: 1.7; }
+  .record-detail-pattern-feedback { min-block-size: 1.7em; color: var(--cr-color-muted); font-size: .75rem; overflow-wrap: anywhere; }
+
+  @media (pointer: coarse) {
+    .record-detail-pattern :where(.cr-input, .cr-message-composer-input) { font-size: 1rem; }
+    .record-detail-pattern :where(.cr-button, .cr-tab-list > button) { min-block-size: 48px; }
+    .record-detail-pattern .cr-checkbox { min-block-size: 48px; }
+    .record-detail-pattern .cr-message-composer-send { min-inline-size: 48px; min-block-size: 48px; inline-size: 48px; block-size: 48px; }
+  }
+}

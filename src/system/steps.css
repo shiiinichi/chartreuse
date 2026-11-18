@@ -1,0 +1,10 @@
+@layer cr-components {
+  .cr-steps > .cr-sequence-item { --_cr-sequence-color: var(--cr-color-muted); }
+  .cr-steps > .cr-sequence-item[data-status='complete'] { --_cr-sequence-color: var(--cr-color-success); }
+  .cr-steps > .cr-sequence-item[data-status='current'] { --_cr-sequence-color: var(--cr-color-primary); }
+  .cr-steps > .cr-sequence-item[data-status='error'] { --_cr-sequence-color: var(--cr-color-danger); }
+  .cr-steps > .cr-sequence-item[aria-current='step'] > .cr-sequence-marker { border-width: 2px; }
+  .cr-steps[data-marker-variant='outline'] > .cr-sequence-item[data-status='complete'] > .cr-sequence-marker { background: var(--cr-color-success-bg); }
+  .cr-step-number { font: 500 11px/1 var(--cr-font-mono); }
+  .cr-step-dot { inline-size: 5px; block-size: 5px; border-radius: var(--cr-radius-full); background: currentColor; }
+}

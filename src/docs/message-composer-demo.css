@@ -1,0 +1,17 @@
+@layer docs-ui {
+  .composer-demo { display: flex; flex-direction: column; gap: 20px; inline-size: 100%; }
+  .composer-demo-options { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+  .composer-demo-options .cr-switch { font-size: 11px; }
+  .composer-demo-options > span { margin-inline-start: auto; color: var(--cr-color-muted); font-size: 9px; }
+  .composer-demo-results { padding-block-start: 4px; }
+  .composer-demo-results > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-block-end: 12px; }
+  .composer-demo-results h3 { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 11px; font-weight: 550; }
+  .composer-demo-empty { padding: 18px; border: 1px dashed var(--cr-color-border); border-radius: var(--cr-radius-md); font-size: 11px; color: var(--cr-color-muted); text-align: center; }
+  .composer-demo-results ol { display: flex; flex-direction: column; gap: 12px; padding: 0; margin: 0; list-style: none; }
+  .composer-demo-results li { padding: 15px 17px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
+  .composer-demo-results li > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .composer-demo-results li strong { font-size: 10px; font-weight: 550; }
+  .composer-demo-results li span { display: inline-flex; align-items: center; gap: 4px; color: var(--cr-color-success); font-size: 9px; }
+  .composer-demo-results li p { margin-block-start: 9px; color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
+  @media (max-width: 600px) { .composer-demo-options { gap: 12px; } .composer-demo-options > span { flex-basis: 100%; margin: 0; } }
+}

@@ -1,0 +1,5 @@
+@layer docs-ui {
+  .component-notes.component-guidance li { font-size: 13px; line-height: 1.8; }
+  .component-guidance-layout-link { margin: var(--cr-space-4) 0 0; font-size: 13px; }
+  .component-guidance-layout-link > a { color: var(--cr-color-text); text-underline-offset: 3px; }
+}

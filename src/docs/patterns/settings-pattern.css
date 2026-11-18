@@ -1,0 +1,36 @@
+@layer docs-content {
+  .settings-pattern-frame { container: settings-pattern / inline-size; block-size: 48rem; min-inline-size: 0; min-block-size: 0; }
+  .settings-pattern-panel > .cr-page-panel-body { padding: 0; scroll-padding-block: 5rem 1.5rem; }
+  .settings-pattern-panel > .cr-page-panel-header { flex-wrap: wrap; }
+  .settings-pattern-panel .cr-page-panel-header-actions { margin-inline-start: auto; }
+  .settings-pattern-form > .cr-form-body { gap: 0; }
+  .settings-pattern-tabs { min-inline-size: 0; }
+  .settings-pattern-tabs > .cr-tab-list { position: sticky; inset-block-start: 0; z-index: 2; gap: 1.5rem; padding: 0 1.5rem; background: var(--cr-color-surface); scroll-padding-inline: 1rem; }
+  .settings-pattern-tabs > .cr-tab-list > button { min-block-size: 3rem; padding-block: .875rem; }
+  .settings-pattern-tabs > .cr-tab-list > button[aria-selected='true']::after { inset-block-end: 0; }
+  .settings-pattern-tabs > [role='tabpanel'] > .cr-tab-content { padding: 1.5rem; }
+  .settings-pattern-section { display: flex; flex-direction: column; gap: 1.5rem; min-inline-size: 0; }
+  .settings-pattern-section-heading > h3 { margin: 0; font-size: 1rem; font-weight: 550; line-height: 1.5; letter-spacing: -.02em; }
+  .settings-pattern-section-heading > p { margin: .375rem 0 0; color: var(--cr-color-muted); line-height: 1.75; }
+  .settings-pattern-frame :is(.cr-input, .cr-button, .cr-switch) { min-block-size: 3rem; }
+  .settings-pattern-frame .cr-switch { inline-size: 100%; }
+  .settings-pattern-frame .cr-switch > span:last-child { min-inline-size: 0; overflow-wrap: anywhere; }
+  .settings-pattern-frame .cr-fieldset:disabled .cr-switch { cursor: not-allowed; }
+  .settings-pattern-footer { inline-size: 100%; min-inline-size: 0; }
+  .settings-pattern-status { flex: 1 1 13rem; min-inline-size: 0; margin: 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.7; overflow-wrap: anywhere; }
+  .settings-pattern-actions { flex: 0 1 auto; min-inline-size: 0; }
+  .settings-pattern-actions .cr-button { white-space: normal; }
+  .settings-pattern-errors { margin: 1.5rem 1.5rem 0; }
+  @container settings-pattern (inline-size < 35rem) {
+    .settings-pattern-panel > :is(.cr-page-panel-header, .cr-page-panel-footer) { padding: 1rem; }
+    .settings-pattern-tabs > .cr-tab-list { gap: 1.25rem; padding-inline: 1rem; }
+    .settings-pattern-tabs > [role='tabpanel'] > .cr-tab-content { padding: 1rem; }
+    .settings-pattern-frame .cr-fieldset { padding-inline: 1rem; padding-block-end: 1rem; }
+    .settings-pattern-actions { inline-size: 100%; }
+    .settings-pattern-actions > .cr-flex-layout > .cr-button { flex: 1 1 8rem; }
+    .settings-pattern-errors { margin: 1rem 1rem 0; }
+  }
+  @media (pointer: coarse) {
+    .settings-pattern-frame .cr-input { font-size: 1rem; }
+  }
+}

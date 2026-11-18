@@ -1,0 +1,11 @@
+@layer docs-content {
+  .tooltip-demo, .tooltip-demo-stack { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; }
+  .tooltip-demo-note { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .tooltip-demo-link { color: var(--cr-color-success); text-underline-offset: 3px; }
+  .tooltip-demo-scroll { box-sizing: border-box; max-block-size: 168px; overflow: auto; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
+  .tooltip-demo-scroll-content { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-6); min-block-size: 320px; padding: var(--cr-space-4); }
+  .tooltip-demo-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  .tooltip-demo-disabled-target { display: inline-flex; max-inline-size: 100%; border-radius: var(--cr-radius-md); }
+  .tooltip-demo-disabled-target:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  .tooltip-demo-disabled-target > :disabled { pointer-events: none; }
+}

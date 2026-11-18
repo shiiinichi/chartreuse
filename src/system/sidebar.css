@@ -1,0 +1,14 @@
+@layer cr-components {
+  .cr-sidebar { container: cr-sidebar / inline-size; display: flex; flex-direction: column; flex: 0 1 auto; box-sizing: border-box; inline-size: min(var(--cr-sidebar-width, 280px), var(--cr-sidebar-max-width, 100%), 100%); max-inline-size: 100%; block-size: 100%; max-block-size: 100%; min-inline-size: 0; min-block-size: 0; margin: 0; border: 0; border-inline-end: 1px solid var(--cr-color-border); border-radius: 0; background: var(--cr-color-surface); color: var(--cr-color-text); font: 400 .8125rem/1.7 var(--cr-font-sans); }
+  .cr-sidebar[data-variant='floating'] { border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); box-shadow: var(--cr-shadow-sm); }
+  .cr-sidebar-header, .cr-sidebar-footer { flex: 0 0 auto; box-sizing: border-box; min-inline-size: 0; padding: var(--cr-space-4); }
+  .cr-sidebar-header { border-block-end: 1px solid var(--cr-color-border); }
+  .cr-sidebar-footer { border-block-start: 1px solid var(--cr-color-border); }
+  .cr-sidebar[data-variant='floating'] > .cr-sidebar-header { border-start-start-radius: calc(var(--cr-radius-lg) - 1px); border-start-end-radius: calc(var(--cr-radius-lg) - 1px); }
+  .cr-sidebar[data-variant='floating'] > .cr-sidebar-footer { border-end-start-radius: calc(var(--cr-radius-lg) - 1px); border-end-end-radius: calc(var(--cr-radius-lg) - 1px); }
+  .cr-sidebar-body { flex: 1 1 auto; min-inline-size: 0; min-block-size: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--cr-color-input-border) transparent; }
+  .cr-sidebar-body:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -4px; }
+  .cr-sidebar[data-variant='floating'][data-has-header='false'] > .cr-sidebar-body { border-start-start-radius: inherit; border-start-end-radius: inherit; }
+  .cr-sidebar[data-variant='floating'][data-has-footer='false'] > .cr-sidebar-body { border-end-start-radius: inherit; border-end-end-radius: inherit; }
+  @media (forced-colors: active) { .cr-sidebar { border-color: CanvasText; } }
+}

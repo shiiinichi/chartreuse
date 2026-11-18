@@ -1,0 +1,10 @@
+@layer docs-ui {
+  .number-input-demo { gap: 24px; min-inline-size: 0; }
+  .number-input-demo-field { inline-size: min(100%, 280px); min-inline-size: 0; }
+  .number-input-demo-field > p { margin: 14px 0 0; color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; }
+  .number-input-demo-form { display: flex; flex-direction: column; gap: 20px; min-inline-size: 0; inline-size: min(100%, 620px); }
+  .number-input-demo-fields { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 20px; min-inline-size: 0; inline-size: min(100%, 760px); }
+  .number-input-demo-fields > .cr-number-input { flex: 1 1 200px; min-inline-size: 0; max-inline-size: 280px; }
+  .number-input-demo-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .number-input-demo-result { margin: 0; color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+}

@@ -1,0 +1,13 @@
+@layer docs-content {
+  .conversation-demo { --docs-example-min: 620px; display: grid; gap: var(--cr-space-6); min-inline-size: 0; }
+  .conversation-demo-panel { inline-size: 100%; max-inline-size: 760px; min-inline-size: 0; }
+  .conversation-demo-options { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-3); padding-block-end: var(--cr-space-5); margin-block-end: var(--cr-space-5); border-block-end: 1px solid var(--cr-color-border); }
+  .conversation-demo-composer { margin-block-start: var(--cr-space-8); padding-block-start: var(--cr-space-6); border-block-start: 1px solid var(--cr-color-border); }
+  .conversation-demo-reply-control { display: flex; align-items: center; flex-wrap: wrap; gap: var(--cr-space-3); margin-block-start: var(--cr-space-3); }
+  .conversation-demo-reply-control > p, .conversation-drawer-demo > p { margin: 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.75; }
+  .conversation-demo-reply-control > p { flex: 1 1 220px; }
+  .conversation-drawer-demo { display: grid; justify-items: start; gap: var(--cr-space-4); }
+  .conversation-demo .cr-conversation [tabindex='-1']:focus { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  .conversation-demo .cr-conversation .footnotes { scroll-margin-block: var(--cr-space-6); }
+  .conversation-demo .cr-conversation .cr-markdown-code-block { max-inline-size: 100%; }
+}

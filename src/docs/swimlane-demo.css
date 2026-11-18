@@ -1,0 +1,4 @@
+@layer docs-ui {
+  .swimlane-demo { --docs-example-min: 35rem; display: flex; flex-direction: column; gap: 24px; min-inline-size: 0; }
+  .swimlane-demo > p { max-inline-size: 78ch; margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+}

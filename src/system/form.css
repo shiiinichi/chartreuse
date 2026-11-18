@@ -1,0 +1,55 @@
+@layer cr-base, cr-tokens, cr-components;
+
+@layer cr-components {
+  :where(.cr-form, .cr-form-layout) { container: cr-form / inline-size; box-sizing: border-box; inline-size: 100%; min-inline-size: 0; max-inline-size: 100%; margin: 0; }
+  .cr-form-body {
+    --cr-form-field-columns: minmax(0, 1fr);
+    --cr-form-label-column: 1;
+    --cr-form-control-column: 1;
+    --cr-form-label-row: 1;
+    --cr-form-control-row: 2;
+    --cr-form-label-padding: 0px;
+    --cr-form-active-label-align: start;
+    --cr-form-action-indent: 0px;
+    display: flex; flex-direction: column; align-items: stretch; gap: var(--cr-space-4); min-inline-size: 0;
+  }
+  .cr-form-body > * { min-inline-size: 0; max-inline-size: 100%; }
+  .cr-form-body :is(.cr-field, .cr-file-picker, .cr-path-selector) {
+    display: grid; grid-template-columns: var(--cr-form-field-columns); align-items: start; row-gap: var(--cr-space-2); column-gap: var(--cr-space-4); min-inline-size: 0;
+  }
+  .cr-form-body :is(.cr-field, .cr-file-picker, .cr-path-selector) > :where(:not(label, .cr-slider-header, .cr-autocomplete-popup)) { grid-column: var(--cr-form-control-column); min-inline-size: 0; }
+  .cr-form-body :is(.cr-field, .cr-file-picker, .cr-path-selector) > label,
+  .cr-form-body .cr-slider > .cr-slider-header {
+    grid-column: var(--cr-form-label-column); grid-row: var(--cr-form-label-row); align-self: start; padding-block-start: var(--cr-form-label-padding); text-align: var(--cr-form-active-label-align); overflow-wrap: anywhere;
+  }
+  .cr-form-body :is(.cr-field, .cr-file-picker, .cr-path-selector) > :is(.cr-input-wrap, .cr-select-wrap, textarea.cr-input, .cr-number-input-control, .cr-autocomplete-control, .cr-file-picker-control, .cr-path-selector-control, .cr-slider-input) {
+    grid-row: var(--cr-form-control-row);
+  }
+  .cr-form-actions {
+    display: flex; align-items: center; align-self: start; flex-wrap: wrap; gap: var(--cr-space-3); min-inline-size: 0; max-inline-size: calc(100% - var(--cr-form-action-indent)); margin-inline-start: var(--cr-form-action-indent);
+  }
+  @container cr-form (inline-size >= 480px) {
+    .cr-form-body[data-layout='horizontal'] {
+      --cr-form-field-columns: minmax(0, var(--cr-form-label-width)) minmax(0, 1fr);
+      --cr-form-label-column: 1;
+      --cr-form-control-column: 2;
+      --cr-form-label-row: 1;
+      --cr-form-control-row: 1;
+      --cr-form-label-padding: .625rem;
+      --cr-form-active-label-align: var(--cr-form-label-align);
+      --cr-form-action-indent: calc(var(--cr-form-label-width) + var(--cr-space-4));
+    }
+    .cr-form-body[data-layout='inline'] {
+      --cr-form-field-columns: fit-content(min(var(--cr-form-label-width), 45%)) minmax(0, 1fr);
+      --cr-form-label-column: 1;
+      --cr-form-control-column: 2;
+      --cr-form-label-row: 1;
+      --cr-form-control-row: 1;
+      --cr-form-label-padding: .625rem;
+      --cr-form-active-label-align: var(--cr-form-label-align);
+      flex-direction: row; flex-wrap: wrap; align-items: start;
+    }
+    .cr-form-body[data-layout='inline'] > :not(.cr-form-actions) { flex: 1 1 22rem; }
+    .cr-form-body[data-layout='inline'] > .cr-form-actions { flex: 0 1 auto; }
+  }
+}

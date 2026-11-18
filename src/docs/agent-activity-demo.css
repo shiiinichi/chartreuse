@@ -1,0 +1,6 @@
+@layer docs-content {
+  .agent-activity-demo { display: grid; gap: var(--cr-space-6); min-inline-size: 0; }
+  .agent-activity-demo-panel { inline-size: 100%; max-inline-size: 760px; min-inline-size: 0; }
+  .agent-activity-demo-controls { display: flex; flex-wrap: wrap; gap: var(--cr-space-2); margin-block-start: var(--cr-space-5); padding-block-start: var(--cr-space-4); border-block-start: 1px solid var(--cr-color-border); }
+  .agent-activity-demo-caption { margin: var(--cr-space-3) 0 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.7; }
+}

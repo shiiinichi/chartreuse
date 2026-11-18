@@ -1,0 +1,17 @@
+@layer docs-ui {
+  .custom-icon-guide { margin-block-start: 36px; padding-block-start: 30px; border-block-start: 1px solid var(--cr-color-border); }
+  .custom-icon-guide-heading > h2 { margin: 0; font-size: 21px; font-weight: 550; letter-spacing: -.6px; }
+  .custom-icon-guide-heading > p { max-inline-size: 75ch; margin-block-start: 10px; color: var(--cr-color-muted); font-size: 12px; line-height: 1.9; }
+  .custom-icon-guide > .showcase { margin-block-start: 24px; }
+  .custom-icon-guide > .showcase > .showcase-preview { gap: 24px; }
+  .custom-icon-guide-live { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px 42px; }
+  .custom-icon-guide-live > div { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .custom-icon-guide-live > div > .cr-badge:first-child { background: transparent; padding: 0; color: var(--cr-color-muted); font-size: 9px; }
+  .custom-icon-guide-live > div:last-child > .cr-badge:last-child { margin-block: 8px; }
+  .custom-icon-guide-field { inline-size: 100%; max-inline-size: 450px; }
+  .custom-icon-guide-generation { margin-block-start: 28px; }
+  .custom-icon-guide-generation > h3 { margin: 0; font-size: 14px; font-weight: 550; letter-spacing: -.25px; }
+  .custom-icon-guide-note { max-inline-size: 90ch; margin: 0; color: var(--cr-color-muted); font-size: 11px; line-height: 1.9; }
+  .custom-icon-guide-note code { font-size: 10px; color: var(--cr-color-text); }
+  @media (max-width: 600px) { .custom-icon-guide-live { gap: 24px; } }
+}

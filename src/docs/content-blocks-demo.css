@@ -1,0 +1,9 @@
+@layer docs-ui {
+  .content-blocks-demo { display: flex; flex-direction: column; gap: 28px; min-inline-size: 0; }
+  .content-blocks-demo-intro { max-inline-size: 75ch; margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .content-blocks-demo-secondary { display: flex; flex-direction: column; gap: 16px; padding-block-start: 24px; border-block-start: 1px solid var(--cr-color-border); min-inline-size: 0; }
+  .content-blocks-demo-label { color: var(--cr-color-muted); font-size: 12px; font-weight: 500; }
+  .blockquote-icon-example { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-3); }
+  .blockquote-icon-example > svg { flex: none; color: var(--cr-color-info); }
+  .blockquote-icon-example > p { margin: 0; }
+}

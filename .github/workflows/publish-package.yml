@@ -1,0 +1,91 @@
+name: Publish GitHub package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag, matching v<package.json version>
+        required: true
+        type: string
+      publish:
+        description: Publish the package after validation (false only builds an artifact)
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-package-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      RELEASE_PRERELEASE: ${{ github.event.release.prerelease || false }}
+    steps:
+      - name: Check out the release tag
+        uses: actions/checkout@v6
+        with:
+          ref: refs/tags/${{ github.event.release.tag_name || inputs.tag }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: https://npm.pkg.github.com
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build documentation and library
+        run: npm run build
+
+      - name: Test the library and release preparation
+        run: node --test test/*.test.mjs
+
+      - name: Prepare the owner-scoped package
+        id: package
+        run: npm run release:prepare
+
+      - name: Pack the distribution
+        id: archive
+        working-directory: ${{ steps.package.outputs.directory }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { appendFileSync } from 'node:fs';
+          const [archive] = JSON.parse(execFileSync('npm', ['pack', '--json', '--pack-destination', process.env.RUNNER_TEMP], { encoding: 'utf8' }));
+          appendFileSync(process.env.GITHUB_OUTPUT, `filename=${archive.filename}\n`);
+          NODE
+
+      - name: Validate the packed distribution without publishing
+        env:
+          PACKAGE_FILE: ${{ steps.archive.outputs.filename }}
+          DIST_TAG: ${{ steps.package.outputs.dist-tag }}
+        run: npm publish "$RUNNER_TEMP/$PACKAGE_FILE" --dry-run --tag "$DIST_TAG" --registry https://npm.pkg.github.com
+
+      - name: Retain the validated package
+        uses: actions/upload-artifact@v6
+        with:
+          name: chartreuse-${{ steps.package.outputs.version }}
+          path: ${{ runner.temp }}/${{ steps.archive.outputs.filename }}
+          if-no-files-found: error
+
+      - name: Publish to GitHub Packages
+        if: github.event_name == 'release' || inputs.publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGE_FILE: ${{ steps.archive.outputs.filename }}
+          DIST_TAG: ${{ steps.package.outputs.dist-tag }}
+        run: npm publish "$RUNNER_TEMP/$PACKAGE_FILE" --tag "$DIST_TAG" --registry https://npm.pkg.github.com

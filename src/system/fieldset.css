@@ -1,0 +1,14 @@
+@layer cr-components {
+  .cr-fieldset { container: cr-fieldset / inline-size; box-sizing: border-box; min-inline-size: 0; max-inline-size: 100%; margin: 0; padding: 20px var(--cr-space-6) var(--cr-space-6); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); color: var(--cr-color-text); font: 400 .8125rem/1.6 var(--cr-font-sans); }
+  .cr-fieldset-legend { box-sizing: border-box; max-inline-size: 100%; margin-inline-start: -8px; padding-inline: 8px; color: var(--cr-color-text); font-size: .875rem; font-weight: 550; line-height: 1.5; letter-spacing: -.15px; overflow-wrap: anywhere; }
+  .cr-fieldset-legend > span { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .cr-fieldset-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; margin-block-end: 20px; }
+  .cr-fieldset-description { flex: 1 1 0; min-inline-size: 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.8; }
+  .cr-fieldset-actions { display: flex; align-items: center; flex-wrap: wrap; flex: 0 0 auto; gap: 8px; margin-inline-start: auto; }
+  .cr-fieldset-actions > .cr-icon-button { margin-block-start: -5px; margin-inline-end: -5px; }
+  .cr-fieldset-content { min-inline-size: 0; }
+  .cr-fieldset-hint { margin-block-start: 18px; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.8; }
+  .cr-fieldset:disabled { background: var(--cr-color-canvas); }
+  .cr-fieldset:disabled > .cr-fieldset-legend { color: var(--cr-color-muted); }
+  @media (forced-colors: active) { .cr-fieldset { border-color: CanvasText; } }
+}

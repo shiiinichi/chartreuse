@@ -1,0 +1,29 @@
+@layer docs-ui {
+  .file-picker-demo { display: flex; flex-direction: column; gap: 23px; min-inline-size: 0; }
+  .file-picker-demo .showcase > .showcase-preview { gap: 23px; }
+  .file-picker-demo-options { min-inline-size: 0; }
+  .file-picker-demo-options .cr-switch { padding-block-end: 6px; font-size: 11px; }
+  .file-picker-demo-options .cr-field > label { font-size: 10px; }
+  .file-picker-demo-preview { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; }
+  .file-picker-demo-form { display: flex; flex-direction: column; gap: var(--cr-space-4); margin: 0; }
+  .file-picker-demo-reset { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-3); }
+  .file-picker-demo-reset span { color: var(--cr-color-muted); font-size: 10px; }
+  .file-picker-demo-reset .cr-button { font-size: 10px; }
+  .file-picker-demo-metadata { min-inline-size: 0; }
+  .file-picker-demo-metadata > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-block-end: 13px; }
+  .file-picker-demo-metadata h3 { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 11px; font-weight: 550; }
+  .file-picker-demo-empty { padding: 20px; margin: 0; border: 1px dashed var(--cr-color-border); border-radius: var(--cr-radius-md); color: var(--cr-color-muted); font-size: 11px; line-height: 1.8; text-align: center; }
+  .file-picker-demo-table { max-inline-size: 100%; max-block-size: 360px; overflow: auto; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); }
+  .file-picker-demo-table:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -3px; }
+  .file-picker-demo-table table { inline-size: 100%; min-inline-size: 450px; border-collapse: collapse; font-size: 10px; }
+  .file-picker-demo-table :is(th, td) { padding: 12px; border-block-end: 1px solid var(--cr-color-border); text-align: start; vertical-align: top; }
+  .file-picker-demo-table th { background: var(--cr-color-subtle); font-weight: 550; }
+  .file-picker-demo-table tbody tr:last-child td { border-block-end: 0; }
+  .file-picker-demo-table td:first-child { max-inline-size: 280px; }
+  .file-picker-demo-table td > strong { display: block; font-size: 11px; font-weight: 500; overflow-wrap: anywhere; }
+  .file-picker-demo-table td > code { display: block; margin-block-start: 6px; color: var(--cr-color-muted); font: 9px/1.8 var(--cr-font-mono); overflow-wrap: anywhere; }
+  .file-picker-demo-table > p { margin: 0; padding: 12px; color: var(--cr-color-muted); font-size: 10px; }
+  .file-picker-demo-note { margin: 0; color: var(--cr-color-muted); font-size: 10px; line-height: 1.9; }
+  .file-picker-demo-note > a { color: var(--cr-color-success); text-underline-offset: 3px; }
+  @media (pointer: coarse) { .file-picker-demo-options .cr-input { font-size: 1rem; } }
+}

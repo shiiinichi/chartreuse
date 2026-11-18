@@ -1,0 +1,8 @@
+@layer docs-ui {
+  .progress-demo { display: flex; flex-direction: column; gap: 28px; min-inline-size: 0; }
+  .progress-demo-options { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px; }
+  .progress-demo-context { padding-block: 8px; min-inline-size: 0; }
+  .progress-demo-controls { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .progress-demo-controls > .reference-range { flex: 1 1 220px; max-inline-size: 420px; }
+  .progress-demo-note { max-inline-size: 75ch; margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+}

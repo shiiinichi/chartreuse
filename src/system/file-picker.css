@@ -1,0 +1,38 @@
+@layer cr-components {
+  .cr-file-picker { display: flex; flex-direction: column; gap: 8px; min-inline-size: 0; color: var(--cr-color-text); font: 450 .75rem/1.5 var(--cr-font-sans); }
+  .cr-file-picker > label { font-weight: 550; }
+  .cr-file-picker > small { margin-block-start: -4px; color: var(--cr-color-muted); font-size: .6875rem; }
+  .cr-file-picker-control { display: flex; align-items: center; min-inline-size: 0; min-block-size: 40px; border: 1px solid var(--cr-color-input-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); transition: border-color var(--cr-duration-fast); }
+  .cr-file-picker-control:hover:not(:has(input:disabled)) { border-color: var(--cr-color-text); }
+  .cr-file-picker-control:focus-within { border-color: var(--cr-color-focus); outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  .cr-file-picker[data-error='true'] .cr-file-picker-control, .cr-file-picker-control:has(input:user-invalid) { border-color: var(--cr-color-danger); }
+  .cr-file-picker-input { box-sizing: border-box; flex: 1 1 auto; inline-size: 100%; min-inline-size: 0; block-size: 38px; min-block-size: 38px; padding: 0; border: 0; border-radius: var(--cr-radius-md); background: transparent; color: var(--cr-color-muted); font: 400 .8125rem/1.5 var(--cr-font-sans); cursor: pointer; }
+  .cr-file-picker-input::file-selector-button { box-sizing: border-box; min-block-size: 38px; margin: 0 12px 0 0; padding: 8px 12px; border: 0; border-inline-end: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md) 0 0 var(--cr-radius-md); background: var(--cr-color-subtle); color: var(--cr-color-text); font: 500 .8125rem/1.5 var(--cr-font-sans); cursor: pointer; }
+  .cr-file-picker-input:hover:not(:disabled)::file-selector-button { background: var(--cr-color-success-bg); }
+  .cr-file-picker-input:focus-visible { outline: none; }
+  .cr-file-picker-input:disabled, .cr-file-picker-input:disabled::file-selector-button { cursor: not-allowed; }
+  .cr-file-picker-control > .cr-file-picker-clear { min-inline-size: 32px; min-block-size: 32px; padding: 6px; margin-inline: 2px 3px; }
+  .cr-file-picker[data-disabled='true'] { opacity: .5; }
+  .cr-file-picker-selection { padding: 12px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
+  .cr-file-picker-selection > div { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+  .cr-file-picker-selection strong { min-inline-size: 0; flex: 1; font-size: .6875rem; font-weight: 550; overflow-wrap: anywhere; }
+  .cr-file-picker-selection div > span { color: var(--cr-color-muted); font-size: .625rem; }
+  .cr-file-picker-selection ul { display: flex; flex-direction: column; gap: 4px; padding: 0; margin: 9px 0 0; list-style: none; }
+  .cr-file-picker-selection li { color: var(--cr-color-muted); font-size: .625rem; line-height: 1.6; overflow-wrap: anywhere; }
+  .cr-file-picker-selection code { font-family: var(--cr-font-mono); }
+  .cr-file-picker-more { font-family: var(--cr-font-sans); }
+  .cr-file-picker-error { display: flex; align-items: center; gap: 6px; color: var(--cr-color-danger); font-size: .6875rem; }
+  .cr-file-picker > .cr-file-picker-fallback { margin-block-start: 0; }
+  .cr-file-picker:dir(rtl) .cr-file-picker-input::file-selector-button { margin: 0 0 0 12px; border-radius: 0 var(--cr-radius-md) var(--cr-radius-md) 0; }
+  @media (pointer: coarse) {
+    .cr-file-picker-control { min-block-size: 46px; }
+    .cr-file-picker-input { block-size: 44px; min-block-size: 44px; font-size: 1rem; }
+    .cr-file-picker-input::file-selector-button { min-block-size: 44px; font-size: .875rem; }
+    .cr-file-picker-control > .cr-file-picker-clear { min-inline-size: 44px; min-block-size: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cr-file-picker-control { transition: none; } }
+  @media (forced-colors: active) {
+    .cr-file-picker-control:focus-within { outline-color: Highlight; }
+    .cr-file-picker-input::file-selector-button { border-inline-end-color: ButtonText; }
+  }
+}

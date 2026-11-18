@@ -1,0 +1,7 @@
+@layer docs-ui {
+  .sequence-demo { display: flex; flex-direction: column; gap: 28px; min-inline-size: 0; }
+  .sequence-demo-gallery { --docs-example-min: 620px; }
+  .sequence-demo-intro { max-inline-size: 75ch; margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .sequence-demo-controls { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 18px 24px; margin-block-end: 26px; }
+  .sequence-demo-controls > .cr-field { inline-size: min(100%, 220px); }
+}

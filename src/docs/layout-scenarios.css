@@ -1,0 +1,5 @@
+@layer docs-content {
+  .layout-scenarios { display: grid; gap: var(--cr-space-6); min-inline-size: 0; }
+  .layout-example-gallery { --docs-example-min: 35rem; }
+  .layout-scenarios > * { min-inline-size: 0; }
+}
