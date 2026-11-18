@@ -285,8 +285,8 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and large-radius/small-shadow globals in floating mode.', 'The body scrollbar consumes input-border. Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
   },
   {
-    component: 'Conversation', componentTokens: [], globalTokens: globals(markdownGlobals, names('space-8 space-6 space-2 space-3')),
-    notes: ['No conversation-local CSS variables are declared. conversation.css directly consumes shared text/muted/border/font/radius and 8/12/24/32px spacing steps.', 'MarkdownRenderer renders Markdown messages (agent messages by default), so its code/link/table/checkbox/copy-action globals are included transitively. Conversation overrides the Markdown root font to inherit its own 13px style; code still uses the mono token.', 'The activity slot is supplied content, not an automatically instantiated AgentActivity. Its arbitrary child tokens are not included here. Pending-spin duration and role-specific type sizes remain literal CSS.'],
+    component: 'Conversation', componentTokens: [], globalTokens: globals(markdownGlobals, names('space-8 space-6 space-4 space-2 space-3 radius-lg')),
+    notes: ['The user message card uses the shared subtle background, border, large radius, and spacing tokens. conversation.css also consumes shared text, muted, font, and radius tokens.', 'MarkdownRenderer renders Markdown messages (agent messages by default), so its code/link/table/checkbox/copy-action globals are included transitively. Conversation overrides the Markdown root font to inherit its own 13px style; code still uses the mono token.', 'The activity slot is supplied content, not an automatically instantiated AgentActivity. Its arbitrary child tokens are not included here. Pending-spin duration and role-specific type sizes remain literal CSS.'],
   },
   {
     component: 'Swimlane', componentTokens: swimlaneHooks,

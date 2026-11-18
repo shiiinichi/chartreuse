@@ -19,7 +19,7 @@ export interface ConversationMessage {
   dateTime?: string;
   /** Agent messages default to Markdown; user and system messages to text. */
   format?: ConversationFormat;
-  /** Preceding work for this turn, such as an AgentActivity group. */
+  /** Work shown between the message header and body, such as an AgentActivity group. */
   activity?: ReactNode;
 }
 
@@ -41,9 +41,9 @@ function ConversationTurn({ message }: { message: ConversationMessage }) {
   const format = message.format ?? (message.role === 'agent' ? 'markdown' : 'text');
   const time = message.timeLabel ?? message.dateTime;
   return <li className="cr-conversation-turn">
-    {message.activity !== undefined && message.activity !== null && <div className="cr-conversation-activity">{message.activity}</div>}
     <article className="cr-conversation-message" data-role={message.role} aria-labelledby={`${id}-sender`}>
       <header className="cr-conversation-message-header"><strong id={`${id}-sender`}>{sender}</strong>{time && (message.dateTime ? <time dateTime={message.dateTime}>{time}</time> : <span className="cr-conversation-time">{time}</span>)}</header>
+      {message.activity !== undefined && message.activity !== null && <div className="cr-conversation-activity">{message.activity}</div>}
       <div className="cr-conversation-body" data-format={format}>{format === 'markdown' ? <MarkdownRenderer>{message.body}</MarkdownRenderer> : <p className="cr-conversation-plain">{message.body}</p>}</div>
     </article>
   </li>;

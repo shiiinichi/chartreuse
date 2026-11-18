@@ -150,7 +150,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Sidebar` provides floating and flush surfaces with header, body, and footer content. Set its height in the parent; the body scrolls independently while the header and footer stay visible. Use native links for navigation or selection buttons for an inspector. The examples demonstrate run history and workspace tasks.
 
-`Conversation` presents chronological messages with sender and time headers. Agent messages use `MarkdownRenderer` by default; user and system messages use plain text unless the message specifies Markdown. The `activity` slot can hold `AgentActivity` before a turn. Combine it with `MessageComposer` for input and `Drawer` for a transcript panel. Message updates preserve focus and scroll position. Set `announce` to enable concise status announcements.
+`Conversation` presents chronological messages with sender and time headers. User prompts appear in subdued cards. Agent messages use `MarkdownRenderer` by default. User and system messages use plain text unless the message specifies Markdown. The `activity` slot can hold `AgentActivity` between the message header and body. Combine it with `MessageComposer` for input and `Drawer` for a transcript panel. Message updates preserve focus and scroll position. Set `announce` to enable concise status announcements.
 
 `Swimlane` displays task-board columns with a count beside the status tag and a header action on the right. The count uses the same 11px type size as `Badge`. Columns share surface styles, body insets, card spacing, and empty-state layouts. The task-board example uses four statuses with local create, filter, and status-change actions. The caller supplies cards, counts, and actions.
 

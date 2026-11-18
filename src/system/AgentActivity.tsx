@@ -31,6 +31,8 @@ type AgentActivityBase = Omit<ComponentPropsWithRef<'details'>, 'children' | 'ti
   events: readonly AgentActivityEvent[];
   /** Custom group label; defaults to Working, Waiting, Worked, or Activity. */
   label?: string;
+  /** Use 'hover' to highlight the group header on hover. Defaults to 'none'. */
+  headerHighlight?: 'none' | 'hover';
   /** Recent rows shown on mount. Newly arriving rows are not moved while reading. */
   initialVisibleCount?: number;
   /** Enable for the active log only when its host does not announce progress. */
@@ -77,7 +79,12 @@ function ActivityRow({ event }: { event: AgentActivityEvent }) {
   const kind = event.kind ?? 'tool';
   const status = statusOf(event);
   const duration = durationText(event.durationMs);
-  const expandable = event.description !== undefined || event.command !== undefined || event.input !== undefined || event.output !== undefined || event.outputTruncated || event.exitCode !== undefined;
+  const output = plainText(event.output ?? '');
+  const hasOutput = output.trim() !== '';
+  const detailText = event.description?.trim() || (hasOutput ? '' : event.title.trim());
+  const hasLogFields = event.command !== undefined || event.input !== undefined || hasOutput;
+  const expandable = Boolean(detailText) || hasLogFields || event.outputTruncated || event.exitCode !== undefined;
+  const waitingForOutput = event.output === undefined && (kind === 'command' || kind === 'tool') && (status === 'running' || status === 'queued');
   const content = <>
     <span className="cr-agent-activity-kind">{renderIcon(event.icon ?? kindIcons[kind], { size: 16 })}</span>
     <span className="cr-agent-activity-title">{event.title}</span>
@@ -88,13 +95,13 @@ function ActivityRow({ event }: { event: AgentActivityEvent }) {
     {expandable ? <details className="cr-agent-activity-event" open={open} onToggle={event => {
       if (event.target === event.currentTarget) setOpen(event.currentTarget.open);
     }}><summary className="cr-agent-activity-row">{content}</summary><div className="cr-agent-activity-detail">
-      {event.description !== undefined && <p className="cr-agent-activity-description">{event.description}</p>}
-      <dl>
+      {detailText && <p className="cr-agent-activity-description">{detailText}</p>}
+      {hasLogFields && <dl>
         {event.command !== undefined && <><dt>Command</dt><dd><pre tabIndex={0} role="region" aria-label={`${event.title} command`}><code>{plainText(event.command)}</code></pre></dd></>}
         {event.input !== undefined && <><dt>Input</dt><dd><pre tabIndex={0} role="region" aria-label={`${event.title} input`}><code>{plainText(event.input)}</code></pre></dd></>}
-        {event.output !== undefined && <><dt>Output</dt><dd>{event.output === '' ? <p className="cr-agent-activity-note">No output.</p> : <pre tabIndex={0} role="region" aria-label={`${event.title} output`}><code>{plainText(event.output)}</code></pre>}</dd></>}
-      </dl>
-      {event.output === undefined && (kind === 'command' || kind === 'tool') && <p className="cr-agent-activity-note">{status === 'running' || status === 'queued' ? 'Waiting for output…' : 'Output was not recorded.'}</p>}
+        {hasOutput && <><dt>Output</dt><dd><pre tabIndex={0} role="region" aria-label={`${event.title} output`}><code>{output}</code></pre></dd></>}
+      </dl>}
+      {waitingForOutput && <p className="cr-agent-activity-note">Waiting for output…</p>}
       {event.outputTruncated && <p className="cr-agent-activity-note">Some output was omitted from the recorded preview.</p>}
       {event.exitCode !== undefined && <p className="cr-agent-activity-exit">Exit code <code>{event.exitCode}</code></p>}
     </div></details> : <div className="cr-agent-activity-row">{content}</div>}
@@ -102,7 +109,7 @@ function ActivityRow({ event }: { event: AgentActivityEvent }) {
 }
 
 /** A chronological group of user-visible agent/tool events with on-demand details. */
-export function AgentActivity({ events, label, initialVisibleCount = 6, announce = false, emptyMessage = 'No activity recorded.', open, defaultOpen = true, onOpenChange, className, ...props }: AgentActivityProps) {
+export function AgentActivity({ events, label, headerHighlight = 'none', initialVisibleCount = 6, announce = false, emptyMessage = 'No activity recorded.', open, defaultOpen = true, onOpenChange, className, ...props }: AgentActivityProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [historyBoundary] = useState(() => {
     const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : 6;
@@ -120,16 +127,29 @@ export function AgentActivity({ events, label, initialVisibleCount = 6, announce
   const heading = label ?? (running ? 'Working' : queued ? 'Waiting' : events.length ? 'Worked' : 'Activity');
   const counts = [`${events.length} ${events.length === 1 ? 'activity' : 'activities'}`, running && `${running} running`, queued && `${queued} queued`, failed && `${failed} failed`, interrupted && `${interrupted} interrupted`].filter(Boolean).join(' · ');
   return <>
-    <details {...props} className={['cr-agent-activity', className].filter(Boolean).join(' ')} open={expanded} onToggle={event => {
+    <details {...props} className={['cr-agent-activity', className].filter(Boolean).join(' ')} open={expanded} data-header-highlight={headerHighlight} onToggle={event => {
       if (event.target !== event.currentTarget) return;
       const next = event.currentTarget.open;
       if (open !== undefined) {
         if (next !== open) { event.currentTarget.open = open; onOpenChange?.(next); }
       } else if (next !== internalOpen) { setInternalOpen(next); onOpenChange?.(next); }
-    }}><summary className="cr-agent-activity-summary" onClick={event => {
-      if (open === undefined) return;
-      event.preventDefault(); onOpenChange?.(!open);
-    }}><ChevronRight className="cr-agent-activity-group-chevron" size={15} aria-hidden="true" /><span className="cr-agent-activity-heading">{heading}</span><span className="cr-agent-activity-count">{events.length} {events.length === 1 ? 'activity' : 'activities'}</span><span className="cr-agent-activity-group-status">{running > 0 && <span data-status="running">{running} running</span>}{queued > 0 && <span data-status="queued">{queued} queued</span>}{failed > 0 && <span data-status="failed">{failed} failed</span>}{interrupted > 0 && <span data-status="interrupted">{interrupted} interrupted</span>}</span></summary>
+    }}>
+      <summary className="cr-agent-activity-summary" onClick={event => {
+        if (open === undefined) return;
+        event.preventDefault(); onOpenChange?.(!open);
+      }}>
+        <span className="cr-agent-activity-heading">{heading}</span>
+        <span className="cr-agent-activity-count">
+          {events.length} {events.length === 1 ? 'activity' : 'activities'}
+          <ChevronRight className="cr-agent-activity-group-chevron" size={15} aria-hidden="true" />
+        </span>
+        <span className="cr-agent-activity-group-status">
+          {running > 0 && <span data-status="running">{running} running</span>}
+          {queued > 0 && <span data-status="queued">{queued} queued</span>}
+          {failed > 0 && <span data-status="failed">{failed} failed</span>}
+          {interrupted > 0 && <span data-status="interrupted">{interrupted} interrupted</span>}
+        </span>
+      </summary>
       <div className="cr-agent-activity-content">
         {events.length === 0 && <p className="cr-agent-activity-empty">{emptyMessage}</p>}
         {earlier.length > 0 && <details className="cr-agent-activity-earlier"><summary><ChevronRight size={13} aria-hidden="true" /><span>{earlier.length} earlier {earlier.length === 1 ? 'activity' : 'activities'}</span>{earlier.some(event => ['failed', 'interrupted'].includes(statusOf(event))) && <span className="cr-agent-activity-earlier-issue">Includes issues</span>}</summary><ol className="cr-agent-activity-list" role="list">{earlier.map(event => <ActivityRow event={event} key={event.id} />)}</ol></details>}

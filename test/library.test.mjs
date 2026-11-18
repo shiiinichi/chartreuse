@@ -137,6 +137,25 @@ test('agent activity preserves output text and does not infer successful complet
   assert.ok(!markup.includes('<script>'), 'activity output is text');
 });
 
+test('agent activity uses its title as detail text when description and output are absent', () => {
+  const title = 'Review finished';
+  const cases = [
+    [{}, title],
+    [{ output: '' }, title],
+    [{ output: '\u001b[0m\n' }, title],
+    [{ description: 'Checked the supporting files', output: '' }, 'Checked the supporting files'],
+  ];
+
+  for (const [fields, detailText] of cases) {
+    const markup = renderToStaticMarkup(React.createElement(system.AgentActivity, {
+      events: [{ id: 'review', title, ...fields }],
+    }));
+    assert.match(markup, /<summary class="cr-agent-activity-row">/);
+    assert.ok(markup.includes(`<p class="cr-agent-activity-description">${detailText}</p>`));
+    assert.doesNotMatch(markup, /<dt>Output<\/dt>/);
+  }
+});
+
 test('conversation defaults to safe agent Markdown and plain user text', () => {
   const markup = renderToStaticMarkup(React.createElement(system.Conversation, { messages: [
     { id: 'user', role: 'user', body: '**Keep this literal**' },

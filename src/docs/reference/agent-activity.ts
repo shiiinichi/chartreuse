@@ -17,6 +17,7 @@ export const agentActivityReferences: ComponentReference[] = [{
   props: [
     { name: 'events', type: 'readonly AgentActivityEvent[]', required: true, description: 'Chronological events, oldest first. Each event needs a stable id and a brief human-readable title.' },
     { name: 'label', type: 'string', description: 'Optional visible group label. Otherwise the label is Working, Waiting, Worked, or Activity based on the recorded states.' },
+    { name: 'headerHighlight', type: "'none' | 'hover'", defaultValue: "'none'", description: 'Use "hover" to show a subtle background when the pointer is over the activity group header.' },
     { name: 'initialVisibleCount', type: 'number', defaultValue: '6', description: 'Recent rows shown directly on mount; existing older rows go in an earlier-activities disclosure. New events stay in place. Finite values are floored and clamped to at least one.' },
     { name: 'open', type: 'boolean', description: 'Controlled group visibility; requires onOpenChange and excludes defaultOpen.' },
     { name: 'defaultOpen', type: 'boolean', defaultValue: 'true', description: 'Initial group visibility when uncontrolled.' },
@@ -31,6 +32,7 @@ export const agentActivityReferences: ComponentReference[] = [{
   notes: [
     'AgentActivityEvent uses id/title with optional kind (agent, command, tool, file, search, message), status (queued, running, completed, failed, interrupted, info), description, command, input, output, outputTruncated, durationMs, exitCode, icon, and defaultOpen.',
     'Give each event a brief title describing the recorded action, such as “Read project guidance”; put the exact command and recorded output in its details. All command/input/output strings render as plain text and ANSI escape sequences are removed.',
+    'When an event has no description or visible output, its expanded details show the event title.',
     'Keep the same event ID when output or status changes. Key each AgentActivity by its run ID so expansion and initial-history boundaries reset for a different run. Newly appended events do not move existing rows into a closed history group.',
     'Status defaults to info; completion is never inferred from missing data. A nonzero exitCode is shown as failure. Use interrupted when completion was not recorded. Empty output means no output; omitted output means unrecorded.',
     'Native summary controls retain Enter, Space, and find-in-page behavior. Earlier activities remain in the DOM and searchable. Output is bounded and keyboard-scrollable; expanding details never forces a scroll or steals focus.',

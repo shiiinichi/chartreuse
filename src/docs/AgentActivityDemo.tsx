@@ -75,7 +75,7 @@ import '@chartreuse/ui/styles.css';
 const recordedEvents: AgentActivityEvent[] = ${JSON.stringify(recordedEvents, null, 2)};
 
 export function RecordedSessionExample() {
-  return <AgentActivity label="Recorded session" events={recordedEvents} />;
+  return <AgentActivity label="Recorded session" events={recordedEvents} headerHighlight="hover" />;
 }`;
 
 export function AgentActivityDemo() {
@@ -91,8 +91,8 @@ export function AgentActivityDemo() {
         <p className="agent-activity-demo-caption">These controls update local event state. They do not execute the displayed commands.</p>
       </div>
     </Showcase>
-    <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. Completed events distinguish empty output from missing output." code={recordedCode}>
-      <div className="agent-activity-demo-panel"><AgentActivity label="Recorded session" events={recordedEvents} /></div>
+    <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. An event with no description or output shows its title in the details. The group header highlights on hover." code={recordedCode}>
+      <div className="agent-activity-demo-panel"><AgentActivity label="Recorded session" events={recordedEvents} headerHighlight="hover" /></div>
     </Showcase>
   </ExampleGallery>;
 }

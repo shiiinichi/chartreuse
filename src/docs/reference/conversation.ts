@@ -3,7 +3,7 @@ import type { ComponentReference } from './types';
 export const conversationReferences: ComponentReference[] = [{
   name: 'Conversation',
   slug: 'conversation',
-  summary: 'A chronological transcript with sender and time labels, Markdown agent messages, and optional activity before each turn.',
+  summary: 'A chronological transcript with sender and time labels, Markdown agent messages, and optional activity before the message body.',
   importCode: "import { AgentActivity, Conversation, MessageComposer } from '@chartreuse/ui';\nimport type { ConversationMessage } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `const messages: ConversationMessage[] = [
   { id: 'request', role: 'user', sender: 'You',
@@ -33,7 +33,7 @@ export const conversationReferences: ComponentReference[] = [{
     'ConversationMessage is { id, role, body, sender?, timeLabel?, dateTime?, format?, activity? }. Roles are user, agent, and system. Default sender labels are You, Agent, and System. Keep IDs stable while a message streams.',
     'Agent bodies use MarkdownRenderer by default; user and system bodies remain plain text with preserved line breaks. Set format to text or markdown explicitly when a turn needs a different treatment.',
     'MarkdownRenderer skips raw HTML and applies react-markdown’s default URL filter. Code blocks and wide tables scroll within their containers. Message bodies are strings.',
-    'The activity slot appears immediately before its turn. Compose AgentActivity there and keep recorded work in chronological order; do not invent activity or hidden agent reasoning.',
+    'The activity slot appears between the message header and body. Compose AgentActivity there and supply recorded work in chronological order.',
     'Supply timeLabel for human-readable time and dateTime for an optional native time value. The component does not parse dates, infer a timezone, or generate changing relative labels.',
     'Conversation displays the transcript; MessageComposer, Drawer, and application state own sending, hosting, and scrolling. New messages never force focus or scroll. Only enable announcements for the active transcript when its host does not already announce new turns.',
     'Markdown fragment links retain native navigation. An application using hashes for routing should handle same-document Markdown links within its preview; the documentation example does so without changing its route.',
