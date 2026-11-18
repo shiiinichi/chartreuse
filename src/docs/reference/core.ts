@@ -144,9 +144,10 @@ export const coreReferences: ComponentReference[] = [
   <option value="high">High</option>
 </Select>`,
     nativeElement: 'select',
-    nativeProps: "Extends ComponentPropsWithRef<'select'>. Native values, multiple, required, option children, events, style, and ref target the select; className targets the field wrapper. Caller aria-describedby IDs merge with the generated hint or error ID.",
+    nativeProps: "Extends ComponentPropsWithRef<'select'> with visual size presets. Native values, multiple, numeric size, required, option children, events, style, and ref target the select. className targets the field wrapper. Caller aria-describedby IDs merge with the generated hint or error ID.",
     props: [
       { name: 'label', type: 'string', required: true, description: 'The associated label, visible unless hideLabel is enabled.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg' | number", defaultValue: "'md'", description: 'Dropdowns match the height of a Button of the same size. Numeric values set the native row count for a listbox.' },
       { name: 'children', type: 'ReactNode', description: 'Native option and optgroup elements.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the select, linked with aria-describedby; hidden while an error is present.' },
       { name: 'error', type: 'string', description: 'An error description that also sets aria-invalid.' },

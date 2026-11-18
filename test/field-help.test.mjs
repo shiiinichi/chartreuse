@@ -26,6 +26,34 @@ function renderField(field, props) {
   return { id, markup, control };
 }
 
+test('single-line field sizes stay separate from native size attributes', () => {
+  const sizedFields = fields.filter(field => ['TextField', 'Select'].includes(field.name));
+  for (const field of sizedFields) {
+    for (const size of [undefined, 'sm', 'md', 'lg']) {
+      const { markup, control } = renderField(field, { size });
+      assert.match(markup, new RegExp(`data-cr-input-size="${size ?? 'md'}"`), field.name);
+      assert.doesNotMatch(control[0], /\ssize=/, field.name);
+    }
+  }
+});
+
+test('Select forwards the native row count and preserves listbox options', () => {
+  const field = fields.find(field => field.name === 'Select');
+  const listbox = renderField(field, { multiple: true, size: 3, defaultValue: ['team'] });
+  assert.match(listbox.control[0], /\bmultiple=""/);
+  assert.match(listbox.control[0], /\bsize="3"/);
+  assert.match(listbox.markup, /<option[^>]*selected=""[^>]*>Team<\/option>/);
+  assert.doesNotMatch(listbox.markup, /data-cr-input-size=/);
+
+  const singleSelectListbox = renderField(field, { size: 3 });
+  assert.match(singleSelectListbox.control[0], /\bsize="3"/);
+  assert.doesNotMatch(singleSelectListbox.markup, /data-cr-input-size=/);
+
+  const dropdown = renderField(field, { size: 1 });
+  assert.match(dropdown.control[0], /\bsize="1"/);
+  assert.match(dropdown.markup, /data-cr-input-size="md"/);
+});
+
 test('field helper text follows the native input control and remains its accessible description', () => {
   for (const field of fields) {
     const { id, markup, control } = renderField(field, { hint: 'Supporting detail.' });

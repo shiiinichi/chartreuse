@@ -121,15 +121,6 @@ test('a button inside a form is non-submitting unless explicitly requested', () 
   assert.match(markup, /aria-busy="true"/);
 });
 
-test('TextField supports visual size presets while preserving the native input', () => {
-  for (const size of [undefined, 'sm', 'md', 'lg']) {
-    const markup = renderToStaticMarkup(React.createElement(system.TextField, { label: 'Query', name: 'query', type: 'search', size }));
-    assert.match(markup, new RegExp(`data-size="${size ?? 'md'}"`));
-    assert.match(markup, /<input(?=[^>]*name="query")(?=[^>]*type="search")[^>]*>/);
-    assert.doesNotMatch(markup, /<input[^>]*\ssize=/);
-  }
-});
-
 test('agent activity preserves output text and does not infer successful completion', () => {
   const markup = renderToStaticMarkup(React.createElement(system.AgentActivity, { events: [
     { id: 'link', title: 'Read linked output', kind: 'command', status: 'completed', output: '\u001b]8;;https://example.com\u001b\\link text\u001b]8;;\u001b\\', defaultOpen: true },

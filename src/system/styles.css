@@ -80,8 +80,8 @@
   .cr-button[data-variant='ghost']:hover:not(:disabled) { background: var(--cr-color-subtle); box-shadow: none; }
   .cr-button:active:not(:disabled) { translate: 0 1px; }
   .cr-button:disabled { opacity: .45; cursor: not-allowed; }
-  .cr-button[data-size='sm'], :where(.cr-input-wrap)[data-size='sm'] > .cr-input { min-block-size: 32px; font-size: .75rem; }
-  .cr-button[data-size='lg'], :where(.cr-input-wrap)[data-size='lg'] > .cr-input { min-block-size: 46px; font-size: .875rem; }
+  .cr-button[data-size='sm'], [data-cr-input-size='sm'] > .cr-input { min-block-size: 32px; font-size: .75rem; }
+  .cr-button[data-size='lg'], [data-cr-input-size='lg'] > .cr-input { min-block-size: 46px; font-size: .875rem; }
   .cr-button[data-size='sm'] { min-inline-size: 32px; padding: .375rem .75rem; gap: .375rem; }
   .cr-button[data-size='lg'] { padding: .75rem 1.25rem; }
   .cr-icon-button { padding: .5rem; flex-shrink: 0; }
@@ -102,7 +102,7 @@
   .cr-input-wrap > svg { position: absolute; inset-inline-start: 12px; color: var(--cr-color-muted); pointer-events: none; }
   .cr-input { inline-size: 100%; min-inline-size: 0; padding: .625rem .75rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-input-border); border-radius: var(--cr-radius-md); transition: border-color var(--cr-duration-fast); }
   /* Leave room for native input decorations within the shared control heights. */
-  :where(.cr-input-wrap)[data-size] > .cr-input { padding-block: .25rem; }
+  [data-cr-input-size] > .cr-input { padding-block: .25rem; }
   .cr-input-wrap:has(> svg) .cr-input { padding-inline-start: 36px; }
   .cr-input::placeholder { color: var(--cr-color-muted); opacity: 1; }
   .cr-input:hover:not(:disabled) { border-color: var(--cr-color-text); }
@@ -111,6 +111,7 @@
   textarea.cr-input { min-block-size: 100px; resize: vertical; }
   .cr-select-wrap { position: relative; }
   .cr-select { appearance: none; padding-inline-end: 2.75rem; }
+  .cr-select-wrap[data-cr-input-size] > .cr-select { display: block; }
   .cr-select-wrap > svg { position: absolute; inset-inline-end: 14px; inset-block-start: 50%; translate: 0 -50%; color: var(--cr-color-muted); pointer-events: none; }
   .cr-field > .cr-field-error { display: flex; align-items: baseline; gap: .25rem; color: var(--cr-color-danger); margin: 0; }
   /* Center on the first cap-height, with a small font-relative optical lift. */
@@ -264,8 +265,8 @@
     .cr-button, .cr-input, .cr-tab-list > button { min-block-size: 44px; }
     .cr-icon-button { min-inline-size: 44px; }
     .cr-checkbox, .cr-switch { min-block-size: 44px; }
-    .cr-input, :where(.cr-input-wrap)[data-size] > .cr-input { font-size: 1rem; }
-    :where(.cr-input-wrap)[data-size='sm'] > .cr-input { padding-block: .125rem; }
+    .cr-input, [data-cr-input-size] > .cr-input { font-size: 1rem; }
+    [data-cr-input-size='sm'] > .cr-input { padding-block: .125rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     .cr-button, .cr-input, .cr-switch-track > span { transition: none; }

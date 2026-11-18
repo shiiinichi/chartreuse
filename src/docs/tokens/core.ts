@@ -115,7 +115,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Select', componentTokens: [], globalTokens: fieldGlobals,
-    notes: ['Consumption: shared field/input rules plus .cr-select and the .cr-select-wrap chevron. The chevron consumes --cr-color-muted.', 'Arrow inset, text reserve, control heights, and field spacing are literal CSS. hideLabel changes visibility through a class; it does not create a token.'],
+    notes: ['Consumption: shared field/input rules plus .cr-select and the .cr-select-wrap chevron. The chevron consumes --cr-color-muted.', 'Dropdown size presets share Button minimum heights. Native listboxes keep their row-based height. Arrow inset, text reserve, and field spacing are set in CSS.'],
   },
   {
     component: 'Checkbox', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-primary', 'color-focus'),

@@ -4,6 +4,37 @@ import { Fieldset } from '../../system/Fieldset';
 import { Grid, GridItem } from '../../system/Grid';
 import { ExampleGallery, FormActions, FormScenario, ScenarioForm, formCode } from './shared';
 
+function SelectSizes() {
+  const sizes = ['sm', 'md', 'lg'] as const;
+  const rowStyle = { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 5.5rem', alignItems: 'end', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Select sizes" description="Match the button height for each size. The default is md."
+    code={formCode('Button, Select', `export function SelectSizes() {
+  const sizes = ['sm', 'md', 'lg'] as const;
+  return sizes.map(size => (
+    <form key={size} style={{
+      display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 5.5rem',
+      alignItems: 'end', gap: 'var(--cr-space-3)',
+    }}>
+      <Select size={size} label={'Priority (' + size + ')'} name="priority" defaultValue="normal">
+        <option value="low">Low</option>
+        <option value="normal">Normal</option>
+        <option value="high">High</option>
+      </Select>
+      <Button size={size} type="reset" variant="secondary">Reset</Button>
+    </form>
+  ));
+}`)}>
+    {sizes.map(size => <ScenarioForm key={size} style={rowStyle}>
+      <Select size={size} label={`Priority (${size})`} name="priority" defaultValue="normal">
+        <option value="low">Low</option>
+        <option value="normal">Normal</option>
+        <option value="high">High</option>
+      </Select>
+      <Button size={size} type="reset" variant="secondary">Reset</Button>
+    </ScenarioForm>)}
+  </FormScenario>;
+}
+
 function PrioritySelection() {
   const [priority, setPriority] = useState('medium');
   return <FormScenario title="Controlled select" description="Keep the selected option value in React state."
@@ -79,6 +110,7 @@ function ReviewerSelection() {
 
 export function SelectScenarios() {
   return <ExampleGallery className="form-scenarios">
+    <SelectSizes />
     <PrioritySelection />
     <DestinationSelection />
     <ReviewerSelection />
