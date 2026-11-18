@@ -70,7 +70,7 @@ The [publishing workflow](.github/workflows/publish-package.yml) runs when a Git
 
 1. Push the repository, including the workflow, to GitHub. The workflow derives the package owner and repository link from `github.repository`.
 2. Publish a GitHub release with a tag matching `v<package.json version>`. The current version requires `v1.0.0`. The tagged commit must include the workflow. Update both `package.json` and `package-lock.json` for subsequent versions; `npm version patch`, `minor`, or `major` updates both.
-3. Configure the package's access in GitHub after its first publication. GitHub initially creates a private package. Give consuming repositories access under the package's Actions settings, or configure visibility and user access as needed.
+3. Keep the repository and package private. The workflow checks both before publishing and verifies package visibility after publishing. Give consuming repositories access under the package's Actions settings and grant user access as needed.
 
 The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact without publishing. Enable that input to publish the validated artifact. Already published versions cannot be overwritten; issue a new version for each release. Prerelease versions and GitHub prereleases use the `next` distribution tag; other releases use `latest`.
 

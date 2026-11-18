@@ -45,6 +45,11 @@ jobs:
           registry-url: https://npm.pkg.github.com
           package-manager-cache: false
 
+      - name: Verify the repository and distribution target are private
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/check-package-privacy.mjs --allow-missing
+
       - name: Install dependencies
         run: npm ci
 
@@ -89,3 +94,9 @@ jobs:
           PACKAGE_FILE: ${{ steps.archive.outputs.filename }}
           DIST_TAG: ${{ steps.package.outputs.dist-tag }}
         run: npm publish "$RUNNER_TEMP/$PACKAGE_FILE" --tag "$DIST_TAG" --registry https://npm.pkg.github.com
+
+      - name: Verify the published package is private
+        if: github.event_name == 'release' || inputs.publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/check-package-privacy.mjs

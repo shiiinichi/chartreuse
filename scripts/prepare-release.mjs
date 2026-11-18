@@ -19,7 +19,7 @@ export function releaseMetadata(source, repository, tag, prerelease = false) {
     ...source,
     name: `@${owner}/chartreuse`,
     repository: { type: 'git', url: `git+https://github.com/${repository}.git` },
-    publishConfig: { registry },
+    publishConfig: { registry, access: 'restricted' },
   };
   for (const field of ['private', 'scripts', 'devDependencies', 'packageManager']) delete manifest[field];
 

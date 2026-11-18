@@ -18,6 +18,7 @@ test('release metadata scopes the package to its GitHub owner and preserves its 
   assert.equal(manifest.name, '@example-team/chartreuse');
   assert.equal(manifest.repository.url, 'git+https://github.com/Example-Team/component-library.git');
   assert.equal(manifest.publishConfig.registry, 'https://npm.pkg.github.com');
+  assert.equal(manifest.publishConfig.access, 'restricted');
   assert.deepEqual(manifest.exports, source.exports);
   assert.deepEqual(manifest.peerDependencies, source.peerDependencies);
   assert.deepEqual(manifest.dependencies, source.dependencies);
