@@ -107,7 +107,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'TextField', componentTokens: [], globalTokens: fieldGlobals,
-    notes: ['Consumption: styles.css .cr-field, .cr-input, .cr-input-wrap icon, placeholder, required marker, error helper, hover/invalid state, and shared input focus/typography rules.', 'This component defines no local CSS token. Heights, label/input/error type sizes, padding, and the icon inset are literal CSS; the native props control input behavior.', 'On coarse pointers the minimum control height and input font size change through literal media-query rules, not through a component token.'],
+    notes: ['Consumption: styles.css .cr-field, .cr-input, .cr-input-wrap icon, placeholder, required marker, error helper, hover/invalid state, and shared input focus/typography rules.', 'The size prop uses the same minimum heights as Button. CSS sets typography, padding, and the icon inset.', 'On coarse pointers a media query increases the default minimum height and input font size.'],
   },
   {
     component: 'TextArea', componentTokens: [], globalTokens: fieldGlobals,

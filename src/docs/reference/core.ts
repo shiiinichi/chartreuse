@@ -92,7 +92,7 @@ export const coreReferences: ComponentReference[] = [
   {
     name: 'TextField',
     slug: 'text-field',
-    summary: 'A labeled native input with optional hint, error, and leading icon.',
+    summary: 'A labeled native input with size presets and optional hint, error, and leading icon.',
     importCode: "import { Search } from 'lucide-react';\nimport { TextField } from '@chartreuse/ui';",
     usageCode: `<TextField label="Find a task" name="query" type="search" icon={Search}
   placeholder="Search workspace tasks" />`,
@@ -100,6 +100,7 @@ export const coreReferences: ComponentReference[] = [
     nativeProps: "Extends ComponentPropsWithRef<'input'> except the native size attribute. Native values, constraints, events, style, and ref target the input; className targets the field wrapper. Caller aria-describedby IDs merge with the generated hint or error ID.",
     props: [
       { name: 'label', type: 'string', required: true, description: 'The visible label associated with the input.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The control size. Use the same size on a Button to match the input height.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the input control, linked with aria-describedby; hidden while an error is present.' },
       { name: 'error', type: 'string', description: 'An error message linked to the input; also sets aria-invalid.' },
       { name: 'icon', type: 'IconSource', description: 'A decorative leading IconSource: Lucide icon, custom SVG component, or inline SVG JSX element.' },

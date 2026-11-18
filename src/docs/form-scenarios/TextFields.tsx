@@ -6,6 +6,29 @@ import { Grid, GridItem } from '../../system/Grid';
 import { ExampleGallery, FormActions, FormScenario, ScenarioForm, formCode } from './shared';
 import './text-field-examples.css';
 
+function TextFieldSizes() {
+  const sizes = ['sm', 'md', 'lg'] as const;
+  const rowStyle = { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 5.5rem', alignItems: 'end', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Text field sizes" description="Use the same size on a field and button to match their heights. The default is md."
+    code={formCode('Button, TextField', `export function TextFieldSizes() {
+  const sizes = ['sm', 'md', 'lg'] as const;
+  return sizes.map(size => (
+    <form key={size} onSubmit={event => event.preventDefault()} style={{
+      display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 5.5rem',
+      alignItems: 'end', gap: 'var(--cr-space-3)',
+    }}>
+      <TextField size={size} label={'Search tasks (' + size + ')'} name="query" type="search" icon={Search} />
+      <Button size={size} type="reset" variant="secondary">Clear</Button>
+    </form>
+  ));
+}`, '', "import { Search } from 'lucide-react';")}>
+    {sizes.map(size => <ScenarioForm key={size} onSubmit={event => event.preventDefault()} style={rowStyle}>
+      <TextField size={size} label={`Search tasks (${size})`} name="query" type="search" icon={Search} />
+      <Button size={size} type="reset" variant="secondary">Clear</Button>
+    </ScenarioForm>)}
+  </FormScenario>;
+}
+
 function ControlledTextField() {
   const [name, setName] = useState('');
   return <FormScenario title="Controlled input" description="Store the input value in React state and update it on change."
@@ -233,6 +256,7 @@ function FocusActions() {
 
 export function TextFieldScenarios() {
   return <ExampleGallery className="form-scenarios">
+    <TextFieldSizes />
     <ControlledTextField />
     <FormScenario title="Search input with an icon" description="Render a labeled native search input with a decorative leading icon."
       code={formCode('TextField', `<TextField label="Find a task" name="taskQuery" type="search"

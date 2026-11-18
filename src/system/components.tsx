@@ -6,11 +6,12 @@ import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 
 export type Tone = 'neutral' | 'success' | 'info' | 'warning' | 'danger';
+type ControlSize = 'sm' | 'md' | 'lg';
 const cx = (...names: (string | undefined | false)[]) => names.filter(Boolean).join(' ');
 
 export interface ButtonProps extends ComponentPropsWithRef<'button'> {
   variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  size?: ControlSize;
   icon?: IconSource;
   iconRight?: IconSource;
   loading?: boolean;
@@ -36,13 +37,19 @@ export function Badge({ children, tone = 'neutral', dot, icon, className, ...pro
   return <span {...props} className={cx('cr-badge', className)} data-tone={tone}>{icon ? renderIcon(icon, { size: 12 }) : dot && <span className="cr-status-dot" aria-hidden="true" />}{children}</span>;
 }
 
-export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'size'> { label: string; hint?: string; error?: string; icon?: IconSource }
-export function TextField({ label, hint, error, icon, className, id: suppliedId, required, ...props }: TextFieldProps) {
+export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'size'> {
+  label: string;
+  size?: ControlSize;
+  hint?: string;
+  error?: string;
+  icon?: IconSource;
+}
+export function TextField({ label, size = 'md', hint, error, icon, className, id: suppliedId, required, ...props }: TextFieldProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   return <div className={cx('cr-field', className)}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
-    <div className="cr-input-wrap">{renderIcon(icon, { size: 16 })}<input {...props} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
+    <div className="cr-input-wrap" data-size={size}>{renderIcon(icon, { size: 16 })}<input {...props} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
     {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
     {error && <small className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></small>}
   </div>;
