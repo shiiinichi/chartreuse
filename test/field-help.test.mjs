@@ -27,7 +27,7 @@ function renderField(field, props) {
 }
 
 test('single-line field sizes stay separate from native size attributes', () => {
-  const sizedFields = fields.filter(field => ['TextField', 'Select', 'NumberInput'].includes(field.name));
+  const sizedFields = fields.filter(field => ['TextField', 'Select', 'NumberInput', 'Autocomplete'].includes(field.name));
   for (const field of sizedFields) {
     for (const size of [undefined, 'sm', 'md', 'lg']) {
       const { markup, control } = renderField(field, { size });

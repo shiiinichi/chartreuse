@@ -17,6 +17,37 @@ const workspaces = [
 const projectsCode = `const projects = ${JSON.stringify(projects, null, 2)};`;
 const workspacesCode = `const workspaces = ${JSON.stringify(workspaces, null, 2)};`;
 
+function AutocompleteSizes() {
+  const sizes = ['sm', 'md', 'lg'] as const;
+  const rowStyle = { display: 'flex', flexWrap: 'wrap', alignItems: 'end', gap: 'var(--cr-space-3)' } as const;
+  const fieldStyle = { flex: '1 1 14rem', minInlineSize: 0 };
+  const buttonStyle = { flex: '0 0 5.5rem' };
+  return <FormScenario title="Autocomplete sizes" description="Each size matches its button. The default is md."
+    code={formCode('Autocomplete, Button', `${projectsCode}
+
+export function AutocompleteSizes() {
+  const sizes = ['sm', 'md', 'lg'] as const;
+  return sizes.map(size => (
+    <form key={size} onSubmit={event => event.preventDefault()} style={{
+      display: 'flex', flexWrap: 'wrap', alignItems: 'end', gap: 'var(--cr-space-3)',
+    }}>
+      <div style={{ flex: '1 1 14rem', minInlineSize: 0 }}>
+        <Autocomplete size={size} label={'Project (' + size + ')'} name="project"
+          options={projects} defaultValue="sample-app" />
+      </div>
+      <Button size={size} type="reset" variant="secondary" style={{ flex: '0 0 5.5rem' }}>Reset</Button>
+    </form>
+  ));
+}`)}>
+    {sizes.map(size => <ScenarioForm key={size} onSubmit={event => event.preventDefault()} style={rowStyle}>
+      <div style={fieldStyle}>
+        <Autocomplete size={size} label={`Project (${size})`} name="project" options={projects} defaultValue="sample-app" />
+      </div>
+      <Button size={size} type="reset" variant="secondary" style={buttonStyle}>Reset</Button>
+    </ScenarioForm>)}
+  </FormScenario>;
+}
+
 function ControlledProject() {
   const [project, setProject] = useState('');
   return <FormScenario title="Controlled project selection" description="Filter options, then select a value with the keyboard or pointer."
@@ -81,6 +112,7 @@ export function RequiredProjectExample() {
 
 export function AutocompleteScenarios() {
   return <ExampleGallery className="form-scenarios">
+    <AutocompleteSizes />
     <ControlledProject />
     <FormScenario title="Option descriptions and disabled states" description="Filter by label or description. Keep disabled options visible and unselectable."
       code={formCode('Autocomplete', `${workspacesCode}

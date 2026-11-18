@@ -1,6 +1,7 @@
 import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, KeyboardEvent } from 'react';
 import { AlertCircle, Check, ChevronDown, Search, X } from 'lucide-react';
+import type { ControlSize } from './control-size';
 import './autocomplete.css';
 
 export interface AutocompleteOption {
@@ -12,6 +13,7 @@ export interface AutocompleteOption {
 
 export interface AutocompleteProps extends Omit<ComponentPropsWithRef<'input'>, 'value' | 'defaultValue' | 'onChange' | 'size' | 'type'> {
   label: string;
+  size?: ControlSize;
   options: readonly AutocompleteOption[];
   value?: string;
   defaultValue?: string;
@@ -21,7 +23,7 @@ export interface AutocompleteProps extends Omit<ComponentPropsWithRef<'input'>, 
   emptyMessage?: string;
 }
 
-export function Autocomplete({ label, options, value, defaultValue = '', onValueChange, hint, error, emptyMessage = 'No matching options. Change the search text.', name, id: suppliedId, className, disabled, required, placeholder = 'Search options', ref, onFocus, onBlur, onKeyDown, ...props }: AutocompleteProps) {
+export function Autocomplete({ label, size = 'md', options, value, defaultValue = '', onValueChange, hint, error, emptyMessage = 'No matching options. Change the search text.', name, id: suppliedId, className, disabled, required, placeholder = 'Search options', ref, onFocus, onBlur, onKeyDown, ...props }: AutocompleteProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const listId = `${id}-options`;
@@ -163,7 +165,7 @@ export function Autocomplete({ label, options, value, defaultValue = '', onValue
 
   return <div ref={root} className={['cr-field', 'cr-autocomplete', className].filter(Boolean).join(' ')}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
-    <div className="cr-autocomplete-control"><Search size={16} aria-hidden="true" />
+    <div className="cr-autocomplete-control" data-cr-input-size={size}><Search size={16} aria-hidden="true" />
       <input {...props} ref={input} id={id} type="text" className="cr-input" role="combobox" aria-autocomplete="list" aria-expanded={expanded} aria-controls={listId} aria-activedescendant={expanded && activeOption && !activeOption.disabled ? `${listId}-${active}` : undefined} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} autoComplete="off" spellCheck={false} disabled={disabled} required={required} placeholder={placeholder} value={searching ? query : selected?.label || ''} onFocus={event => { onFocus?.(event); showOptions(); }} onClick={showOptions} onBlur={event => { onBlur?.(event); closeOptions(); }} onKeyDown={navigate} onChange={event => {
         const next = event.target.value;
         setQuery(next); setSearching(true); setOpen(true); setActive(-1);

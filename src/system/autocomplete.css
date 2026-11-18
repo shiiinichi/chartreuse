@@ -17,8 +17,9 @@
   .cr-autocomplete-option[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
   .cr-autocomplete-empty { padding: 18px 12px; color: var(--cr-color-muted); font-size: 11px; line-height: 1.7; }
   @media (pointer: coarse) {
-    .cr-autocomplete-control > .cr-input { min-block-size: 48px; padding-inline-end: 88px; }
-    .cr-autocomplete-actions > button { min-inline-size: 40px; min-block-size: 44px; }
+    .cr-autocomplete-control > .cr-input { padding-inline-end: 88px; }
+    .cr-autocomplete-actions { inset-block: 1px; }
+    .cr-autocomplete-actions > button { box-sizing: border-box; min-inline-size: 40px; min-block-size: 0; block-size: min(44px, 100%); }
     .cr-autocomplete-option { min-block-size: 44px; }
   }
   @media (forced-colors: active) {

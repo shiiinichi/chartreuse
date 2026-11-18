@@ -10,6 +10,7 @@ export const extendedReferences: ComponentReference[] = [
     usageCode: `<Autocomplete\n  label="Repository"\n  name="repository"\n  options={[\n    { value: 'sample-app', label: 'Sample app', description: 'Sample workspace' },\n    { value: 'component-library', label: 'Component library', description: 'Shared interface components' },\n  ]}\n  value={repository}\n  onValueChange={setRepository}\n  hint="Choose the workspace for this task."\n/>`,
     props: [
       { name: 'label', type: 'string', required: true, description: 'Visible label connected to the combobox input.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The control size. Use the same size on a Button to match the input height.' },
       { name: 'options', type: 'readonly AutocompleteOption[]', required: true, description: 'Options with value, label, optional description, and optional disabled state.' },
       { name: 'value', type: 'string', description: 'Selected option value for a controlled combobox.' },
       { name: 'defaultValue', type: 'string', defaultValue: '""', description: 'Initial selected option value when uncontrolled.' },

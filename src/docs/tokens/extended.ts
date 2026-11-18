@@ -185,7 +185,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     component: 'Autocomplete', componentTokens: [],
     globalTokens: globals(fieldGlobals, names('color-subtle color-border color-success-bg radius-lg shadow-lg')),
     runtimeVariables: ['left', 'top', 'bottom', 'width', 'max-height'].map(part => ({ name: `--cr-ac-${part}`, description: `Measured popup ${part}; recomputed for the current input, viewport, and available space.`, source: { file: systemFile('Autocomplete.tsx'), detail: 'The popup’s inline style serializes position; autocomplete.css .cr-autocomplete-popup consumes the same exact names.' }, notes: ['Positioning is owned by the combobox. Do not use its geometry variables as theme tokens.'] })),
-    notes: ['No component-owned styling tokens are declared. autocomplete.css supplies the listbox/actions; shared .cr-field, .cr-required, .cr-input, and .cr-field-error rules in styles.css supply labels, input states, and validation.', 'The popup uses the shared large radius/shadow and success background for the active option. Coarse-pointer heights and option font sizes remain literal CSS.'],
+    notes: ['No component-owned styling tokens are declared. autocomplete.css supplies the listbox/actions; shared .cr-field, .cr-required, .cr-input, and .cr-field-error rules in styles.css supply labels, input states, and validation.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared large radius and shadow. The active option uses the success background.'],
   },
   {
     component: 'MessageComposer', componentTokens: [],
