@@ -19,6 +19,8 @@ const initialEvents: AgentActivityEvent[] = [
   { id: 'checks', kind: 'command', title: 'Order summary tests running', status: 'running', command: 'npm test -- --run order-summary', output: 'Running order-summary tests…' },
 ];
 
+const listEvents = initialEvents.slice(-6);
+
 const recordedEvents: AgentActivityEvent[] = [
   { id: 'interrupted', kind: 'command', title: 'Workspace notes requested', status: 'interrupted', command: 'cat ./notes.md', description: 'The session ended before this step reported completion.', defaultOpen: true },
   { id: 'empty-output', kind: 'tool', title: 'Preferences saved', status: 'completed', output: '' },
@@ -69,6 +71,15 @@ export function ActivityTrailExample() {
   </div>;
 }`;
 
+const listCode = `import { AgentActivity, type AgentActivityEvent } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
+
+const events: AgentActivityEvent[] = ${JSON.stringify(listEvents, null, 2)};
+
+export function ActivityListExample() {
+  return <AgentActivity variant="list" events={events} />;
+}`;
+
 const recordedCode = `import { AgentActivity, type AgentActivityEvent } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
@@ -90,6 +101,9 @@ export function AgentActivityDemo() {
         <div className="agent-activity-demo-controls"><Button variant="secondary" size="sm" icon={Check} onClick={complete} disabled={current?.status === 'completed'}>Mark tests passed</Button><Button variant="secondary" size="sm" icon={TriangleAlert} onClick={fail} disabled={current?.status === 'failed'}>Mark tests failed</Button><Button variant="secondary" size="sm" icon={Plus} onClick={() => setEvents(previous => [...previous, { id: `update-${previous.length}`, kind: 'tool', title: 'Task update saved', status: 'completed', durationMs: 180, output: 'The local demonstration update was recorded.' }])}>Add activity</Button><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setEvents(initialEvents); setRevision(value => value + 1); }}>Reset</Button></div>
         <p className="agent-activity-demo-caption">These controls update local event state. They do not execute the displayed commands.</p>
       </div>
+    </Showcase>
+    <Showcase title="Activity list" description="Show every event directly with its status and expandable details." code={listCode}>
+      <div className="agent-activity-demo-panel"><AgentActivity variant="list" events={listEvents} /></div>
     </Showcase>
     <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. An event with no description or output shows its title in the details. The group header highlights on hover." code={recordedCode}>
       <div className="agent-activity-demo-panel"><AgentActivity label="Recorded session" events={recordedEvents} headerHighlight="hover" /></div>

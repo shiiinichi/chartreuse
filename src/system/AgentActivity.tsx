@@ -27,20 +27,24 @@ export interface AgentActivityEvent {
   defaultOpen?: boolean;
 }
 
-type AgentActivityBase = Omit<ComponentPropsWithRef<'details'>, 'children' | 'title' | 'open' | 'onToggle' | 'name'> & {
+type AgentActivityBase = {
   events: readonly AgentActivityEvent[];
-  /** Custom group label; defaults to Working, Waiting, Worked, or Activity. */
+  /** Custom group heading in the default variant or accessible name in the list variant. */
   label?: string;
-  /** Use 'hover' to highlight the group header on hover. Defaults to 'none'. */
+  /** Use 'hover' to highlight the default variant's header. Defaults to 'none'. */
   headerHighlight?: 'none' | 'hover';
-  /** Recent rows shown on mount. Newly arriving rows are not moved while reading. */
+  /** Recent rows shown on mount in the default variant. Newly arriving rows stay in place. */
   initialVisibleCount?: number;
   /** Enable for the active log only when its host does not announce progress. */
   announce?: boolean;
   emptyMessage?: string;
 };
 
-export type AgentActivityProps = AgentActivityBase & (
+type AgentActivityRootProps =
+  | (Omit<ComponentPropsWithRef<'details'>, 'children' | 'title' | 'open' | 'onToggle' | 'name'> & { variant?: 'default' })
+  | (Omit<ComponentPropsWithRef<'div'>, 'children' | 'title' | 'onToggle'> & { variant: 'list' });
+
+export type AgentActivityProps = AgentActivityBase & AgentActivityRootProps & (
   | { open: boolean; onOpenChange: (open: boolean) => void; defaultOpen?: never }
   | { open?: undefined; defaultOpen?: boolean; onOpenChange?: (open: boolean) => void }
 );
@@ -108,6 +112,12 @@ function ActivityRow({ event }: { event: AgentActivityEvent }) {
   </li>;
 }
 
+function ActivityList({ events, start }: { events: readonly AgentActivityEvent[]; start?: number }) {
+  return <ol className="cr-agent-activity-list" role="list" start={start}>
+    {events.map(event => <ActivityRow event={event} key={event.id} />)}
+  </ol>;
+}
+
 /** A chronological group of user-visible agent/tool events with on-demand details. */
 export function AgentActivity({ events, label, headerHighlight = 'none', initialVisibleCount = 6, announce = false, emptyMessage = 'No activity recorded.', open, defaultOpen = true, onOpenChange, className, ...props }: AgentActivityProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
@@ -115,19 +125,34 @@ export function AgentActivity({ events, label, headerHighlight = 'none', initial
     const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : 6;
     return Math.max(0, events.length - limit);
   });
-  const expanded = open ?? internalOpen;
-  const split = Math.min(historyBoundary, events.length);
-  const earlier = events.slice(0, split);
-  const recent = events.slice(split);
-  const statuses = events.map(statusOf);
+  const statuses = props.variant === 'list' && !announce ? [] : events.map(statusOf);
   const running = statuses.filter(status => status === 'running').length;
   const queued = statuses.filter(status => status === 'queued').length;
   const failed = statuses.filter(status => status === 'failed').length;
   const interrupted = statuses.filter(status => status === 'interrupted').length;
   const heading = label ?? (running ? 'Working' : queued ? 'Waiting' : events.length ? 'Worked' : 'Activity');
   const counts = [`${events.length} ${events.length === 1 ? 'activity' : 'activities'}`, running && `${running} running`, queued && `${queued} queued`, failed && `${failed} failed`, interrupted && `${interrupted} interrupted`].filter(Boolean).join(' · ');
+  const announcement = announce && <span className="cr-agent-activity-announcement" role="status" aria-atomic="true">{heading}. {counts}.</span>;
+  const rootClassName = ['cr-agent-activity', className].filter(Boolean).join(' ');
+  const empty = <p className="cr-agent-activity-empty">{emptyMessage}</p>;
+
+  if (props.variant === 'list') {
+    const { variant, ...listProps } = props;
+    return <>
+      <div role="group" aria-label={label ?? 'Agent activity'} {...listProps} className={rootClassName} data-variant={variant}>
+        {events.length > 0 ? <ActivityList events={events} /> : empty}
+      </div>
+      {announcement}
+    </>;
+  }
+
+  const { variant = 'default', ...detailsProps } = props;
+  const expanded = open ?? internalOpen;
+  const split = Math.min(historyBoundary, events.length);
+  const earlier = events.slice(0, split);
+  const recent = events.slice(split);
   return <>
-    <details {...props} className={['cr-agent-activity', className].filter(Boolean).join(' ')} open={expanded} data-header-highlight={headerHighlight} onToggle={event => {
+    <details {...detailsProps} className={rootClassName} open={expanded} data-variant={variant} data-header-highlight={headerHighlight} onToggle={event => {
       if (event.target !== event.currentTarget) return;
       const next = event.currentTarget.open;
       if (open !== undefined) {
@@ -151,11 +176,18 @@ export function AgentActivity({ events, label, headerHighlight = 'none', initial
         </span>
       </summary>
       <div className="cr-agent-activity-content">
-        {events.length === 0 && <p className="cr-agent-activity-empty">{emptyMessage}</p>}
-        {earlier.length > 0 && <details className="cr-agent-activity-earlier"><summary><ChevronRight size={13} aria-hidden="true" /><span>{earlier.length} earlier {earlier.length === 1 ? 'activity' : 'activities'}</span>{earlier.some(event => ['failed', 'interrupted'].includes(statusOf(event))) && <span className="cr-agent-activity-earlier-issue">Includes issues</span>}</summary><ol className="cr-agent-activity-list" role="list">{earlier.map(event => <ActivityRow event={event} key={event.id} />)}</ol></details>}
-        {recent.length > 0 && <ol className="cr-agent-activity-list" role="list" start={split + 1}>{recent.map(event => <ActivityRow event={event} key={event.id} />)}</ol>}
+        {events.length === 0 && empty}
+        {earlier.length > 0 && <details className="cr-agent-activity-earlier">
+          <summary>
+            <ChevronRight size={13} aria-hidden="true" />
+            <span>{earlier.length} earlier {earlier.length === 1 ? 'activity' : 'activities'}</span>
+            {earlier.some(event => ['failed', 'interrupted'].includes(statusOf(event))) && <span className="cr-agent-activity-earlier-issue">Includes issues</span>}
+          </summary>
+          <ActivityList events={earlier} />
+        </details>}
+        {recent.length > 0 && <ActivityList events={recent} start={split + 1} />}
       </div>
     </details>
-    {announce && <span className="cr-agent-activity-announcement" role="status" aria-atomic="true">{heading}. {counts}.</span>}
+    {announcement}
   </>;
 }

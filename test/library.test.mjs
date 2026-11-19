@@ -216,6 +216,26 @@ test('agent activity uses its title as detail text when description and output a
   }
 });
 
+test('agent activity list renders every event directly with its row disclosure', () => {
+  const events = Array.from({ length: 8 }, (_, index) => ({
+    id: `step-${index}`,
+    title: `Review step ${index}`,
+    status: index === 7 ? 'running' : 'completed',
+    durationMs: 360,
+  }));
+  const markup = renderToStaticMarkup(React.createElement(system.AgentActivity, {
+    variant: 'list', events, label: 'Review activity', initialVisibleCount: 2, defaultOpen: false,
+  }));
+
+  assert.match(markup, /^<div role="group" aria-label="Review activity" class="cr-agent-activity" data-variant="list"><ol /);
+  assert.doesNotMatch(markup, /cr-agent-activity-(summary|content|earlier)\b/);
+  const titles = [...markup.matchAll(/class="cr-agent-activity-title">([^<]+)</g)].map(([, title]) => title);
+  assert.deepEqual(titles, events.map(event => event.title));
+  assert.equal([...markup.matchAll(/<summary class="cr-agent-activity-row">/g)].length, events.length);
+  assert.match(markup, /360 ms/);
+  assert.match(markup, /data-status="running"/);
+});
+
 test('conversation defaults to safe agent Markdown and plain user text', () => {
   const markup = renderToStaticMarkup(React.createElement(system.Conversation, { messages: [
     { id: 'user', role: 'user', body: '**Keep this literal**' },
