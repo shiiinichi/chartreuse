@@ -50,6 +50,8 @@ export const componentSidebarIcons: Record<string, LucideIcon> = {
   IconButton: componentIcon('IconButton', <><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M8 12h8m-4-4v8" /></>),
   MarkdownRenderer: componentIcon('MarkdownRenderer', <><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M5 15V9l3 3 3-3v6m3-3 3 3 3-3m-3-3v6" /></>),
   MessageComposer: componentIcon('MessageComposer', <><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M6 7h10M6 11h6M2 15h20m-7 4 2-2 2 2m-2-2v4" /></>),
+  Navbar: componentIcon('Navbar', <><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h3v4H6Zm6 2h2m3 0h1" /></>),
+  NavbarItem: componentIcon('NavbarItem', <><rect x="4" y="7" width="16" height="10" rx="3" /><path d="M8 12h8" /></>),
   NumberInput: componentIcon('NumberInput', <><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M16 6v12M8 9l-2 2h2v4m-2 0h4m8-5 1-1 1 1m-2 4 1 1 1-1" /></>),
   PagePanel: componentIcon('PagePanel', <><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M2 8h20M2 17h20M6 12h5m3 0h4" /></>),
   PathSelector: componentIcon('PathSelector', <><rect x="2" y="6" width="20" height="12" rx="2" /><path d="m7 9-2 6m5-3h3m3-2 2 2-2 2" /></>),
@@ -72,4 +74,6 @@ export const componentSidebarIcons: Record<string, LucideIcon> = {
   Timeline: componentIcon('Timeline', <><circle cx="5" cy="4" r="2" /><circle cx="5" cy="12" r="2" /><circle cx="5" cy="20" r="2" /><path d="M5 6v4m0 4v4M11 4h10m-10 8h7m-7 8h10" /></>),
   ToastProvider: componentIcon('ToastProvider', <><path d="M4 20H2V4h20v6" /><rect x="6" y="12" width="16" height="8" rx="2" /><path d="m9 16 2 2 3-4m3 2h2" /></>),
   Tree: componentIcon('Tree', <><circle cx="5" cy="4" r="2" /><path d="M5 6v14h8M5 12h8" /><rect x="13" y="9" width="8" height="5" rx="1" /><rect x="13" y="17" width="8" height="5" rx="1" /></>),
+  WorkspaceContent: componentIcon('WorkspaceContent', <><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M2 8h20M8 8v13M12 12h6m-6 4h4" /></>),
+  WorkspaceLayout: componentIcon('WorkspaceLayout', <><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M9 4v16M5 8h1m-1 4h1m-1 4h1M13 8h5m-5 4h5m-5 4h5" /></>),
 };

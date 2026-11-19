@@ -15,6 +15,7 @@ import { FilePickerDemo } from './FilePickerDemo';
 import { PagePanelPage } from './PagePanelPage';
 import { CodeBlock, copyText, DownloadButton, SectionTitle, Showcase } from './shared';
 import { agentMonitorPatternCode, taskBoardPatternCode, workspacePatternCode } from './pattern-example-sources';
+import { PatternPreview } from './PatternPreview';
 import { CustomIconGuide } from './CustomIconGuide';
 import { CommonPropsPage, ComponentReferencePage } from './ComponentReferencePage';
 import { SegmentedControl } from '../system/SegmentedControl';
@@ -75,8 +76,23 @@ function PageContent({ id, navigate }: { id: PageId; navigate: Navigate }) {
   if (id === 'drawers') return <DrawerPage />;
   if (id === 'page-panels') return <PagePanelPage />;
   if (id === 'feedback') return <FeedbackPage />;
-  if (id === 'workspace' || id === 'task-board') return <><div className="pattern-note"><Sparkles size={16} aria-hidden="true" /><span>Create tasks, open task details, and change task status in this local example.</span><Badge>Interactive</Badge></div><Showcase title={id === 'workspace' ? 'Workspace task board' : 'Task board'} description="A task board composed from shared components, with state stored in this example." code={id === 'workspace' ? workspacePatternCode : taskBoardPatternCode}><TaskBoard workspace={id === 'workspace'} /></Showcase><div className="document-section"><SectionTitle title="Components used" description="The pattern uses TaskCard, Tabs, and TextField." /><div className="demo-row">{['cards', 'navigation', 'forms'].map(page => <Button key={page} variant="secondary" size="sm" iconRight={ArrowUpRight} onClick={() => navigate(page === 'cards' ? 'components/task-card' : page === 'navigation' ? 'components/tabs' : 'components/text-field')}>{page === 'cards' ? 'TaskCard' : page === 'navigation' ? 'Tabs' : 'TextField'}</Button>)}</div></div></>;
-  if (id === 'agent-monitor') return <><div className="pattern-note"><Network size={16} aria-hidden="true" /><span>Select an agent to view its task, token usage, and activity.</span><Badge>Interactive demo</Badge></div><Showcase title="Agent monitor" description="Agent selection with task context and sample activity." code={agentMonitorPatternCode}><AgentMonitor /></Showcase></>;
+  if (id === 'workspace' || id === 'task-board') return <>
+    <div className="pattern-note"><Sparkles size={16} aria-hidden="true" /><span>Create tasks, open task details, and change task status in this local example.</span><Badge>Interactive</Badge></div>
+    <Showcase title={id === 'workspace' ? 'Workspace task board' : 'Task board'} description="A task board composed from shared components, with state stored in this example." code={id === 'workspace' ? workspacePatternCode : taskBoardPatternCode}>
+      <PatternPreview page={id}><TaskBoard workspace={id === 'workspace'} /></PatternPreview>
+    </Showcase>
+    <div className="document-section"><SectionTitle title="Components used" />
+      <div className="demo-row">{([['navbar', 'Navbar'], ['workspace-layout', 'WorkspaceLayout'], ['workspace-content', 'WorkspaceContent'], ['task-card', 'TaskCard'], ['tabs', 'Tabs'], ['text-field', 'TextField']] as const).map(([component, label]) => (
+        <Button key={component} variant="secondary" size="sm" iconRight={ArrowUpRight} onClick={() => navigate(`components/${component}`)}>{label}</Button>
+      ))}</div>
+    </div>
+  </>;
+  if (id === 'agent-monitor') return <>
+    <div className="pattern-note"><Network size={16} aria-hidden="true" /><span>Select an agent to view its task, token usage, and activity.</span><Badge>Interactive demo</Badge></div>
+    <Showcase title="Agent monitor" description="Agent selection with task context and sample activity." code={agentMonitorPatternCode}>
+      <PatternPreview page={id}><AgentMonitor /></PatternPreview>
+    </Showcase>
+  </>;
   if (id === 'changelog') return <Changelog />;
   return <GettingStarted navigate={navigate} />;
 }

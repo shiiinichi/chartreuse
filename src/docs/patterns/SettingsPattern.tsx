@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Bell, GitBranch, Save, SlidersHorizontal, Undo2 } from 'lucide-react';
-import { Alert, Badge, Button, Fieldset, Flex, Form, FormLayout, Grid, GridItem, PagePanel, Select, Switch, Tabs, TextArea, TextField } from '../../system';
+import { Alert, Badge, Button, Fieldset, Flex, Form, FormLayout, Grid, GridItem, PagePanel, Select, Switch, Tabs, TextArea, TextField, WorkspaceContent } from '../../system';
 import './settings-pattern.css';
 
 type SettingsTab = 'general' | 'execution' | 'notifications';
@@ -139,7 +139,7 @@ export function SettingsPattern() {
     setAnnouncement('Draft restored from the last saved settings.');
   }
 
-  return <div className="settings-pattern-frame">
+  const panel = <div className="settings-pattern-frame">
     <PagePanel className="settings-pattern-panel" title="Workspace settings"
       description="Edit project metadata, run defaults, and notification preferences."
       headerActions={<Badge tone={dirty ? 'warning' : 'neutral'}>{dirty ? 'Unsaved draft' : 'Saved'}</Badge>}
@@ -266,4 +266,6 @@ export function SettingsPattern() {
       </Form>
     </PagePanel>
   </div>;
+
+  return <WorkspaceContent as="section" width="full" aria-label="Example workspace content">{panel}</WorkspaceContent>;
 }

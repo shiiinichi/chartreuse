@@ -129,9 +129,9 @@ The source manifest retains `@chartreuse/ui` and `private: true`. Release prepar
 
 ## Components
 
-The library exports 58 components:
+The library exports 62 components.
 
-ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, TextArea, TextField, Timeline, ToastProvider, Tooltip, and Tree. `useToast` is the notification hook.
+ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
 The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. Creating and moving a task updates the example board for the current page visit.
 
@@ -149,7 +149,11 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
+`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Use `variant="dark-green"` for the evergreen surface in either width mode. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. Omit `href` to include a control, status badge, or other React content.
+
 `Sidebar` provides floating and flush surfaces with header, body, and footer content. Set its height in the parent; the body scrolls independently while the header and footer stay visible. Use native links for navigation or selection buttons for an inspector. The examples demonstrate run history and workspace tasks.
+
+`WorkspaceLayout` arranges `Sidebar` and `WorkspaceContent` beneath `Navbar` and stacks them on narrow containers. `WorkspaceContent` renders the main area. Comfortable width centers the body within the shared cap. `width="full"` fills the available content area with the same responsive gutters. Use `as="section"` when embedding it inside a page that already has a main landmark.
 
 `Conversation` presents chronological messages with sender and time headers. User prompts appear in subdued cards. Agent messages use `MarkdownRenderer` by default. User and system messages use plain text unless the message specifies Markdown. The `activity` slot can hold `AgentActivity` between the message header and body. Combine it with `MessageComposer` for input and `Drawer` for a transcript panel. Message updates preserve focus and scroll position. Set `announce` to enable concise status announcements.
 

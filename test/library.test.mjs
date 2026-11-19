@@ -8,7 +8,7 @@ import * as system from '@chartreuse/ui';
 import { colors, tokens, spacing } from '@chartreuse/ui/tokens';
 
 test('the built package exposes the documented public components and notification hook', () => {
-  const expected = ['Button', 'IconButton', 'BrandMark', 'Badge', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Sidebar', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
+  const expected = ['Button', 'IconButton', 'BrandMark', 'Badge', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
   // BrandMark and ToastProvider are counted as reusable components, alongside the
   // component-specific APIs. Validate the public boundary, not private helpers.
   for (const name of expected) assert.equal(typeof system[name], 'function', `${name} is importable`);
@@ -25,8 +25,8 @@ async function readReferenceModule(filename) {
 }
 
 test('every public component has exactly one alphabetical page, API reference, and live preview', async () => {
-  const [core, extended, grid, content, tree, activity, segmented, slider, sidebar, conversation, swimlane, number, stats, timeline, steps, masonry, flex, form, tooltip, navigation] = await Promise.all(['core', 'extended', 'grid', 'content', 'tree', 'agent-activity', 'segmented-control', 'slider', 'sidebar', 'conversation', 'swimlane', 'number-input', 'stats', 'timeline', 'steps', 'masonry', 'flex', 'form', 'tooltip', 'navigation'].map(readReferenceModule));
-  const references = [...core.coreReferences, ...extended.extendedReferences, ...grid.gridReferences, ...content.contentReferences, ...tree.treeReferences, ...activity.agentActivityReferences, ...segmented.segmentedControlReferences, ...slider.sliderReferences, ...sidebar.sidebarReferences, ...conversation.conversationReferences, ...swimlane.swimlaneReferences, ...number.numberInputReferences, ...stats.statsReferences, ...timeline.timelineReferences, ...steps.stepsReferences, ...masonry.masonryReferences, ...flex.flexReferences, ...form.formReferences, ...tooltip.tooltipReferences];
+  const [core, extended, grid, content, tree, activity, segmented, slider, navbar, sidebar, workspaceContent, conversation, swimlane, number, stats, timeline, steps, masonry, flex, form, tooltip, navigation] = await Promise.all(['core', 'extended', 'grid', 'content', 'tree', 'agent-activity', 'segmented-control', 'slider', 'navbar', 'sidebar', 'workspace-content', 'conversation', 'swimlane', 'number-input', 'stats', 'timeline', 'steps', 'masonry', 'flex', 'form', 'tooltip', 'navigation'].map(readReferenceModule));
+  const references = [...core.coreReferences, ...extended.extendedReferences, ...grid.gridReferences, ...content.contentReferences, ...tree.treeReferences, ...activity.agentActivityReferences, ...segmented.segmentedControlReferences, ...slider.sliderReferences, ...navbar.navbarReferences, ...sidebar.sidebarReferences, ...workspaceContent.workspaceContentReferences, ...conversation.conversationReferences, ...swimlane.swimlaneReferences, ...number.numberInputReferences, ...stats.statsReferences, ...timeline.timelineReferences, ...steps.stepsReferences, ...masonry.masonryReferences, ...flex.flexReferences, ...form.formReferences, ...tooltip.tooltipReferences];
   const actual = Object.entries(system).filter(([name, value]) => /^[A-Z]/.test(name) && typeof value === 'function').map(([name]) => name).sort((a, b) => a.localeCompare(b));
   assert.deepEqual(references.map(reference => reference.name).sort((a, b) => a.localeCompare(b)), actual);
   assert.equal(new Set(references.map(reference => reference.slug)).size, actual.length, 'each reference has a unique route slug');
@@ -54,6 +54,56 @@ test('every public component has exactly one alphabetical page, API reference, a
   }
   visit(file);
   assert.deepEqual(examples.sort((a, b) => a.localeCompare(b)), actual, 'every public component has a targeted preview');
+});
+
+test('Navbar preserves native navigation and slot content across widths and variants', () => {
+  const h = React.createElement;
+  const props = {
+    brand: h('a', { href: '/' }, 'Workspace'),
+    actions: h('button', { type: 'button' }, 'Search'),
+    className: 'workspace-nav',
+  };
+  const items = [
+    h(system.Flex, { align: 'center', wrap: true, gap: 2 },
+      h(system.NavbarItem, { href: '/projects', 'aria-current': 'page', className: 'project-link' }, 'Projects'),
+      h(system.NavbarItem, { id: 'search-item' }, h('input', { type: 'search', 'aria-label': 'Find a project' })),
+    ),
+    h('a', { href: '/activity' }, 'Activity'),
+  ];
+  const comfortable = renderToStaticMarkup(h(system.Navbar, props, ...items));
+  const full = renderToStaticMarkup(h(system.Navbar, { ...props, width: 'full', 'aria-label': 'Workspace pages' }, ...items));
+  const fullDarkGreen = renderToStaticMarkup(h(system.Navbar, { ...props, width: 'full', variant: 'dark-green', 'aria-label': 'Workspace pages' }, ...items));
+
+  assert.match(comfortable, /^<nav aria-label="Primary" class="cr-navbar workspace-nav" data-width="comfortable" data-variant="default">/);
+  assert.match(comfortable, /<a href="\/">Workspace<\/a>.*<a href="\/activity">Activity<\/a>.*<button type="button">Search<\/button>/);
+  assert.match(comfortable, /class="cr-flex-layout"[^>]*><a href="\/projects" aria-current="page" class="cr-navbar-item project-link">Projects<\/a>/);
+  assert.match(comfortable, /<div id="search-item" class="cr-navbar-item"><input type="search" aria-label="Find a project"\/><\/div>/);
+  assert.equal(full, comfortable.replace('aria-label="Primary"', 'aria-label="Workspace pages"').replace('data-width="comfortable"', 'data-width="full"'));
+  assert.equal(fullDarkGreen, full.replace('data-variant="default"', 'data-variant="dark-green"'));
+});
+
+test('WorkspaceContent supports a main landmark and an embedded section', () => {
+  const h = React.createElement;
+  const props = { id: 'project-content', className: 'project-body', 'aria-labelledby': 'project-title' };
+  const children = h('h2', { id: 'project-title' }, 'Project overview');
+  const comfortable = renderToStaticMarkup(h(system.WorkspaceContent, props, children));
+  const full = renderToStaticMarkup(h(system.WorkspaceContent, { ...props, as: 'section', width: 'full' }, children));
+
+  assert.match(comfortable, /^<main id="project-content" aria-labelledby="project-title" class="cr-workspace-content project-body" data-width="comfortable">/);
+  assert.match(comfortable, /<div class="cr-workspace-content-inner"><h2 id="project-title">Project overview<\/h2><\/div><\/main>$/);
+  assert.equal(full, comfortable.replace('<main ', '<section ').replace('data-width="comfortable"', 'data-width="full"').replace('</main>', '</section>'));
+});
+
+test('WorkspaceLayout keeps Sidebar and WorkspaceContent as native siblings', () => {
+  const h = React.createElement;
+  const content = h(system.WorkspaceContent, { width: 'full' }, 'Project overview');
+  const sidebar = h(system.Sidebar, { 'aria-label': 'Projects' }, 'Project links');
+  const composed = renderToStaticMarkup(h(system.WorkspaceLayout, { id: 'workspace', className: 'project-layout', style: { gap: 12 } }, sidebar, content));
+  const contentOnly = renderToStaticMarkup(h(system.WorkspaceLayout, null, content));
+
+  assert.match(composed, /^<div id="workspace" style="gap:12px" class="cr-workspace-layout project-layout"><aside /);
+  assert.match(composed, /<\/aside><main class="cr-workspace-content" data-width="full">/);
+  assert.match(contentOnly, /^<div class="cr-workspace-layout"><main class="cr-workspace-content" data-width="full">/);
 });
 
 test('every exported primitive color and space exists in the distributed CSS', async () => {

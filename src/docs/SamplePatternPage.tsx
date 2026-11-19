@@ -1,6 +1,8 @@
 import { Showcase } from './shared';
 import { samplePatternDefinitions } from './pattern-definitions';
 import type { SamplePatternId } from './pattern-definitions';
+import { PatternPreview } from './PatternPreview';
+import { withPatternPreview } from './pattern-example-sources';
 import { SettingsPattern } from './patterns/SettingsPattern';
 import settingsSource from './patterns/SettingsPattern.tsx?raw';
 import settingsCss from './patterns/settings-pattern.css?raw';
@@ -14,26 +16,38 @@ import { MetricsPattern } from './patterns/MetricsPattern';
 import metricsSource from './patterns/MetricsPattern.tsx?raw';
 import metricsCss from './patterns/metrics-pattern.css?raw';
 
-/** Display the rendered module, changing only package import paths for consumers. */
-function patternSource(source: string, css: string) {
+/** Display the rendered pattern and its navigation with package imports for consumers. */
+function patternSource(source: string, css: string, page: SamplePatternId, componentName: string) {
   const module = source
     .replace(/^import\s+['"][^'"]+\.css['"];?\s*$/gm, '')
     .replace(/from\s+(['"])\.\.\/\.\.\/system(?:\/[^'"]+)?\1/g, "from '@chartreuse/ui'");
-  return `import '@chartreuse/ui/styles.css';\n${module.trim()}\n\n/* Pattern stylesheet:\n${css.replace(/\*\//g, '* /').trim()}\n*/`;
+  return withPatternPreview(`import '@chartreuse/ui/styles.css';
+${module.trim()}
+
+export function PatternExample() {
+  return (
+    <PatternPreview page="${page}">
+      <${componentName} />
+    </PatternPreview>
+  );
+}`, css);
 }
 
 const patterns = {
-  'settings-editor': { Component: SettingsPattern, code: patternSource(settingsSource, settingsCss) },
-  'record-search': { Component: RecordSearchPattern, code: patternSource(searchSource, searchCss) },
-  'record-detail': { Component: RecordDetailPattern, code: patternSource(detailSource, detailCss) },
-  'metrics-dashboard': { Component: MetricsPattern, code: patternSource(metricsSource, metricsCss) },
+  'settings-editor': { Component: SettingsPattern, componentName: 'SettingsPattern', source: settingsSource, css: settingsCss },
+  'record-search': { Component: RecordSearchPattern, componentName: 'RecordSearchPattern', source: searchSource, css: searchCss },
+  'record-detail': { Component: RecordDetailPattern, componentName: 'RecordDetailPattern', source: detailSource, css: detailCss },
+  'metrics-dashboard': { Component: MetricsPattern, componentName: 'MetricsPattern', source: metricsSource, css: metricsCss },
 };
 
 export function SamplePatternPage({ name }: { name: SamplePatternId }) {
   const definition = samplePatternDefinitions.find(pattern => pattern.id === name)!;
-  const { Component, code } = patterns[name];
+  const { Component, componentName, source, css } = patterns[name];
+  const code = patternSource(source, css, name, componentName);
   return <>
-    <Showcase title={`${definition.label} composition`} description="The preview runs the source shown in Code. Data and mutations remain in component state." code={code}><Component /></Showcase>
+    <Showcase title={`${definition.label} composition`} description="The preview runs the source shown in Code. Data and mutations remain in component state." code={code}>
+      <PatternPreview page={name}><Component /></PatternPreview>
+    </Showcase>
     <section className="component-notes"><h2>Implementation notes</h2><ul>{definition.notes.map(note => <li key={note}>{note}</li>)}</ul></section>
   </>;
 }

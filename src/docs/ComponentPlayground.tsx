@@ -10,6 +10,7 @@ import { FlexDemo } from './FlexDemo';
 import { FormDemo, FormLayoutDemo } from './FormDemo';
 import { TooltipDemo } from './TooltipDemo';
 import { ModalsPage } from './ModalsPage';
+import { NavbarDemo, NavbarItemDemo } from './NavbarDemo';
 import { NumberInputDemo } from './NumberInputDemo';
 import { PathSelectorDemo } from './PathSelectorDemo';
 import { SegmentedControlDemo } from './SegmentedControlDemo';
@@ -18,6 +19,7 @@ import { SliderDemo } from './SliderDemo';
 import { StatDemo, StatGroupDemo } from './StatDemo';
 import { SwimlaneDemo } from './SwimlaneDemo';
 import { TreeDemo } from './TreeDemo';
+import { WorkspaceContentDemo } from './WorkspaceContentDemo';
 import { Showcase } from './shared';
 import { componentReferences } from './reference';
 
@@ -35,10 +37,10 @@ const demosWithOwnShowcases = new Set([
   'CalloutBanner', 'Card', 'Checkbox', 'Conversation', 'Dialog', 'Disclosure',
   'Divider', 'Drawer', 'EmptyState', 'Fieldset', 'FilePicker', 'Flex', 'Form', 'FormLayout', 'Grid', 'GridItem', 'GridSpacer',
   'Masonry', 'MasonryItem', 'MasonrySpacer',
-  'IconButton', 'MarkdownRenderer', 'MessageComposer', 'NumberInput', 'PagePanel',
+  'IconButton', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
   'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'Switch', 'Tabs', 'TaskCard',
-  'Steps', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree',
+  'Steps', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
 ]);
 
 /** Scenario galleries own their frames; new simple playgrounds get a shared fallback. */
@@ -101,6 +103,8 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'MasonryItem': return <MasonryItemDemo />;
     case 'MasonrySpacer': return <MasonrySpacerDemo />;
     case 'MarkdownRenderer': return <Suspense fallback={<p className="muted">Loading Markdown example…</p>}><MarkdownPage /></Suspense>;
+    case 'Navbar': return <NavbarDemo />;
+    case 'NavbarItem': return <NavbarItemDemo />;
     case 'NumberInput': return <NumberInputDemo />;
     case 'PathSelector': return <PathSelectorDemo />;
     case 'SegmentedControl': return <SegmentedControlDemo />;
@@ -113,6 +117,8 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Timeline': return <Suspense fallback={<p className="muted">Loading examples…</p>}><TimelineDemo /></Suspense>;
     case 'Tree': return <TreeDemo />;
     case 'Tooltip': return <TooltipDemo />;
+    case 'WorkspaceContent': return <WorkspaceContentDemo />;
+    case 'WorkspaceLayout': return <WorkspaceContentDemo page="workspace-layout" />;
     default: throw new Error(`No live example registered for ${name}.`);
   }
 }

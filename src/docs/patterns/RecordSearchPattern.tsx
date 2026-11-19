@@ -1,7 +1,7 @@
 import { useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { RotateCcw, Search } from 'lucide-react';
-import { Badge, Button, Card, Dialog, EmptyState, Flex, Form, Grid, GridItem, Select, TextField } from '../../system';
+import { Badge, Button, Card, Dialog, EmptyState, Flex, Form, Grid, GridItem, Select, TextField, WorkspaceContent } from '../../system';
 import './record-search-pattern.css';
 
 type RecordStatus = 'Active' | 'In review' | 'Archived';
@@ -77,7 +77,7 @@ export function RecordSearchPattern() {
     queryRef.current?.focus();
   }
 
-  return <div className="record-search-pattern">
+  const directory = <div className="record-search-pattern">
     <Flex align="start" justify="space-between" wrap gap={3}>
       <div className="record-search-pattern-introduction">
         <h2 className="record-search-pattern-heading" id={`${id}-title`}>Record directory</h2>
@@ -182,4 +182,6 @@ export function RecordSearchPattern() {
       </div>}
     </Dialog>
   </div>;
+
+  return <WorkspaceContent as="section" width="full" aria-label="Example workspace content">{directory}</WorkspaceContent>;
 }

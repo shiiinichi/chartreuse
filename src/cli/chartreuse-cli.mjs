@@ -10,11 +10,12 @@ const guides = [
   {
     id: 'layout',
     label: 'Layout',
-    description: 'Choose among Grid, Flex, and Masonry based on the content you are arranging.',
+    description: 'Choose layout components based on the content you are arranging.',
     notes: [
       'Use Grid for grouped inputs. Keep each complete labeled field in one GridItem and use the Grid gap for consistent spacing.',
       'Use Flex for rows, stacks, and action groups that align along one axis.',
       'Use Masonry for cards or other content with uneven heights. Keep the items in logical reading order.',
+      'Use WorkspaceLayout beneath Navbar to arrange Sidebar and WorkspaceContent. Choose Comfortable or Full on WorkspaceContent.',
     ],
   },
   ...samplePatternDefinitions,

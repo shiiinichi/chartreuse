@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { CheckCircle2, RefreshCw, RotateCcw, XCircle } from 'lucide-react';
-import { Badge, Button, Card, Flex, Grid, GridItem, Masonry, Progress, Select, Stat, StatGroup, Timeline } from '../../system';
+import { Badge, Button, Card, Flex, Grid, GridItem, Masonry, Progress, Select, Stat, StatGroup, Timeline, WorkspaceContent } from '../../system';
 import type { TimelineItem } from '../../system';
 import './metrics-pattern.css';
 
@@ -185,7 +185,7 @@ export function MetricsPattern() {
     setNotice('Example reset to the starting snapshot.');
   };
 
-  return <section className="metrics-pattern" aria-labelledby={`${id}-title`}>
+  const dashboard = <section className="metrics-pattern" aria-labelledby={`${id}-title`}>
     <Flex align="center" justify="space-between" wrap gap={4} className="metrics-pattern-header">
       <div className="metrics-pattern-heading">
         <p className="metrics-pattern-eyebrow">Execution overview</p>
@@ -283,4 +283,6 @@ export function MetricsPattern() {
       </Masonry>
     </div>
   </section>;
+
+  return <WorkspaceContent as="section" width="full" aria-label="Example workspace content">{dashboard}</WorkspaceContent>;
 }

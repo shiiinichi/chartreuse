@@ -1,3 +1,16 @@
+import patternPreviewSource from './PatternPreview.tsx?raw';
+import patternPreviewStyles from './pattern-preview.css?raw';
+
+const previewCode = patternPreviewSource
+  .replace("import './pattern-preview.css';\n", '')
+  .replace("from '../system'", "from '@chartreuse/ui'")
+  .trim();
+
+export function withPatternPreview(code: string, patternStyles = '') {
+  const stylesheet = [patternPreviewStyles, patternStyles].filter(Boolean).join('\n\n').replaceAll('*/', '* /').trim();
+  return `${code}\n\n${previewCode}\n\n/* Add these rules to your stylesheet.\n${stylesheet}\n*/`;
+}
+
 const boardRecipe = `const columns = [
   { status: 'todo', title: 'To do', tone: 'neutral' },
   { status: 'in-progress', title: 'In progress', tone: 'info' },
@@ -32,39 +45,55 @@ function TaskBoardPattern({ cards, onOpen, onCreate }: {
   </>;
 }`;
 
-export const taskBoardPatternCode = `import { useState } from 'react';
-import { Swimlane, TaskCard, Button, TextField } from '@chartreuse/ui';
+export const taskBoardPatternCode = withPatternPreview(`import { useState } from 'react';
+import { Swimlane, TaskCard, Button, TextField, WorkspaceContent } from '@chartreuse/ui';
 import type { TaskCardProps } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
 
 ${boardRecipe}
 
-// Supply your task data and the create/open handlers from the application.`;
+// Supply your task data and the create/open handlers from the application.
+export function TaskBoardExample(props: Parameters<typeof TaskBoardPattern>[0]) {
+  return (
+    <PatternPreview page="task-board">
+      <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
+        <TaskBoardPattern {...props} />
+      </WorkspaceContent>
+    </PatternPreview>
+  );
+}`);
 
-export const workspacePatternCode = `import { useState } from 'react';
-import { Card, Tabs, Alert, Swimlane, TaskCard, Button, TextField } from '@chartreuse/ui';
+export const workspacePatternCode = withPatternPreview(`import { useState } from 'react';
+import { Tabs, Alert, Swimlane, TaskCard, Button, TextField, WorkspaceContent } from '@chartreuse/ui';
 import type { TaskCardProps } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
 
 ${boardRecipe}
 
-function WorkspacePattern(props: Parameters<typeof TaskBoardPattern>[0]) {
-  return <Card style={{ padding: 24 }}>
-    <h2>Development workspace</h2>
-    <p>Track task status, validation results, and workspace activity.</p>
-    <Tabs label="Workspace views" items={[
-      { value: 'board', label: 'Board', count: props.cards.length,
-        content: <TaskBoardPattern {...props} /> },
-      { value: 'validation', label: 'Validation',
-        content: <Alert tone="success" title="Validation passed">
-          All checks passed in this example.
-        </Alert> },
-      { value: 'activity', label: 'Activity',
-        content: <p>Task updates and validation events for this workspace.</p> },
-    ]} />
-  </Card>;
-}`;
+export function WorkspacePattern(props: Parameters<typeof TaskBoardPattern>[0]) {
+  return (
+    <PatternPreview page="workspace">
+      <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
+        <h2>Development workspace</h2>
+        <p>Track task status, validation results, and workspace activity.</p>
+        <Tabs label="Workspace views" items={[
+          { value: 'board', label: 'Board', count: props.cards.length,
+            content: <TaskBoardPattern {...props} /> },
+          { value: 'validation', label: 'Validation',
+            content: <Alert tone="success" title="Validation passed">
+              All checks passed in this example.
+            </Alert> },
+          { value: 'activity', label: 'Activity',
+            content: <p>Task updates and validation events for this workspace.</p> },
+        ]} />
+      </WorkspaceContent>
+    </PatternPreview>
+  );
+}`);
 
-export const agentMonitorPatternCode = `import { useState } from 'react';
-import { Grid, GridItem, Card, AgentCard, Progress, Tabs } from '@chartreuse/ui';
+export const agentMonitorPatternCode = withPatternPreview(`import { useState } from 'react';
+import { Grid, GridItem, Card, AgentCard, Progress, Tabs, WorkspaceContent } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
 
 const agents = [
   { name: 'Research agent', task: 'Inspecting the component API and dependencies.',
@@ -75,22 +104,28 @@ const agents = [
     status: 'waiting', tokens: '0', elapsed: '00:00' },
 ] as const;
 
-function AgentMonitorPattern() {
+export function AgentMonitorPattern() {
   const [selected, setSelected] = useState<string>(agents[0].name);
   const active = agents.find(agent => agent.name === selected)!;
-  return <Grid columns={{ base: 1, md: 2 }} gap={6}>
-    <GridItem span={1}>
-      {agents.map(agent => <AgentCard key={agent.name} {...agent}
-        selected={selected === agent.name} onClick={() => setSelected(agent.name)} />)}
-    </GridItem>
-    <GridItem span={1}><Card style={{ padding: 24 }}>
-      <h3>{active.name}</h3><p>{active.task}</p>
-      <p>{active.elapsed} · {active.tokens} tokens</p>
-      <Progress value={active.status === 'waiting' ? 0 : 24} label="Context window" />
-      <Tabs label="Agent details" items={[
-        { value: 'activity', label: 'Activity', content: <p>Execution events for the selected agent.</p> },
-        { value: 'context', label: 'Context', content: <p>Implement the workspace task board using shared design tokens and components. Verify filtering, task dialogs, and status updates.</p> },
-      ]} />
-    </Card></GridItem>
-  </Grid>;
-}`;
+  return (
+    <PatternPreview page="agent-monitor">
+      <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
+        <Grid columns={{ base: 1, md: 2 }} gap={6}>
+          <GridItem span={1}>
+            {agents.map(agent => <AgentCard key={agent.name} {...agent}
+              selected={selected === agent.name} onClick={() => setSelected(agent.name)} />)}
+          </GridItem>
+          <GridItem span={1}><Card style={{ padding: 24 }}>
+            <h3>{active.name}</h3><p>{active.task}</p>
+            <p>{active.elapsed} · {active.tokens} tokens</p>
+            <Progress value={active.status === 'waiting' ? 0 : 24} label="Context window" />
+            <Tabs label="Agent details" items={[
+              { value: 'activity', label: 'Activity', content: <p>Execution events for the selected agent.</p> },
+              { value: 'context', label: 'Context', content: <p>Implement the workspace task board using shared design tokens and components. Verify filtering, task dialogs, and status updates.</p> },
+            ]} />
+          </Card></GridItem>
+        </Grid>
+      </WorkspaceContent>
+    </PatternPreview>
+  );
+}`);

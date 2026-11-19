@@ -1,0 +1,33 @@
+@layer docs-ui {
+  .workspace-content-demo { display: grid; min-inline-size: 0; gap: var(--cr-space-4); }
+
+  .workspace-content-demo-shell {
+    --cr-layout-gutter: var(--cr-space-4);
+    container: workspace-content-demo / inline-size;
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-lg);
+    background: var(--cr-color-canvas);
+  }
+
+  .workspace-content-demo-shell > .cr-navbar { border-start-start-radius: inherit; border-start-end-radius: inherit; }
+  .workspace-content-demo-shell .cr-brand-mark { inline-size: 24px; block-size: 24px; }
+  .workspace-content-demo-layout > .cr-sidebar { border-end-start-radius: var(--cr-radius-lg); }
+
+  .workspace-content-demo-links { display: grid; gap: var(--cr-space-1); padding: var(--cr-space-2); }
+  .workspace-content-demo-links > a { padding: var(--cr-space-2); border-radius: var(--cr-radius-md); text-decoration: none; }
+  .workspace-content-demo-links > a:hover { background: var(--cr-color-subtle); }
+
+  .workspace-content-demo-body { --cr-layout-content-max: 34rem; padding-block: var(--cr-space-5); }
+  .workspace-content-demo-body h4 { margin-block-end: var(--cr-space-4); font-size: 1.125rem; font-weight: 550; }
+  .workspace-content-demo-stat { padding: var(--cr-space-4); }
+
+  @container workspace-content-demo (inline-size < 38rem) {
+    .workspace-content-demo-layout > .cr-sidebar {
+      inline-size: 100%;
+      block-size: auto;
+      border-inline-end: 0;
+      border-block-end: 1px solid var(--cr-color-border);
+      border-end-start-radius: 0;
+    }
+  }
+}

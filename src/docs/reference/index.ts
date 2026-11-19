@@ -4,7 +4,9 @@ import { treeReferences } from './tree';
 import { agentActivityReferences } from './agent-activity';
 import { segmentedControlReferences } from './segmented-control';
 import { sliderReferences } from './slider';
+import { navbarReferences } from './navbar';
 import { sidebarReferences } from './sidebar';
+import { workspaceContentReferences } from './workspace-content';
 import { conversationReferences } from './conversation';
 import { swimlaneReferences } from './swimlane';
 import { numberInputReferences } from './number-input';
@@ -18,6 +20,6 @@ import { flexReferences } from './flex';
 import { formReferences } from './form';
 import { tooltipReferences } from './tooltip';
 
-export const componentReferences = [...coreReferences, ...extendedReferences, ...gridReferences, ...masonryReferences, ...flexReferences, ...formReferences, ...tooltipReferences, ...contentReferences, ...treeReferences, ...agentActivityReferences, ...segmentedControlReferences, ...sliderReferences, ...sidebarReferences, ...conversationReferences, ...swimlaneReferences, ...numberInputReferences, ...statsReferences, ...timelineReferences, ...stepsReferences].sort((a, b) => a.name.localeCompare(b.name));
+export const componentReferences = [...coreReferences, ...extendedReferences, ...gridReferences, ...masonryReferences, ...flexReferences, ...formReferences, ...tooltipReferences, ...contentReferences, ...treeReferences, ...agentActivityReferences, ...segmentedControlReferences, ...sliderReferences, ...navbarReferences, ...sidebarReferences, ...workspaceContentReferences, ...conversationReferences, ...swimlaneReferences, ...numberInputReferences, ...statsReferences, ...timelineReferences, ...stepsReferences].sort((a, b) => a.name.localeCompare(b.name));
 export { createComponentNavigation } from './navigation';
 export type { ComponentReference, PropDefinition } from './types';

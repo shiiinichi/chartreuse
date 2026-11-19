@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import { Check, FileText, History, MessageSquare, RotateCcw } from 'lucide-react';
 import {
   ActivityItem, Avatar, Badge, Breadcrumbs, Button, Card, Checkbox,
-  Conversation, MarkdownRenderer, MessageComposer, Progress, Select, Tabs,
+  Conversation, MarkdownRenderer, MessageComposer, Progress, Select, Tabs, WorkspaceContent,
 } from '../../system';
 import type { ConversationMessage, Tone } from '../../system';
 import './record-detail-pattern.css';
@@ -158,7 +158,7 @@ export function RecordDetailPattern() {
     nextId.current = 1;
   };
 
-  return <section className="record-detail-pattern" aria-labelledby={`${id}-title`}>
+  const review = <section className="record-detail-pattern" aria-labelledby={`${id}-title`}>
     <div className="record-detail-pattern-navigation">
       <Breadcrumbs items={[{ label: 'Configuration reviews' }, { label: 'CFG-184' }]} />
       <Button variant="ghost" size="sm" icon={RotateCcw} onClick={reset}>Reset record</Button>
@@ -278,4 +278,6 @@ export function RecordDetailPattern() {
       </aside>
     </div>
   </section>;
+
+  return <WorkspaceContent as="section" width="full" aria-label="Example workspace content">{review}</WorkspaceContent>;
 }

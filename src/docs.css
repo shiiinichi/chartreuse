@@ -462,7 +462,6 @@
   .release-card li svg { position: relative; inset-block-start: 3px; color: var(--cr-color-success); }
   .pattern-note { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; border: 1px dashed var(--cr-color-border); background: var(--cr-color-surface); border-radius: 7px; padding: 12px 15px; font-size: 11px; color: var(--cr-color-muted); margin-block-end: 24px; }
   .pattern-note > .cr-badge { margin-inline-start: auto; font-size: 8px; }
-  .pattern-workspace { border: 1px solid var(--cr-color-border); border-radius: 10px; background: var(--cr-color-surface); padding: 25px; }
   .pattern-workspace-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-block-end: 22px; }
   .pattern-workspace-top > div { min-inline-size: 0; }
   .pattern-workspace-top h2 { font-size: 24px; font-weight: 500; letter-spacing: -.8px; margin-block-start: 13px; }
@@ -478,7 +477,6 @@
   .board-lane-empty-action { flex: 1 1 auto; flex-direction: column; align-self: stretch; gap: 12px; inline-size: 100%; min-block-size: 180px; padding: 20px; border: 0; font-size: 13px; }
   .board-lane-empty-action > svg { inline-size: 24px; block-size: 24px; }
   .board-lane-empty-action:focus-visible { outline-offset: -4px; }
-  .agent-pattern { padding: 28px; border: 1px solid var(--cr-color-border); border-radius: 10px; background: var(--cr-color-surface); }
   .agent-pattern-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-block-end: 27px; border-block-end: 1px solid var(--cr-color-border); }
   .agent-pattern-heading h2 { font-size: 25px; font-weight: 500; letter-spacing: -.9px; margin-block-start: 12px; }
   .agent-pattern-grid { display: grid; grid-template-columns: minmax(260px, .9fr) minmax(0, 1fr); gap: 28px; margin-block-start: 28px; }
@@ -560,7 +558,6 @@
     .color-card-info { padding-inline: 10px; }
     .color-card-info strong { font-size: 11px; }
     .spacing-row { grid-template-columns: 60px 40px 1fr 160px; gap: 10px; }
-    .agent-pattern { padding: 20px; }
     .agent-pattern-grid { gap: 20px; grid-template-columns: minmax(230px, .85fr) minmax(0, 1fr); }
     .agent-inspector { padding: 16px; }
   }
@@ -752,13 +749,11 @@
     .release-version .cr-brand-mark { inline-size: 38px; block-size: 38px; }
     .release-card > div:last-child { padding: 25px; }
     .release-card h2 { font-size: 23px; }
-    .pattern-workspace { padding: 17px; }
     .pattern-workspace-top { flex-wrap: wrap; gap: 15px; }
     .pattern-workspace-top h2 { font-size: 22px; }
     .pattern-note { font-size: 10px; align-items: flex-start; }
     .pattern-note > span:not(.cr-badge) { flex: 1; }
     .pattern-note > .cr-badge { margin-inline-start: 26px; }
-    .agent-pattern { padding: 19px; }
     .agent-pattern-heading { flex-wrap: wrap; gap: 15px; }
     .agent-pattern-heading h2 { font-size: 23px; }
     .agent-tree-children { display: flex; }

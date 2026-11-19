@@ -3,8 +3,43 @@ import type { ComponentReference } from './types';
 export const sidebarReferences: ComponentReference[] = [{
   name: 'Sidebar', slug: 'sidebar',
   summary: 'An aside with persistent header and footer slots and an independently scrolling body.',
-  importCode: "import { Sidebar } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-  usageCode: `<div className="sidebar-slot">\n  <Sidebar\n    variant="floating"\n    width={280}\n    maxWidth={320}\n    aria-label="Run history"\n    contentLabel="Recorded runs"\n    header={<RunHistoryHeader />}\n    footer={<LoadMoreRuns />}\n  >\n    <RunSelectionButtons />\n  </Sidebar>\n</div>\n\n// A flush surface uses the same slots.\n<Sidebar variant="flush" header={<WorkspaceFilters />}\n  footer={<WorkspaceFooter />} aria-label="Workspace">\n  <nav aria-label="Workspace pages">\n    <a href="/tasks">All tasks</a>\n    <a href="/projects">Projects</a>\n  </nav>\n</Sidebar>\n\n// The host allocates a definite height; Sidebar fills it.`,
+  importCode: "import type { ReactNode } from 'react';\nimport { Flex, Navbar, NavbarItem, Sidebar, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  usageCode: `type SidebarContent = { header?: ReactNode; footer?: ReactNode; children: ReactNode };
+
+export function FloatingRunHistory({ header, footer, children }: SidebarContent) {
+  return (
+    <div style={{ blockSize: 620 }}>
+      <Sidebar variant="floating" width={280} maxWidth={320}
+        aria-label="Run history" contentLabel="Recorded runs"
+        header={header} footer={footer}>
+        {children}
+      </Sidebar>
+    </div>
+  );
+}
+
+// A full-width navbar spans the flush sidebar and its adjacent content.
+export function WorkspaceExample({ header, footer, children }: SidebarContent) {
+  return (
+    <div>
+      <Navbar width="full" variant="dark-green" aria-label="Application pages">
+        <Flex align="center" wrap gap={2}>
+          <NavbarItem href="/workspace" aria-current="page">Workspace</NavbarItem>
+          <NavbarItem href="/agents">Agent monitor</NavbarItem>
+        </Flex>
+      </Navbar>
+      <WorkspaceLayout>
+        <Sidebar variant="flush" header={header} footer={footer} aria-label="Workspace tools" style={{ blockSize: 620 }}>
+          <nav aria-label="Workspace pages">
+            <a href="/tasks">All tasks</a>
+            <a href="/projects">Projects</a>
+          </nav>
+        </Sidebar>
+        <WorkspaceContent aria-label="Workspace content">{children}</WorkspaceContent>
+      </WorkspaceLayout>
+    </div>
+  );
+}`,
   nativeElement: 'aside with header, scrollable body, and footer',
   nativeProps: 'Inherits native aside attributes, events, className, style, and ref. Native props/ref target the aside. Navigation links and selection semantics are supplied by the consumer.',
   props: [
@@ -24,6 +59,7 @@ export const sidebarReferences: ComponentReference[] = [{
     'Header and footer remain outside the scroll region. The body has min-block-size: 0, a stable scrollbar gutter, and keyboard focus styling.',
     'Width is capped by the preferred width, optional maxWidth, and available parent width. Invalid or nonpositive width values fall back to 280px; an invalid maxWidth is ignored.',
     'Sidebar supplies an aside layout. Use nav and native links for routes, or labeled buttons for item selection.',
+    'Place Sidebar and WorkspaceContent inside WorkspaceLayout, with Navbar above them for application-wide links.',
     'Label multiple sidebars with aria-label or aria-labelledby, and use contentLabel to identify each scrolling region.',
     'Floating and flush variants share the same slots and content behavior. The host supplies child styling and application state.',
     'Sidebar does not fix itself to the viewport, collapse automatically, or open modally. Use Drawer when the panel needs controlled visibility or modal behavior.',

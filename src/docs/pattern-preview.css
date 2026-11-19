@@ -1,0 +1,21 @@
+@layer docs-content {
+  .pattern-preview {
+    min-inline-size: 0;
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-lg);
+    background: var(--cr-color-surface);
+  }
+
+  .pattern-preview > .cr-navbar {
+    --cr-layout-gutter: var(--cr-space-3);
+    border-start-start-radius: calc(var(--cr-radius-lg) - 1px);
+    border-start-end-radius: calc(var(--cr-radius-lg) - 1px);
+  }
+
+  .pattern-preview > .cr-workspace-layout {
+    --cr-layout-gutter: 0px;
+    padding: clamp(var(--cr-space-4), 3%, var(--cr-space-6));
+  }
+
+  .pattern-preview[data-page='settings-editor'] > .cr-workspace-layout { padding: 0; }
+}

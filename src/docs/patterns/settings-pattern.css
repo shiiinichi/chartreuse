@@ -1,5 +1,10 @@
 @layer docs-content {
   .settings-pattern-frame { container: settings-pattern / inline-size; block-size: 48rem; min-inline-size: 0; min-block-size: 0; }
+  .pattern-preview .settings-pattern-panel { border: 0; border-radius: 0; background: transparent; }
+  .pattern-preview .settings-pattern-panel > .cr-page-panel-footer {
+    border-end-start-radius: calc(var(--cr-radius-lg) - 1px);
+    border-end-end-radius: calc(var(--cr-radius-lg) - 1px);
+  }
   .settings-pattern-panel > .cr-page-panel-body { padding: 0; scroll-padding-block: 5rem 1.5rem; }
   .settings-pattern-panel > .cr-page-panel-header { flex-wrap: wrap; }
   .settings-pattern-panel .cr-page-panel-header-actions { margin-inline-start: auto; }

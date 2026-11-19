@@ -66,6 +66,8 @@ export function LayoutPage() {
       <li><h3><a href="#components/grid">Grid for input groups</a></h3><p>Align complete labeled inputs in rows or stacks. GridItem controls spans; GridSpacer reserves an empty grid cell.</p></li>
       <li><h3><a href="#components/masonry">Masonry for uneven content</a></h3><p>Pack cards and examples into the shortest available columns. MasonryItem controls spans; MasonrySpacer reserves an invisible space.</p></li>
       <li><h3><a href="#components/flex">Flex for rows and stacks</a></h3><p>Arrange and align content along one axis, with optional wrapping.</p></li>
+      <li><h3><a href="#components/workspace-content">WorkspaceContent for the main area</a></h3><p>Place it beside Sidebar and below Navbar, then choose Comfortable or Full width.</p></li>
+      <li><h3><a href="#components/workspace-layout">WorkspaceLayout for the sidebar and main area</a></h3><p>Arrange Sidebar and WorkspaceContent beneath Navbar with responsive wrapping.</p></li>
     </ul></section>
 
     <div className="document-section"><Showcase title="Compare container width modes" description="Preview either container mode independently of the documentation width preference." code={containerRecipe} language="css">

@@ -1,0 +1,99 @@
+@layer cr-components {
+  .cr-navbar {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    border-block-end: 1px solid var(--cr-color-border);
+    background: var(--cr-color-surface);
+    color: var(--cr-color-text);
+    font: 450 .8125rem/1.4 var(--cr-font-sans);
+    overflow-wrap: anywhere;
+  }
+
+  .cr-navbar[data-variant='dark-green'] {
+    color-scheme: dark;
+    background: var(--cr-evergreen);
+  }
+
+  .cr-navbar-inner {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cr-space-1) var(--cr-space-6);
+    inline-size: 100%;
+    max-inline-size: var(--cr-layout-content-max);
+    margin-inline: auto;
+    padding-block: var(--cr-space-2);
+    padding-inline: min(var(--cr-layout-gutter), 10%);
+  }
+
+  .cr-navbar[data-width='full'] > .cr-navbar-inner { max-inline-size: none; }
+
+  .cr-navbar-brand, .cr-navbar-links, .cr-navbar-actions {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  .cr-navbar-links, .cr-navbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cr-space-1);
+  }
+
+  .cr-navbar-links { flex: 1 1 auto; }
+  /* Inline-size containment gives Flex an intrinsic width of zero. */
+  .cr-navbar-links:has(> .cr-flex) { flex-basis: min(100%, 12rem); }
+  .cr-navbar-actions { gap: var(--cr-space-2); }
+  .cr-navbar-links:empty + .cr-navbar-actions { margin-inline-start: auto; }
+  :is(.cr-navbar-brand, .cr-navbar-links, .cr-navbar-actions):empty { display: none; }
+
+  .cr-navbar :where(a), .cr-navbar-item:where(a) { text-decoration: none; }
+
+  .cr-navbar-item,
+  :is(.cr-navbar-brand, .cr-navbar-links, .cr-navbar-actions) > :where(a) {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cr-space-2);
+    min-block-size: 2.5rem;
+    max-inline-size: 100%;
+  }
+
+  .cr-navbar-item { min-inline-size: 0; }
+
+  .cr-navbar-item:where(a),
+  :is(.cr-navbar-brand, .cr-navbar-links, .cr-navbar-actions) > :where(a) {
+    border-radius: var(--cr-radius-md);
+    color: var(--cr-color-text);
+  }
+
+  .cr-navbar-brand > :where(a) { font-size: .9375rem; font-weight: 650; }
+  .cr-navbar-actions > :where(a) { font-weight: 550; }
+  :is(.cr-navbar-brand, .cr-navbar-actions) > :where(a):hover { color: var(--cr-color-muted); }
+
+  :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a)) {
+    padding-inline: var(--cr-space-3);
+    color: var(--cr-color-muted);
+    font-weight: 550;
+  }
+
+  :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a)):hover {
+    color: var(--cr-color-text);
+    background: var(--cr-color-subtle);
+  }
+
+  :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] {
+    background: var(--cr-color-primary);
+    color: var(--cr-color-on-primary);
+    font-weight: 650;
+  }
+
+  .cr-navbar-item:where(a):focus-visible,
+  .cr-navbar :where(a):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
+
+  @media (forced-colors: active) {
+    :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] { border: 1px solid LinkText; }
+  }
+}
