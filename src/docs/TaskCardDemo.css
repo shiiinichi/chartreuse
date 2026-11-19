@@ -1,6 +1,6 @@
 @layer docs-ui {
   .task-card-demo { display: flex; flex-direction: column; gap: 26px; min-inline-size: 0; }
-  .task-card-demo-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 22px; }
+  .task-card-demo-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; }
   .task-card-demo-width { gap: 10px; max-inline-size: 280px; }
   .task-card-demo-preview { inline-size: min(100%, var(--task-card-demo-width, 340px)); }
   .task-card-demo-actions { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 12px; }

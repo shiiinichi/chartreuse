@@ -479,7 +479,7 @@ export function ToastExample() {
   const [open, setOpen] = useState(false);
   return <>
     <TaskCard taskId="TASK-024" title="Implement the workspace task board"
-      status="done" completed={4} total={4}
+      status="done" completed={4} total={4} hideMetadataLabels
       dependencies={{ completed: 1, total: 1 }}
       relatedCount={1} commentCount={2} attachmentCount={1}
       assignees={['Alex Morgan', 'Sam Lee']} onClick={() => setOpen(true)} />
@@ -506,11 +506,12 @@ export function ToastExample() {
       { name: 'relatedCount', type: 'number', description: 'Related card count. Omitted values hide the stat; an explicit zero remains visible.' },
       { name: 'commentCount', type: 'number', description: 'Comment count. Omitted values hide the stat; an explicit zero remains visible.' },
       { name: 'attachmentCount', type: 'number', description: 'Attached file count. Omitted values hide the stat; an explicit zero remains visible.' },
+      { name: 'hideMetadataLabels', type: 'boolean', defaultValue: 'false', description: 'Displays each count beside its icon. Hover over or focus an indicator to read its full label.' },
       { name: 'assignees', type: 'string[]', defaultValue: '[]', description: 'Names displayed with AvatarGroup.' },
       { name: 'onClick', type: '() => void', description: 'Handles the main card action. The native content button is disabled when this callback is omitted.' },
     ],
     notes: [
-      'Metadata is one wrapping list. Each icon and short label stay together, avoiding a tall row for every count.', 'Dependencies use a network icon and related cards use a link icon. Checklist progress stays visible as a ratio with its checklist label.', 'Omit optional metadata props to hide their counts. Explicit zero counts remain visible; the checklist is hidden when total is zero.', 'Counts are normalized to nonnegative whole numbers, with completed counts capped at their totals.', 'Screen readers receive the full meanings of abbreviated stats, which also describe the main card button.', 'Status and priority are display props; the component does not update task data itself.', 'Provide onClick for an actionable card. Keep other interactive controls outside its main button.'],
+      'Metadata is one wrapping list. Each icon and short label stay together, avoiding a tall row for every count.', 'Dependencies use a network icon and related cards use a link icon. Checklist progress uses a ratio.', 'Omit optional metadata props to hide their counts. Explicit zero values are included. The checklist appears when its total is greater than zero.', 'Counts are normalized to nonnegative whole numbers, with completed counts capped at their totals.', 'Screen readers receive the full meanings of abbreviated stats, which also describe the main card button.', 'Status and priority are display props; the component does not update task data itself.', 'Provide onClick for an actionable card. Keep other interactive controls outside its main button.'],
   },
   {
     name: 'AgentCard',

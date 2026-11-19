@@ -5,6 +5,7 @@ import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip 
 import type { ControlSize } from './control-size';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
+import { Tooltip } from './Tooltip';
 
 export type Tone = 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 const cx = (...names: (string | undefined | false)[]) => names.filter(Boolean).join(' ');
@@ -352,37 +353,82 @@ export function Breadcrumbs({ items, underline = 'always' }: BreadcrumbsProps) {
 }
 
 export interface TaskCardDependencies { completed: number; total: number }
-export interface TaskCardProps { taskId: string; title: string; description?: string; status?: 'todo' | 'in-progress' | 'review' | 'done'; priority?: 'low' | 'medium' | 'high'; branch?: string; completed?: number; total?: number; dependencies?: TaskCardDependencies; relatedCount?: number; commentCount?: number; attachmentCount?: number; assignees?: string[]; onClick?: () => void }
-export function TaskCard({ taskId, title, description, status = 'todo', priority = 'medium', branch, completed = 0, total = 0, dependencies, relatedCount, commentCount, attachmentCount, assignees = [], onClick }: TaskCardProps) {
+export interface TaskCardProps {
+  taskId: string;
+  title: string;
+  description?: string;
+  status?: 'todo' | 'in-progress' | 'review' | 'done';
+  priority?: 'low' | 'medium' | 'high';
+  branch?: string;
+  completed?: number;
+  total?: number;
+  dependencies?: TaskCardDependencies;
+  relatedCount?: number;
+  commentCount?: number;
+  attachmentCount?: number;
+  hideMetadataLabels?: boolean;
+  assignees?: string[];
+  onClick?: () => void;
+}
+export function TaskCard({ taskId, title, description, status = 'todo', priority = 'medium', branch, completed = 0, total = 0, dependencies, relatedCount, commentCount, attachmentCount, hideMetadataLabels = false, assignees = [], onClick }: TaskCardProps) {
   const metadataId = useId();
   const tone: Tone = status === 'done' ? 'success' : status === 'review' ? 'warning' : status === 'in-progress' ? 'info' : 'neutral';
   const labels = { todo: 'To do', 'in-progress': 'In progress', review: 'In review', done: 'Done' };
   const count = (value: number) => Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
   const checklistTotal = count(total);
   const checklistCompleted = Math.min(count(completed), checklistTotal);
-  const metadata: { key: string; icon: ReactNode; label: string; description: string }[] = [];
-  if (checklistTotal > 0) metadata.push({ key: 'checklist', icon: <CheckCheck size={14} aria-hidden="true" />, label: `${checklistCompleted}/${checklistTotal} checklist`, description: `${checklistCompleted} of ${checklistTotal} checklist ${checklistTotal === 1 ? 'item' : 'items'} complete.` });
+  const metadata: { key: string; icon: ReactNode; value: number | string; label: string; description: string }[] = [];
+  if (checklistTotal > 0) metadata.push({
+    key: 'checklist',
+    icon: <CheckCheck size={14} aria-hidden="true" />,
+    value: `${checklistCompleted}/${checklistTotal}`,
+    label: 'checklist',
+    description: `${checklistCompleted} of ${checklistTotal} checklist ${checklistTotal === 1 ? 'item' : 'items'} complete.`,
+  });
   if (dependencies) {
     const dependencyTotal = count(dependencies.total);
     const dependencyCompleted = Math.min(count(dependencies.completed), dependencyTotal);
-    metadata.push({ key: 'dependencies', icon: <Network size={13} aria-hidden="true" />, label: dependencyTotal ? `${dependencyCompleted}/${dependencyTotal} deps` : '0 deps', description: dependencyTotal ? `${dependencyCompleted} of ${dependencyTotal} ${dependencyTotal === 1 ? 'dependency' : 'dependencies'} complete.` : '0 dependencies.' });
+    metadata.push({
+      key: 'dependencies',
+      icon: <Network size={13} aria-hidden="true" />,
+      value: dependencyTotal ? `${dependencyCompleted}/${dependencyTotal}` : 0,
+      label: 'deps',
+      description: dependencyTotal ? `${dependencyCompleted} of ${dependencyTotal} ${dependencyTotal === 1 ? 'dependency' : 'dependencies'} complete.` : '0 dependencies.',
+    });
   }
   if (relatedCount !== undefined) {
     const related = count(relatedCount);
-    metadata.push({ key: 'related', icon: <TaskRelatedIcon size={13} aria-hidden="true" />, label: `${related} related`, description: `${related} related ${related === 1 ? 'card' : 'cards'}.` });
+    metadata.push({ key: 'related', icon: <TaskRelatedIcon size={13} aria-hidden="true" />, value: related, label: 'related', description: `${related} related ${related === 1 ? 'card' : 'cards'}.` });
   }
   if (commentCount !== undefined) {
     const comments = count(commentCount);
-    metadata.push({ key: 'comments', icon: <TaskCommentsIcon size={13} aria-hidden="true" />, label: `${comments} ${comments === 1 ? 'comment' : 'comments'}`, description: `${comments} ${comments === 1 ? 'comment' : 'comments'}.` });
+    const label = comments === 1 ? 'comment' : 'comments';
+    metadata.push({ key: 'comments', icon: <TaskCommentsIcon size={13} aria-hidden="true" />, value: comments, label, description: `${comments} ${label}.` });
   }
   if (attachmentCount !== undefined) {
     const attachments = count(attachmentCount);
-    metadata.push({ key: 'attachments', icon: <TaskAttachmentsIcon size={13} aria-hidden="true" />, label: `${attachments} ${attachments === 1 ? 'file' : 'files'}`, description: `${attachments} attached ${attachments === 1 ? 'file' : 'files'}.` });
+    const label = attachments === 1 ? 'file' : 'files';
+    metadata.push({ key: 'attachments', icon: <TaskAttachmentsIcon size={13} aria-hidden="true" />, value: attachments, label, description: `${attachments} attached ${label}.` });
   }
-  return <Card className="cr-task-card" data-has-metadata={metadata.length > 0 || undefined}><button type="button" className="cr-task-button" onClick={onClick} disabled={!onClick} aria-describedby={metadata.length ? metadataId : undefined}>
-    <span className="cr-task-meta"><span className="cr-mono">{taskId}</span><Badge tone={priority === 'high' ? 'warning' : 'neutral'}>{priority === 'high' && <TriangleAlert size={11} aria-hidden="true" />}{priority.charAt(0).toUpperCase() + priority.slice(1)}</Badge></span>
-    <h3>{title}</h3>{description && <p>{description}</p>}{branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
-  </button>{metadata.length > 0 && <ul className="cr-task-metadata" id={metadataId}>{metadata.map(item => <li key={item.key} data-info={item.key} title={item.description}>{item.icon}<span aria-hidden="true">{item.label}</span><span className="cr-sr-only">{item.description}</span></li>)}</ul>}<div className="cr-task-footer"><Badge tone={tone} dot>{labels[status]}</Badge>{assignees.length > 0 && <AvatarGroup names={assignees} />}</div></Card>;
+  return <Card className="cr-task-card" data-has-metadata={metadata.length > 0 || undefined}>
+    <button type="button" className="cr-task-button" onClick={onClick} disabled={!onClick} aria-describedby={metadata.length ? metadataId : undefined}>
+      <span className="cr-task-meta"><span className="cr-mono">{taskId}</span><Badge tone={priority === 'high' ? 'warning' : 'neutral'}>{priority === 'high' && <TriangleAlert size={11} aria-hidden="true" />}{priority.charAt(0).toUpperCase() + priority.slice(1)}</Badge></span>
+      <h3>{title}</h3>{description && <p>{description}</p>}{branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
+    </button>
+    {metadata.length > 0 && <ul className="cr-task-metadata" id={metadataId}>
+      {metadata.map(item => {
+        const label = `${item.value} ${item.label}`;
+        const content = <>{item.icon}<span aria-hidden="true">{hideMetadataLabels ? item.value : label}</span></>;
+        return <li key={item.key} data-info={item.key} title={hideMetadataLabels ? undefined : item.description}>
+          {hideMetadataLabels ? <Tooltip content={label} aria-label={item.description}>
+            <span className="cr-task-metadata-trigger" tabIndex={0}>{content}</span>
+          </Tooltip> : content}
+          <span className="cr-sr-only">{item.description}</span>
+        </li>;
+      })}
+    </ul>}
+    <div className="cr-task-footer"><Badge tone={tone} dot>{labels[status]}</Badge>{assignees.length > 0 && <AvatarGroup names={assignees} />}</div>
+  </Card>;
 }
 
 export interface AgentCardProps { name: string; task: string; status?: 'running' | 'succeeded' | 'waiting' | 'idle'; tokens?: string; elapsed?: string; selected?: boolean; onClick?: () => void }

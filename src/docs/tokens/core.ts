@@ -180,7 +180,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'TaskCard', componentTokens: [],
     globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-focus', 'color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
-    notes: ['Consumption: styles.css task button/identifier/metadata/footer rules plus owned Card, Badge, and AvatarGroup helpers. Task status selects neutral/info/warning/success Badge palettes; priority can select warning. Danger is not a TaskCard status.', 'Badge tone aliases are assigned on the nested Badge elements and are documented on Badge, not as TaskCard-root styling hooks.', 'Metadata/type sizes, card/footer padding, gaps, and avatar palettes remain literal CSS. Counts and progress ratios are content props; no task-specific custom properties are defined.'],
+    notes: ['Consumption: styles.css task button/identifier/metadata/footer rules plus owned Card, Badge, and AvatarGroup helpers. Task status selects neutral/info/warning/success Badge palettes; priority can select warning. Danger is not a TaskCard status.', 'Badge tone aliases are assigned on the nested Badge elements and are documented on Badge, not as TaskCard-root styling hooks.', 'Metadata/type sizes, card/footer padding, gaps, and avatar palettes remain literal CSS. Counts and progress ratios are content props; no task-specific custom properties are defined.', 'With hideMetadataLabels, Tooltip supplies the floating labels.'],
   },
   {
     component: 'AgentCard', componentTokens: [],
