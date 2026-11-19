@@ -298,6 +298,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'value', type: 'string', description: 'The controlled selected key. Pair with onValueChange.' },
       { name: 'onValueChange', type: '(value: string) => void', description: 'Called when a tab is selected by click or keyboard.' },
       { name: 'variant', type: "'line' | 'pill'", defaultValue: "'line'", description: 'The tab list’s visual treatment.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Each tab button uses the same minimum height as a Button of the corresponding size.' },
       { name: 'className', type: 'string', description: 'Additional classes on the root div.' },
     ],
     notes: ['Arrow keys, Home, and End move focus and selection. Horizontal direction respects RTL.', 'Inactive panels remain mounted and are hidden with the native hidden attribute.', 'Use tabs for views within a page; use links for page navigation.'],

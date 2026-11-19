@@ -139,7 +139,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Tabs', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'color-muted', 'color-primary', 'color-subtle', 'radius-md', 'color-surface', 'shadow-sm'),
-    notes: ['Consumption: styles.css shared tab-button typography/focus, .cr-tab-list, counts, active underline, and the optional pill-variant selectors.', 'The pill variant adds the radius/surface/shadow tokens. Default line-tab gaps, padding, font sizes, underline thickness, and panel spacing are literal CSS.'],
+    notes: ['Consumption: styles.css shared tab-button typography/focus, .cr-tab-list, counts, active underline, and the optional pill-variant selectors.', 'The pill variant adds radius, surface, and shadow tokens. Tab buttons share Button minimum heights and font sizes. Gaps, padding, underline thickness, and panel spacing are set in CSS.'],
   },
   {
     component: 'Card', componentTokens: [], globalTokens: globals('color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-text'),

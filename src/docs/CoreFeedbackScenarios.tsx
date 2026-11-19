@@ -165,10 +165,41 @@ const tabItemsCode = snippet(
   '  { value: "settings", label: "Settings", content: <p>Configure workspace access and notifications.</p> },',
   '];',
 );
+const tabSizes = ['sm', 'md', 'lg'] as const;
 
 export function TabsScenarios() {
+  const [size, setSize] = useState<(typeof tabSizes)[number]>('md');
   const [active, setActive] = useState('activity');
   return <ExampleGallery className="core-scenarios">
+    <Showcase title="Tab sizes" description="Match Button heights in both variants." code={snippet(
+      'import { useState } from "react";',
+      'import { Button, Tabs } from "@chartreuse/ui";',
+      '',
+      tabItemsCode,
+      'const sizes = ["sm", "md", "lg"] as const;',
+      '',
+      'function TabSizes() {',
+      '  const [size, setSize] = useState<(typeof sizes)[number]>("md");',
+      '  return <>',
+      '    <div role="group" aria-label="Tab size">',
+      '      {sizes.map(option => <Button key={option} size={option}',
+      '        variant={size === option ? "primary" : "secondary"}',
+      '        aria-pressed={size === option} onClick={() => setSize(option)}>{option}</Button>)}',
+      '    </div>',
+      '    <Tabs label="Line tabs" size={size} items={items} />',
+      '    <Tabs label="Pill tabs" variant="pill" size={size} items={items} />',
+      '  </>;',
+      '}',
+    )}>
+      <div className="core-example-stack">
+        <div className="core-example-row" role="group" aria-label="Tab size">
+          {tabSizes.map(option => <Button key={option} size={option} variant={size === option ? 'primary' : 'secondary'}
+            aria-pressed={size === option} onClick={() => setSize(option)}>{option}</Button>)}
+        </div>
+        <Tabs label="Line tabs" size={size} items={tabItems} />
+        <Tabs label="Pill tabs" variant="pill" size={size} items={tabItems} />
+      </div>
+    </Showcase>
     <Showcase title="Uncontrolled tab selection" description="defaultValue selects the initial panel. Tabs manages subsequent selection internally." code={snippet(
       'import { Tabs } from "@chartreuse/ui";',
       '',

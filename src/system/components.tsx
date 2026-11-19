@@ -132,13 +132,22 @@ export function Progress({ value, label, max = 100, showLabel = false, valueText
 }
 
 export interface TabItem { value: string; label: string; icon?: IconSource; count?: number; content: ReactNode }
-export interface TabsProps { items: TabItem[]; label: string; defaultValue?: string; value?: string; onValueChange?: (value: string) => void; variant?: 'line' | 'pill'; className?: string }
-export function Tabs({ items, label, defaultValue, value, onValueChange, variant = 'line', className }: TabsProps) {
+export interface TabsProps {
+  items: TabItem[];
+  label: string;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  variant?: 'line' | 'pill';
+  size?: ControlSize;
+  className?: string;
+}
+export function Tabs({ items, label, defaultValue, value, onValueChange, variant = 'line', size = 'md', className }: TabsProps) {
   const id = useId();
   const [internal, setInternal] = useState(defaultValue || items[0]?.value);
   const selected = value ?? internal;
   const change = (next: string) => { if (value === undefined) setInternal(next); onValueChange?.(next); };
-  return <div className={cx('cr-tabs', className)} data-variant={variant}><div role="tablist" aria-label={label} className="cr-tab-list">
+  return <div className={cx('cr-tabs', className)} data-variant={variant} data-size={size}><div role="tablist" aria-label={label} className="cr-tab-list">
     {items.map(({ value: key, label: text, icon, count }, index) => <button key={key} type="button" role="tab" id={`${id}-tab-${key}`} aria-selected={selected === key} tabIndex={selected === key ? 0 : -1} onClick={() => change(key)} onKeyDown={event => {
       const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
       const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : event.key === 'ArrowRight' ? (index + (rtl ? -1 : 1) + items.length) % items.length : event.key === 'ArrowLeft' ? (index + (rtl ? 1 : -1) + items.length) % items.length : null;

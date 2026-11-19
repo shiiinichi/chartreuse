@@ -109,6 +109,16 @@ test('the public React 19 entry can render a composed workspace without a browse
   assert.ok(markup.includes('<summary'), 'the disclosure uses a native summary trigger');
 });
 
+test('Tabs applies the requested size in both variants and defaults to md', () => {
+  const items = [{ value: 'board', label: 'Board', content: 'Tasks' }];
+  for (const variant of ['line', 'pill']) {
+    for (const size of [undefined, 'sm', 'md', 'lg']) {
+      const markup = renderToStaticMarkup(React.createElement(system.Tabs, { label: 'Workspace views', items, variant, size }));
+      assert.match(markup, new RegExp(`class="cr-tabs"[^>]* data-size="${size ?? 'md'}"`));
+    }
+  }
+});
+
 test('a button inside a form is non-submitting unless explicitly requested', () => {
   const markup = renderToStaticMarkup(React.createElement('form', null,
     React.createElement(system.Button, null, 'Cancel'),
