@@ -21,6 +21,19 @@ npm run preview     # Preview the production documentation on port 4173
 
 The documentation is emitted to `dist/site`; the ES module library, declarations, and shared CSS are emitted to `dist/lib`.
 
+## Publish the documentation
+
+Under **Build and deployment**, set **Source** to **GitHub Actions**. [Pages settings](https://github.com/shiiinichi/chartreuse/settings/pages)
+
+Once Pages is enabled, pushes to `main` deploy the site. To deploy manually, run **Deploy documentation to GitHub Pages** from the Actions tab with `main` selected. [Pages workflow](.github/workflows/deploy-pages.yml)
+
+The default site URL is [shiiinichi.github.io/chartreuse](https://shiiinichi.github.io/chartreuse/). To preview the build locally at the same path, run the following commands and open [the Pages preview](http://127.0.0.1:4173/chartreuse/).
+
+```sh
+npm run build:site -- --base /chartreuse/
+npm run preview -- --base /chartreuse/
+```
+
 ## Use the library
 
 Chartreuse is distributed as [@shiiinichi/chartreuse](https://github.com/users/shiiinichi/packages/npm/package/chartreuse) on GitHub Packages.
