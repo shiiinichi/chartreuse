@@ -397,6 +397,7 @@ export interface TaskCardProps {
 }
 export function TaskCard({ taskId, title, description, status = 'todo', priority = 'medium', branch, completed = 0, total = 0, dependencies, relatedCount, commentCount, attachmentCount, hideMetadataLabels = false, assignees = [], onClick }: TaskCardProps) {
   const metadataId = useId();
+  const actionButton = useRef<HTMLButtonElement>(null);
   const tone: Tone = status === 'done' ? 'success' : status === 'review' ? 'warning' : status === 'in-progress' ? 'info' : 'neutral';
   const labels = { todo: 'To do', 'in-progress': 'In progress', review: 'In review', done: 'Done' };
   const count = (value: number) => Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
@@ -435,8 +436,15 @@ export function TaskCard({ taskId, title, description, status = 'todo', priority
     const label = attachments === 1 ? 'file' : 'files';
     metadata.push({ key: 'attachments', icon: <TaskAttachmentsIcon size={13} aria-hidden="true" />, value: attachments, label, description: `${attachments} attached ${label}.` });
   }
-  return <Card className="cr-task-card" data-has-metadata={metadata.length > 0 || undefined}>
-    <button type="button" className="cr-task-button" onClick={onClick} disabled={!onClick} aria-describedby={metadata.length ? metadataId : undefined}>
+  return <Card className="cr-task-card" data-has-metadata={metadata.length > 0 || undefined} onClick={onClick && (event => {
+    const target = event.target as Node;
+    const button = actionButton.current;
+    // Clicks from portaled tooltip bubbles also reach this React handler.
+    if (event.defaultPrevented || !button?.matches(':enabled') || !event.currentTarget.contains(target) || button.contains(target)) return;
+    button.focus({ preventScroll: true });
+    onClick();
+  })}>
+    <button ref={actionButton} type="button" className="cr-task-button" onClick={onClick} disabled={!onClick} aria-describedby={metadata.length ? metadataId : undefined}>
       <span className="cr-task-meta"><span className="cr-mono">{taskId}</span><Badge tone={priority === 'high' ? 'warning' : 'neutral'}>{priority === 'high' && <TriangleAlert size={11} aria-hidden="true" />}{priority.charAt(0).toUpperCase() + priority.slice(1)}</Badge></span>
       <h3>{title}</h3>{description && <p>{description}</p>}{branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
     </button>

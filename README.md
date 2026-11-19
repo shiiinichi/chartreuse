@@ -367,7 +367,7 @@ Earlier links such as `#buttons`, `#cards`, `#modals`, `#drawers`, `#fieldsets`,
 
 ## Foundations
 
-The base palette is evergreen `#024340`, chartreuse `#DBFFAD`, paper `#FFFDF6`, canvas `#F2F0E6`, muted `#52645F`, and border `#CECCC3`. Supporting colors define agent, status, and feedback styles. Semantic tokens map these primitives to component roles in light and dark themes.
+The base palette is evergreen `#024340`, light evergreen `#096864`, chartreuse `#DBFFAD`, paper `#FFFDF6`, canvas `#F2F0E6`, muted `#52645F`, and border `#CECCC3`. Supporting colors define agent, status, and feedback styles. Semantic tokens map these primitives to component roles in light and dark themes.
 
 ```css
 .workspace {

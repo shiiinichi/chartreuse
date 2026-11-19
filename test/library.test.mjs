@@ -268,5 +268,7 @@ test('distributed tokens preserve the documented brand palette', () => {
   assert.deepEqual({ evergreen: tokens.colors.evergreen, chartreuse: tokens.colors.chartreuse, paper: tokens.colors.paper, canvas: tokens.colors.canvas, muted: tokens.colors.muted, border: tokens.colors.border }, {
     evergreen: '#024340', chartreuse: '#DBFFAD', paper: '#FFFDF6', canvas: '#F2F0E6', muted: '#52645F', border: '#CECCC3',
   });
+  assert.equal(tokens.colors.evergreenLight, '#096864');
+  assert.equal(colors.evergreenLight.token, '--cr-evergreen-light');
   assert.ok(spacing.every(space => space.value % 4 === 0));
 });

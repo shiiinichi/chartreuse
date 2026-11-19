@@ -4,6 +4,7 @@
   :root {
     color-scheme: light dark;
     --cr-evergreen: #024340;
+    --cr-evergreen-light: #096864;
     --cr-chartreuse: #dbffad;
     --cr-paper: #fffdf6;
     --cr-canvas: #f2f0e6;
@@ -270,9 +271,12 @@
   .cr-breadcrumbs a:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; border-radius: 2px; }
   .cr-breadcrumbs [aria-current] { color: var(--cr-color-text); }
   .cr-task-card { min-inline-size: 0; }
+  .cr-task-card:has(> .cr-task-button:enabled) { cursor: pointer; }
+  .cr-task-card:hover:has(> .cr-task-button:enabled) { background: var(--cr-color-subtle); }
+  .cr-task-card:has(> .cr-task-button:focus-visible) { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  .cr-task-card:has(> .cr-task-button:focus-visible) > .cr-task-button { outline: none; }
   .cr-task-button { display: block; inline-size: 100%; padding: 1rem; text-align: start; border: 0; border-radius: var(--cr-radius-lg) var(--cr-radius-lg) 0 0; background: transparent; }
   .cr-task-button:disabled { cursor: default; }
-  .cr-task-button:hover:not(:disabled) { background: var(--cr-color-subtle); }
   .cr-task-meta { display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: var(--cr-color-muted); font-size: .625rem; }
   .cr-mono { font-family: var(--cr-font-mono); }
   .cr-task-button h3 { font-size: .8125rem; font-weight: 550; line-height: 1.6; letter-spacing: -.015em; margin: .75rem 0 .375rem; text-wrap: balance; }
@@ -285,6 +289,7 @@
   .cr-task-metadata > li { position: relative; max-inline-size: 100%; white-space: nowrap; }
   .cr-task-metadata > li > svg, .cr-task-metadata-trigger > svg { flex-shrink: 0; }
   .cr-task-metadata-trigger { justify-content: center; min-inline-size: 24px; min-block-size: 24px; border-radius: var(--cr-radius-sm); cursor: help; }
+  .cr-task-card:has(> .cr-task-button:enabled) .cr-task-metadata-trigger { cursor: inherit; }
   .cr-task-metadata-trigger:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
   .cr-task-footer { display: flex; justify-content: space-between; align-items: center; padding: .625rem .875rem; border-block-start: 1px solid var(--cr-color-border); min-block-size: 26px; }
   .cr-agent-card { inline-size: 100%; display: flex; flex-direction: column; gap: 1rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); padding: 1rem; text-align: start; line-height: 1.5; }

@@ -37,7 +37,7 @@ export const navbarReferences: ComponentReference[] = [{
   notes: [
     'Large can be combined with either appearance and either width.',
     'The bar surface spans the parent. The width setting applies to the inner row of links, branding, and actions.',
-    'Dark green pairs the evergreen surface with a solid Chartreuse highlight for the current page in either width mode.',
+    'Dark green uses a lighter evergreen highlight for the current page in either width mode.',
     'NavbarItem links retain their styles inside Flex. Direct native anchors and router links also receive the navbar link styles. Mark the current route with aria-current="page".',
     'Content wraps in reading order when space is limited. Give each navigation landmark a distinct name when a page contains multiple navigations.',
   ],

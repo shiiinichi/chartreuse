@@ -513,7 +513,7 @@ export function ToastExample() {
       { name: 'attachmentCount', type: 'number', description: 'Attached file count. Omitted values hide the stat; an explicit zero remains visible.' },
       { name: 'hideMetadataLabels', type: 'boolean', defaultValue: 'false', description: 'Displays each count beside its icon. Hover over or focus an indicator to read its full label.' },
       { name: 'assignees', type: 'string[]', defaultValue: '[]', description: 'Names displayed with AvatarGroup.' },
-      { name: 'onClick', type: '() => void', description: 'Handles the main card action. The native content button is disabled when this callback is omitted.' },
+      { name: 'onClick', type: '() => void', description: 'Runs when any part of the card is clicked or the main button is activated with the keyboard. The button is disabled when this callback is omitted.' },
     ],
     notes: [
       'Metadata is one wrapping list. Each icon and short label stay together, avoiding a tall row for every count.', 'Dependencies use a network icon and related cards use a link icon. Checklist progress uses a ratio.', 'Omit optional metadata props to hide their counts. Explicit zero values are included. The checklist appears when its total is greater than zero.', 'Counts are normalized to nonnegative whole numbers, with completed counts capped at their totals.', 'Screen readers receive the full meanings of abbreviated stats, which also describe the main card button.', 'Status and priority are display props; the component does not update task data itself.', 'Provide onClick for an actionable card. Keep other interactive controls outside its main button.'],

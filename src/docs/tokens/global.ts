@@ -3,6 +3,7 @@ import type { TokenDefinition, TokenSource } from './types';
 const root: TokenSource = { file: 'src/system/styles.css', selector: ':root', detail: '@layer cr-tokens' };
 const primitiveColors = [
   ['evergreen', '#024340', 'Primitive evergreen brand color.'],
+  ['evergreen-light', '#096864', 'Light Evergreen for selected navigation on evergreen surfaces.', 'evergreenLight'],
   ['chartreuse', '#dbffad', 'Primitive chartreuse accent color.'],
   ['paper', '#fffdf6', 'Primitive paper color.'],
   ['canvas', '#f2f0e6', 'Primitive workspace canvas color.'],
@@ -40,10 +41,10 @@ const semanticColors = [
 
 /** Exact published :root CSS variables, rather than inferred typography/size tokens. */
 export const globalTokens: TokenDefinition[] = [
-  ...primitiveColors.map(([key, defaultValue, description]) => ({
+  ...primitiveColors.map(([key, defaultValue, description, descriptorKey = key]) => ({
     name: `--cr-${key}`, type: 'color', defaultValue, description, source: root,
     availability: 'library-css' as const,
-    sources: [{ file: 'src/system/tokens.ts', detail: `colors.${key} contains an independent JS value and this CSS-variable name.` }],
+    sources: [{ file: 'src/system/tokens.ts', detail: `colors.${descriptorKey} contains an independent JS value and this CSS-variable name.` }],
     notes: ['Primitive palette value. Semantic --cr-color-* variables use their own literal light/dark values, so they do not automatically follow a primitive override.'],
   })),
   {
@@ -116,7 +117,7 @@ export const globalTokens: TokenDefinition[] = [
 
 export const globalTokenNotes = [
   'These rows list published CSS custom properties. No individual font-size, font-weight, line-height, control-height, or icon-size variables are generated from the JS descriptors.',
-  'The @chartreuse/ui/tokens exports are static JavaScript data. colors maps ten primitive names to value/token/role descriptors; tokens.colors contains their literal values. Neither is a live reading of CSS overrides or color-scheme.',
+  'The @chartreuse/ui/tokens exports are static JavaScript data. colors maps primitive names to value, CSS token, and role descriptors. tokens.colors contains their literal values.',
   'Semantic --cr-color-* values contain literal light-dark() branches. Equal light-mode values do not make them aliases of --cr-evergreen, --cr-paper, or another primitive.',
   'CSS spacing is expressed in rem. The numeric spacing and tokens.spacing px strings in JavaScript match a 16px root font; they do not change when the root font size changes.',
   'typography and radii are JavaScript descriptors; consumption varies by component. Per-component tables list var() references, including those used by helper controls rendered by the component.',

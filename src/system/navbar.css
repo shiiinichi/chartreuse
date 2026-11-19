@@ -98,6 +98,11 @@
     font-weight: 650;
   }
 
+  :where(.cr-navbar[data-variant='dark-green']) :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] {
+    background: var(--cr-evergreen-light);
+    color: var(--cr-color-text);
+  }
+
   .cr-navbar-item:where(a):focus-visible,
   .cr-navbar :where(a):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
 

@@ -278,7 +278,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Navbar', componentTokens: [],
-    globalTokens: names('layout-content-max layout-gutter font-sans evergreen color-surface color-text color-muted color-subtle color-border color-primary color-on-primary color-focus radius-md space-1 space-2 space-3 space-6').sort(),
+    globalTokens: names('layout-content-max layout-gutter font-sans evergreen evergreen-light color-surface color-text color-muted color-subtle color-border color-primary color-on-primary color-focus radius-md space-1 space-2 space-3 space-6').sort(),
     runtimeVariables: [
       { name: '--_cr-navbar-item-height', description: 'Minimum item height set by Navbar size.', source: { file: systemFile('navbar.css'), selector: '.cr-navbar' }, notes: ['Medium uses 2.5rem and Large uses 3rem.'] },
     ],
@@ -286,8 +286,8 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'NavbarItem', componentTokens: [],
-    globalTokens: names('color-text color-muted color-subtle color-primary color-on-primary color-focus radius-md space-2 space-3').sort(),
-    notes: ['NavbarItem links use the shared subtle fill on hover, the primary palette for the current page, and the shared focus color. Content items use the shared spacing token to separate their children.'],
+    globalTokens: names('evergreen-light color-text color-muted color-subtle color-primary color-on-primary color-focus radius-md space-2 space-3').sort(),
+    notes: ['NavbarItem links use the shared subtle fill on hover and the shared focus color. The current page uses the primary fill by default. The dark green Navbar uses --cr-evergreen-light with light text. Content items use the shared spacing token to separate their children.'],
   },
   {
     component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-lg shadow-sm space-4 color-input-border color-focus evergreen paper').sort(),

@@ -11,7 +11,7 @@ const overrideCode = `/* Import @chartreuse/ui/styles.css once at your app entry
 const descriptorCode = `import { colors, spacing, typography, radii, tokens }\n  from '@chartreuse/ui/tokens';\n\ncolors.evergreen.value; // '#024340'\ncolors.evergreen.token; // '--cr-evergreen'\nspacing.find(step => step.name === '6')?.value; // 24 (px descriptor)\nradii.md; // 7 (px descriptor)\ntypography.find(style => style.name === 'Body');\ntokens; // name/version plus primitive colors, spacing, typography, radii\n\n// These JavaScript descriptors do not read computed CSS values\n// and do not include every semantic/component CSS variable.`;
 
 const descriptorRows = [
-  { name: 'colors', shape: '10 primitive color descriptors', meaning: 'Each entry includes a value, CSS token name, and role. Semantic light/dark pairs are listed in the CSS catalog below and are excluded from this object.' },
+  { name: 'colors', shape: 'Primitive color descriptors', meaning: 'Each entry includes a value, CSS token name, and role. Semantic light/dark pairs appear in the CSS catalog.' },
   { name: 'spacing', shape: 'name/value array', meaning: 'Numeric pixel descriptors for the four-pixel scale. The stylesheet uses rem values, so their computed pixels can change with the root font size.' },
   { name: 'typography', shape: 'display/body sample descriptors', meaning: 'Size, weight, line-height, and sample text. These descriptors do not generate CSS font-size variables; component text sizes are defined separately.' },
   { name: 'radii', shape: 'numeric pixel descriptors', meaning: 'sm, md, lg, xl, and full values, corresponding to the --cr-radius-* CSS variables.' },

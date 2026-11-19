@@ -1,6 +1,7 @@
 /** Chartreuse palette values and their semantic roles. */
 export const colors = {
   evergreen: { value: '#024340', token: '--cr-evergreen', role: 'Brand and primary actions' },
+  evergreenLight: { value: '#096864', token: '--cr-evergreen-light', role: 'Selected navigation on evergreen' },
   chartreuse: { value: '#DBFFAD', token: '--cr-chartreuse', role: 'Accent surfaces' },
   paper: { value: '#FFFDF6', token: '--cr-paper', role: 'Cards and raised surfaces' },
   canvas: { value: '#F2F0E6', token: '--cr-canvas', role: 'Workspace background' },
