@@ -56,7 +56,7 @@ test('every public component has exactly one alphabetical page, API reference, a
   assert.deepEqual(examples.sort((a, b) => a.localeCompare(b)), actual, 'every public component has a targeted preview');
 });
 
-test('Navbar preserves native navigation and slot content across widths and variants', () => {
+test('Navbar preserves native navigation and slot content across sizes, widths, and variants', () => {
   const h = React.createElement;
   const props = {
     brand: h('a', { href: '/' }, 'Workspace'),
@@ -72,14 +72,14 @@ test('Navbar preserves native navigation and slot content across widths and vari
   ];
   const comfortable = renderToStaticMarkup(h(system.Navbar, props, ...items));
   const full = renderToStaticMarkup(h(system.Navbar, { ...props, width: 'full', 'aria-label': 'Workspace pages' }, ...items));
-  const fullDarkGreen = renderToStaticMarkup(h(system.Navbar, { ...props, width: 'full', variant: 'dark-green', 'aria-label': 'Workspace pages' }, ...items));
+  const largeFullDarkGreen = renderToStaticMarkup(h(system.Navbar, { ...props, size: 'lg', width: 'full', variant: 'dark-green', 'aria-label': 'Workspace pages' }, ...items));
 
-  assert.match(comfortable, /^<nav aria-label="Primary" class="cr-navbar workspace-nav" data-width="comfortable" data-variant="default">/);
+  assert.match(comfortable, /^<nav aria-label="Primary" class="cr-navbar workspace-nav" data-width="comfortable" data-variant="default" data-size="md">/);
   assert.match(comfortable, /<a href="\/">Workspace<\/a>.*<a href="\/activity">Activity<\/a>.*<button type="button">Search<\/button>/);
   assert.match(comfortable, /class="cr-flex-layout"[^>]*><a href="\/projects" aria-current="page" class="cr-navbar-item project-link">Projects<\/a>/);
   assert.match(comfortable, /<div id="search-item" class="cr-navbar-item"><input type="search" aria-label="Find a project"\/><\/div>/);
   assert.equal(full, comfortable.replace('aria-label="Primary"', 'aria-label="Workspace pages"').replace('data-width="comfortable"', 'data-width="full"'));
-  assert.equal(fullDarkGreen, full.replace('data-variant="default"', 'data-variant="dark-green"'));
+  assert.equal(largeFullDarkGreen, full.replace('data-variant="default"', 'data-variant="dark-green"').replace('data-size="md"', 'data-size="lg"'));
 });
 
 test('WorkspaceContent supports a main landmark and an embedded section', () => {

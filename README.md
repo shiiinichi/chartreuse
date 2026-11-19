@@ -76,13 +76,13 @@ import '@chartreuse/ui/styles.css';
 export function ProjectWorkspace() {
   return (
     <>
-      <Navbar variant="dark-green" width="full" aria-label="Workspace pages">
+      <Navbar size="lg" width="full" variant="dark-green" aria-label="Workspace pages">
         <NavbarItem href="/workspace" aria-current="page">Overview</NavbarItem>
         <NavbarItem href="/tasks">Task board</NavbarItem>
       </Navbar>
       <WorkspaceLayout>
         <Sidebar width={192} aria-label="Projects" contentLabel="Project links">
-          <nav aria-label="Project views"><a href="/records">Records</a></nav>
+          <nav aria-label="Project views"><NavbarItem href="/records">Records</NavbarItem></nav>
         </Sidebar>
         <WorkspaceContent width="comfortable"><h1>Project overview</h1></WorkspaceContent>
       </WorkspaceLayout>
@@ -174,6 +174,8 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Avatar` displays a name beside its initials when `showName` is set, as in `<Avatar name="Alex Morgan" showName />`. The component handles alignment and spacing and hides the decorative initials from assistive technology. Without `showName`, the avatar has an accessible image label containing the name.
 
+`Badge` defaults to `variant="soft"` for a tinted surface. Use `variant="ghost"` for a transparent surface with the same text color and optional status dot or icon, as in `<Badge variant="ghost" tone="info" dot>Running</Badge>`.
+
 `TaskCard` presents checklist, dependency, related-card, comment, and attachment counts in a wrapping metadata row with 12px top padding. Use `completed`/`total` for checklist counts and optional `dependencies`, `relatedCount`, `commentCount`, and `attachmentCount` for other counts. Explicit zero counts are visible. Set `hideMetadataLabels` to show icons and counts, with labels available on hover and keyboard focus. The status and assignee footer is separate.
 
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures.
@@ -186,9 +188,9 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
-`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Use `variant="dark-green"` for the evergreen surface in either width mode. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. Omit `href` to include a control, status badge, or other React content.
+`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Use `variant="dark-green"` for the evergreen surface in either width mode. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. Omit `href` to include a control, status badge, or other React content.
 
-`Sidebar` provides floating and flush surfaces with header, body, and footer content. Set its height in the parent; the body scrolls independently while the header and footer stay visible. Use native links for navigation or selection buttons for an inspector. The examples demonstrate run history and workspace tasks.
+`Sidebar` provides floating and flush surfaces with header, body, and footer content. Give the sidebar a bounded height so its body scrolls independently while the header and footer stay visible. Use `NavbarItem` for navigation. For inspector selection, use `Button` with `variant="ghost"` and set `aria-pressed` to highlight the selected item in the scrolling body. The gallery includes a searchable run history and a task sidebar with project filters and editable checklists.
 
 `WorkspaceLayout` arranges `Sidebar` and `WorkspaceContent` beneath `Navbar` and stacks them on narrow containers. `WorkspaceContent` renders the main area. Comfortable width centers the body within the shared cap. `width="full"` fills the available content area with the same responsive gutters. Use `as="section"` when embedding it inside a page that already has a main landmark.
 

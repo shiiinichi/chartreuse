@@ -2,12 +2,13 @@ import type { ComponentReference } from './types';
 
 export const navbarReferences: ComponentReference[] = [{
   name: 'Navbar', slug: 'navbar',
-  summary: 'A responsive navigation bar with brand and action slots, two content widths, and an optional dark green surface.',
+  summary: 'A responsive navigation bar with two sizes, two content widths, and an optional dark green surface.',
   importCode: "import { BrandMark, Flex, Navbar, NavbarItem } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `export function WorkspaceNavbar() {
   // Set width="full" to use the full available width.
   return (
     <Navbar
+      size="lg"
       width="comfortable"
       variant="dark-green"
       aria-label="Workspace"
@@ -25,6 +26,7 @@ export const navbarReferences: ComponentReference[] = [{
   nativeElement: 'nav',
   nativeProps: 'Native attributes, events, className, style, and the React 19 ref target the nav element.',
   props: [
+    { name: 'size', type: "'md' | 'lg'", defaultValue: "'md'", description: 'Large adds vertical padding, taller link targets, and larger text.' },
     { name: 'width', type: "'comfortable' | 'full'", defaultValue: "'comfortable'", description: 'Comfortable centers the content within the shared width cap. Full lets the content span the available parent width. Both retain responsive gutters.' },
     { name: 'variant', type: "'default' | 'dark-green'", defaultValue: "'default'", description: 'Default follows the surrounding theme. Dark green uses the evergreen surface and a dark palette for content inside the bar.' },
     { name: 'brand', type: 'ReactNode', description: 'Content at the start of the bar, typically a home link with a wordmark.' },
@@ -33,6 +35,7 @@ export const navbarReferences: ComponentReference[] = [{
     { name: 'aria-label', type: 'string', defaultValue: "'Primary'", description: 'Accessible name for the navigation landmark.' },
   ],
   notes: [
+    'Large can be combined with either appearance and either width.',
     'The bar surface spans the parent. The width setting applies to the inner row of links, branding, and actions.',
     'Dark green pairs the evergreen surface with a solid Chartreuse highlight for the current page in either width mode.',
     'NavbarItem links retain their styles inside Flex. Direct native anchors and router links also receive the navbar link styles. Mark the current route with aria-current="page".',
@@ -44,7 +47,7 @@ export const navbarReferences: ComponentReference[] = [{
   importCode: "import { Badge, Flex, Navbar, NavbarItem } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `export function WorkspaceLinks() {
   return (
-    <Navbar aria-label="Workspace">
+    <Navbar size="lg" aria-label="Workspace">
       <Flex align="center" wrap gap={2}>
         <NavbarItem href="/projects" aria-current="page">Projects</NavbarItem>
         <NavbarItem href="/activity">Activity</NavbarItem>
@@ -62,6 +65,7 @@ export const navbarReferences: ComponentReference[] = [{
   ],
   notes: [
     'Omit href to place controls or display content in the navbar. Interactive children use their own semantics and focus behavior.',
+    'NavbarItem gets its minimum height from the surrounding Navbar size.',
     'The current link uses a solid highlight and stronger text weight. Keyboard focus on links uses an outer outline.',
   ],
 }];

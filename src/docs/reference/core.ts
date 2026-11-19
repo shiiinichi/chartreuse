@@ -77,12 +77,16 @@ export const coreReferences: ComponentReference[] = [
     slug: 'badge',
     summary: 'A small label for status, category, or supporting metadata.',
     importCode: "import { Check } from 'lucide-react';\nimport { Badge } from '@chartreuse/ui';",
-    usageCode: `<Badge tone="success" icon={Check}>Done</Badge>`,
+    usageCode: `<>
+  <Badge tone="success" icon={Check}>Done</Badge>
+  <Badge variant="ghost" tone="info" dot>Running</Badge>
+</>`,
     nativeElement: 'span',
     nativeProps: 'Extends HTMLAttributes<HTMLSpanElement>; native span attributes and events are forwarded. This interface does not declare a ref prop.',
     props: [
       { name: 'children', type: 'ReactNode', description: 'The visible label.' },
       { name: 'tone', type: "'neutral' | 'success' | 'info' | 'warning' | 'danger'", defaultValue: "'neutral'", description: 'The label’s semantic color treatment.' },
+      { name: 'variant', type: "'soft' | 'ghost'", defaultValue: "'soft'", description: 'Soft uses a tinted surface. Ghost uses a transparent surface.' },
       { name: 'dot', type: 'boolean', description: 'Adds a small decorative status dot when no icon is supplied.' },
       { name: 'icon', type: 'IconSource', description: 'A leading Lucide icon, custom SVG component, or SVG JSX element; takes precedence over dot.' },
     ],

@@ -279,7 +279,10 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'Navbar', componentTokens: [],
     globalTokens: names('layout-content-max layout-gutter font-sans evergreen color-surface color-text color-muted color-subtle color-border color-primary color-on-primary color-focus radius-md space-1 space-2 space-3 space-6').sort(),
-    notes: ['navbar.css uses the shared content cap for Comfortable mode. Both widths use the shared gutter, reduced when the bar is inside a narrow parent.', 'The dark green variant uses --cr-evergreen for the background and resolves the shared colors in the dark scheme inside the navbar.'],
+    runtimeVariables: [
+      { name: '--_cr-navbar-item-height', description: 'Minimum item height set by Navbar size.', source: { file: systemFile('navbar.css'), selector: '.cr-navbar' }, notes: ['Medium uses 2.5rem and Large uses 3rem.'] },
+    ],
+    notes: ['navbar.css uses the shared content cap for Comfortable mode. Both widths use the shared gutter, reduced when the bar is inside a narrow parent.', 'Medium uses space-2 for vertical padding and Large uses space-3.', 'The dark green variant uses --cr-evergreen for the background and resolves the shared colors in the dark scheme inside the navbar.'],
   },
   {
     component: 'NavbarItem', componentTokens: [],
@@ -287,12 +290,12 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['NavbarItem links use the shared subtle fill on hover, the primary palette for the current page, and the shared focus color. Content items use the shared spacing token to separate their children.'],
   },
   {
-    component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-lg shadow-sm space-4 color-input-border color-focus').sort(),
+    component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-lg shadow-sm space-4 color-input-border color-focus evergreen paper').sort(),
     runtimeVariables: [
       { name: '--cr-sidebar-width', description: 'Positive width prop serialized as pixels on the sidebar root.', source: { file: systemFile('Sidebar.tsx'), detail: 'sizing assigns the width recipe inline, with 280px fallback in sidebar.css.' }, notes: ['Use width. The native style prop is merged after the sizing recipe, but the variable remains part of layout implementation rather than a palette/spacing token.'] },
       { name: '--cr-sidebar-max-width', description: 'Positive maxWidth prop in pixels, otherwise 100%.', source: { file: systemFile('Sidebar.tsx'), detail: 'sizing assigns the cap inline; sidebar.css also constrains it to available width.' }, notes: ['Use maxWidth for the supported sizing contract.'] },
     ],
-    notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and large-radius/small-shadow globals in floating mode.', 'The body scrollbar consumes input-border. Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
+    notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and large-radius/small-shadow globals in floating mode.', 'The body scrollbar consumes input-border. A pressed ghost Button in the body uses evergreen and paper for its selection highlight.', 'Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
   },
   {
     component: 'WorkspaceContent', componentTokens: [],

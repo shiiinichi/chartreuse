@@ -97,6 +97,7 @@
   [data-tone='warning'] { --tone-fg: var(--cr-color-warning); --tone-bg: var(--cr-color-warning-bg); }
   [data-tone='danger'] { --tone-fg: var(--cr-color-danger); --tone-bg: var(--cr-color-danger-bg); }
   :where(.cr-badge, .cr-alert)[data-tone]:not([data-tone='neutral']) { color: var(--tone-fg); background: var(--tone-bg); }
+  .cr-badge[data-variant='ghost'] { background: transparent; }
   .cr-status-dot { display: inline-block; inline-size: 5px; block-size: 5px; background: currentColor; border: 1px solid currentColor; border-radius: 50%; flex-shrink: 0; }
   .cr-field { display: flex; flex-direction: column; gap: .5rem; min-inline-size: 0; font: 450 .75rem/1.5 var(--cr-font-sans); color: var(--cr-color-text); }
   .cr-field > label { font-weight: 550; }

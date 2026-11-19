@@ -7,4 +7,6 @@
     border-radius: var(--cr-radius-lg);
   }
   .navbar-demo-bar .cr-brand-mark { inline-size: 24px; block-size: 24px; }
+  .navbar-demo-bar[data-size='lg'] .cr-brand-mark { inline-size: 32px; block-size: 32px; }
+  .navbar-demo-brand small { display: block; color: var(--cr-color-muted); font-size: .75rem; font-weight: 450; }
 }

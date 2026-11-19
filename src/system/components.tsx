@@ -33,9 +33,14 @@ export function BrandMark({ className, ...props }: ComponentPropsWithRef<'svg'>)
   return <svg viewBox="0 0 40 40" fill="none" aria-hidden="true" {...props} className={cx('cr-brand-mark', className)}><path d="M20 20H5V5h4a11 11 0 0 1 11 11Zm0 0V5h15v4a11 11 0 0 1-11 11Zm0 0h15v15h-4a11 11 0 0 1-11-11Zm0 0v15H5v-4a11 11 0 0 1 11-11Z" fill="currentColor" /></svg>;
 }
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> { tone?: Tone; dot?: boolean; icon?: IconSource }
-export function Badge({ children, tone = 'neutral', dot, icon, className, ...props }: BadgeProps) {
-  return <span {...props} className={cx('cr-badge', className)} data-tone={tone}>{icon ? renderIcon(icon, { size: 12 }) : dot && <span className="cr-status-dot" aria-hidden="true" />}{children}</span>;
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  tone?: Tone;
+  variant?: 'soft' | 'ghost';
+  dot?: boolean;
+  icon?: IconSource;
+}
+export function Badge({ children, tone = 'neutral', variant = 'soft', dot, icon, className, ...props }: BadgeProps) {
+  return <span {...props} className={cx('cr-badge', className)} data-tone={tone} data-variant={variant}>{icon ? renderIcon(icon, { size: 12 }) : dot && <span className="cr-status-dot" aria-hidden="true" />}{children}</span>;
 }
 
 export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'size'> {

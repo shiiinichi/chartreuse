@@ -176,6 +176,19 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.4.0',
+    date: '2026-11-19',
+    title: 'Navbar sizes, ghost badges, and sidebar examples',
+    summary: 'Workspace navigation gains a larger size, lighter status badges, and updated run and task examples.',
+    changes: [
+      'Navbar adds size="lg" for taller link targets, more vertical padding, and larger text. The default size is "md".',
+      'Badge adds variant="ghost" for a transparent background with the same semantic text and icon colors. The default variant is "soft".',
+      'Ghost buttons in the Sidebar body highlight the selected item when aria-pressed is true. The gallery shows searchable run history with a Load more action and project-filtered tasks with editable checklists.',
+      'Workspace layout and application pattern previews use the large Navbar. The WorkspaceContent example shows navigation links in the sidebar.',
+      'The release workflow supports public GitHub Packages and checks that package and repository visibility match.',
+    ],
+  },
+  {
     version: '1.3.0',
     date: '2026-11-19',
     title: 'Workspace navigation and layout',

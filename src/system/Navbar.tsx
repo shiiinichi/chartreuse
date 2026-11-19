@@ -2,6 +2,7 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 import './navbar.css';
 
 export interface NavbarProps extends ComponentPropsWithRef<'nav'> {
+  size?: 'md' | 'lg';
   width?: 'comfortable' | 'full';
   variant?: 'default' | 'dark-green';
   brand?: ReactNode;
@@ -10,10 +11,10 @@ export interface NavbarProps extends ComponentPropsWithRef<'nav'> {
 
 /** A site navigation landmark with a parent-sized surface and a configurable content width. */
 export function Navbar({
-  width = 'comfortable', variant = 'default', brand, actions, children, className, 'aria-label': label = 'Primary', ...props
+  size = 'md', width = 'comfortable', variant = 'default', brand, actions, children, className, 'aria-label': label = 'Primary', ...props
 }: NavbarProps) {
   return (
-    <nav {...props} aria-label={label} className={['cr-navbar', className].filter(Boolean).join(' ')} data-width={width} data-variant={variant}>
+    <nav {...props} aria-label={label} className={['cr-navbar', className].filter(Boolean).join(' ')} data-width={width} data-variant={variant} data-size={size}>
       <div className="cr-navbar-inner">
         <div className="cr-navbar-brand">{brand}</div>
         <div className="cr-navbar-links">{children}</div>

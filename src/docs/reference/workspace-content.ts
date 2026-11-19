@@ -1,23 +1,23 @@
 import type { ComponentReference } from './types';
 
-const importCode = "import type { ReactNode } from 'react';\nimport { Navbar, NavbarItem, Sidebar, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';\nimport type { WorkspaceContentProps } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';";
+const importCode = "import type { ReactNode } from 'react';\nimport { Flex, Navbar, NavbarItem, Sidebar, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';\nimport type { WorkspaceContentProps } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';";
 const usageCode = `export function ProjectWorkspace({ children, width = 'comfortable' }: {
   children: ReactNode;
   width?: WorkspaceContentProps['width'];
 }) {
   return (
     <>
-      <Navbar width="full" variant="dark-green" aria-label="Workspace pages">
+      <Navbar size="lg" width="full" variant="dark-green" aria-label="Workspace pages">
         <NavbarItem href="/workspace" aria-current="page">Overview</NavbarItem>
         <NavbarItem href="/tasks">Task board</NavbarItem>
       </Navbar>
       <WorkspaceLayout>
         <Sidebar width={192} aria-label="Projects" contentLabel="Project links">
           <nav aria-label="Project pages">
-            <ul>
-              <li><a href="/records">Records</a></li>
-              <li><a href="/metrics">Run metrics</a></li>
-            </ul>
+            <Flex direction="column" gap={1}>
+              <NavbarItem href="/records">Records</NavbarItem>
+              <NavbarItem href="/metrics">Run metrics</NavbarItem>
+            </Flex>
           </nav>
         </Sidebar>
         <WorkspaceContent width={width} style={{ paddingBlock: 'var(--cr-space-6)' }}>

@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import { BrandMark, Card } from '../system/components';
+import { Flex } from '../system/Flex';
 import { Navbar, NavbarItem } from '../system/Navbar';
 import { SegmentedControl } from '../system/SegmentedControl';
 import { Sidebar } from '../system/Sidebar';
@@ -28,17 +29,20 @@ export function WorkspaceContentDemo({ page = 'workspace-content' }: { page?: 'w
       <div className="workspace-content-demo">
         <SegmentedControl label="Content width" name={`workspace-content-width-${id}`} size="sm" options={widthOptions} value={width}
           onValueChange={value => setWidth(value === 'full' ? 'full' : 'comfortable')} />
-        <div className="workspace-content-demo-shell">
-          <Navbar width="full" variant="dark-green" aria-label="Example workspace pages"
+        <Card className="workspace-content-demo-shell">
+          <Navbar size="lg" width="full" variant="dark-green" aria-label="Example workspace pages"
             brand={<a href="#workspace"><BrandMark /><span>Sample workspace</span></a>}>
             <NavbarItem href={`#components/${page}`} aria-current="page">Overview</NavbarItem>
             <NavbarItem href="#task-board">Task board</NavbarItem>
           </Navbar>
-          <WorkspaceLayout className="workspace-content-demo-layout">
-            <Sidebar width={168} aria-label="Example project sidebar" contentLabel="Project links" header={<strong>Projects</strong>}>
+          <WorkspaceLayout>
+            <Sidebar width={168} className="workspace-content-demo-sidebar" aria-label="Example project sidebar"
+              contentLabel="Project links" header={<strong>Projects</strong>}>
               <nav className="workspace-content-demo-links" aria-label="Example project pages">
-                <a href="#record-search">Records</a>
-                <a href="#metrics-dashboard">Run metrics</a>
+                <Flex direction="column" gap={1}>
+                  <NavbarItem href="#record-search">Records</NavbarItem>
+                  <NavbarItem href="#metrics-dashboard">Run metrics</NavbarItem>
+                </Flex>
               </nav>
             </Sidebar>
             <WorkspaceContent as="section" width={width} aria-labelledby={headingId} className="workspace-content-demo-body">
@@ -49,7 +53,7 @@ export function WorkspaceContentDemo({ page = 'workspace-content' }: { page?: 'w
               </StatGroup>
             </WorkspaceContent>
           </WorkspaceLayout>
-        </div>
+        </Card>
       </div>
     </Showcase>
   );

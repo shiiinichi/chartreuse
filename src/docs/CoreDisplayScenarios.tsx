@@ -19,6 +19,25 @@ export function BadgeScenarios() {
       '  <Badge tone="danger" dot>Failed</Badge>',
       '</div>',
     )}><div className="core-example-row"><Badge dot>To do</Badge><Badge tone="info" dot>In progress</Badge><Badge tone="warning" dot>In review</Badge><Badge tone="success" dot>Done</Badge><Badge tone="danger" dot>Failed</Badge></div></Showcase>
+    <Showcase title="Ghost status badges" description="Ghost badges keep the status color on a transparent surface." code={snippet(
+      'import { Badge } from "@chartreuse/ui";',
+      '',
+      '<div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>',
+      '  <Badge variant="ghost" dot>To do</Badge>',
+      '  <Badge variant="ghost" tone="info" dot>In progress</Badge>',
+      '  <Badge variant="ghost" tone="warning" dot>In review</Badge>',
+      '  <Badge variant="ghost" tone="success" dot>Done</Badge>',
+      '  <Badge variant="ghost" tone="danger" dot>Failed</Badge>',
+      '</div>',
+    )}>
+      <div className="core-example-row">
+        <Badge variant="ghost" dot>To do</Badge>
+        <Badge variant="ghost" tone="info" dot>In progress</Badge>
+        <Badge variant="ghost" tone="warning" dot>In review</Badge>
+        <Badge variant="ghost" tone="success" dot>Done</Badge>
+        <Badge variant="ghost" tone="danger" dot>Failed</Badge>
+      </div>
+    </Showcase>
     <Showcase title="Badges with icons" description="Pass a decorative icon to identify the state alongside its text label." code={snippet(
       'import { Check, Clock3, X } from "lucide-react";',
       'import { Badge } from "@chartreuse/ui";',

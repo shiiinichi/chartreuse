@@ -1,5 +1,6 @@
 @layer cr-components {
   .cr-navbar {
+    --_cr-navbar-item-height: 2.5rem;
     box-sizing: border-box;
     inline-size: 100%;
     min-inline-size: 0;
@@ -8,6 +9,11 @@
     color: var(--cr-color-text);
     font: 450 .8125rem/1.4 var(--cr-font-sans);
     overflow-wrap: anywhere;
+  }
+
+  .cr-navbar[data-size='lg'] {
+    --_cr-navbar-item-height: 3rem;
+    font-size: .875rem;
   }
 
   .cr-navbar[data-variant='dark-green'] {
@@ -29,6 +35,7 @@
   }
 
   .cr-navbar[data-width='full'] > .cr-navbar-inner { max-inline-size: none; }
+  .cr-navbar[data-size='lg'] > .cr-navbar-inner { padding-block: var(--cr-space-3); }
 
   .cr-navbar-brand, .cr-navbar-links, .cr-navbar-actions {
     min-inline-size: 0;
@@ -57,7 +64,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--cr-space-2);
-    min-block-size: 2.5rem;
+    min-block-size: var(--_cr-navbar-item-height, 2.5rem);
     max-inline-size: 100%;
   }
 
@@ -70,6 +77,7 @@
   }
 
   .cr-navbar-brand > :where(a) { font-size: .9375rem; font-weight: 650; }
+  .cr-navbar[data-size='lg'] > .cr-navbar-inner > .cr-navbar-brand > :where(a) { font-size: 1.125rem; }
   .cr-navbar-actions > :where(a) { font-weight: 550; }
   :is(.cr-navbar-brand, .cr-navbar-actions) > :where(a):hover { color: var(--cr-color-muted); }
 

@@ -103,7 +103,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Badge', componentTokens: toneAliases('neutral'), globalTokens: badgeGlobals,
-    notes: ['Consumption: styles.css .cr-badge, generic [data-tone] aliases, and the non-neutral Badge tone rule. The optional status dot uses currentColor.', 'Font size, padding, gap, and status-dot size are literal CSS. Forced-colors mode can replace the border/dot with system CanvasText independently of these tokens.'],
+    notes: ['Consumption: styles.css .cr-badge, generic [data-tone] aliases, and the non-neutral Badge tone rule. The optional status dot uses currentColor.', 'The ghost variant uses a transparent background with the same foreground tone.', 'Font size, padding, gap, and status-dot size are literal CSS. Forced-colors mode uses system CanvasText for the border and dot.'],
   },
   {
     component: 'TextField', componentTokens: [], globalTokens: fieldGlobals,
