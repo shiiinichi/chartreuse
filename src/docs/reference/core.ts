@@ -426,7 +426,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'sideContent', type: 'ReactNode', description: 'Adds a second body pane. Both panes remain above the shared footer.' },
       { name: 'contentLabel', type: 'string', defaultValue: "'Details'", description: 'Names the main pane and its compact-view button.' },
       { name: 'sideContentLabel', type: 'string', defaultValue: "'Related content'", description: 'Names the second pane, its compact-view button, and resize control.' },
-      { name: 'resizableSplit', type: 'boolean', defaultValue: 'false', description: 'Enables pointer and keyboard resizing of the split divider on wide layouts.' },
+      { name: 'resizableSplit', type: 'boolean', defaultValue: 'false', description: 'Adds a 10px divider with a centered grip for pointer and keyboard resizing on wide layouts.' },
       { name: 'sideContentMinWidth', type: 'number', defaultValue: '260', description: 'The preferred minimum side-pane width in CSS pixels, bounded by the available body width.' },
       { name: 'sideContentMaxWidth', type: 'number', defaultValue: '640', description: 'The maximum side-pane width in CSS pixels. Also applies when resizing is off.' },
       { name: 'className', type: 'string', description: 'Additional classes on the native dialog.' },

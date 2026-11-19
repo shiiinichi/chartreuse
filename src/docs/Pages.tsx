@@ -176,6 +176,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.5.0',
+    date: '2026-11-19',
+    title: 'Activity lists and navigation refinements',
+    summary: 'Four components gain layout or display updates, and the interactive documentation is now available on GitHub Pages.',
+    changes: [
+      'AgentActivity adds variant="list" to display every event as a row with expandable details.',
+      'SegmentedControl adds variant="solid" for a filled selection. The default variant is "outline".',
+      'Breadcrumbs uses chevrons by default. Set separator to decorative text or JSX, or pass null to hide separators.',
+      'Resizable split dialogs have a 10px gutter with a centered grip. Drag the divider or use the arrow keys to resize the panes.',
+    ],
+  },
+  {
     version: '1.4.0',
     date: '2026-11-19',
     title: 'Navbar sizes, ghost badges, and sidebar examples',

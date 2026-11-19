@@ -195,9 +195,13 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Tabs` supports `size="sm"`, `"md"`, and `"lg"` for both line and pill styles. The default is `"md"`, and each size matches the corresponding `Button` height.
 
-`SegmentedControl` uses named native radios for a single visible choice. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
+`Breadcrumbs` uses chevrons by default. Set `separator` to decorative text or JSX, or pass `null` to hide separators.
 
-`Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots. `AgentActivity` displays a collapsible event group with details for each event. Command, input, and output text are available in those details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
+`Dialog` uses a 10px gutter with a centered grip when `resizableSplit` is set. Drag the divider or use the arrow keys while it has keyboard focus.
+
+`SegmentedControl` uses named native radios for a single visible choice. Set `variant="solid"` for a filled selection. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
+
+`Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots. `AgentActivity` displays a collapsible event group with details for each event. Set `variant="list"` to show every event as a row with expandable details. Command, input, and output text are available in those details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
