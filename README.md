@@ -36,7 +36,7 @@ npm login --scope=@shiiinichi --registry=https://npm.pkg.github.com --auth-type=
 Enter your GitHub username and use the token at the password prompt. npm saves the credentials and registry mapping in your user-level `~/.npmrc`. In each consuming project, install the package under the `@chartreuse/ui` alias.
 
 ```sh
-npm install '@chartreuse/ui@npm:@shiiinichi/chartreuse@^1.2.0'
+npm install '@chartreuse/ui@npm:@shiiinichi/chartreuse@latest'
 ```
 
 React and React DOM 19 are peer dependencies supplied by the consuming application. The package includes the ES module entry, CSS, declarations, and the `tokens` subpath.
@@ -64,6 +64,32 @@ export default function App() {
 ```
 
 The documentation bundles Inter locally. Consumers can bundle `@fontsource-variable/inter`, supply Inter, or override `--cr-font-sans`; system font fallbacks are included. Buttons and native form controls accept React 19 ref props directly. Interactive components require a client boundary in React Server Component applications.
+
+### Compose a workspace
+
+Place `Navbar` above `WorkspaceLayout` and put `Sidebar` and `WorkspaceContent` inside the layout. The navbar and content have independent width settings.
+
+```tsx
+import { Navbar, NavbarItem, Sidebar, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
+
+export function ProjectWorkspace() {
+  return (
+    <>
+      <Navbar variant="dark-green" width="full" aria-label="Workspace pages">
+        <NavbarItem href="/workspace" aria-current="page">Overview</NavbarItem>
+        <NavbarItem href="/tasks">Task board</NavbarItem>
+      </Navbar>
+      <WorkspaceLayout>
+        <Sidebar width={192} aria-label="Projects" contentLabel="Project links">
+          <nav aria-label="Project views"><a href="/records">Records</a></nav>
+        </Sidebar>
+        <WorkspaceContent width="comfortable"><h1>Project overview</h1></WorkspaceContent>
+      </WorkspaceLayout>
+    </>
+  );
+}
+```
 
 ### GitHub Actions installation
 
@@ -120,7 +146,7 @@ The [publishing workflow](.github/workflows/publish-package.yml) runs when a Git
 
 1. Use `npm version patch`, `minor`, or `major` with `--no-git-tag-version` to update `package.json` and `package-lock.json`. Add the release to the documentation's [Changelog](src/docs/Pages.tsx).
 2. Push the release commit, including the workflow, to GitHub. The workflow derives the package owner and repository link from `github.repository`.
-3. Publish a GitHub release with a tag matching `v<package.json version>`.
+3. Prepare a GitHub release draft with a tag matching `v<package.json version>`. Publishing the draft triggers package publication.
 4. Keep the repository and package private. The workflow checks both before publishing and verifies package visibility after publishing. Give consuming repositories access under the package's Actions settings and grant user access as needed.
 
 The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact without publishing. Enable that input to publish the validated artifact. Already published versions cannot be overwritten; issue a new version for each release. Prerelease versions and GitHub prereleases use the `next` distribution tag; other releases use `latest`.
@@ -139,9 +165,11 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Avatar` displays a name beside its initials when `showName` is set, as in `<Avatar name="Alex Morgan" showName />`. The component handles alignment and spacing and hides the decorative initials from assistive technology. Without `showName`, the avatar has an accessible image label containing the name.
 
-`TaskCard` presents checklist, dependency, related-card, comment, and attachment counts in a wrapping metadata row with 12px top padding. Use `completed`/`total` for checklist counts and optional `dependencies`, `relatedCount`, `commentCount`, and `attachmentCount` for other counts. Omitted extra counts are hidden; explicit zero counts are visible. The status and assignee footer is separate.
+`TaskCard` presents checklist, dependency, related-card, comment, and attachment counts in a wrapping metadata row with 12px top padding. Use `completed`/`total` for checklist counts and optional `dependencies`, `relatedCount`, `commentCount`, and `attachmentCount` for other counts. Explicit zero counts are visible. Set `hideMetadataLabels` to show icons and counts, with labels available on hover and keyboard focus. The status and assignee footer is separate.
 
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures.
+
+`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for both line and pill styles. The default is `"md"`, and each size matches the corresponding `Button` height.
 
 `SegmentedControl` uses named native radios for a single visible choice. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
 

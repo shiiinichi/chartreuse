@@ -167,7 +167,7 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
     <div className="getting-started-banner"><BrandMark /><div><h2>Install and configure Chartreuse</h2><p>React 19 components with TypeScript props and a shared CSS stylesheet.</p></div><Badge>v{chartreuseVersion}</Badge></div>
     <Steps className="getting-started-steps" aria-label="Get started with Chartreuse" items={[
       { id: 'install', title: <h2>Configure package access and install</h2>, content: <><p>After a release is published to GitHub Packages, configure the consuming application's .npmrc. Replace OWNER with the lowercase GitHub repository owner and set NODE_AUTH_TOKEN to a GitHub classic token with read:packages and package access. The npm alias preserves @chartreuse/ui imports.</p><CodeBlock language="ini" code={snippets.registry} /><CodeBlock language="sh" code={snippets.install} /></> },
-      { id: 'compose', title: <h2>Import components and styles</h2>, content: <><p>Import @chartreuse/ui/styles.css once at your application entry. Wrap components that use notifications in ToastProvider.</p><CodeBlock code={snippets.basic} /></> },
+      { id: 'compose', title: <h2>Import components and styles</h2>, content: <><p>Import @chartreuse/ui/styles.css once at your application entry. Wrap components that use notifications in ToastProvider.</p><CodeBlock code={snippets.basic} /><div className="demo-row"><Button variant="secondary" size="sm" iconRight={ArrowRight} onClick={() => navigate('components/workspace-layout')}>Compose a workspace layout</Button></div></> },
       { id: 'tokens', title: <h2>Use semantic CSS variables</h2>, content: <><p>Reference semantic CSS variables for text, surfaces, spacing, and radii. Semantic color tokens adapt to the active color scheme.</p><CodeBlock language="css" code={`.my-workspace {\n  color: var(--cr-color-text);\n  background: var(--cr-color-canvas);\n  padding: var(--cr-space-6);\n  border-radius: var(--cr-radius-xl);\n}`} /><div className="demo-row"><Button variant="secondary" size="sm" iconRight={ArrowRight} onClick={() => navigate('tokens')}>View design tokens</Button><Button variant="ghost" size="sm" iconRight={ArrowRight} onClick={() => navigate('buttons')}>Browse components</Button></div></> },
     ]} />
     <Alert tone="neutral" title="Package distribution">The release workflow publishes @OWNER/chartreuse to GitHub Packages. Registry authentication is required, including for public packages. React and React DOM 19 are peer dependencies provided by the application.</Alert>
@@ -175,6 +175,19 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 }
 
 const releases = [
+  {
+    version: '1.3.0',
+    date: '2026-11-19',
+    title: 'Workspace navigation and layout',
+    summary: 'Compose an application shell from shared navigation and layout components.',
+    changes: [
+      'Navbar supports Comfortable and Full widths and an evergreen variant. NavbarItem supports native links, controls, and custom content.',
+      'WorkspaceLayout arranges Sidebar and WorkspaceContent beneath Navbar and wraps on narrow screens. WorkspaceContent supports Comfortable and Full widths.',
+      'The Sidebar examples and all seven pattern previews use the shared workspace components. Pattern previews join the navbar and body in one frame, with matching code examples.',
+      'TaskCard supports hideMetadataLabels for icon-and-count metadata with labels on hover and keyboard focus.',
+      'Tabs supports small, medium, and large sizes that match Button. The default is medium.',
+    ],
+  },
   {
     version: '1.2.0',
     date: '2026-11-19',
@@ -220,7 +233,7 @@ function Changelog() {
   return <div className="release-list">
     {releases.map(({ version, date, title, summary, changes }, index) => <section key={version}>
       <div className="release-heading">
-        {index === 0 && <Badge tone="success" dot>Latest release</Badge>}
+        {index === 0 && <Badge tone="success" dot>Current version</Badge>}
         <time dateTime={date}>{releaseDate.format(new Date(date))}</time>
       </div>
       <article className="release-card">

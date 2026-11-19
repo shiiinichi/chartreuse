@@ -67,7 +67,7 @@ export const iconList = { Activity, BookOpen, Box, Braces, CircleDot, ClipboardL
 
 export const snippets = {
   registry: `# .npmrc: replace OWNER with the lowercase GitHub repository owner\n@OWNER:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}`,
-  install: `npm install @chartreuse/ui@npm:@OWNER/chartreuse@^${chartreuseVersion}`,
+  install: `npm install @chartreuse/ui@npm:@OWNER/chartreuse@latest`,
   basic: `import { Button, TextField, ToastProvider } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ToastProvider>\n      <TextField label="Task name" placeholder="Enter a task title" />\n      <Button>Create task</Button>\n    </ToastProvider>\n  );\n}`,
   buttons: `<Button icon={Plus}>Create task</Button>\n<Button variant="secondary">View workspace</Button>\n<Button variant="accent" iconRight={ArrowRight}>Get started</Button>\n<Button variant="ghost">Cancel</Button>\n<Button variant="danger">Delete task</Button>`,
   forms: `<TextField\n  label="Task name"\n  name="title"\n  placeholder="Enter a task title"\n  required\n/>\n<Select label="Priority" name="priority">\n  <option>Medium</option>\n  <option>High</option>\n</Select>\n<Switch label="Live updates" defaultChecked />`,
