@@ -23,11 +23,11 @@ The documentation is emitted to `dist/site`; the ES module library, declarations
 
 ## Use the library
 
-Releases publish the private npm package [@shiiinichi/chartreuse](https://github.com/users/shiiinichi/packages/npm/package/chartreuse).
+Chartreuse is distributed as [@shiiinichi/chartreuse](https://github.com/users/shiiinichi/packages/npm/package/chartreuse) on GitHub Packages.
 
 ### Local installation
 
-Create a [classic personal access token](https://github.com/settings/tokens/new?scopes=read%3Apackages) with `read:packages` from a GitHub account with read access to the package. Sign in once per machine.
+GitHub Packages requires authentication for npm installs, including public packages. Create a [classic personal access token](https://github.com/settings/tokens/new?scopes=read%3Apackages) with `read:packages` and sign in once per machine. For a private package, the token owner also needs read access to the package. See [GitHub's npm registry authentication guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages).
 
 ```sh
 npm login --scope=@shiiinichi --registry=https://npm.pkg.github.com --auth-type=legacy
@@ -93,7 +93,7 @@ export function ProjectWorkspace() {
 
 ### GitHub Actions installation
 
-Grant the consuming repository **Read** under **Manage Actions access** in the [package settings](https://github.com/users/shiiinichi/packages/npm/package/chartreuse). Commit the consuming project's `package.json` and `package-lock.json` after installation. Set `contents: read` and `packages: read` on the job, then use these steps after checkout.
+To install with `GITHUB_TOKEN`, grant the consuming repository **Read** under **Manage Actions access** in the [package settings](https://github.com/users/shiiinichi/packages/npm/package/chartreuse). Commit the consuming project's `package.json` and `package-lock.json` after installation. Set `contents: read` and `packages: read` on the job, then use these steps after checkout.
 
 ```yaml
 - uses: actions/setup-node@v6
@@ -106,7 +106,7 @@ Grant the consuming repository **Read** under **Manage Actions access** in the [
     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-If the consuming repository cannot be granted package access, set `NODE_AUTH_TOKEN` from a workflow secret containing a classic token with `read:packages` and access to the package.
+For a consuming repository without a package grant, set `NODE_AUTH_TOKEN` from an Actions secret containing a classic token with `read:packages`. For a private package, the token owner also needs read access. See [package access for GitHub Actions](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package).
 
 ## Query Chartreuse from the terminal
 
@@ -142,16 +142,25 @@ The skill queries the CLI installed in the app or workspace where the agent is w
 
 ## Publish a release
 
-The [publishing workflow](.github/workflows/publish-package.yml) runs when a GitHub release is published. It checks out the release tag, installs from `package-lock.json`, builds the documentation and library, runs the tests, prepares the owner-scoped distribution, and validates the exact tarball before publishing it to `https://npm.pkg.github.com`. Publishing uses the workflow's `GITHUB_TOKEN` with `packages: write`; no npm token or additional publishing secret is needed.
+The [publishing workflow](.github/workflows/publish-package.yml) runs when a GitHub release is published. It checks out the release tag, installs from `package-lock.json`, builds the documentation and library, runs the tests, prepares the owner-scoped distribution, and validates the exact tarball before publishing it to `https://npm.pkg.github.com`. Publishing uses the workflow's `GITHUB_TOKEN` with `packages: write`.
 
 1. Use `npm version patch`, `minor`, or `major` with `--no-git-tag-version` to update `package.json` and `package-lock.json`. Add the release to the documentation's [Changelog](src/docs/Pages.tsx).
 2. Push the release commit, including the workflow, to GitHub. The workflow derives the package owner and repository link from `github.repository`.
 3. Prepare a GitHub release draft with a tag matching `v<package.json version>`. Publishing the draft triggers package publication.
-4. Keep the repository and package private. The workflow checks both before publishing and verifies package visibility after publishing. Give consuming repositories access under the package's Actions settings and grant user access as needed.
+4. Keep the repository and package visibility in sync. The workflow checks that both are private or both are public before publishing and verifies the same visibility afterward. A private repository can publish its first package version with GitHub’s default private visibility.
 
-The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact without publishing. Enable that input to publish the validated artifact. Already published versions cannot be overwritten; issue a new version for each release. Prerelease versions and GitHub prereleases use the `next` distribution tag; other releases use `latest`.
+The workflow can also be run manually with an existing version tag. Its `publish` input defaults to `false`, which builds, tests, validates, and uploads a downloadable package artifact. Enable that input to publish the validated artifact. Issue a new version for each release, including updates to the packaged README. Prerelease versions and GitHub prereleases use the `next` distribution tag. Stable releases use `latest`.
 
 The source manifest retains `@chartreuse/ui` and `private: true`. Release preparation creates a separate manifest under `dist/github-package` with the repository owner's scope, the GitHub registry, and repository metadata. It omits development dependencies and scripts. The package includes the built library, offline CLI, agent skill, and README.
+
+### Switch the repository and package to public
+
+GitHub manages the repository and npm package visibility separately. Review what will become visible with the repository, including commit history, release assets, and Actions logs. See [GitHub's repository visibility guide](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility#changing-a-private-repository-to-a-public-repository).
+
+1. Put these documentation and workflow updates on the default branch before changing visibility. Use a release tag that includes the updated workflow and release scripts for the next package publication.
+2. Set the repository to **Public** in **Settings → General → Danger Zone → Change repository visibility**.
+3. Set the npm package to **Public** in **Package settings → Danger Zone → Change visibility**. GitHub makes this package change permanent. See [personal package visibility settings](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#configuring-visibility-of-packages-for-your-personal-account).
+4. Verify that both show **Public** and that the publishing repository retains access under **Manage Actions access**. For the next release tag, run the publishing workflow with `publish=false` to validate the distribution.
 
 ## Components
 

@@ -7,12 +7,15 @@ const skillPath = '.agents/skills/chartreuse/SKILL.md';
 const identifier = '(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)';
 const versionPattern = new RegExp(`^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-${identifier}(?:\\.${identifier})*)?(?:\\+[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*)?$`);
 
-export function releaseMetadata(source, repository, tag, prerelease = false) {
+export function releaseMetadata(source, repository, tag, prerelease = false, visibility = 'private') {
   if (typeof repository !== 'string' || repository.trim() !== repository || !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\/[a-z0-9_.-]+$/i.test(repository)) {
     throw new Error('GITHUB_REPOSITORY must identify the publishing owner/repository.');
   }
   if (typeof source.version !== 'string' || source.version.trim() !== source.version || !versionPattern.test(source.version) || tag !== `v${source.version}`) {
     throw new Error('The release tag must equal v<package.json version> and use a valid semantic version.');
+  }
+  if (visibility !== 'private' && visibility !== 'public') {
+    throw new Error('CHARTREUSE_PACKAGE_VISIBILITY must be private or public.');
   }
 
   const owner = repository.split('/')[0].toLowerCase();
@@ -20,7 +23,7 @@ export function releaseMetadata(source, repository, tag, prerelease = false) {
     ...source,
     name: `@${owner}/chartreuse`,
     repository: { type: 'git', url: `git+https://github.com/${repository}.git` },
-    publishConfig: { registry, access: 'restricted' },
+    publishConfig: visibility === 'private' ? { registry, access: 'restricted' } : { registry },
   };
   for (const field of ['private', 'scripts', 'devDependencies', 'packageManager']) delete manifest[field];
 
@@ -36,9 +39,9 @@ function exportTargets(value) {
   return [];
 }
 
-export async function prepareRelease({ root = process.cwd(), repository, tag, prerelease = false }) {
+export async function prepareRelease({ root = process.cwd(), repository, tag, prerelease = false, visibility = 'private' }) {
   const source = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
-  const metadata = releaseMetadata(source, repository, tag, prerelease);
+  const metadata = releaseMetadata(source, repository, tag, prerelease, visibility);
   const lock = JSON.parse(await readFile(path.join(root, 'package-lock.json'), 'utf8'));
   if (lock.version !== source.version || lock.packages?.['']?.version !== source.version) {
     throw new Error('package-lock.json must use the same version as package.json.');
@@ -68,6 +71,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     repository: process.env.GITHUB_REPOSITORY,
     tag: process.env.RELEASE_TAG,
     prerelease: process.env.RELEASE_PRERELEASE === 'true',
+    visibility: process.env.CHARTREUSE_PACKAGE_VISIBILITY,
   });
   if (process.env.GITHUB_OUTPUT) {
     await appendFile(process.env.GITHUB_OUTPUT, `directory=${result.directory}\nversion=${result.manifest.version}\ndist-tag=${result.distTag}\n`);

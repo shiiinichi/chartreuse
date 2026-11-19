@@ -30,6 +30,12 @@ test('release metadata scopes the package to its GitHub owner and preserves its 
   assert.equal(source.private, true, 'preparation does not mutate the source manifest');
 });
 
+test('a public package manifest uses the registry visibility setting', () => {
+  const { manifest } = releaseMetadata(source, 'Example-Team/component-library', 'v1.0.0', false, 'public');
+  assert.deepEqual(manifest.publishConfig, { registry: 'https://npm.pkg.github.com' });
+  assert.throws(() => releaseMetadata(source, 'example/library', 'v1.0.0', false, 'internal'), /CHARTREUSE_PACKAGE_VISIBILITY/);
+});
+
 test('release preparation rejects mismatched tags, invalid versions, and missing repository identity', () => {
   for (const tag of ['main', '1.0.0', 'v1.0.1', 'v1.0.0\n']) {
     assert.throws(() => releaseMetadata(source, 'example/library', tag), /release tag/);

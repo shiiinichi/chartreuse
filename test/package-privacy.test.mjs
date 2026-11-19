@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { checkPackagePrivacy } from '../scripts/check-package-privacy.mjs';
 
-function fixture({ privateRepo = true, ownerType = 'User', visibility = 'private', packageStatus = 200 } = {}) {
+function fixture({ repositoryVisibility = 'private', ownerType = 'User', visibility = repositoryVisibility, packageStatus = 200 } = {}) {
   const routes = [];
   return {
     routes,
@@ -10,37 +10,50 @@ function fixture({ privateRepo = true, ownerType = 'User', visibility = 'private
     request: async url => {
       const route = new URL(url).pathname;
       routes.push(route);
-      if (route.startsWith('/repos/')) return Response.json({ private: privateRepo, owner: { login: 'example', type: ownerType } });
+      if (route.startsWith('/repos/')) return Response.json({ visibility: repositoryVisibility, owner: { login: 'example', type: ownerType } });
       return Response.json({ visibility, html_url: 'https://github.com/example/chartreuse/packages' }, { status: packageStatus });
     },
   };
 }
 
-test('private user and organization packages pass the release privacy check', async () => {
-  for (const ownerType of ['User', 'Organization']) {
-    const options = fixture({ ownerType });
-    const result = await checkPackagePrivacy(options);
-    assert.equal(result.repositoryPrivate, true);
-    assert.equal(result.packageVisibility, 'private');
-    assert.equal(options.routes[1], `/${ownerType === 'Organization' ? 'orgs' : 'users'}/example/packages/npm/chartreuse`);
+test('matching private or public packages pass in user and organization repositories', async () => {
+  for (const repositoryVisibility of ['private', 'public']) {
+    for (const ownerType of ['User', 'Organization']) {
+      const options = fixture({ repositoryVisibility, ownerType });
+      const result = await checkPackagePrivacy(options);
+      assert.equal(result.repositoryPrivate, repositoryVisibility === 'private');
+      assert.equal(result.repositoryVisibility, repositoryVisibility);
+      assert.equal(result.packageVisibility, repositoryVisibility);
+      assert.equal(options.routes[1], `/${ownerType === 'Organization' ? 'orgs' : 'users'}/example/packages/npm/chartreuse`);
+    }
   }
 });
 
-test('a missing package is allowed only before its first publication', async () => {
+test('a missing package is allowed only before a private first publication', async () => {
   assert.equal((await checkPackagePrivacy({ ...fixture({ packageStatus: 404 }), allowMissing: true })).packageVisibility, 'not-created');
   await assert.rejects(checkPackagePrivacy(fixture({ packageStatus: 404 })), /404/);
   await assert.rejects(checkPackagePrivacy({ ...fixture({ packageStatus: 403 }), allowMissing: true }), /403/);
+  await assert.rejects(checkPackagePrivacy({ ...fixture({ repositoryVisibility: 'public', packageStatus: 404 }), allowMissing: true }), /404/);
 });
 
-test('public repositories and non-private packages prevent publication', async () => {
-  const publicRepo = fixture({ privateRepo: false });
-  await assert.rejects(checkPackagePrivacy(publicRepo), /private repository/);
-  assert.equal(publicRepo.routes.length, 1);
-  for (const visibility of ['public', 'internal', undefined]) {
-    const options = fixture();
-    options.request = async url => new URL(url).pathname.startsWith('/repos/')
-      ? Response.json({ private: true, owner: { login: 'example', type: 'User' } })
-      : Response.json({ visibility });
-    await assert.rejects(checkPackagePrivacy(options), /visibility must be private/);
+test('mismatched or unsupported visibility prevents publication', async () => {
+  for (const repositoryVisibility of ['private', 'public']) {
+    const mismatch = repositoryVisibility === 'private' ? 'public' : 'private';
+    for (const visibility of [mismatch, 'internal', null]) {
+      await assert.rejects(checkPackagePrivacy(fixture({ repositoryVisibility, visibility })), /Package visibility must match/);
+    }
   }
+  for (const repositoryVisibility of ['internal', null]) {
+    const options = fixture({ repositoryVisibility });
+    await assert.rejects(checkPackagePrivacy(options), /Repository visibility must be private or public/);
+    assert.equal(options.routes.length, 1);
+  }
+});
+
+test('post-publication verification checks the visibility approved before publishing', async () => {
+  const options = fixture({ repositoryVisibility: 'public' });
+  await assert.rejects(checkPackagePrivacy({ ...options, expectedVisibility: 'private' }), /Repository visibility must still be private/);
+  assert.equal(options.routes.length, 1);
+  const result = await checkPackagePrivacy({ ...fixture({ repositoryVisibility: 'public' }), expectedVisibility: 'public' });
+  assert.equal(result.packageVisibility, 'public');
 });
