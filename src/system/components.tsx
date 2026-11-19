@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
-import { AlertCircle, ArrowRight, CheckCheck, ChevronDown, Circle, CircleCheck, Clock3, GitBranch, GripVertical, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
+import { AlertCircle, CheckCheck, ChevronDown, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
 import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip as TaskAttachmentsIcon } from 'lucide-react';
 import type { ControlSize } from './control-size';
 import { renderIcon } from './icons';
@@ -206,6 +206,8 @@ function DialogSplit({ open, children, sideContent, contentLabel, sideContentLab
   const [activePane, setActivePane] = useState<'main' | 'side'>('main');
   const [paneWidth, setPaneWidth] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
+  const splitterWidth = resizable ? 10 : 1;
+  const reservedWidth = 280 + splitterWidth;
   const configuredMax = Number.isFinite(maxWidth) && maxWidth > 0 ? Math.max(1, Math.floor(maxWidth)) : 640;
   const configuredMin = Math.min(configuredMax, Number.isFinite(minWidth) && minWidth > 0 ? Math.floor(minWidth) : 260);
   const [bounds, setBounds] = useState({ min: configuredMin, max: configuredMax });
@@ -231,7 +233,7 @@ function DialogSplit({ open, children, sideContent, contentLabel, sideContentLab
       // The compact view uses a single pane and does not alter the saved split.
       if (width < 700 || width === lastWidth) return;
       lastWidth = width;
-      const maximum = Math.max(0, Math.min(configuredMax, width - 281));
+      const maximum = Math.max(0, Math.min(configuredMax, width - reservedWidth));
       const nextBounds = { min: Math.min(configuredMin, maximum), max: maximum };
       boundsRef.current = nextBounds;
       setBounds(previous => previous.min === nextBounds.min && previous.max === nextBounds.max ? previous : nextBounds);
@@ -243,7 +245,7 @@ function DialogSplit({ open, children, sideContent, contentLabel, sideContentLab
     const observer = new ResizeObserver(measure);
     observer.observe(body);
     return () => observer.disconnect();
-  }, [open, configuredMin, configuredMax]);
+  }, [open, configuredMin, configuredMax, reservedWidth]);
 
   useEffect(() => {
     if (!open || !resizable) {
@@ -272,6 +274,8 @@ function DialogSplit({ open, children, sideContent, contentLabel, sideContentLab
     changeWidth(next);
   };
   const splitStyle = {
+    '--dialog-splitter-width': `${splitterWidth}px`,
+    '--dialog-side-available-width': `calc(100% - ${reservedWidth}px)`,
     '--cr-dialog-side-min-width': `${configuredMin}px`,
     '--cr-dialog-side-max-width': `${configuredMax}px`,
     ...(paneWidth === null ? {} : { '--cr-dialog-side-width': `${paneWidth}px` }),
@@ -293,9 +297,7 @@ function DialogSplit({ open, children, sideContent, contentLabel, sideContentLab
         const drag = dragRef.current;
         if (!resizable || !drag || drag.pointerId !== event.pointerId) return;
         changeWidth(drag.startWidth + (event.clientX - drag.startX) * (drag.rtl ? 1 : -1));
-      }} onPointerUp={finishDrag} onPointerCancel={finishDrag} onLostPointerCapture={() => finishDrag()}>
-      <span aria-hidden="true"><GripVertical size={12} /></span>
-    </div>
+      }} onPointerUp={finishDrag} onPointerCancel={finishDrag} onLostPointerCapture={() => finishDrag()} />
     <aside id={sideId} className="cr-dialog-side-content" aria-label={sideContentLabel}>{sideContent}</aside>
   </div>;
 }
@@ -352,9 +354,27 @@ export function useToast(): Notify {
   return notify;
 }
 
-export interface BreadcrumbsProps { items: { label: string; href?: string }[]; underline?: 'always' | 'hover' | 'none' }
-export function Breadcrumbs({ items, underline = 'always' }: BreadcrumbsProps) {
-  return <nav className="cr-breadcrumbs" data-underline={underline} aria-label="Breadcrumb"><ol>{items.map(({ label, href }, index) => <li key={`${label}-${index}`}>{href && index < items.length - 1 ? <a href={href}>{label}</a> : <span aria-current={index === items.length - 1 ? 'page' : undefined}>{label}</span>}{index < items.length - 1 && <ArrowRight size={12} aria-hidden="true" />}</li>)}</ol></nav>;
+export interface BreadcrumbsProps {
+  items: { label: string; href?: string }[];
+  underline?: 'always' | 'hover' | 'none';
+  separator?: ReactNode;
+}
+export function Breadcrumbs({
+  items,
+  underline = 'always',
+  separator = <ChevronRight className="cr-breadcrumbs-chevron" size={12} />,
+}: BreadcrumbsProps) {
+  return <nav className="cr-breadcrumbs" data-underline={underline} aria-label="Breadcrumb">
+    <ol>
+      {items.map(({ label, href }, index) => {
+        const isCurrent = index === items.length - 1;
+        return <li key={`${label}-${index}`}>
+          {href && !isCurrent ? <a href={href}>{label}</a> : <span aria-current={isCurrent ? 'page' : undefined}>{label}</span>}
+          {!isCurrent && <span className="cr-breadcrumbs-separator" aria-hidden="true">{separator}</span>}
+        </li>;
+      })}
+    </ol>
+  </nav>;
 }
 
 export interface TaskCardDependencies { completed: number; total: number }

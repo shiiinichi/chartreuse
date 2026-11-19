@@ -20,6 +20,7 @@ export const segmentedControlReferences: ComponentReference[] = [
 
 // Uncontrolled inputs retain native named form submission.
 <SegmentedControl label="View" name="view" defaultValue="board"
+  variant="solid"
   options={[{ value: 'board', label: 'Board' }, { value: 'list', label: 'List' }]}
 />`,
     props: [
@@ -36,6 +37,7 @@ export const segmentedControlReferences: ComponentReference[] = [
       { name: 'error', type: 'string', description: 'Validation message and invalid state; replaces the visible hint.' },
       { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the track and distributes options evenly within the available width.' },
       { name: 'size', type: "'sm' | 'md'", defaultValue: "'md'", description: 'Default 40px track or compact 32px track. Touch targets expand for coarse pointers.' },
+      { name: 'variant', type: "'outline' | 'solid'", defaultValue: "'outline'", description: 'The selected segment uses an outlined surface or a solid primary fill.' },
       { name: 'form', type: 'string', description: 'Native form ID forwarded to the fieldset and each radio for form association outside its DOM subtree.' },
       { name: 'className', type: 'string', description: 'Additional classes on the outer fieldset.' },
       { name: 'ref', type: 'Ref<HTMLFieldSetElement>', description: 'Native ref to the outer fieldset.' },
@@ -50,7 +52,7 @@ export const segmentedControlReferences: ComponentReference[] = [
       'Disabling a selected option preserves its selection. Native disabled inputs are omitted from form submission; update value in the owner if that choice should be cleared.',
       'Use value with onValueChange for controlled state, or defaultValue for internal state. Reset controlled values from the owning form’s onReset handler.',
       'Keep labels short and visible. Icons supplement the text and accept Lucide icons, custom React SVG components, or SVG JSX through IconSource.',
-      'Options wrap inside narrow containers. The selected option has a border and surface treatment; keyboard focus remains visible in either color scheme.',
+      'Options wrap inside narrow containers. Both variants show a visible keyboard focus ring in either color scheme.',
     ],
   },
 ];

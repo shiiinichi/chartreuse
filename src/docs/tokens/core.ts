@@ -85,6 +85,14 @@ const dialogRuntime: RuntimeVariableDefinition[] = [
     source: { file: 'src/system/components.tsx', detail: 'DialogSplit paneWidth and splitStyle; pointer/keyboard resize updates it.' },
     notes: ['Owned by the split measurement and resize interaction. It is not a styling override contract.'],
   },
+  {
+    name: '--dialog-splitter-width', description: 'Divider column width. The resizable gutter is 10px and the fixed divider is 1px.',
+    source: { file: 'src/system/components.tsx', detail: 'DialogSplit splitterWidth and splitStyle.' },
+  },
+  {
+    name: '--dialog-side-available-width', description: 'Available width for the side pane after reserving 280px for the main pane and room for the divider.',
+    source: { file: 'src/system/components.tsx', detail: 'DialogSplit reservedWidth and splitStyle.' },
+  },
 ];
 
 /** Source-audited token usage for the 24 components defined in components.tsx. */
@@ -164,7 +172,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Dialog', componentTokens: [],
-    globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'radius-xl', 'color-surface', 'shadow-lg', 'color-muted', 'color-subtle', 'space-6', 'color-input-border', 'radius-full', 'radius-md', 'duration-fast'),
+    globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'border', 'radius-xl', 'color-surface', 'shadow-lg', 'color-muted', 'color-subtle', 'space-6', 'radius-full', 'radius-md', 'duration-fast'),
     runtimeVariables: dialogRuntime,
     notes: ['Consumption: styles.css .cr-dialog/header/body/footer, optional split pane/switcher/separator rules, and its owned ghost close IconButton. User-supplied content/footer components are not assumed to be part of this token set.', 'Dialog exposes size, maxWidth, freezeHeight, and split-width props. Their internal custom properties are listed separately because JavaScript/size selectors own them.', 'The 24px footer/pane padding consumes --cr-space-6; similar header padding is literal CSS. The backdrop color/blur, viewport margins, and responsive thresholds are literal rules, not tokens.', 'The close IconButton uses Button’s local aliases on its child button; use its documented global inputs rather than a Dialog-root alias.'],
   },

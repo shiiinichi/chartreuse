@@ -11,6 +11,35 @@ export function SegmentedControlDemo() {
   const [disabled, setDisabled] = useState(false);
   const [result, setResult] = useState('');
   return <ExampleGallery className="segmented-control-demo">
+    <Showcase title="Solid selection" code={`import { SegmentedControl } from '@chartreuse/ui';
+
+<SegmentedControl
+  label="Card status"
+  name="card-status"
+  hideLabel
+  variant="solid"
+  defaultValue="all"
+  options={[
+    { value: 'all', label: 'All cards (1)' },
+    { value: 'in-progress', label: 'In progress (0)' },
+    { value: 'review', label: 'Review (0)' },
+    { value: 'done', label: 'Done (1)' },
+  ]}
+/>`}>
+      <SegmentedControl
+        label="Card status"
+        name={`${id}-card-status`}
+        hideLabel
+        variant="solid"
+        defaultValue="all"
+        options={[
+          { value: 'all', label: 'All cards (1)' },
+          { value: 'in-progress', label: 'In progress (0)' },
+          { value: 'review', label: 'Review (0)' },
+          { value: 'done', label: 'Done (1)' },
+        ]}
+      />
+    </Showcase>
     <Showcase title="Controlled size selection" description="Keep the selected option in React state and toggle the native disabled state." code={`import { useId, useState } from 'react';
 import { Grid2X2 } from 'lucide-react';
 import { SegmentedControl, Switch } from '@chartreuse/ui';

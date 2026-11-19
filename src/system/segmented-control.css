@@ -9,6 +9,7 @@
   .cr-segmented-label > svg { display: block; flex: 0 0 auto; }
   .cr-segmented-label > span { min-inline-size: 0; }
   .cr-segmented-input:checked + .cr-segmented-label { border-color: var(--cr-color-input-border); color: var(--cr-color-text); background: var(--cr-color-surface); font-weight: 550; box-shadow: var(--cr-shadow-sm); }
+  :where(.cr-segmented-control[data-variant='solid']) .cr-segmented-input:checked + .cr-segmented-label { border-color: var(--cr-color-primary); color: var(--cr-color-on-primary); background: var(--cr-color-primary); }
   .cr-segmented-input:not(:disabled, :checked) + .cr-segmented-label:hover { color: var(--cr-color-text); background: var(--cr-color-surface); }
   .cr-segmented-input:focus-visible + .cr-segmented-label { position: relative; z-index: 1; outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
   .cr-segmented-input:disabled + .cr-segmented-label { opacity: .45; cursor: not-allowed; }
@@ -22,6 +23,8 @@
   @media (pointer: coarse) { .cr-segmented-label, .cr-segmented-control[data-size='sm'] .cr-segmented-label { min-block-size: 44px; min-inline-size: 44px; } }
   @media (forced-colors: active) {
     .cr-segmented-track { border-color: ButtonText; }
-    .cr-segmented-input:checked + .cr-segmented-label { border-color: Highlight; outline: 1px solid Highlight; outline-offset: -3px; }
+    .cr-segmented-input:checked + .cr-segmented-label { border-color: Highlight; }
+    .cr-segmented-input:checked:not(:focus-visible) + .cr-segmented-label { outline: 1px solid Highlight; outline-offset: -3px; }
+    .cr-segmented-input:focus-visible + .cr-segmented-label { outline-color: Highlight; }
   }
 }

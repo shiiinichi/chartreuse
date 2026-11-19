@@ -159,6 +159,23 @@ test('the public React 19 entry can render a composed workspace without a browse
   assert.ok(markup.includes('<summary'), 'the disclosure uses a native summary trigger');
 });
 
+test('Breadcrumbs defaults to decorative chevrons and accepts custom separators', () => {
+  const items = [
+    { label: 'Workspace', href: '/workspace' },
+    { label: 'Tasks', href: '/tasks' },
+    { label: 'Review', href: '/tasks/review' },
+  ];
+  const render = props => renderToStaticMarkup(React.createElement(system.Breadcrumbs, { items, ...props }));
+
+  const defaults = render();
+  assert.equal(defaults.match(/aria-hidden="true"><svg[^>]+cr-breadcrumbs-chevron/g)?.length, 2);
+  assert.match(defaults, /<li><span aria-current="page">Review<\/span><\/li><\/ol><\/nav>$/);
+  assert.equal(render({ separator: '/' }).match(/aria-hidden="true">\/<\/span>/g)?.length, 2);
+  assert.equal(render({ separator: React.createElement('b', null, '·') }).match(/aria-hidden="true"><b>·<\/b><\/span>/g)?.length, 2);
+  assert.doesNotMatch(render({ separator: null }), /<svg/);
+  assert.doesNotMatch(render({ items: items.slice(-1) }), /cr-breadcrumbs-separator/);
+});
+
 test('Tabs applies the requested size in both variants and defaults to md', () => {
   const items = [{ value: 'board', label: 'Board', content: 'Tasks' }];
   for (const variant of ['line', 'pill']) {

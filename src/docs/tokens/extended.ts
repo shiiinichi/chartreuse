@@ -264,8 +264,8 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component-owned CSS variables are declared. agent-activity.css consumes shared status colors and 4/8/12px spacing steps, with monospace output and fast chevron transitions.', 'The 1s running spin, 440px container breakpoint, row heights, output height, and margins expressed in pixels are literal CSS. Coarse-pointer and reduced-motion rules adjust those styles without additional tokens.'],
   },
   {
-    component: 'SegmentedControl', componentTokens: [], globalTokens: names('color-text font-sans space-2 space-1 color-border color-subtle radius-md space-3 radius-sm color-muted color-input-border color-surface shadow-sm color-focus color-danger').sort(),
-    notes: ['No component-local CSS variables are declared. segmented-control.css consumes shared spacing, text/surface/border/focus colors, radii, and the small shadow for the selected radio segment. Required-marker danger color comes from styles.css.', 'The segment sizes, track inset, optical error-icon adjustment, and coarse-pointer height are literal CSS. Selection uses native radio state rather than an overrideable runtime style variable.'],
+    component: 'SegmentedControl', componentTokens: [], globalTokens: names('color-text font-sans space-2 space-1 color-border color-subtle radius-md space-3 radius-sm color-muted color-input-border color-surface color-primary color-on-primary shadow-sm color-focus color-danger').sort(),
+    notes: ['The solid variant uses color-primary for the selected segment fill and color-on-primary for its label. The outline variant uses color-surface and color-input-border. Required-marker danger color comes from styles.css.', 'The segment sizes, track inset, optical error-icon adjustment, and coarse-pointer height are literal CSS. Selection uses native radio state.'],
   },
   {
     component: 'Slider', componentTokens: sliderHooks,

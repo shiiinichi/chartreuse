@@ -253,6 +253,15 @@ export function BreadcrumbsScenarios() {
       '  { label: "Task details" },',
       ']} />',
     )}><Breadcrumbs items={[{ label: 'Overview', href: '#overview' }, { label: 'Card', href: '#components/card' }, { label: 'Task details' }]} /></Showcase>
+    <Showcase title="Custom separator" code={snippet(
+      'import { Breadcrumbs } from "@chartreuse/ui";',
+      '',
+      '<Breadcrumbs separator="/" items={[',
+      '  { label: "Overview", href: "#overview" },',
+      '  { label: "Card", href: "#components/card" },',
+      '  { label: "Task details" },',
+      ']} />',
+    )}><Breadcrumbs separator="/" items={[{ label: 'Overview', href: '#overview' }, { label: 'Card', href: '#components/card' }, { label: 'Task details' }]} /></Showcase>
     <Showcase title="Current page without ancestors" description="A single item identifies the current page without rendering ancestor links." code={snippet(
       'import { Breadcrumbs } from "@chartreuse/ui";',
       '',
