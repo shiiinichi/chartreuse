@@ -58,6 +58,7 @@ const kindIcons: Record<AgentActivityKind, IconSource> = {
 const statusLabels: Record<AgentActivityStatus, string> = {
   queued: 'Queued', running: 'Running', completed: 'Completed', failed: 'Failed', interrupted: 'Interrupted', info: 'Update',
 };
+const defaultVisibleCount = 6;
 
 function statusOf(event: AgentActivityEvent): AgentActivityStatus {
   return typeof event.exitCode === 'number' && event.exitCode !== 0 ? 'failed' : event.status ?? 'info';
@@ -129,7 +130,7 @@ export function AgentActivity({
   titleLines = 'multiple',
   label,
   headerHighlight = 'none',
-  initialVisibleCount = 6,
+  initialVisibleCount = defaultVisibleCount,
   announce = false,
   emptyMessage = 'No activity recorded.',
   open,
@@ -139,8 +140,9 @@ export function AgentActivity({
   ...props
 }: AgentActivityProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const [listOpen, setListOpen] = useState(true);
   const [historyBoundary] = useState(() => {
-    const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : 6;
+    const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : defaultVisibleCount;
     return Math.max(0, events.length - limit);
   });
   const statuses = props.variant === 'list' && !announce ? [] : events.map(statusOf);
@@ -157,9 +159,20 @@ export function AgentActivity({
 
   if (props.variant === 'list') {
     const { variant, ...listProps } = props;
+    const canCollapse = events.length > defaultVisibleCount;
     return <>
       <div role="group" aria-label={label ?? 'Agent activity'} {...listProps} className={rootClassName} data-variant={variant}>
-        {events.length > 0 ? <ActivityList events={events} singleLineTitle={singleLineTitle} /> : empty}
+        <details className="cr-agent-activity-list-disclosure" open={!canCollapse || listOpen} onToggle={event => {
+          if (canCollapse && event.target === event.currentTarget) setListOpen(event.currentTarget.open);
+        }}>
+          <summary className="cr-agent-activity-summary" hidden={!canCollapse}>
+            <span className="cr-agent-activity-count">
+              <ChevronRight className="cr-agent-activity-group-chevron" size={15} aria-hidden="true" />
+              {listOpen ? 'Collapse activity' : `Show ${events.length} activities`}
+            </span>
+          </summary>
+          {events.length > 0 ? <ActivityList events={events} singleLineTitle={singleLineTitle} /> : empty}
+        </details>
       </div>
       {announcement}
     </>;

@@ -22,7 +22,8 @@ export function renderIcon(source: IconSource | undefined, props: IconProps = {}
     color: props.color ?? 'currentColor',
     'aria-hidden': true,
     focusable: false,
-    tabIndex: -1,
+    // Even a negative tabindex lets an SVG take focus on click.
+    tabIndex: undefined,
   };
 
   if (isValidElement<IconProps>(source)) {

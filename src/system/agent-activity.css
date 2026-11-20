@@ -5,9 +5,10 @@
   .cr-agent-activity :where(summary)::marker { content: ''; }
   .cr-agent-activity :where(summary)::-webkit-details-marker { display: none; }
   .cr-agent-activity:where([data-header-highlight='hover']) > :where(summary):hover,
-  .cr-agent-activity :where(.cr-agent-activity-event > summary, .cr-agent-activity-earlier > summary):hover { background: var(--cr-color-subtle); }
+  .cr-agent-activity :where(.cr-agent-activity-list-disclosure > summary, .cr-agent-activity-event > summary, .cr-agent-activity-earlier > summary):hover { background: var(--cr-color-subtle); }
   .cr-agent-activity :where(summary, pre):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
   .cr-agent-activity-summary { flex-wrap: wrap; padding: var(--cr-space-2); }
+  .cr-agent-activity-summary[hidden] { display: none; }
   .cr-agent-activity-heading { font-weight: 550; overflow-wrap: anywhere; }
   .cr-agent-activity-count { display: inline-flex; align-items: center; gap: var(--cr-space-2); color: var(--cr-color-muted); font-size: .75rem; }
   .cr-agent-activity-group-status { display: inline-flex; flex-wrap: wrap; gap: var(--cr-space-2); margin-inline-start: auto; color: var(--cr-color-muted); font-size: .75rem; }
@@ -15,7 +16,7 @@
   .cr-agent-activity [data-status='failed'], .cr-agent-activity [data-status='interrupted'] { color: var(--cr-color-danger); }
   .cr-agent-activity-group-chevron, .cr-agent-activity-chevron, .cr-agent-activity-earlier > summary > svg { flex: none; color: var(--cr-color-muted); transition: rotate var(--cr-duration-fast); }
   .cr-agent-activity:dir(rtl) .cr-agent-activity-group-chevron, .cr-agent-activity:dir(rtl) .cr-agent-activity-chevron, .cr-agent-activity:dir(rtl) .cr-agent-activity-earlier > summary > svg { rotate: 180deg; }
-  .cr-agent-activity[open] > summary .cr-agent-activity-group-chevron, .cr-agent-activity-event[open] > summary > .cr-agent-activity-chevron, .cr-agent-activity-earlier[open] > summary > svg { rotate: 90deg; }
+  :is(.cr-agent-activity, .cr-agent-activity-list-disclosure)[open] > summary .cr-agent-activity-group-chevron, .cr-agent-activity-event[open] > summary > .cr-agent-activity-chevron, .cr-agent-activity-earlier[open] > summary > svg { rotate: 90deg; }
   .cr-agent-activity-content { min-inline-size: 0; margin-inline-start: 15px; padding-inline-start: var(--cr-space-3); border-inline-start: 1px solid var(--cr-color-border); }
   .cr-agent-activity-list { margin: 0; padding: 0; list-style: none; min-inline-size: 0; }
   .cr-agent-activity-item { min-inline-size: 0; color: var(--cr-color-text); }

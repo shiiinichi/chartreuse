@@ -3,7 +3,7 @@ import type { ComponentTokenDoc, RuntimeVariableDefinition, TokenDefinition } fr
 const systemFile = (name: string) => `src/system/${name}`;
 const globals = (...groups: readonly string[][]) => [...new Set(groups.flat())].sort();
 const names = (value: string) => value.trim().split(/\s+/).map(name => `--cr-${name}`);
-const fieldGlobals = names('font-sans color-text color-muted color-danger color-surface color-input-border color-focus radius-md duration-fast');
+const fieldGlobals = names('font-sans color-text color-muted color-danger color-surface color-input-border color-focus radius-md');
 // IconButton defaults to Button's ghost variant. Primary/accent/danger button
 // palettes and the primary-button hover shadow are not active for that variant.
 const ghostButtonGlobals = names('font-sans color-text color-focus color-subtle radius-md duration-fast');
@@ -316,7 +316,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['swimlane.css declares two lane-scoped tone aliases; override the same element for a custom palette or use tone for the built-in mappings. Its instantiated Badge adds the shared small-radius/font/status palette.', 'Lane minimum heights, header/card gaps, count size, top-border width, and padding are literal CSS. Supplied cards/actions/empty content have independent component token contracts.'],
   },
   {
-    component: 'NumberInput', componentTokens: [], globalTokens: globals(fieldGlobals, names('color-border color-subtle')),
+    component: 'NumberInput', componentTokens: [], globalTokens: globals(fieldGlobals, names('color-border color-subtle duration-fast')),
     notes: ['No component-owned CSS variables are declared. NumberInput renders shared .cr-field/.cr-input/.cr-field-error/.cr-required classes; number-input.css adds stepper surface/border/motion/focus consumption.', 'Size presets share the Button minimum heights. On touch, each step button is 44px wide and follows the input height.', 'Hover redistributes the fixed rail height. Reduced motion disables transitions.'],
   },
   {

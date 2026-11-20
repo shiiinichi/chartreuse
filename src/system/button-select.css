@@ -1,0 +1,30 @@
+@layer cr-components {
+  .cr-button-select-label {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+  }
+
+  .cr-button-select-label:empty { display: none; }
+
+  .cr-button-select-panel {
+    position: fixed;
+    inset: auto;
+    box-sizing: border-box;
+    inline-size: max-content;
+    margin: 0;
+    padding: var(--cr-space-2);
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-md);
+    background: var(--cr-color-surface);
+    color: var(--cr-color-text);
+    box-shadow: var(--cr-shadow-lg);
+    overflow: auto;
+    overscroll-behavior: contain;
+    opacity: 0;
+  }
+
+  .cr-button-select-panel[data-positioned] { opacity: 1; }
+}

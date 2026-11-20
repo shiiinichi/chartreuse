@@ -16,7 +16,7 @@ export const agentActivityReferences: ComponentReference[] = [{
 <AgentActivity events={events} initialVisibleCount={6} defaultOpen />`,
   props: [
     { name: 'events', type: 'readonly AgentActivityEvent[]', required: true, description: 'Chronological events, oldest first. Each event needs a stable id and a brief human-readable title.' },
-    { name: 'variant', type: "'default' | 'list'", defaultValue: "'default'", description: 'Use "list" to show every event directly as a row with expandable details. The default groups events under a collapsible heading with a left connector.' },
+    { name: 'variant', type: "'default' | 'list'", defaultValue: "'default'", description: 'Use "list" for flat rows with expandable details. Lists with more than six events start open and offer a collapse control. The default groups events under a collapsible heading with a left connector.' },
     { name: 'titleLines', type: "'single' | 'multiple'", defaultValue: "'multiple'", description: 'Use "single" to keep event titles on one line with an ellipsis when needed. Expand a row to read its full title. Applies to both variants.' },
     { name: 'label', type: 'string', description: 'Overrides the default group heading (Working, Waiting, Worked, or Activity). In the list variant it names the group for assistive technology.' },
     { name: 'headerHighlight', type: "'none' | 'hover'", defaultValue: "'none'", description: 'Use "hover" to show a subtle background when the pointer is over the activity group header.' },
@@ -32,7 +32,7 @@ export const agentActivityReferences: ComponentReference[] = [{
   nativeElement: 'details for the default variant or div for the list variant, with ordered lists and optional event disclosures',
   nativeProps: 'Native attributes and className target the outer details or div. The component reserves children, title, and onToggle on both variants, plus name and open on the details element.',
   notes: [
-    'Group visibility, header highlighting, and the initial history boundary apply to the default variant.',
+    'The open, defaultOpen, onOpenChange, headerHighlight, and initialVisibleCount props apply to the default variant.',
     'AgentActivityEvent uses id/title with optional kind (agent, command, tool, file, search, message), status (queued, running, completed, failed, interrupted, info), description, command, input, output, outputTruncated, durationMs, exitCode, icon, and defaultOpen.',
     'Give each event a brief title describing the recorded action, such as “Read project guidance”; put the exact command and recorded output in its details. All command/input/output strings render as plain text and ANSI escape sequences are removed.',
     'When an event has no description or visible output, its expanded details show the event title.',

@@ -93,7 +93,7 @@ export const globalTokens: TokenDefinition[] = [
   })),
   {
     name: '--cr-duration-fast', type: 'time', defaultValue: '150ms',
-    description: 'Fast transition duration for consumers such as buttons, inputs, and switch thumbs.', source: root, availability: 'library-css',
+    description: 'Fast transition duration for consumers such as buttons, switch thumbs, and number steppers.', source: root, availability: 'library-css',
     notes: ['Reduced-motion rules can disable a consumer’s transition without changing this variable. Spinner and Skeleton animation durations are separate literal values.'],
   },
   {

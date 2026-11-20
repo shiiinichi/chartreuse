@@ -68,7 +68,7 @@
 
 @layer cr-components {
   :where(.cr-button, .cr-input, .cr-tab-list button, .cr-dialog, .cr-task-button, .cr-agent-card) { font-family: var(--cr-font-sans); font-size: .8125rem; color: var(--cr-color-text); }
-  :where(.cr-button, .cr-input, .cr-switch input, .cr-checkbox input, .cr-tab-list button, .cr-task-button, .cr-agent-card, .cr-dialog a):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  :where(.cr-button, .cr-switch input, .cr-checkbox input, .cr-tab-list button, .cr-task-button, .cr-agent-card, .cr-dialog a):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   :where(.cr-button, .cr-tab-list button, .cr-task-button, .cr-agent-card) { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   :where(.cr-button, .cr-input, .cr-tab-list > button, .cr-card, .cr-agent-card) { box-sizing: border-box; }
   .cr-button, .cr-input, .cr-tab-list > button { min-block-size: 40px; line-height: 1.4; }
@@ -106,13 +106,18 @@
   .cr-required { color: var(--cr-color-danger); }
   .cr-input-wrap { position: relative; display: flex; align-items: center; }
   .cr-input-wrap > svg { position: absolute; inset-inline-start: 12px; color: var(--cr-color-muted); pointer-events: none; }
-  .cr-input { inline-size: 100%; min-inline-size: 0; padding: .625rem .75rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-input-border); border-radius: var(--cr-radius-md); transition: border-color var(--cr-duration-fast); }
+  .cr-input { inline-size: 100%; min-inline-size: 0; padding: .625rem .75rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-input-border); border-radius: var(--cr-radius-md); }
   /* Leave room for native input decorations within the shared control heights. */
   [data-cr-input-size] > .cr-input { padding-block: .25rem; }
   .cr-input-wrap:has(> svg) .cr-input { padding-inline-start: 36px; }
   .cr-input::placeholder { color: var(--cr-color-muted); opacity: 1; }
-  .cr-input:hover:not(:disabled) { border-color: var(--cr-color-text); }
+  .cr-input:where(:hover:not(:disabled)) { border-color: var(--cr-color-text); }
   .cr-input[aria-invalid='true'], .cr-input:user-invalid { border-color: var(--cr-color-danger); }
+  .cr-input:focus-visible {
+    box-shadow: 0 0 1px 1px color-mix(in oklab, var(--cr-color-focus) 65%, light-dark(var(--cr-color-text), var(--cr-color-surface)));
+    outline: 2px solid transparent;
+    outline-offset: 0;
+  }
   .cr-input:disabled { opacity: .5; cursor: not-allowed; }
   textarea.cr-input { min-block-size: 100px; resize: vertical; }
   .cr-select-wrap { position: relative; }
@@ -364,10 +369,11 @@
     [data-cr-input-size='sm'] > .cr-input { padding-block: .125rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cr-button, .cr-input, .cr-switch-track > span { transition: none; }
+    .cr-button, .cr-switch-track > span { transition: none; }
     .cr-spin, .cr-skeleton { animation: none; }
   }
   @media (forced-colors: active) {
+    .cr-input:focus-visible { outline-color: Highlight; }
     .cr-badge, .cr-avatar, .cr-switch-track { border: 1px solid CanvasText; }
     .cr-switch input:checked + .cr-switch-track { background: Highlight; }
     .cr-status-dot { background: CanvasText; }

@@ -3,6 +3,7 @@ import './styles.css';
 export type { IconSource, IconProps } from './icons';
 
 export * from './components';
+export * from './ButtonSelect';
 export * from './Text';
 export * from './Autocomplete';
 export * from './MessageComposer';

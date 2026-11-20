@@ -1,5 +1,56 @@
 import type { ComponentReference } from './types';
 
+export const buttonSelectReference: ComponentReference = {
+  name: 'ButtonSelect',
+  slug: 'button-select',
+  summary: 'A Button that opens an anchored popover for choices, grids, or other interactive content.',
+  importCode: "import { useState } from 'react';\nimport { Button, ButtonSelect, Flex } from '@chartreuse/ui';",
+  usageCode: `export function ViewSelect() {
+  const [view, setView] = useState('Grid');
+
+  return <ButtonSelect variant="secondary" style={{ inlineSize: '10rem' }} aria-label={'View layout, ' + view}
+    content={({ close }) => (
+      <Flex direction="column" gap={1} role="group" aria-label="View layout">
+        {['Grid', 'List', 'Board'].map(option => {
+          const selected = option === view;
+          return <Button key={option} size="sm" variant={selected ? 'primary' : 'ghost'}
+            style={{
+              border: 0,
+              outlineOffset: 1,
+              fontWeight: selected ? 650 : undefined,
+              backgroundColor: selected ? undefined : 'transparent',
+            }}
+            aria-pressed={selected}
+            onClick={() => { setView(option); close(); }}>
+            {option}
+          </Button>;
+        })}
+      </Flex>
+    )}>
+    {view}
+  </ButtonSelect>;
+}`,
+  nativeElement: 'button and div[popover]',
+  nativeProps: 'Button props, native events, className, style, and ref target the trigger. ButtonSelect manages its button type, popover target, and expanded state. The onClick handler can prevent the native toggle with preventDefault().',
+  props: [
+    { name: 'children', type: 'ReactNode', description: 'The trigger content, aligned to the start. Show the current choice or a summary here.' },
+    { name: 'content', type: 'ReactNode | ((controls: ButtonSelectControls) => ReactNode)', required: true, description: 'Content inside the popover. Use the render function to call close() when the user finishes.' },
+    { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger'", defaultValue: "'primary'", description: 'Uses the corresponding Button variant and tokens.' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Uses the corresponding Button size.' },
+    { name: 'icon', type: 'IconSource', description: 'Leading icon passed to Button.' },
+    { name: 'iconRight', type: 'IconSource', defaultValue: 'ChevronDown', description: 'Trailing icon at the end of the trigger.' },
+    { name: 'loading', type: 'boolean', description: 'Shows the Button spinner, disables the trigger, and closes the popover.' },
+    { name: 'disabled', type: 'boolean', description: 'Disables the trigger and closes the popover.' },
+    { name: 'panelClassName', type: 'string', description: 'Additional classes on the popover panel.' },
+    { name: 'ref', type: 'Ref<HTMLButtonElement>', description: 'Native ref to the trigger.' },
+  ],
+  notes: [
+    'Keep selection state in the owner and use children to display the current value or a summary. Call close() after a single choice or from an explicit confirmation button.',
+    'Use native controls inside the popover. Tab reaches those controls in order, Escape closes the popover, and clicking outside dismisses it. Focus returns to the trigger when closing from inside the panel.',
+    'Provide an accessible name with context when the trigger shows only a value or an icon. Label groups of related controls within the panel.',
+  ],
+};
+
 export const coreReferences: ComponentReference[] = [
   {
     name: 'Text',
@@ -57,6 +108,7 @@ export const coreReferences: ComponentReference[] = [
     notes: [
       'Provide a visible label that names the action. Use IconButton when the action has only an icon. Custom icons receive control sizing and decorative SVG attributes.', 'Native form attributes such as form and name are supported.'],
   },
+  buttonSelectReference,
   {
     name: 'IconButton',
     slug: 'icon-button',

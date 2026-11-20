@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { ActivityItemDemo, BlockquoteDemo } from './ContentBlocksDemo';
 import { AgentActivityDemo } from './AgentActivityDemo';
+import { ButtonSelectDemo } from './ButtonSelectDemo';
 import { DisclosurePage } from './DisclosurePage';
 import { FieldsetPage } from './FieldsetPage';
 import { GridDemo } from './GridDemo';
@@ -35,7 +36,7 @@ const StepsDemo = lazy(() => import('./StepsDemo').then(module => ({ default: mo
 
 const demosWithOwnShowcases = new Set([
   'ActivityItem', 'AgentActivity', 'AgentCard', 'Alert', 'Autocomplete', 'Avatar',
-  'AvatarGroup', 'Badge', 'Blockquote', 'BrandMark', 'Breadcrumbs', 'Button',
+  'AvatarGroup', 'Badge', 'Blockquote', 'BrandMark', 'Breadcrumbs', 'Button', 'ButtonSelect',
   'CalloutBanner', 'Card', 'Checkbox', 'Conversation', 'Dialog', 'Disclosure',
   'Divider', 'Drawer', 'EmptyState', 'Fieldset', 'FilePicker', 'Flex', 'Form', 'FormLayout', 'Grid', 'GridItem', 'GridSpacer',
   'Masonry', 'MasonryItem', 'MasonrySpacer',
@@ -92,6 +93,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'ActivityItem': return <ActivityItemDemo />;
     case 'AgentActivity': return <AgentActivityDemo />;
     case 'Blockquote': return <BlockquoteDemo />;
+    case 'ButtonSelect': return <ButtonSelectDemo />;
     case 'Conversation': return <Suspense fallback={<Text size="body" className="muted">Loading conversation example…</Text>}><ConversationDemo /></Suspense>;
     case 'Dialog': return <ModalsPage showGuidance={false} />;
     case 'Disclosure': return <DisclosurePage showGuidance={false} />;

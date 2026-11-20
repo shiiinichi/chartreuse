@@ -20,7 +20,7 @@ const initialEvents: AgentActivityEvent[] = [
   { id: 'checks', kind: 'command', title: 'Order summary tests running', status: 'running', command: 'npm test -- --run order-summary', output: 'Running order-summary tests…' },
 ];
 
-const listEvents = initialEvents.slice(-6);
+const listEvents = initialEvents.slice(-8);
 
 const recordedEvents: AgentActivityEvent[] = [
   { id: 'interrupted', kind: 'command', title: 'Workspace notes requested', status: 'interrupted', command: 'cat ./notes.md', description: 'The session ended before this step reported completion.', defaultOpen: true },
@@ -103,7 +103,7 @@ export function AgentActivityDemo() {
         <Text size="body" className="agent-activity-demo-caption">These controls update local event state. They do not execute the displayed commands.</Text>
       </div>
     </Showcase>
-    <Showcase title="Activity list" description="Show every event directly. With single-line titles, expand a row to read the full title." code={listCode}>
+    <Showcase title="Activity list" description="Lists with more than six events can collapse. Expand a row to read its full title." code={listCode}>
       <div className="agent-activity-demo-panel"><AgentActivity variant="list" titleLines="single" events={listEvents} /></div>
     </Showcase>
     <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. An event with no description or output shows its title in the details. The group header highlights on hover." code={recordedCode}>

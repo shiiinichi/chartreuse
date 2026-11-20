@@ -8,7 +8,7 @@ import * as system from '@chartreuse/ui';
 import { colors, tokens, spacing } from '@chartreuse/ui/tokens';
 
 test('the built package exposes the documented public components and notification hook', () => {
-  const expected = ['Button', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
+  const expected = ['Button', 'ButtonSelect', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
   // BrandMark and ToastProvider are counted as reusable components, alongside the
   // component-specific APIs. Validate the public boundary, not private helpers.
   for (const name of expected) assert.equal(typeof system[name], 'function', `${name} is importable`);
@@ -16,6 +16,46 @@ test('the built package exposes the documented public components and notificatio
   assert.deepEqual(actual, [...expected].sort());
   assert.equal(typeof system.useToast, 'function');
   assert.equal(tokens.version, '1.0.0');
+});
+
+test('Button icon slots render decorative SVGs without a tabindex', () => {
+  const h = React.createElement;
+  const markup = renderToStaticMarkup(h(system.Button, {
+    icon: props => h('svg', props),
+    iconRight: h('svg', { tabIndex: 0 }),
+  }, 'Continue'));
+  const icons = markup.match(/<svg\b[^>]*>/g) ?? [];
+
+  assert.equal(icons.length, 2);
+  for (const icon of icons) {
+    assert.match(icon, /aria-hidden="true"/);
+    assert.match(icon, /focusable="false"/);
+    assert.doesNotMatch(icon, /\btabindex=/i);
+  }
+});
+
+test('ButtonSelect preserves Button styling and connects the trigger to arbitrary controls', () => {
+  const h = React.createElement;
+  const buttonProps = { variant: 'accent', size: 'lg', style: { '--button-bg': 'rebeccapurple' }, iconRight: h('svg') };
+  const buttonMarkup = renderToStaticMarkup(h(system.Button, buttonProps, 'Columns'));
+  const markup = renderToStaticMarkup(h(system.ButtonSelect, {
+    ...buttonProps,
+    panelClassName: 'column-picker',
+    content: ({ close }) => h('div', { role: 'group', 'aria-label': 'Visible columns' },
+      h(system.Checkbox, { label: 'Owner', defaultChecked: true }),
+      h(system.Button, { onClick: close }, 'Done')),
+  }, 'Columns'));
+
+  const panelId = markup.match(/popovertarget="([^"]+)"/i)?.[1];
+  assert.ok(panelId);
+  assert.ok(markup.includes(`aria-controls="${panelId}" aria-expanded="false"`));
+  assert.ok(markup.includes(`id="${panelId}" popover="auto" class="cr-button-select-panel column-picker"`));
+  assert.match(markup, /<span class="cr-button-select-label">Columns<\/span><svg/);
+  assert.equal(markup.slice(0, markup.indexOf('</button>') + '</button>'.length)
+    .replace('<span class="cr-button-select-label">Columns</span>', 'Columns')
+    .replace(/ popovertarget="[^"]+" aria-controls="[^"]+" aria-expanded="false"/i, ''), buttonMarkup);
+  assert.match(markup, /role="group" aria-label="Visible columns"/);
+  assert.match(markup, /type="checkbox"/);
 });
 
 async function readReferenceModule(filename) {
@@ -284,24 +324,28 @@ test('agent activity uses its title as detail text when description and output a
   }
 });
 
-test('agent activity list renders every event directly with its row disclosure', () => {
-  const events = Array.from({ length: 8 }, (_, index) => ({
+test('agent activity list starts open and exposes a collapse control above six events', () => {
+  const events = Array.from({ length: 7 }, (_, index) => ({
     id: `step-${index}`,
     title: `Review step ${index}`,
-    status: index === 7 ? 'running' : 'completed',
+    status: index === 5 ? 'running' : 'completed',
     durationMs: 360,
   }));
-  const markup = renderToStaticMarkup(React.createElement(system.AgentActivity, {
-    variant: 'list', events, label: 'Review activity', initialVisibleCount: 2, defaultOpen: false,
-  }));
+  for (const listEvents of [events.slice(0, 6), events]) {
+    const markup = renderToStaticMarkup(React.createElement(system.AgentActivity, {
+      variant: 'list', events: listEvents, label: 'Review activity', initialVisibleCount: 2, defaultOpen: false,
+    }));
 
-  assert.match(markup, /^<div role="group" aria-label="Review activity" class="cr-agent-activity" data-variant="list"><ol /);
-  assert.doesNotMatch(markup, /cr-agent-activity-(summary|content|earlier)\b/);
-  const titles = [...markup.matchAll(/class="cr-agent-activity-title">([^<]+)</g)].map(([, title]) => title);
-  assert.deepEqual(titles, events.map(event => event.title));
-  assert.equal([...markup.matchAll(/<summary class="cr-agent-activity-row">/g)].length, events.length);
-  assert.match(markup, /360 ms/);
-  assert.match(markup, /data-status="running"/);
+    assert.match(markup, /^<div role="group" aria-label="Review activity" class="cr-agent-activity" data-variant="list"><details class="cr-agent-activity-list-disclosure" open="">/);
+    const summary = markup.match(/<summary class="cr-agent-activity-summary"([^>]*)>/);
+    assert.equal(summary?.[1], listEvents.length === 6 ? ' hidden=""' : '');
+    assert.doesNotMatch(markup, /cr-agent-activity-(content|earlier)\b/);
+    const titles = [...markup.matchAll(/class="cr-agent-activity-title">([^<]+)</g)].map(([, title]) => title);
+    assert.deepEqual(titles, listEvents.map(event => event.title));
+    assert.equal([...markup.matchAll(/<summary class="cr-agent-activity-row">/g)].length, listEvents.length);
+    assert.match(markup, /360 ms/);
+    assert.match(markup, /data-status="running"/);
+  }
 });
 
 test('agent activity single-line titles are available in full in both variants', () => {

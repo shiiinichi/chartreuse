@@ -10,7 +10,7 @@ const buttonGlobals = globals('font-sans', 'color-text', 'color-focus', 'color-p
   'color-danger', 'shadow-sm', 'color-subtle');
 const ghostButtonGlobals = globals('font-sans', 'color-text', 'color-focus', 'radius-md', 'duration-fast', 'color-subtle');
 const fieldGlobals = globals('font-sans', 'color-text', 'color-muted', 'color-surface', 'color-input-border',
-  'radius-md', 'duration-fast', 'color-focus', 'color-danger');
+  'radius-md', 'color-focus', 'color-danger');
 const badgeGlobals = globals('font-sans', 'radius-sm', 'color-muted', 'color-subtle', ...toneGlobals());
 const avatarGlobals = globals('font-sans', 'color-surface');
 
@@ -104,6 +104,11 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'Button', componentTokens: buttonAliases(), globalTokens: buttonGlobals,
     notes: ['Consumption: styles.css .cr-button, its data-variant selectors, shared base typography, and :focus-visible rules.', 'Control sizes, gaps, padding, font size/weight/line-height, disabled opacity, and the 1s loading spin are literal rules or props, not additional CSS tokens. --cr-duration-fast controls transitions only.'],
+  },
+  {
+    component: 'ButtonSelect', componentTokens: buttonAliases(),
+    globalTokens: [...buttonGlobals, ...globals('color-border', 'shadow-lg', 'space-2')],
+    notes: ['The trigger renders Button, so it shares its sizes, variants, and local color aliases. The popover uses shared surface, text, border, radius, shadow, and spacing tokens.'],
   },
   {
     component: 'IconButton', componentTokens: buttonAliases(true), globalTokens: buttonGlobals,

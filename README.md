@@ -180,9 +180,9 @@ GitHub manages the repository and npm package visibility separately. Review what
 
 ## Components
 
-The library exports 63 components. [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
+The library exports 64 components. [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
 
-ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
+ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
 The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. Creating and moving a task updates the example board for the current page visit.
 
@@ -208,9 +208,11 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `SegmentedControl` uses named native radios for a single visible choice. Set `variant="solid"` for a filled selection. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
 
+`ButtonSelect` uses the same sizes, variants, and tokens as `Button`. Render the current selection as its children and pass a list, grid, or other controls through `content`. A content renderer receives `close()` so it can dismiss the popover when the user finishes. [Button Select examples](http://127.0.0.1:5173/#components/button-select)
+
 `Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots.
 
-`AgentActivity` displays a collapsible event group with details for each event. Set `variant="list"` to show every event as a row with expandable details. In either variant, `titleLines="single"` truncates long titles with an ellipsis. Expand the row to read the full title. Command, input, and output text are available in the details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
+`AgentActivity` displays a collapsible event group with details for each event. Set `variant="list"` to show flat rows with expandable details. Lists with more than six events start open and offer a collapse control. In either variant, `titleLines="single"` truncates long titles with an ellipsis. Expand the row to read the full title. Command, input, and output text are available in the details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
