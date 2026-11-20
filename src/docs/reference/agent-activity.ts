@@ -16,9 +16,9 @@ export const agentActivityReferences: ComponentReference[] = [{
 <AgentActivity events={events} initialVisibleCount={6} defaultOpen />`,
   props: [
     { name: 'events', type: 'readonly AgentActivityEvent[]', required: true, description: 'Chronological events, oldest first. Each event needs a stable id and a brief human-readable title.' },
-    { name: 'variant', type: "'default' | 'list'", defaultValue: "'default'", description: 'Use "list" for flat rows with expandable details. Lists with more than six events start open and offer a collapse control. The default groups events under a collapsible heading with a left connector.' },
+    { name: 'variant', type: "'default' | 'list'", defaultValue: "'default'", description: 'Use "list" to show all events under a group heading with a left connector. Lists with more than six events start open and can collapse from the heading or the footer below the last row. The footer also links back to the heading. The default uses a collapsible group heading and groups earlier events separately.' },
     { name: 'titleLines', type: "'single' | 'multiple'", defaultValue: "'multiple'", description: 'Use "single" to keep event titles on one line with an ellipsis when needed. Expand a row to read its full title. Applies to both variants.' },
-    { name: 'label', type: 'string', description: 'Overrides the default group heading (Working, Waiting, Worked, or Activity). In the list variant it names the group for assistive technology.' },
+    { name: 'label', type: 'string', description: 'Overrides the group heading (Working, Waiting, Worked, or Activity). In the list variant it also names the group for assistive technology.' },
     { name: 'headerHighlight', type: "'none' | 'hover'", defaultValue: "'none'", description: 'Use "hover" to show a subtle background when the pointer is over the activity group header.' },
     { name: 'initialVisibleCount', type: 'number', defaultValue: '6', description: 'Recent rows shown directly on mount; existing older rows go in an earlier-activities disclosure. New events stay in place. Finite values are floored and clamped to at least one.' },
     { name: 'open', type: 'boolean', description: 'Controlled group visibility; requires onOpenChange and excludes defaultOpen.' },

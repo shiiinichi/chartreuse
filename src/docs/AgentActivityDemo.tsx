@@ -103,7 +103,7 @@ export function AgentActivityDemo() {
         <Text size="body" className="agent-activity-demo-caption">These controls update local event state. They do not execute the displayed commands.</Text>
       </div>
     </Showcase>
-    <Showcase title="Activity list" description="Lists with more than six events can collapse. Expand a row to read its full title." code={listCode}>
+    <Showcase title="Activity list" description="The footer lets you collapse long lists or scroll to their heading. Expand a row to read its full title." code={listCode}>
       <div className="agent-activity-demo-panel"><AgentActivity variant="list" titleLines="single" events={listEvents} /></div>
     </Showcase>
     <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. An event with no description or output shows its title in the details. The group header highlights on hover." code={recordedCode}>

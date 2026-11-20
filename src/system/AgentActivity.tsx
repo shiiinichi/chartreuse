@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import type { ComponentPropsWithRef } from 'react';
-import { Check, ChevronRight, CircleAlert, Clock3, FilePenLine, Globe, LoaderCircle, MessageSquare, Network, Terminal, Wrench } from 'lucide-react';
+import { useId, useRef, useState } from 'react';
+import type { ComponentPropsWithRef, MouseEvent } from 'react';
+import { Check, ChevronRight, ChevronUp, CircleAlert, Clock3, FilePenLine, Globe, LoaderCircle, MessageSquare, Network, Terminal, Wrench } from 'lucide-react';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 import { Text } from './Text';
@@ -32,7 +32,7 @@ type AgentActivityBase = {
   events: readonly AgentActivityEvent[];
   /** Use 'single' to show event titles on one line with an ellipsis. Defaults to 'multiple'. */
   titleLines?: 'single' | 'multiple';
-  /** Custom group heading in the default variant or accessible name in the list variant. */
+  /** Custom group heading. Also names the list group for assistive technology. */
   label?: string;
   /** Use 'hover' to highlight the default variant's header. Defaults to 'none'. */
   headerHighlight?: 'none' | 'hover';
@@ -141,38 +141,87 @@ export function AgentActivity({
 }: AgentActivityProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [listOpen, setListOpen] = useState(true);
+  const listHeadingButton = useRef<HTMLButtonElement>(null);
+  const listDisclosure = useRef<HTMLDetailsElement>(null);
+  const listContentId = useId();
   const [historyBoundary] = useState(() => {
     const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : defaultVisibleCount;
     return Math.max(0, events.length - limit);
   });
-  const statuses = props.variant === 'list' && !announce ? [] : events.map(statusOf);
-  const running = statuses.filter(status => status === 'running').length;
-  const queued = statuses.filter(status => status === 'queued').length;
-  const failed = statuses.filter(status => status === 'failed').length;
-  const interrupted = statuses.filter(status => status === 'interrupted').length;
+  const statusCounts: Record<AgentActivityStatus, number> = { queued: 0, running: 0, completed: 0, failed: 0, interrupted: 0, info: 0 };
+  for (const event of events) {
+    statusCounts[statusOf(event)] += 1;
+  }
+  const { running, queued, failed, interrupted } = statusCounts;
   const heading = label ?? (running ? 'Working' : queued ? 'Waiting' : events.length ? 'Worked' : 'Activity');
-  const counts = [`${events.length} ${events.length === 1 ? 'activity' : 'activities'}`, running && `${running} running`, queued && `${queued} queued`, failed && `${failed} failed`, interrupted && `${interrupted} interrupted`].filter(Boolean).join(' · ');
+  const activityCount = `${events.length} ${events.length === 1 ? 'activity' : 'activities'}`;
+  const counts = [activityCount, running && `${running} running`, queued && `${queued} queued`, failed && `${failed} failed`, interrupted && `${interrupted} interrupted`].filter(Boolean).join(' · ');
   const announcement = announce && <span className="cr-agent-activity-announcement" role="status" aria-atomic="true">{heading}. {counts}.</span>;
   const rootClassName = ['cr-agent-activity', className].filter(Boolean).join(' ');
   const empty = <Text size="body" className="cr-agent-activity-empty">{emptyMessage}</Text>;
   const singleLineTitle = titleLines === 'single';
+  const canCollapseList = events.length > defaultVisibleCount;
+  const groupHeader = <>
+    <span className="cr-agent-activity-heading">{heading}</span>
+    <span className="cr-agent-activity-count">
+      {activityCount}
+      {(props.variant !== 'list' || canCollapseList) && <ChevronRight className="cr-agent-activity-group-chevron" size={15} aria-hidden="true" />}
+    </span>
+    <span className="cr-agent-activity-group-status">
+      {running > 0 && <span data-status="running">{running} running</span>}
+      {queued > 0 && <span data-status="queued">{queued} queued</span>}
+      {failed > 0 && <span data-status="failed">{failed} failed</span>}
+      {interrupted > 0 && <span data-status="interrupted">{interrupted} interrupted</span>}
+    </span>
+  </>;
 
   if (props.variant === 'list') {
     const { variant, ...listProps } = props;
-    const canCollapse = events.length > defaultVisibleCount;
+    const listHeadingId = `${listContentId}-header`;
+    const headingLink = `#${listHeadingId}`;
+    const moveToListHeading = (event: MouseEvent<HTMLAnchorElement>, collapse = false) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const headingButton = listHeadingButton.current;
+      if (!headingButton) return;
+
+      event.preventDefault();
+      if (collapse && listDisclosure.current) listDisclosure.current.open = false;
+      headingButton.focus({ preventScroll: true });
+      headingButton.scrollIntoView({ behavior: 'instant', block: collapse ? 'nearest' : 'start', inline: 'nearest' });
+    };
+
     return <>
       <div role="group" aria-label={label ?? 'Agent activity'} {...listProps} className={rootClassName} data-variant={variant}>
-        <details className="cr-agent-activity-list-disclosure" open={!canCollapse || listOpen} onToggle={event => {
-          if (canCollapse && event.target === event.currentTarget) setListOpen(event.currentTarget.open);
-        }}>
-          <summary className="cr-agent-activity-summary" hidden={!canCollapse}>
-            <span className="cr-agent-activity-count">
-              <ChevronRight className="cr-agent-activity-group-chevron" size={15} aria-hidden="true" />
-              {listOpen ? 'Collapse activity' : `Show ${events.length} activities`}
-            </span>
-          </summary>
-          {events.length > 0 ? <ActivityList events={events} singleLineTitle={singleLineTitle} /> : empty}
-        </details>
+        {events.length > 0 ? <>
+          {canCollapseList ? <button
+            ref={listHeadingButton}
+            id={listHeadingId}
+            type="button"
+            className="cr-agent-activity-summary"
+            aria-expanded={listOpen}
+            aria-controls={listContentId}
+            onClick={() => {
+              const disclosure = listDisclosure.current;
+              if (disclosure) disclosure.open = !disclosure.open;
+            }}
+          >{groupHeader}</button> : <div className="cr-agent-activity-summary">{groupHeader}</div>}
+          <details ref={listDisclosure} className="cr-agent-activity-list-disclosure" open={!canCollapseList || listOpen} onToggle={event => {
+            if (canCollapseList && event.target === event.currentTarget) setListOpen(event.currentTarget.open);
+          }}>
+            <summary hidden />
+            <div className="cr-agent-activity-content" id={canCollapseList ? listContentId : undefined}>
+              <ActivityList events={events} singleLineTitle={singleLineTitle} />
+            </div>
+            {canCollapseList && <div className="cr-agent-activity-list-footer">
+              <a href={headingLink} onClick={event => moveToListHeading(event, true)}>
+                <ChevronUp size={16} aria-hidden="true" />
+                Collapse activity
+              </a>
+              <span aria-hidden="true">•</span>
+              <a href={headingLink} onClick={moveToListHeading}>Scroll to header</a>
+            </div>}
+          </details>
+        </> : empty}
       </div>
       {announcement}
     </>;
@@ -194,19 +243,7 @@ export function AgentActivity({
       <summary className="cr-agent-activity-summary" onClick={event => {
         if (open === undefined) return;
         event.preventDefault(); onOpenChange?.(!open);
-      }}>
-        <span className="cr-agent-activity-heading">{heading}</span>
-        <span className="cr-agent-activity-count">
-          {events.length} {events.length === 1 ? 'activity' : 'activities'}
-          <ChevronRight className="cr-agent-activity-group-chevron" size={15} aria-hidden="true" />
-        </span>
-        <span className="cr-agent-activity-group-status">
-          {running > 0 && <span data-status="running">{running} running</span>}
-          {queued > 0 && <span data-status="queued">{queued} queued</span>}
-          {failed > 0 && <span data-status="failed">{failed} failed</span>}
-          {interrupted > 0 && <span data-status="interrupted">{interrupted} interrupted</span>}
-        </span>
-      </summary>
+      }}>{groupHeader}</summary>
       <div className="cr-agent-activity-content">
         {events.length === 0 && empty}
         {earlier.length > 0 && <details className="cr-agent-activity-earlier">

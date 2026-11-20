@@ -326,7 +326,7 @@ test('agent activity uses its title as detail text when description and output a
   }
 });
 
-test('agent activity list starts open and exposes a collapse control above six events', () => {
+test('agent activity lists above six events start open and expose a heading toggle and footer links', () => {
   const events = Array.from({ length: 7 }, (_, index) => ({
     id: `step-${index}`,
     title: `Review step ${index}`,
@@ -338,10 +338,23 @@ test('agent activity list starts open and exposes a collapse control above six e
       variant: 'list', events: listEvents, label: 'Review activity', initialVisibleCount: 2, defaultOpen: false,
     }));
 
-    assert.match(markup, /^<div role="group" aria-label="Review activity" class="cr-agent-activity" data-variant="list"><details class="cr-agent-activity-list-disclosure" open="">/);
-    const summary = markup.match(/<summary class="cr-agent-activity-summary"([^>]*)>/);
-    assert.equal(summary?.[1], listEvents.length === 6 ? ' hidden=""' : '');
-    assert.doesNotMatch(markup, /cr-agent-activity-(content|earlier)\b/);
+    assert.match(markup, /^<div role="group" aria-label="Review activity" class="cr-agent-activity" data-variant="list">/);
+    assert.match(markup, /class="cr-agent-activity-summary"[^>]*><span class="cr-agent-activity-heading">Review activity<\/span>/);
+    assert.ok(markup.includes(`<span class="cr-agent-activity-count">${listEvents.length} activities`));
+    assert.ok(markup.includes('<span class="cr-agent-activity-group-status"><span data-status="running">1 running</span></span>'));
+    assert.match(markup, /<details class="cr-agent-activity-list-disclosure" open=""><summary /);
+    if (listEvents.length > 6) {
+      const header = markup.match(/<button id="([^"]+)" type="button" class="cr-agent-activity-summary" aria-expanded="true" aria-controls="([^"]+)">/);
+      assert.ok(header, 'the heading controls the open list');
+      assert.ok(markup.includes(`</summary><div class="cr-agent-activity-content" id="${header[2]}"><ol`));
+      const footer = markup.match(/<\/ol><\/div><div class="cr-agent-activity-list-footer"><a href="#([^"]+)">.*?Collapse activity<\/a><span aria-hidden="true">•<\/span><a href="#([^"]+)">Scroll to header<\/a><\/div>/);
+      assert.ok(footer, 'the footer links follow the connector');
+      assert.deepEqual(footer.slice(1), [header[1], header[1]]);
+    } else {
+      assert.match(markup, /<summary hidden=""><\/summary><div class="cr-agent-activity-content"><ol/);
+      assert.doesNotMatch(markup, /<button\b|cr-agent-activity-group-chevron|cr-agent-activity-list-footer/);
+    }
+    assert.doesNotMatch(markup, /cr-agent-activity-earlier\b/);
     const titles = [...markup.matchAll(/class="cr-agent-activity-title">([^<]+)</g)].map(([, title]) => title);
     assert.deepEqual(titles, listEvents.map(event => event.title));
     assert.equal([...markup.matchAll(/<summary class="cr-agent-activity-row">/g)].length, listEvents.length);
