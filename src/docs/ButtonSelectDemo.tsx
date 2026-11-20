@@ -11,9 +11,9 @@ const variantsCode = variantsSource.replace("from '../system'", "from '@chartreu
 function ViewSelect() {
   const [view, setView] = useState('Grid');
 
-  return <ButtonSelect variant="secondary" style={{ inlineSize: '10rem' }} aria-label={`View layout, ${view}`}
+  return <ButtonSelect variant="secondary" aria-label={`View layout, ${view}`}
     content={({ close }) => (
-      <Flex direction="column" gap={1} role="group" aria-label="View layout">
+      <div role="group" aria-label="View layout" style={{ display: 'grid', gap: 'var(--cr-space-1)' }}>
         {['Grid', 'List', 'Board'].map(option => {
           const selected = option === view;
           return <Button key={option} size="sm" variant={selected ? 'primary' : 'ghost'}
@@ -28,7 +28,7 @@ function ViewSelect() {
             {option}
           </Button>;
         })}
-      </Flex>
+      </div>
     )}>
     {view}
   </ButtonSelect>;

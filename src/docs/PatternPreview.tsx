@@ -23,7 +23,7 @@ export function PatternPreview({ page, children }: { page: PatternPage; children
 
   return (
     <div className="pattern-preview" data-page={page}>
-      <Chartreuse.Navbar size="lg" width="full" variant="dark-green" aria-label={records ? 'Record pages' : 'Workspace pages'}>
+      <Chartreuse.Navbar size="lg" width="full" surface="evergreen" aria-label={records ? 'Record pages' : 'Workspace pages'}>
         <Chartreuse.Flex align="center" wrap gap={1}>
           {pages.map(({ id, label }) => (
             <Chartreuse.NavbarItem key={id} href={`#${id}`} aria-current={page === id ? 'page' : undefined}>

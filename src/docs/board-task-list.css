@@ -1,0 +1,53 @@
+@layer docs-ui {
+  .board-task-list { container: board-task-list / inline-size; min-inline-size: 0; }
+
+  .board-task-list .cr-table > tbody > tr > :is(th[scope='row'], td:not(.cr-table-empty)) {
+    padding-block: var(--cr-space-2);
+  }
+
+  .board-list-group {
+    display: flex;
+    align-items: center;
+    gap: var(--cr-space-2);
+  }
+
+  .board-list-count {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: 1.5rem;
+    box-sizing: border-box;
+    padding: 2px var(--cr-space-1);
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-sm);
+    background: var(--cr-color-surface);
+    color: var(--cr-color-muted);
+    font-size: .6875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .board-list-task {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-inline-size: 8rem;
+    inline-size: 100%;
+    padding: var(--cr-space-1) 0;
+    text-align: start;
+    white-space: normal;
+  }
+
+  .board-list-task-title { font-size: .8125rem; overflow-wrap: anywhere; }
+  .board-list-task-id { color: var(--cr-color-muted); font: 400 .6875rem/1.4 var(--cr-font-mono); }
+  .board-list-unassigned, .board-list-checklist { color: var(--cr-color-muted); }
+  .board-list-checklist { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  @container board-task-list (min-width: 30rem) {
+    .board-list-add { margin-inline-start: auto; }
+  }
+
+  @media (pointer: coarse) {
+    .board-list-add, .board-list-task { min-block-size: 44px; }
+    .board-list-add { min-inline-size: 44px; }
+  }
+}

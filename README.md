@@ -89,7 +89,7 @@ import '@chartreuse/ui/styles.css';
 export function ProjectWorkspace() {
   return (
     <>
-      <Navbar size="lg" width="full" variant="dark-green" aria-label="Workspace pages">
+      <Navbar size="lg" width="full" surface="evergreen" aria-label="Workspace pages">
         <NavbarItem href="/workspace" aria-current="page">Overview</NavbarItem>
         <NavbarItem href="/tasks">Task board</NavbarItem>
       </Navbar>
@@ -105,6 +105,8 @@ export function ProjectWorkspace() {
   );
 }
 ```
+
+Use `Navbar variant="workspace"` with `workspaceContent` and either or both of `leftSidebar` and `rightSidebar`. The sidebars span the workspace from top to bottom, alongside the Navbar and central content. Each sidebar accepts a custom `toggleIcon` and can be pinned to stay open while you work in the center. Use `surface="white"` or `surface="evergreen"` to choose the Navbar color. [Navbar examples](https://shiiinichi.github.io/chartreuse/#components/navbar)
 
 ### GitHub Actions installation
 
@@ -180,11 +182,11 @@ GitHub manages the repository and npm package visibility separately. Review what
 
 ## Components
 
-The library exports 64 components. [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
+The library exports 66 components. [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
 
-ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
+ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, Pagination, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Table, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
-The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. Creating and moving a task updates the example board for the current page visit.
+The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. The task board shares search, task creation, and status changes between the Board and paginated List views.
 
 Component galleries use Masonry to arrange previews of different heights in responsive columns, including in full content width mode. Compact examples use narrower columns; Grid, Timeline, and other spatial examples use wider columns. Workspace examples can span all columns. DOM order and mounted state remain stable as content, Preview/Code views, and available width change. Input groups use Grid.
 
@@ -208,7 +210,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `SegmentedControl` uses named native radios for a single visible choice. Set `variant="solid"` for a filled selection. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
 
-`ButtonSelect` uses the same sizes, variants, and tokens as `Button`. Render the current selection as its children and pass a list, grid, or other controls through `content`. A content renderer receives `close()` so it can dismiss the popover when the user finishes. [ButtonSelect examples](https://shiiinichi.github.io/chartreuse/#components/button-select)
+`ButtonSelect` uses the same sizes, variants, and tokens as `Button`. The trigger and popover fit their own contents by default. Use `panelClassName` to set a custom popover width, or pass `matchTriggerWidth` to match the trigger's width. Render the current selection as its children and pass a list, grid, or other controls through `content`. A content renderer receives `close()` so it can dismiss the popover when the user finishes. [ButtonSelect examples](https://shiiinichi.github.io/chartreuse/#components/button-select)
 
 `Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots.
 
@@ -216,7 +218,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
-`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Use `variant="dark-green"` for the evergreen surface in either width mode. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. The dark green variant uses Light Evergreen for that highlight. Omit `href` to include a control, status badge, or other React content.
+`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Choose `surface="white"` or `surface="evergreen"` independently of layout and width. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. The evergreen surface uses Light Evergreen for that highlight. Omit `href` to include a control, status badge, or other React content.
 
 `Sidebar` provides floating and flush surfaces with header, body, and footer content. Give the sidebar a bounded height so its body scrolls independently while the header and footer stay visible. Use `NavbarItem` for navigation. For inspector selection, use `Button` with `variant="ghost"` and set `aria-pressed` to highlight the selected item in the scrolling body. The gallery includes a searchable run history and a task sidebar with project filters and editable checklists.
 
@@ -224,7 +226,9 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Conversation` presents chronological messages with sender and time headers. User prompts appear in subdued cards. Agent messages use `MarkdownRenderer` by default. User and system messages use plain text unless the message specifies Markdown. The `activity` slot can hold `AgentActivity` between the message header and body. Combine it with `MessageComposer` for input and `Drawer` for a transcript panel. Message updates preserve focus and scroll position. Set `announce` to enable concise status announcements.
 
-`Swimlane` displays task-board columns with a count beside the status tag and a header action on the right. The count uses the same 11px type size as `Badge`. Columns share surface styles, body insets, card spacing, and empty-state layouts. The task-board example uses four statuses with local create, filter, and status-change actions. The caller supplies cards, counts, and actions.
+`Swimlane` displays task-board columns with a count beside the status tag and a header action on the right. The count uses the same 11px type size as `Badge`. Columns share surface styles, body insets, card spacing, and empty-state layouts. The caller supplies cards, counts, and actions.
+
+`Table` displays flat rows or named row groups. Pass `pagination` to add page controls below the table, and supply the rows for the current page. `Pagination` also works as a standalone control. Supply a one-based `page`, the `pageCount`, and `onPageChange`. The task-board example groups the same tasks by status in both views.
 
 `NumberInput` supports native number editing, validation, decimal steps, and form values. The stepper rail appears when focus enters the control; hovering a step button shifts the divider to increase that button's width. Disabled, read-only, and unrestricted `step="any"` inputs omit the step buttons. Values use `number | null`, allowing an optional field to remain empty.
 

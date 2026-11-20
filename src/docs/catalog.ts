@@ -45,7 +45,7 @@ export const pages: Page[] = [
   { id: 'icons', label: 'Iconography', group: 'Foundations', icon: Sparkles, description: 'Lucide icon imports, size and stroke controls, and custom SVG guidance.' },
   ...componentPages,
   { id: 'workspace', label: 'Workspace', group: 'Patterns', icon: LayoutTemplate, description: 'Task board, validation, and activity views composed from shared components.' },
-  { id: 'task-board', label: 'Task board', group: 'Patterns', icon: ClipboardList, description: 'Task cards grouped by status, with search and task detail controls.' },
+  { id: 'task-board', label: 'Task board', group: 'Patterns', icon: ClipboardList, description: 'Switch between a status board and a paginated list with shared search and task details.' },
   { id: 'agent-monitor', label: 'Agent monitor', group: 'Patterns', icon: Activity, description: 'Agent selection, task context, token usage, and sample activity.' },
   ...samplePatternDefinitions.map(pattern => ({ id: pattern.id, label: pattern.label, group: 'Patterns', icon: samplePatternIcons[pattern.id], description: pattern.description })),
   { id: 'forms', label: 'Form controls gallery', group: 'Components', icon: TextCursorInput, hidden: true, description: 'Compatibility gallery for the original form-controls link.' },

@@ -31,6 +31,8 @@ const FormScenarios = lazy(() => import('./FormScenarios').then(module => ({ def
 const LayoutScenarios = lazy(() => import('./LayoutScenarios').then(module => ({ default: module.LayoutScenarios })));
 const MarkdownPage = lazy(() => import('./MarkdownPage').then(module => ({ default: module.MarkdownPage })));
 const ConversationDemo = lazy(() => import('./ConversationDemo').then(module => ({ default: module.ConversationDemo })));
+const PaginationDemo = lazy(() => import('./PaginationDemo').then(module => ({ default: module.PaginationDemo })));
+const TableDemo = lazy(() => import('./TableDemo').then(module => ({ default: module.TableDemo })));
 const TimelineDemo = lazy(() => import('./TimelineDemo').then(module => ({ default: module.TimelineDemo })));
 const StepsDemo = lazy(() => import('./StepsDemo').then(module => ({ default: module.StepsDemo })));
 
@@ -40,9 +42,9 @@ const demosWithOwnShowcases = new Set([
   'CalloutBanner', 'Card', 'Checkbox', 'Conversation', 'Dialog', 'Disclosure',
   'Divider', 'Drawer', 'EmptyState', 'Fieldset', 'FilePicker', 'Flex', 'Form', 'FormLayout', 'Grid', 'GridItem', 'GridSpacer',
   'Masonry', 'MasonryItem', 'MasonrySpacer',
-  'IconButton', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel',
+  'IconButton', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel', 'Pagination',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
-  'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'Switch', 'Tabs', 'TaskCard',
+  'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'Switch', 'Table', 'Tabs', 'TaskCard',
   'Steps', 'Text', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
 ]);
 
@@ -110,6 +112,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Navbar': return <NavbarDemo />;
     case 'NavbarItem': return <NavbarItemDemo />;
     case 'NumberInput': return <NumberInputDemo />;
+    case 'Pagination': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><PaginationDemo /></Suspense>;
     case 'PathSelector': return <PathSelectorDemo />;
     case 'SegmentedControl': return <SegmentedControlDemo />;
     case 'Sidebar': return <SidebarDemo />;
@@ -118,6 +121,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'StatGroup': return <StatGroupDemo />;
     case 'Steps': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><StepsDemo /></Suspense>;
     case 'Swimlane': return <SwimlaneDemo />;
+    case 'Table': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><TableDemo /></Suspense>;
     case 'Text': return <TextDemo />;
     case 'Timeline': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><TimelineDemo /></Suspense>;
     case 'Tree': return <TreeDemo />;

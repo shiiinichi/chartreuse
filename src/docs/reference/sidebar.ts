@@ -29,7 +29,7 @@ export function FloatingRunHistory({ query, onQueryChange, onLoadMore, children 
 export function WorkspaceExample({ children }: { children: ReactNode }) {
   return (
     <div>
-      <Navbar size="lg" width="full" variant="dark-green" aria-label="Application pages">
+      <Navbar size="lg" width="full" surface="evergreen" aria-label="Application pages">
         <Flex align="center" wrap gap={2}>
           <NavbarItem href="/workspace" aria-current="page">Workspace</NavbarItem>
           <NavbarItem href="/agents">Agent monitor</NavbarItem>

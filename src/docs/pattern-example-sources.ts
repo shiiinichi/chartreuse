@@ -1,95 +1,64 @@
 import patternPreviewSource from './PatternPreview.tsx?raw';
 import patternPreviewStyles from './pattern-preview.css?raw';
+import taskBoardSource from './TaskBoard.tsx?raw';
+import taskBoardStyles from './task-board.css?raw';
+import boardTaskListSource from './BoardTaskList.tsx?raw';
+import boardTaskListStyles from './board-task-list.css?raw';
 
 const previewCode = patternPreviewSource
   .replace("import './pattern-preview.css';\n", '')
   .replace("from '../system'", "from '@chartreuse/ui'")
   .trim();
 
-export function withPatternPreview(code: string, patternStyles = '') {
-  const stylesheet = [patternPreviewStyles, patternStyles].filter(Boolean).join('\n\n').replaceAll('*/', '* /').trim();
-  return `${code}\n\n${previewCode}\n\n/* Add these rules to your stylesheet.\n${stylesheet}\n*/`;
+function withExampleStyles(code: string, styles: string) {
+  return `${code}\n\n/* Add these rules to your stylesheet.\n${styles.replaceAll('*/', '* /').trim()}\n*/`;
 }
 
-const boardRecipe = `const columns = [
-  { status: 'todo', title: 'To do', tone: 'neutral' },
-  { status: 'in-progress', title: 'In progress', tone: 'info' },
-  { status: 'review', title: 'In review', tone: 'warning' },
-  { status: 'done', title: 'Done', tone: 'success' },
-] as const;
+export function withPatternPreview(code: string, patternStyles = '') {
+  return withExampleStyles(`${code}\n\n${previewCode}`, [patternPreviewStyles, patternStyles].filter(Boolean).join('\n\n'));
+}
 
-function TaskBoardPattern({ cards, onOpen, onCreate }: {
-  cards: TaskCardProps[];
-  onOpen: (id: string) => void;
-  onCreate: (status: NonNullable<TaskCardProps['status']>) => void;
-}) {
-  const [query, setQuery] = useState('');
-  const visible = cards.filter(card =>
-    (card.title + ' ' + card.taskId).toLowerCase().includes(query.toLowerCase()));
-  return <>
-    <Button onClick={() => onCreate('todo')}>New task</Button>
-    <TextField label="Find a task" type="search" value={query}
-      onChange={event => setQuery(event.target.value)} />
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(220px, 1fr))',
-      gap: 16, overflowX: 'auto', marginTop: 20 }}>
-      {columns.map(column => {
-        const items = visible.filter(card => card.status === column.status);
-        return <Swimlane key={column.status} title={column.title}
-          tone={column.tone} count={items.length}
-          action={<Button size="sm" onClick={() => onCreate(column.status)}>Add</Button>}>
-          {items.map(card => <TaskCard key={card.taskId} {...card}
-            onClick={() => onOpen(card.taskId)} />)}
-        </Swimlane>;
-      })}
-    </div>
-  </>;
+function taskBoardModule() {
+  const imports = new Map([['@chartreuse/ui', new Set(['ToastProvider'])]]);
+  const bodies = [taskBoardSource, boardTaskListSource].map(source => source
+    .replace(/^import '\.\/[^'\n]+\.css';\r?\n/gm, '')
+    .replace(/^import (type )?\{([^}]+)\} from '([^']+)';\r?\n/gm,
+      (_, typePrefix: string | undefined, bindings: string, path: string) => {
+        if (path === './BoardTaskList') return '';
+        const moduleName = path === '../system' ? '@chartreuse/ui' : path;
+        const names = imports.get(moduleName) ?? new Set<string>();
+        for (const name of bindings.split(',').map(binding => binding.trim()).filter(Boolean)) {
+          names.add(`${typePrefix ?? ''}${name}`);
+        }
+        imports.set(moduleName, names);
+        return '';
+      }).trim());
+  const declarations = [...imports].map(([path, names]) => `import { ${[...names].join(', ')} } from '${path}';`);
+  declarations.push("import '@chartreuse/ui/styles.css';");
+  return [declarations.join('\n'), ...bodies].join('\n\n');
+}
+
+const boardCode = taskBoardModule();
+const boardStyles = [taskBoardStyles.trim(), boardTaskListStyles.trim()].join('\n\n');
+
+function taskBoardExample(page?: 'task-board' | 'workspace') {
+  const board = page === 'workspace' ? '<TaskBoard workspace />' : '<TaskBoard />';
+  const content = page ? `<PatternPreview page="${page}">\n        ${board}\n      </PatternPreview>` : board;
+  const code = `${boardCode}
+
+export function TaskBoardExample() {
+  return (
+    <ToastProvider>
+      ${content}
+    </ToastProvider>
+  );
 }`;
+  return page ? withPatternPreview(code, boardStyles) : withExampleStyles(code, boardStyles);
+}
 
-export const taskBoardPatternCode = withPatternPreview(`import { useState } from 'react';
-import { Swimlane, TaskCard, Button, TextField, WorkspaceContent } from '@chartreuse/ui';
-import type { TaskCardProps } from '@chartreuse/ui';
-import '@chartreuse/ui/styles.css';
-
-${boardRecipe}
-
-// Supply your task data and the create/open handlers from the application.
-export function TaskBoardExample(props: Parameters<typeof TaskBoardPattern>[0]) {
-  return (
-    <PatternPreview page="task-board">
-      <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
-        <TaskBoardPattern {...props} />
-      </WorkspaceContent>
-    </PatternPreview>
-  );
-}`);
-
-export const workspacePatternCode = withPatternPreview(`import { useState } from 'react';
-import { Tabs, Alert, Swimlane, TaskCard, Button, TextField, WorkspaceContent, Text } from '@chartreuse/ui';
-import type { TaskCardProps } from '@chartreuse/ui';
-import '@chartreuse/ui/styles.css';
-
-${boardRecipe}
-
-export function WorkspacePattern(props: Parameters<typeof TaskBoardPattern>[0]) {
-  return (
-    <PatternPreview page="workspace">
-      <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
-        <Text size="heading-2">Development workspace</Text>
-        <Text size="body">Track task status, validation results, and workspace activity.</Text>
-        <Tabs label="Workspace views" items={[
-          { value: 'board', label: 'Board', count: props.cards.length,
-            content: <TaskBoardPattern {...props} /> },
-          { value: 'validation', label: 'Validation',
-            content: <Alert tone="success" title="Validation passed">
-              All checks passed in this example.
-            </Alert> },
-          { value: 'activity', label: 'Activity',
-            content: <Text size="body">Task updates and validation events for this workspace.</Text> },
-        ]} />
-      </WorkspaceContent>
-    </PatternPreview>
-  );
-}`);
+export const taskBoardExampleCode = taskBoardExample();
+export const taskBoardPatternCode = taskBoardExample('task-board');
+export const workspacePatternCode = taskBoardExample('workspace');
 
 export const agentMonitorPatternCode = withPatternPreview(`import { useState } from 'react';
 import { Grid, GridItem, Card, AgentCard, Progress, Tabs, WorkspaceContent, Text } from '@chartreuse/ui';

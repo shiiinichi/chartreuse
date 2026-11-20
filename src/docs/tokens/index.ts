@@ -5,12 +5,13 @@ import { masonryTokenDocs } from './masonry';
 import { flexTokenDocs } from './flex';
 import { formTokenDocs } from './form';
 import { tooltipTokenDocs } from './tooltip';
+import { tableTokenDocs } from './table';
 import type { ComponentTokenDoc } from './types';
 
 export { globalTokens, globalTokenNotes };
 export type { ComponentTokenDoc, RuntimeVariableDefinition, TokenDefinition, TokenSource } from './types';
 
-export const componentTokenDocs: ComponentTokenDoc[] = [...coreTokenDocs, ...extendedTokenDocs, ...masonryTokenDocs, ...flexTokenDocs, ...formTokenDocs, ...tooltipTokenDocs].sort((a, b) => a.component.localeCompare(b.component));
+export const componentTokenDocs: ComponentTokenDoc[] = [...coreTokenDocs, ...extendedTokenDocs, ...masonryTokenDocs, ...flexTokenDocs, ...formTokenDocs, ...tooltipTokenDocs, ...tableTokenDocs].sort((a, b) => a.component.localeCompare(b.component));
 const globalsByName = new Map(globalTokens.map(token => [token.name, token]));
 
 export function getComponentTokenDoc(component: string) {

@@ -10,6 +10,9 @@
   .cr-drawer-header h2:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 4px; }
   .cr-drawer-header p { margin: 7px 0 0; color: var(--cr-color-muted); font-size: 11px; line-height: 1.7; }
   .cr-drawer-header > .cr-icon-button { margin: -4px -4px 0 0; }
+  .cr-drawer-header:not(:has(> div > p)) { align-items: center; }
+  .cr-drawer-header:not(:has(> div > p)) > div > h2 { text-box: trim-both cap alphabetic; }
+  .cr-drawer-header:not(:has(> div > p)) > .cr-icon-button { margin-block-start: 0; }
   .cr-drawer-body { flex: 1 1 auto; min-block-size: 0; min-inline-size: 0; padding: var(--cr-space-6); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
   .cr-drawer-footer { flex-shrink: 0; padding: var(--cr-space-6); border-block-start: 1px solid var(--cr-color-border); background: var(--cr-color-surface); }
   .cr-drawer[data-mode='modal'] { position: fixed; inset-block: 0; margin: 0; inline-size: min(var(--cr-drawer-width, 380px), var(--cr-drawer-max-width, 520px), calc(100vw - 24px)); max-inline-size: calc(100vw - 24px); block-size: 100dvh; max-block-size: 100dvh; box-shadow: var(--cr-shadow-lg); overscroll-behavior: contain; }

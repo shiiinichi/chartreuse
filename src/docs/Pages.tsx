@@ -78,11 +78,11 @@ function PageContent({ id, navigate }: { id: PageId; navigate: Navigate }) {
   if (id === 'feedback') return <FeedbackPage />;
   if (id === 'workspace' || id === 'task-board') return <>
     <div className="pattern-note"><Sparkles size={16} aria-hidden="true" /><span>Create tasks, open task details, and change task status in this local example.</span><Badge>Interactive</Badge></div>
-    <Showcase title={id === 'workspace' ? 'Workspace task board' : 'Task board'} description="A task board composed from shared components, with state stored in this example." code={id === 'workspace' ? workspacePatternCode : taskBoardPatternCode}>
+    <Showcase title={id === 'workspace' ? 'Workspace task board' : 'Task board'} description="Switch between status lanes and a paginated list grouped by the same statuses." code={id === 'workspace' ? workspacePatternCode : taskBoardPatternCode}>
       <PatternPreview page={id}><TaskBoard workspace={id === 'workspace'} /></PatternPreview>
     </Showcase>
     <div className="document-section"><SectionTitle title="Components used" />
-      <div className="demo-row">{([['navbar', 'Navbar'], ['workspace-layout', 'WorkspaceLayout'], ['workspace-content', 'WorkspaceContent'], ['task-card', 'TaskCard'], ['tabs', 'Tabs'], ['text-field', 'TextField']] as const).map(([component, label]) => (
+      <div className="demo-row">{([['navbar', 'Navbar'], ['workspace-layout', 'WorkspaceLayout'], ['workspace-content', 'WorkspaceContent'], ['task-card', 'TaskCard'], ['table', 'Table'], ['pagination', 'Pagination'], ['segmented-control', 'SegmentedControl'], ['tabs', 'Tabs'], ['text-field', 'TextField']] as const).map(([component, label]) => (
         <Button key={component} variant="secondary" size="sm" iconRight={ArrowUpRight} onClick={() => navigate(`components/${component}`)}>{label}</Button>
       ))}</div>
     </div>

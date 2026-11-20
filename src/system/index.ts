@@ -27,6 +27,8 @@ export * from './WorkspaceContent';
 export * from './WorkspaceLayout';
 export * from './Conversation';
 export * from './Swimlane';
+export * from './Table';
+export * from './Pagination';
 export * from './NumberInput';
 export * from './Stat';
 export * from './StatGroup';

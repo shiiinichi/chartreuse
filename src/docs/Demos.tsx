@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Activity, ArrowRight, Check, CheckCheck, Clock3, FileText, Folder, GitBranch, LayoutDashboard, MessageSquare, MoreHorizontal, Network, Plus, Search, ShieldCheck, Sparkles } from 'lucide-react';
-import { AgentCard, Alert, AvatarGroup, Badge, Button, Checkbox, Dialog, EmptyState, IconButton, Progress, Select, Switch, Tabs, TaskCard, TextArea, TextField, WorkspaceContent, useToast, Text } from '../system';
-import type { TaskCardProps } from '../system';
-import { Swimlane } from '../system/Swimlane';
+import { Activity, ArrowRight, Check, Clock3, FileText, Folder, GitBranch, MoreHorizontal, Network, Plus, Sparkles } from 'lucide-react';
+import { AgentCard, Badge, Button, Checkbox, Dialog, EmptyState, IconButton, Progress, Select, Switch, Tabs, TaskCard, TextArea, TextField, WorkspaceContent, useToast, Text } from '../system';
+import { ActivityFeed, taskBoardPreviewTask } from './TaskBoard';
+
+export { ActivityFeed, CreateTaskDialog, TaskBoard } from './TaskBoard';
 
 export function ButtonDemo({ compact = false }: { compact?: boolean }) {
   const notify = useToast();
@@ -29,58 +30,12 @@ export function FormDemo({ compact = false }: { compact?: boolean }) {
   </form>;
 }
 
-const initialTasks: TaskCardProps[] = [
-  { taskId: 'TASK-024', title: 'Implement the workspace task board', description: 'Add status lanes, task search, and task detail dialogs.', priority: 'high', status: 'in-progress', branch: 'feat/workspace', completed: 3, total: 5, assignees: ['Alex Morgan', 'Sam Lee'] },
-  { taskId: 'TASK-025', title: 'Define shared task types', description: 'Document task status, priority, and assignee fields.', priority: 'medium', status: 'todo', completed: 0, total: 3, assignees: ['Jamie Park'] },
-  { taskId: 'TASK-026', title: 'Review responsive task layouts', description: 'Verify card wrapping and keyboard access at each breakpoint.', priority: 'medium', status: 'review', branch: 'fix/refinements', completed: 4, total: 4, assignees: ['Taylor Reed'] },
-  { taskId: 'TASK-027', title: 'Publish the design tokens', description: 'Export color, spacing, and typography tokens.', priority: 'low', status: 'done', completed: 6, total: 6, assignees: ['Sam Lee', 'Alex Morgan'] },
-];
-
 export function TaskPreview() {
   const [open, setOpen] = useState(false);
   const [checks, setChecks] = useState([true, true, true, false, false]);
-  const task = initialTasks[0];
+  const task = taskBoardPreviewTask;
   const completed = checks.filter(Boolean).length;
   return <><TaskCard {...task} completed={completed} onClick={() => setOpen(true)} /><Dialog open={open} onOpenChange={setOpen} title={task.title} description={`${task.taskId} · Sample workspace`} footer={<Button size="sm" onClick={() => setOpen(false)}>Close<Check size={14} aria-hidden="true" /></Button>}><div className="stack"><Text size="body">{task.description}</Text><div className="demo-row"><Badge tone="info" dot>In progress</Badge><Badge tone="warning">High priority</Badge></div><span className="muted small"><GitBranch size={13} aria-hidden="true" /> {task.branch}</span><Progress value={completed} max={5} label={`${completed} of 5 checklist items complete`} />{['Define the status lanes', 'Implement task search', 'Connect the design tokens', 'Verify task detail interactions', 'Verify the responsive layout'].map((label, index) => <Checkbox key={label} label={label} checked={checks[index]} onChange={e => setChecks(previous => previous.map((checked, i) => i === index ? e.target.checked : checked))} />)}</div></Dialog></>;
-}
-
-export function CreateTaskDialog({ open, onOpenChange, onCreate }: { open: boolean; onOpenChange: (open: boolean) => void; onCreate: (task: TaskCardProps) => void }) {
-  const notify = useToast();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState<TaskCardProps['priority']>('medium');
-  return <Dialog open={open} onOpenChange={onOpenChange} title="Create task" description="Enter task details. Submit creates a task in local example state." footer={<><Button variant="secondary" onClick={() => onOpenChange(false)}>Cancel</Button><Button type="submit" form="new-demo-task" icon={Plus}>Create task</Button></>}><form id="new-demo-task" className="stack" onSubmit={event => {
-    event.preventDefault(); onCreate({ taskId: `TASK-${Date.now().toString().slice(-5)}`, title: name.trim(), description, priority, status: 'todo', completed: 0, total: 0, assignees: ['Sam Lee'] });
-    notify(`“${name.trim()}” created in this example.`); onOpenChange(false); setName(''); setDescription(''); event.currentTarget.reset();
-  }}><TextField label="Task name" name="title" value={name} onChange={e => setName(e.target.value)} pattern=".*\S.*" title="Enter a task name that includes text" placeholder="Enter a task title" autoFocus required /><TextArea label="Description" name="description" value={description} onChange={e => setDescription(e.target.value)} placeholder="Describe the task scope and acceptance criteria…" rows={3} /><Select label="Priority" name="priority" value={priority} onChange={e => setPriority(e.target.value as TaskCardProps['priority'])}><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></Select></form></Dialog>;
-}
-
-export function TaskBoard({ workspace = false }: { workspace?: boolean }) {
-  const [tasks, setTasks] = useState(initialTasks);
-  const [query, setQuery] = useState('');
-  const [open, setOpen] = useState(false);
-  const [newStatus, setNewStatus] = useState<TaskCardProps['status']>('todo');
-  const [selected, setSelected] = useState<TaskCardProps | null>(null);
-  const notify = useToast();
-  const columns = [
-    { id: 'todo', name: 'To do', tone: 'neutral', description: 'Not started' }, { id: 'in-progress', name: 'In progress', tone: 'info', description: 'Implementation in progress' },
-    { id: 'review', name: 'In review', tone: 'warning', description: 'Awaiting code review' }, { id: 'done', name: 'Done', tone: 'success', description: 'Implementation complete' },
-  ] as const;
-  const visible = tasks.filter(task => `${task.title} ${task.taskId}`.toLowerCase().includes(query.toLowerCase()));
-  const board = <><div className="pattern-toolbar"><div><Text size="heading-2">Task board</Text><Text size="body">Filter tasks, inspect details, and update status.</Text></div><Button icon={Plus} size="sm" onClick={() => { setNewStatus('todo'); setOpen(true); }}>New task</Button></div><div className="board-search"><TextField label="Find a task" name="taskSearch" type="search" icon={Search} value={query} onChange={e => setQuery(e.target.value)} placeholder="Search this board…" /></div><div className="board-scroll" tabIndex={0} role="region" aria-label="Task board columns"><div className="demo-board">{columns.map(column => {
-    const cards = visible.filter(task => task.status === column.id);
-    const add = () => { setNewStatus(column.id); setOpen(true); };
-    return <Swimlane key={column.id} title={column.name} count={cards.length} tone={column.tone} description={column.description} action={<IconButton size="sm" icon={Plus} label={`Add task to ${column.name}`} onClick={add} />} emptyContent={<Button className="board-lane-empty-action" variant="ghost" icon={Plus} onClick={add}>Add a task</Button>}>{cards.map(task => <TaskCard key={task.taskId} {...task} onClick={() => setSelected(task)} />)}</Swimlane>;
-  })}</div></div></>;
-  return <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
-    <div className={`pattern-workspace ${workspace ? '' : 'board-only'}`}>{workspace ? <><div className="pattern-workspace-top"><div><Badge>WORKSPACE / 01</Badge><Text size="heading-2">Development workspace</Text><Text size="body">Track task status, validation results, and workspace activity.</Text></div><AvatarGroup names={['Alex Morgan', 'Sam Lee', 'Jamie Park']} /></div><Tabs label="Demo workspace views" items={[{ value: 'board', label: 'Board', icon: LayoutDashboard, count: tasks.length, content: board }, { value: 'validation', label: 'Validation', icon: ShieldCheck, content: <div className="stack"><Alert tone="success" title="Validation passed">All 12 checks passed in this example.</Alert><Button variant="secondary" size="sm" icon={CheckCheck} onClick={() => notify('Review marked complete')}>Mark reviewed</Button></div> }, { value: 'activity', label: 'Activity', icon: Activity, content: <ActivityFeed /> }]} /></> : board}</div><CreateTaskDialog open={open} onOpenChange={setOpen} onCreate={task => setTasks(previous => [...previous, { ...task, status: newStatus }])} /><Dialog open={!!selected} onOpenChange={next => { if (!next) setSelected(null); }} title={selected?.title || 'Task details'} description={selected?.taskId} footer={<Button onClick={() => setSelected(null)} size="sm">Done<Check size={14} aria-hidden="true" /></Button>}>{selected && <div className="stack"><Text size="body" className="muted">{selected.description || 'No description provided.'}</Text><Select label="Move task to" value={selected.status} onChange={e => {
-    const status = e.target.value as TaskCardProps['status']; setTasks(previous => previous.map(task => task.taskId === selected.taskId ? { ...task, status } : task)); setSelected({ ...selected, status }); notify('Task status updated');
-  }}>{columns.map(column => <option key={column.id} value={column.id}>{column.name}</option>)}</Select>{selected.branch && <Text size="body" className="muted small"><GitBranch size={13} aria-hidden="true" /> {selected.branch}</Text>}<AvatarGroup names={selected.assignees || []} /></div>}</Dialog>
-  </WorkspaceContent>;
-}
-
-export function ActivityFeed() {
-  return <ol className="activity-feed">{[{ icon: Check, title: 'Design tokens published', detail: 'Color, spacing, and typography tokens are available.', time: 'Just now' }, { icon: GitBranch, title: 'Branch created', detail: 'Created feat/workspace from main.', time: '2 min ago' }, { icon: MessageSquare, title: 'Workspace note added', detail: 'Alex added a note to the workspace.', time: '5 min ago' }].map(({ icon: Icon, title, detail, time }) => <li key={title}><span className="activity-feed-icon"><Icon size={14} aria-hidden="true" /></span><div><Text bold>{title}</Text><Text size="body">{detail}</Text></div><time>{time}</time></li>)}</ol>;
 }
 
 export function AgentMonitor({ compact = false }: { compact?: boolean }) {

@@ -9,4 +9,166 @@
   .navbar-demo-bar .cr-brand-mark { inline-size: 24px; block-size: 24px; }
   .navbar-demo-bar[data-size='lg'] .cr-brand-mark { inline-size: 32px; block-size: 32px; }
   .navbar-demo-brand small { display: block; color: var(--cr-color-muted); font-size: .75rem; font-weight: 450; }
+
+  .navbar-workspace-showcase { container: navbar-workspace-example / inline-size; }
+
+  .navbar-workspace-showcase > .showcase-preview {
+    padding: clamp(var(--cr-space-3), 3%, var(--cr-space-6));
+  }
+
+  .navbar-workspace-surface { margin-block-end: var(--cr-space-4); }
+
+  .navbar-workspace-demo {
+    --cr-layout-gutter: var(--cr-space-4);
+    box-sizing: border-box;
+    block-size: clamp(29rem, 50cqi, 34rem);
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-xl);
+    background: var(--cr-color-canvas);
+    box-shadow: var(--cr-shadow-md);
+    overflow: clip;
+  }
+
+  .navbar-workspace-demo-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--cr-space-2);
+    font-size: .8125rem;
+  }
+
+  .navbar-workspace-demo-brand > .cr-brand-mark { inline-size: 20px; block-size: 20px; }
+
+  .navbar-release-list {
+    display: grid;
+    gap: var(--cr-space-1);
+    margin: 0;
+    padding: var(--cr-space-3) var(--cr-space-2);
+    list-style: none;
+  }
+
+  .navbar-release-link.cr-button {
+    inline-size: 100%;
+    min-inline-size: 0;
+    justify-content: flex-start;
+    gap: var(--cr-space-3);
+    padding: var(--cr-space-2);
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .navbar-release-link.cr-button[aria-current='true'] { background: var(--cr-color-success-bg); }
+  .navbar-release-link.cr-button > svg { flex: none; color: var(--cr-color-success); }
+  .navbar-release-link strong, .navbar-release-link small { display: block; }
+  .navbar-release-link strong { font-size: .75rem; font-weight: 650; }
+  .navbar-release-link small { margin-block-start: 2px; color: var(--cr-color-muted); font: 450 .6875rem/1.5 var(--cr-font-mono); }
+
+  .navbar-release-activity {
+    display: grid;
+    gap: var(--cr-space-5);
+    margin: 0;
+    padding: var(--cr-space-4) var(--cr-space-3);
+    list-style: none;
+  }
+
+  .navbar-release-activity > li {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--cr-space-2);
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+  }
+
+  .navbar-release-activity > li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    inset-block: 30px calc(-1 * var(--cr-space-4));
+    inset-inline-start: 12px;
+    inline-size: 1px;
+    background: var(--cr-color-border);
+  }
+
+  .navbar-release-activity strong { display: block; font-size: .75rem; font-weight: 650; }
+  .navbar-release-activity p { margin: 2px 0; color: var(--cr-color-muted); font-size: .75rem; line-height: inherit; }
+  .navbar-release-activity time { color: var(--cr-color-muted); font: 450 .6875rem/1.5 var(--cr-font-mono); }
+
+  .navbar-workspace-demo-content {
+    --cr-layout-content-max: 44rem;
+    --cr-layout-gutter: clamp(var(--cr-space-2), 6%, var(--cr-space-8));
+    padding-block: clamp(var(--cr-space-4), 5cqi, var(--cr-space-8));
+    overflow-wrap: anywhere;
+  }
+
+  .navbar-release-heading, .navbar-release-checks > header > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cr-space-2);
+  }
+
+  .navbar-release-version { color: var(--cr-color-muted); font: 550 .75rem/1.5 var(--cr-font-mono); }
+  .navbar-release-title.cr-text {
+    margin-block-start: var(--cr-space-1);
+    font-size: clamp(1.125rem, 5cqi, 2rem);
+    font-weight: 650;
+    line-height: 1.18;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+  }
+
+  .navbar-release-summary.cr-text {
+    max-inline-size: 52ch;
+    margin-block: var(--cr-space-2) var(--cr-space-6);
+    color: var(--cr-color-muted);
+    line-height: 1.55;
+  }
+
+  .navbar-release-checks {
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-lg);
+    background: var(--cr-color-surface);
+  }
+
+  .navbar-release-checks > header {
+    display: grid;
+    gap: var(--cr-space-2);
+    padding: var(--cr-space-3) var(--cr-space-4);
+  }
+
+  .navbar-release-checks [role='heading'] { font-size: .8125rem; font-weight: 650; }
+  .navbar-release-checks > header span { color: var(--cr-color-muted); font: 450 .6875rem/1.5 var(--cr-font-mono); }
+  .navbar-release-checks > ul { margin: 0; padding: 0; list-style: none; }
+  .navbar-release-checks li { border-block-start: 1px solid var(--cr-color-border); }
+  .navbar-release-checks .cr-checkbox { display: flex; padding: var(--cr-space-2) var(--cr-space-4); font-weight: 550; }
+  .navbar-release-checks .cr-checkbox small { font-weight: 400; }
+
+  @container cr-navbar-workspace-center (inline-size < 14rem) {
+    .navbar-workspace-demo-brand > .cr-text, .navbar-release-checks .cr-checkbox small { display: none; }
+    .navbar-release-summary.cr-text { margin-block-end: var(--cr-space-3); font-size: .75rem; }
+    .navbar-release-checks > header, .navbar-release-checks .cr-checkbox { padding-inline: var(--cr-space-2); }
+  }
+
+  @container cr-navbar-workspace-center (inline-size < 8rem) {
+    .navbar-workspace-demo-brand { display: none; }
+  }
+
+  @container navbar-workspace-example (inline-size < 28rem) {
+    .navbar-workspace-demo .cr-sidebar-header { padding-block: var(--cr-space-2); }
+  }
+
+  @container cr-sidebar (inline-size < 9rem) {
+    .navbar-release-list, .navbar-release-activity { padding-inline: var(--cr-space-1); }
+    .navbar-release-link.cr-button { justify-content: center; padding-inline: 2px; }
+    .navbar-release-link > svg, .navbar-release-link strong, .navbar-release-activity > li::after { display: none; }
+    .navbar-release-link small { margin: 0; }
+    .navbar-release-activity > li { grid-template-columns: minmax(0, 1fr); gap: var(--cr-space-1); }
+  }
+
+  @container cr-sidebar (inline-size < 6rem) {
+    .navbar-workspace-demo .cr-navbar-sidebar-heading { font-size: .75rem; }
+    .navbar-release-activity strong, .navbar-release-activity p { font-size: .6875rem; }
+  }
 }

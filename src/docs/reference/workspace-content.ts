@@ -7,7 +7,7 @@ const usageCode = `export function ProjectWorkspace({ children, width = 'comfort
 }) {
   return (
     <>
-      <Navbar size="lg" width="full" variant="dark-green" aria-label="Workspace pages">
+      <Navbar size="lg" width="full" surface="evergreen" aria-label="Workspace pages">
         <NavbarItem href="/workspace" aria-current="page">Overview</NavbarItem>
         <NavbarItem href="/tasks">Task board</NavbarItem>
       </Navbar>

@@ -14,7 +14,7 @@ type VariantChoice = (typeof variants)[number];
 function VariantPicker({ initial }: { initial: VariantChoice }) {
   const [selected, setSelected] = useState(initial);
 
-  return <ButtonSelect variant={selected.value} style={{ inlineSize: '8rem', maxInlineSize: '100%' }}
+  return <ButtonSelect variant={selected.value} matchTriggerWidth style={{ inlineSize: '8rem' }}
     aria-label={`${initial.label} style example, ${selected.label}`}
     content={({ close }) => (
       <Flex direction="column" gap={1} role="group" aria-label="Button style">

@@ -66,6 +66,19 @@ test('design guidance includes layout, application patterns, and the published t
   assert.ok(globalTokens.some(entry => entry.name === '--cr-space-4'));
 });
 
+test('the CLI discovers Table and Pagination and describes their composition', () => {
+  for (const [name, props] of [
+    ['Table', ['columns', 'getRowKey', 'rows', 'groups', 'pagination']],
+    ['Pagination', ['page', 'pageCount', 'onPageChange']],
+  ]) {
+    const slug = name.toLowerCase();
+    assert.ok(query('search', slug).results.some(entry => entry.name === name));
+    const { component } = query('info', name);
+    assert.equal(component.docsPath, `#components/${slug}`);
+    for (const prop of props) assert.ok(component.props.some(entry => entry.name === prop), `${name}.${prop}`);
+  }
+});
+
 test('query failures report structured errors with empty stdout', () => {
   for (const [args, status, code] of [
     [['info', 'Unknown'], 1, 'COMPONENT_NOT_FOUND'],

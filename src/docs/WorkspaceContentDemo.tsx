@@ -31,7 +31,7 @@ export function WorkspaceContentDemo({ page = 'workspace-content' }: { page?: 'w
         <SegmentedControl label="Content width" name={`workspace-content-width-${id}`} size="sm" options={widthOptions} value={width}
           onValueChange={value => setWidth(value === 'full' ? 'full' : 'comfortable')} />
         <Card className="workspace-content-demo-shell">
-          <Navbar size="lg" width="full" variant="dark-green" aria-label="Example workspace pages"
+          <Navbar size="lg" width="full" surface="evergreen" aria-label="Example workspace pages"
             brand={<a href="#workspace"><BrandMark /><span>Sample workspace</span></a>}>
             <NavbarItem href={`#components/${page}`} aria-current="page">Overview</NavbarItem>
             <NavbarItem href="#task-board">Task board</NavbarItem>

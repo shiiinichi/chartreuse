@@ -8,7 +8,7 @@ import * as system from '@chartreuse/ui';
 import { colors, tokens, spacing } from '@chartreuse/ui/tokens';
 
 test('the built package exposes the documented public components and notification hook', () => {
-  const expected = ['Button', 'ButtonSelect', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
+  const expected = ['Button', 'ButtonSelect', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps', 'Table', 'Pagination'];
   // BrandMark and ToastProvider are counted as reusable components, alongside the
   // component-specific APIs. Validate the public boundary, not private helpers.
   for (const name of expected) assert.equal(typeof system[name], 'function', `${name} is importable`);
@@ -36,7 +36,7 @@ test('Button icon slots render decorative SVGs without a tabindex', () => {
 
 test('ButtonSelect preserves Button styling and connects the trigger to arbitrary controls', () => {
   const h = React.createElement;
-  const buttonProps = { variant: 'accent', size: 'lg', style: { '--button-bg': 'rebeccapurple' }, iconRight: h('svg') };
+  const buttonProps = { variant: 'accent', size: 'lg', className: 'column-toggle', style: { '--button-bg': 'rebeccapurple' }, iconRight: h('svg') };
   const buttonMarkup = renderToStaticMarkup(h(system.Button, buttonProps, 'Columns'));
   const markup = renderToStaticMarkup(h(system.ButtonSelect, {
     ...buttonProps,
@@ -50,8 +50,10 @@ test('ButtonSelect preserves Button styling and connects the trigger to arbitrar
   assert.ok(panelId);
   assert.ok(markup.includes(`aria-controls="${panelId}" aria-expanded="false"`));
   assert.ok(markup.includes(`id="${panelId}" popover="auto" class="cr-button-select-panel column-picker"`));
+  assert.match(markup, /class="cr-button cr-button-select-trigger column-toggle"/);
   assert.match(markup, /<span class="cr-button-select-label">Columns<\/span><svg/);
   assert.equal(markup.slice(0, markup.indexOf('</button>') + '</button>'.length)
+    .replace(' cr-button-select-trigger', '')
     .replace('<span class="cr-button-select-label">Columns</span>', 'Columns')
     .replace(/ popovertarget="[^"]+" aria-controls="[^"]+" aria-expanded="false"/i, ''), buttonMarkup);
   assert.match(markup, /role="group" aria-label="Visible columns"/);
@@ -65,8 +67,8 @@ async function readReferenceModule(filename) {
 }
 
 test('every public component has exactly one alphabetical page, API reference, and live preview', async () => {
-  const [core, extended, grid, content, tree, activity, segmented, slider, navbar, sidebar, workspaceContent, conversation, swimlane, number, stats, timeline, steps, masonry, flex, form, tooltip, navigation] = await Promise.all(['core', 'extended', 'grid', 'content', 'tree', 'agent-activity', 'segmented-control', 'slider', 'navbar', 'sidebar', 'workspace-content', 'conversation', 'swimlane', 'number-input', 'stats', 'timeline', 'steps', 'masonry', 'flex', 'form', 'tooltip', 'navigation'].map(readReferenceModule));
-  const references = [...core.coreReferences, ...extended.extendedReferences, ...grid.gridReferences, ...content.contentReferences, ...tree.treeReferences, ...activity.agentActivityReferences, ...segmented.segmentedControlReferences, ...slider.sliderReferences, ...navbar.navbarReferences, ...sidebar.sidebarReferences, ...workspaceContent.workspaceContentReferences, ...conversation.conversationReferences, ...swimlane.swimlaneReferences, ...number.numberInputReferences, ...stats.statsReferences, ...timeline.timelineReferences, ...steps.stepsReferences, ...masonry.masonryReferences, ...flex.flexReferences, ...form.formReferences, ...tooltip.tooltipReferences];
+  const [core, extended, grid, content, tree, activity, segmented, slider, navbar, sidebar, workspaceContent, conversation, swimlane, number, stats, timeline, steps, masonry, flex, form, tooltip, navigation, table, pagination] = await Promise.all(['core', 'extended', 'grid', 'content', 'tree', 'agent-activity', 'segmented-control', 'slider', 'navbar', 'sidebar', 'workspace-content', 'conversation', 'swimlane', 'number-input', 'stats', 'timeline', 'steps', 'masonry', 'flex', 'form', 'tooltip', 'navigation', 'table', 'pagination'].map(readReferenceModule));
+  const references = [...core.coreReferences, ...extended.extendedReferences, ...grid.gridReferences, ...content.contentReferences, ...tree.treeReferences, ...activity.agentActivityReferences, ...segmented.segmentedControlReferences, ...slider.sliderReferences, ...navbar.navbarReferences, ...sidebar.sidebarReferences, ...workspaceContent.workspaceContentReferences, ...conversation.conversationReferences, ...swimlane.swimlaneReferences, ...number.numberInputReferences, ...stats.statsReferences, ...timeline.timelineReferences, ...steps.stepsReferences, ...masonry.masonryReferences, ...flex.flexReferences, ...form.formReferences, ...tooltip.tooltipReferences, ...table.tableReferences, ...pagination.paginationReferences];
   const actual = Object.entries(system).filter(([name, value]) => /^[A-Z]/.test(name) && typeof value === 'function').map(([name]) => name).sort((a, b) => a.localeCompare(b));
   assert.deepEqual(references.map(reference => reference.name).sort((a, b) => a.localeCompare(b)), actual);
   assert.equal(new Set(references.map(reference => reference.slug)).size, actual.length, 'each reference has a unique route slug');

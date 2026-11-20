@@ -15,10 +15,12 @@ export interface ButtonSelectProps extends Omit<ButtonProps,
 > {
   /** Popover content, or a renderer that can close the panel after an interaction. */
   content: ReactNode | ((controls: ButtonSelectControls) => ReactNode);
+  /** Size the popover to the trigger's width, within the viewport. */
+  matchTriggerWidth?: boolean;
   panelClassName?: string;
 }
 
-function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: Window) {
+function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: Window, matchTriggerWidth: boolean) {
   const viewport = view.visualViewport;
   const viewportLeft = viewport?.offsetLeft ?? 0;
   const viewportTop = viewport?.offsetTop ?? 0;
@@ -34,7 +36,7 @@ function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: W
   const aboveEnd = Math.max(minTop, Math.min(maxBottom, anchor.top - gap));
 
   panel.style.maxWidth = `${maxWidth}px`;
-  panel.style.minWidth = `${Math.min(anchor.width, maxWidth)}px`;
+  panel.style.width = matchTriggerWidth ? `${anchor.width}px` : '';
   const contentHeight = panel.scrollHeight + panel.offsetHeight - panel.clientHeight;
   const below = maxBottom - belowStart;
   const above = aboveEnd - minTop;
@@ -49,7 +51,7 @@ function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: W
 }
 
 /** A Button that reveals a panel whose layout and selection are owned by the caller. */
-export function ButtonSelect({ children, content, panelClassName, iconRight = ChevronDown, disabled, loading, ref, ...props }: ButtonSelectProps) {
+export function ButtonSelect({ children, content, matchTriggerWidth = false, panelClassName, className, iconRight = ChevronDown, disabled, loading, ref, ...props }: ButtonSelectProps) {
   const panelId = `${useId()}-button-select`;
   const button = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -74,7 +76,7 @@ export function ButtonSelect({ children, content, panelClassName, iconRight = Ch
 
     let frame = 0;
     const place = () => {
-      if (popup.matches(':popover-open')) positionPanel(trigger, popup, view);
+      if (popup.matches(':popover-open')) positionPanel(trigger, popup, view, matchTriggerWidth);
     };
     const schedule = () => {
       view.cancelAnimationFrame(frame);
@@ -97,10 +99,11 @@ export function ButtonSelect({ children, content, panelClassName, iconRight = Ch
       view.visualViewport?.removeEventListener('scroll', schedule);
       delete popup.dataset.positioned;
     };
-  }, [expanded]);
+  }, [expanded, matchTriggerWidth]);
 
   return <>
     <Button {...props} ref={button} type="button" iconRight={iconRight} disabled={disabled} loading={loading}
+      className={['cr-button-select-trigger', className].filter(Boolean).join(' ')}
       popoverTarget={panelId} aria-controls={panelId} aria-expanded={expanded}>
       <span className="cr-button-select-label">{children}</span>
     </Button>

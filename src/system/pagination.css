@@ -1,0 +1,63 @@
+@layer cr-components {
+  .cr-pagination {
+    container: cr-pagination / inline-size;
+    inline-size: 100%;
+    min-inline-size: 0;
+    box-sizing: border-box;
+  }
+
+  .cr-pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: end;
+    gap: var(--cr-pagination-gap, var(--cr-space-1));
+    color: var(--cr-color-muted);
+    font: 500 .75rem/1.4 var(--cr-font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cr-pagination-controls > .cr-pagination-number {
+    padding-inline: .375rem;
+    font-variant-numeric: inherit;
+  }
+
+  .cr-pagination-gap {
+    min-inline-size: var(--cr-space-4);
+    text-align: center;
+  }
+
+  .cr-pagination-step[aria-disabled='true'] {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+
+  .cr-pagination-controls > .cr-pagination-step[aria-disabled='true']:is(:hover, :active) {
+    background: transparent;
+    box-shadow: none;
+    translate: none;
+  }
+
+  .cr-pagination-step:dir(rtl) > svg { scale: -1 1; }
+
+  @media (pointer: coarse) {
+    .cr-pagination-controls > .cr-button[data-size='sm'] {
+      min-inline-size: 44px;
+      min-block-size: 44px;
+    }
+  }
+
+  @container cr-pagination (inline-size < 28rem) {
+    .cr-pagination-controls > :is(.cr-pagination-number, .cr-pagination-gap) { display: none; }
+    .cr-pagination-controls > .cr-pagination-summary {
+      position: static;
+      inline-size: auto;
+      block-size: auto;
+      margin: 0;
+      overflow: visible;
+      clip-path: none;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+}

@@ -278,11 +278,11 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Navbar', componentTokens: [],
-    globalTokens: names('layout-content-max layout-gutter font-sans evergreen evergreen-light color-surface color-text color-muted color-subtle color-border color-primary color-on-primary color-focus radius-md space-1 space-2 space-3 space-6').sort(),
+    globalTokens: names('layout-content-max layout-gutter font-sans evergreen evergreen-light color-surface color-text color-muted color-subtle color-border color-primary color-on-primary color-focus radius-md radius-full space-1 space-2 space-3 space-4 space-6').sort(),
     runtimeVariables: [
       { name: '--_cr-navbar-item-height', description: 'Minimum item height set by Navbar size.', source: { file: systemFile('navbar.css'), selector: '.cr-navbar' }, notes: ['Medium uses 2.5rem and Large uses 3rem.'] },
     ],
-    notes: ['navbar.css uses the shared content cap for Comfortable mode. Both widths use the shared gutter, reduced when the bar is inside a narrow parent.', 'Medium uses space-2 for vertical padding and Large uses space-3.', 'The dark green variant uses --cr-evergreen for the background and resolves the shared colors in the dark scheme inside the navbar.'],
+    notes: ['navbar.css uses the shared content cap for Comfortable mode. Both widths use the shared gutter, reduced when the bar is inside a narrow parent.', 'Medium uses space-2 for vertical padding and Large uses space-3.', 'The evergreen surface uses --cr-evergreen and resolves the shared colors in the dark scheme inside the Navbar. The white surface uses #fff and the light scheme.'],
   },
   {
     component: 'NavbarItem', componentTokens: [],

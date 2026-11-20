@@ -47,7 +47,7 @@ export function RunHistoryExample() {
 
   return (
     <Card className="sidebar-example">
-      <Navbar size="lg" width="full" variant="dark-green" aria-label="Run history example pages"
+      <Navbar size="lg" width="full" surface="evergreen" aria-label="Run history example pages"
         brand={<a href="#workspace"><BrandMark />Sample workspace</a>}>
         <NavbarItem href="#task-board">Task board</NavbarItem>
         <NavbarItem href="#agent-monitor">Agent monitor</NavbarItem>

@@ -58,7 +58,7 @@ export function TaskNavigationExample() {
 
   return (
     <Card className="sidebar-example">
-      <Navbar size="lg" width="full" variant="dark-green" aria-label="Task example pages"
+      <Navbar size="lg" width="full" surface="evergreen" aria-label="Task example pages"
         brand={<a href="#workspace"><BrandMark />Sample workspace</a>}>
         <NavbarItem href="#task-board">Task board</NavbarItem>
         <NavbarItem href="#agent-monitor">Agent monitor</NavbarItem>

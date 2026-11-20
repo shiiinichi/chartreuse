@@ -1,0 +1,69 @@
+@layer cr-components {
+  .cr-table-frame {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    border: 1px solid var(--cr-color-border);
+    border-radius: var(--cr-radius-lg);
+    background: var(--cr-color-surface);
+  }
+
+  .cr-table-scroll {
+    position: relative;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    border-radius: inherit;
+    scrollbar-width: thin;
+  }
+
+  .cr-table-scroll:not(:last-child) { border-end-start-radius: 0; border-end-end-radius: 0; }
+  .cr-table-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -2px; }
+
+  .cr-table {
+    inline-size: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--cr-color-text);
+    font: 400 .8125rem/1.5 var(--cr-font-sans);
+  }
+
+  .cr-table > :is(thead, tbody) > tr > :is(th, td) {
+    padding: var(--cr-space-3) var(--cr-space-4);
+    text-align: start;
+    vertical-align: middle;
+    overflow-wrap: break-word;
+  }
+
+  .cr-table > :is(thead, tbody) > tr > [data-align='center'] { text-align: center; }
+  .cr-table > :is(thead, tbody) > tr > [data-align='end'] { text-align: end; font-variant-numeric: tabular-nums; }
+
+  .cr-table > thead > tr > th {
+    border-block-end: 1px solid var(--cr-color-border);
+    background: var(--cr-color-subtle);
+    color: var(--cr-color-muted);
+    font-size: .75rem;
+    font-weight: 550;
+  }
+
+  .cr-table > tbody + tbody > tr:first-child > *,
+  .cr-table > tbody > tr + tr > * { border-block-start: 1px solid var(--cr-color-border); }
+
+  .cr-table > tbody > tr > th { font-weight: 550; }
+
+  .cr-table > tbody > tr > th[scope='rowgroup'] {
+    padding-block: var(--cr-space-2);
+    background: var(--cr-color-canvas);
+  }
+
+  .cr-table > tbody > tr > .cr-table-empty { color: var(--cr-color-muted); }
+
+  .cr-table > tbody > tr:only-child > .cr-table-empty {
+    padding-block: var(--cr-space-6);
+    text-align: center;
+  }
+
+  .cr-table-frame > .cr-table-pagination {
+    padding: var(--cr-space-2) var(--cr-space-4);
+    border-block-start: 1px solid var(--cr-color-border);
+  }
+}

@@ -1,4 +1,9 @@
 @layer cr-components {
+  .cr-button-select-trigger {
+    inline-size: fit-content;
+    max-inline-size: 100%;
+  }
+
   .cr-button-select-label {
     flex: 1 1 auto;
     min-inline-size: 0;
