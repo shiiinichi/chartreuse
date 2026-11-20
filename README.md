@@ -134,6 +134,7 @@ npm exec --offline --no -- chartreuse info PathSelector --format json
 npm exec --offline --no -- chartreuse demo PathSelector
 npm exec --offline --no -- chartreuse token Grid --format json
 npm exec --offline --no -- chartreuse guide layout --format json
+npm exec --offline --no -- chartreuse guide typography --format json
 ```
 
 `search` ranks names, summaries, and notes and returns up to ten matches. Use `info` for props, defaults, native attributes, and implementation notes. `demo` prints the documented TSX example. Run `token` for shared CSS variables or supply a component name to see its styling hooks. Run `guide` to list topics, including layout guidance and application patterns such as `settings-editor`.
@@ -179,9 +180,9 @@ GitHub manages the repository and npm package visibility separately. Review what
 
 ## Components
 
-The library exports 62 components.
+The library exports 63 components. [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
 
-ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
+ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
 The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. Creating and moving a task updates the example board for the current page visit.
 
@@ -191,11 +192,15 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Badge` defaults to `variant="soft"` for a tinted surface. Use `variant="ghost"` for a transparent surface with the same text color and optional status dot or icon, as in `<Badge variant="ghost" tone="info" dot>Running</Badge>`.
 
-`TaskCard` presents checklist, dependency, related-card, comment, and attachment counts in a wrapping metadata row with 12px top padding. Use `completed`/`total` for checklist counts and optional `dependencies`, `relatedCount`, `commentCount`, and `attachmentCount` for other counts. Explicit zero counts are visible. Set `hideMetadataLabels` to show icons and counts, with labels available on hover and keyboard focus. The status and assignee footer is separate.
+`Card` accepts `header` and `footer` slots for padded content regions with dividers. Set `divided` to lay out the body sections side by side and wrap them onto additional rows as space narrows.
+
+`TaskCard` presents checklist, dependency, related-card, comment, and attachment counts in a wrapping metadata row with 12px top padding. Use `completed`/`total` for checklist counts and optional `dependencies`, `relatedCount`, `commentCount`, and `attachmentCount` for other counts. Explicit zero counts are visible. Set `hideMetadataLabels` to show icons and counts, with labels available on hover and keyboard focus. With `onClick`, the metadata and status footer also activate the card.
+
+`EmptyState` supports a compact panel with `variant="dashed"`. Use `align="start"`, `"center"`, or `"end"` to align the icon, message, and optional action in either variant.
 
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures.
 
-`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for both line and pill styles. The default is `"md"`, and each size matches the corresponding `Button` height.
+`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for the `line`, `pill`, and `highlight` styles. The default size is `"md"`, and each size matches the corresponding `Button` height. Use `variant="highlight"` to give the selected tab a subtle fill and an accent underline.
 
 `Breadcrumbs` uses chevrons by default. Set `separator` to decorative text or JSX, or pass `null` to hide separators.
 
@@ -203,11 +208,13 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `SegmentedControl` uses named native radios for a single visible choice. Set `variant="solid"` for a filled selection. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
 
-`Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots. `AgentActivity` displays a collapsible event group with details for each event. Set `variant="list"` to show every event as a row with expandable details. Command, input, and output text are available in those details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
+`Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots.
+
+`AgentActivity` displays a collapsible event group with details for each event. Set `variant="list"` to show every event as a row with expandable details. In either variant, `titleLines="single"` truncates long titles with an ellipsis. Expand the row to read the full title. Command, input, and output text are available in the details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
-`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Use `variant="dark-green"` for the evergreen surface in either width mode. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. Omit `href` to include a control, status badge, or other React content.
+`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Use `variant="dark-green"` for the evergreen surface in either width mode. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. The dark green variant uses Light Evergreen for that highlight. Omit `href` to include a control, status badge, or other React content.
 
 `Sidebar` provides floating and flush surfaces with header, body, and footer content. Give the sidebar a bounded height so its body scrolls independently while the header and footer stay visible. Use `NavbarItem` for navigation. For inspector selection, use `Button` with `variant="ghost"` and set `aria-pressed` to highlight the selected item in the scrolling body. The gallery includes a searchable run history and a task sidebar with project filters and editable checklists.
 
@@ -371,7 +378,7 @@ Earlier links such as `#buttons`, `#cards`, `#modals`, `#drawers`, `#fieldsets`,
 
 ## Foundations
 
-Use `Text` for headings, paragraphs, and inline formatting. The `size` sets the type preset and native element. Use `display="inline"` for running text of any size and `display="block"` for a standalone block. Use the parent layout’s gap to space text blocks. See [the Text reference](http://127.0.0.1:5173/#components/text) and [the Typography scale](http://127.0.0.1:5173/#typography).
+Use `Text` for headings, paragraphs, and inline formatting. The `size` sets the type preset and native element. Use `display="inline"` for running text of any size and `display="block"` for a standalone block. Use the parent layout’s gap to space text blocks. See [the Text reference](https://shiiinichi.github.io/chartreuse/#components/text) and [the Typography scale](https://shiiinichi.github.io/chartreuse/#typography).
 
 ```tsx
 import { Flex, Text } from '@chartreuse/ui';

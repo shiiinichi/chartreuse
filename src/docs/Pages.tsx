@@ -199,6 +199,22 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.6.0',
+    date: '2026-11-20',
+    title: 'Shared typography and component options',
+    summary: 'Text brings the shared type scale to headings, paragraphs, and inline formatting. This release also updates cards, tabs, empty states, page panels, and activity logs.',
+    changes: [
+      'Text adds seven type presets and supports bold, italic, and strikethrough. Browse the Typography page or run chartreuse guide typography.',
+      'Card adds header and footer slots and a divided layout with sections that wrap as space narrows.',
+      'Tabs adds variant="highlight" for a selected tab with a subtle fill and accent underline.',
+      'EmptyState adds variant="dashed" and start, center, and end alignment.',
+      'PagePanel footers dock when the surrounding scroll viewport is at least 480px tall. Set stickyFooter={false} to keep the footer in its normal position.',
+      'AgentActivity adds titleLines="single" to truncate long event titles with an ellipsis. Expand a row to read the full title.',
+      'TaskCard with an onClick handler responds across the full card, including its metadata and footer.',
+      'The dark green Navbar highlights the current page in Light Evergreen, available as --cr-evergreen-light.',
+    ],
+  },
+  {
     version: '1.5.0',
     date: '2026-11-19',
     title: 'Activity lists and navigation refinements',
