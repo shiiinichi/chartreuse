@@ -199,6 +199,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.8.0',
+    date: '2026-11-20',
+    title: 'Workspace navigation, tables, and ButtonSelect sizing',
+    summary: 'Build workspaces with pinnable sidebars, display grouped data in a table, and control how ButtonSelect sizes its popover.',
+    changes: [
+      'Navbar adds variant="workspace" with optional full-height sidebars. Use surface="white" or surface="evergreen" to set its color independently of the layout.',
+      'Table supports typed columns, flat or grouped rows, and optional page controls. Use Pagination on its own for other collections.',
+      'The task board adds a paginated List view with the same search, task creation, and status changes as the Board view.',
+      'ButtonSelect fits the trigger and popover to their own contents by default. Set matchTriggerWidth to match their widths or use panelClassName to set a custom popover width.',
+    ],
+  },
+  {
     version: '1.7.0',
     date: '2026-11-20',
     title: 'ButtonSelect, activity lists, and input focus',
