@@ -195,6 +195,7 @@ export const coreReferences: ComponentReference[] = [
     ],
     notes: [
       "Use Grid and GridItem for peer fields in either direction: columns={1} gap={4} for a vertical stack, or columns={{ base: 1, sm: 2 }} gap={4} for a responsive row. Put each whole labeled control in GridItem span={1}.",
+      'The focus highlight fades outward from the fixed field border and appears instantly on focus.',
       'Controlled value and uncontrolled defaultValue follow React’s native input API.', 'Use native required, type, minLength, pattern, and autoComplete where appropriate. Native constraints and application logic own validation; error displays application-supplied feedback.'],
   },
   {

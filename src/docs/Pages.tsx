@@ -199,6 +199,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.7.0',
+    date: '2026-11-20',
+    title: 'ButtonSelect, activity lists, and input focus',
+    summary: 'ButtonSelect pairs standard Button styling with a native popover for choosing views, columns, or other options.',
+    changes: [
+      'ButtonSelect accepts custom popover content. Content render functions receive close() to dismiss the popover after a selection.',
+      'AgentActivity list mode uses flat rows. Lists with more than six events start open and can collapse as a group.',
+      'TextField, TextArea, Select, NumberInput, and Autocomplete use a softer focus highlight that fades outward. The field border keeps its size through focus and blur.',
+      'Decorative button icons follow the trigger’s native focus behavior when clicked.',
+    ],
+  },
+  {
     version: '1.6.0',
     date: '2026-11-20',
     title: 'Shared typography and component options',

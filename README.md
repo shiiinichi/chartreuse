@@ -208,7 +208,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `SegmentedControl` uses named native radios for a single visible choice. Set `variant="solid"` for a filled selection. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
 
-`ButtonSelect` uses the same sizes, variants, and tokens as `Button`. Render the current selection as its children and pass a list, grid, or other controls through `content`. A content renderer receives `close()` so it can dismiss the popover when the user finishes. [Button Select examples](http://127.0.0.1:5173/#components/button-select)
+`ButtonSelect` uses the same sizes, variants, and tokens as `Button`. Render the current selection as its children and pass a list, grid, or other controls through `content`. A content renderer receives `close()` so it can dismiss the popover when the user finishes. [ButtonSelect examples](https://shiiinichi.github.io/chartreuse/#components/button-select)
 
 `Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots.
 
