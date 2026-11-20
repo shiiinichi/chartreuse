@@ -5,6 +5,7 @@ import { SegmentedControl } from '../system/SegmentedControl';
 import { Timeline } from '../system/Timeline';
 import type { TimelineItem } from '../system/Timeline';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './sequence-demo.css';
 
 const events = [
@@ -17,8 +18,8 @@ const timelineCode = (attributes: string) => `${eventSource}\n\n<Timeline aria-l
 const diamond = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}><path d="m12 2 10 10-10 10L2 12 12 2Z" /><path d="m7 12 3 3 7-7" /></svg>;
 const richEvents: TimelineItem[] = [
   { id: 'recorded', title: 'Plan recorded', icon: Flag, tone: 'info', content: 'Implementation notes are attached to the task.' },
-  { id: 'ready', title: 'Library build completed', icon: CheckCircle2, tone: 'success', content: <><p>The shared library build completed.</p><Badge tone="success">Ready for review</Badge></> },
-  { id: 'decided', title: 'Decision recorded', icon: diamond, content: <><p>This event uses an inline SVG marker.</p><p>The event body accepts React content, including paragraphs and badges.</p></> },
+  { id: 'ready', title: 'Library build completed', icon: CheckCircle2, tone: 'success', content: <><Text size="body">The shared library build completed.</Text><Badge tone="success">Ready for review</Badge></> },
+  { id: 'decided', title: 'Decision recorded', icon: diamond, content: <><Text size="body">This event uses an inline SVG marker.</Text><Text size="body">The event body accepts React content, including paragraphs and badges.</Text></> },
 ];
 
 export function TimelineDemo() {
@@ -28,13 +29,13 @@ export function TimelineDemo() {
   const [align, setAlign] = useState<'start' | 'end' | 'alternate'>('alternate');
   const groupId = useId();
   return <div className="sequence-demo">
-    <p className="sequence-demo-intro">Use Timeline for chronological events. Supply date labels, machine-readable timestamps, and content in each item.</p>
+    <Text size="body" className="sequence-demo-intro">Use Timeline for chronological events. Supply date labels, machine-readable timestamps, and content in each item.</Text>
     <ExampleGallery className="sequence-demo-gallery">
     <Showcase title="Dates in a separate column" description="The datePlacement prop places date labels in a separate column." code={timelineCode(`datePlacement="column" markerVariant="${variant}"`)}><div className="sequence-demo-controls"><SegmentedControl label="Marker style" name={`timeline-markers-${groupId}`} value={variant} onValueChange={value => setVariant(value === 'solid' ? 'solid' : 'outline')} options={[{ value: 'outline', label: 'Outline' }, { value: 'solid', label: 'Solid' }]} /></div><Timeline aria-label="Project milestones" items={events} datePlacement="column" markerVariant={variant} /></Showcase>
     <Showcase title="Reverse order and pending state" description="The reverse prop changes the rendered list order and the pending item position." code={timelineCode(`reverse={${reverse}} pending={${pending ? '"Waiting for the next update…"' : 'undefined'}}`)}><div className="sequence-demo-controls"><Switch label="Newest first" checked={reverse} onChange={event => setReverse(event.target.checked)} /><Switch label="Show pending item" checked={pending} onChange={event => setPending(event.target.checked)} /></div><Timeline aria-label="Project milestones" items={events} reverse={reverse} pending={pending ? 'Waiting for the next update…' : undefined} /></Showcase>
     <Showcase title="Vertical alignment" description="The align prop places content at the start, end, or alternating sides." code={timelineCode(`align="${align}"`)}><div className="sequence-demo-controls"><Select label="Timeline alignment" value={align} onChange={event => setAlign(event.target.value as typeof align)}><option value="start">Start</option><option value="end">End</option><option value="alternate">Alternate</option></Select></div><Timeline aria-label="Project milestones" items={events} align={align} /></Showcase>
     <Showcase title="Horizontal timeline" description="A horizontal timeline scrolls within its container when its content exceeds the available width." code={timelineCode('orientation="horizontal" markerVariant="solid"')}><Timeline aria-label="Project milestones" items={events} orientation="horizontal" markerVariant="solid" /></Showcase>
-    <Showcase title="Custom icons and React content" description="Lucide icons and custom SVG elements use the same IconSource slot." code={`import { CheckCircle2, Flag } from 'lucide-react';\nimport { Badge, Timeline } from '@chartreuse/ui';\n\nconst diamond = <svg viewBox="0 0 24 24" fill="none"\n  stroke="currentColor" strokeWidth={1.7}>\n  <path d="m12 2 10 10-10 10L2 12 12 2Z" />\n  <path d="m7 12 3 3 7-7" />\n</svg>;\n\n<Timeline aria-label="Rich event examples" items={[\n  { id: 'recorded', title: 'Plan recorded', icon: Flag, tone: 'info',\n    content: 'Implementation notes are attached to the task.' },\n  { id: 'ready', title: 'Library build completed', icon: CheckCircle2, tone: 'success',\n    content: <><p>The shared library build completed.</p>\n      <Badge tone="success">Ready for review</Badge></> },\n  { id: 'decided', title: 'Decision recorded', icon: diamond,\n    content: <><p>This event uses an inline SVG marker.</p>\n      <p>The event body accepts React content,\n        including paragraphs and badges.</p></> },\n]} />`}><Timeline aria-label="Rich event examples" items={richEvents} /></Showcase>
+    <Showcase title="Custom icons and React content" description="Lucide icons and custom SVG elements use the same IconSource slot." code={`import { CheckCircle2, Flag } from 'lucide-react';\nimport { Badge, Timeline, Text } from '@chartreuse/ui';\n\nconst diamond = <svg viewBox="0 0 24 24" fill="none"\n  stroke="currentColor" strokeWidth={1.7}>\n  <path d="m12 2 10 10-10 10L2 12 12 2Z" />\n  <path d="m7 12 3 3 7-7" />\n</svg>;\n\n<Timeline aria-label="Rich event examples" items={[\n  { id: 'recorded', title: 'Plan recorded', icon: Flag, tone: 'info',\n    content: 'Implementation notes are attached to the task.' },\n  { id: 'ready', title: 'Library build completed', icon: CheckCircle2, tone: 'success',\n    content: <><Text size="body">The shared library build completed.</Text>\n      <Badge tone="success">Ready for review</Badge></> },\n  { id: 'decided', title: 'Decision recorded', icon: diamond,\n    content: <><Text size="body">This event uses an inline SVG marker.</Text>\n      <Text size="body">The event body accepts React content,\n        including paragraphs and badges.</Text></> },\n]} />`}><Timeline aria-label="Rich event examples" items={richEvents} /></Showcase>
     </ExampleGallery>
   </div>;
 }

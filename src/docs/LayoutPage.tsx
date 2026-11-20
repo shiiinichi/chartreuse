@@ -5,6 +5,7 @@ import { Fieldset } from '../system/Fieldset';
 import { Grid, GridItem } from '../system/Grid';
 import { SegmentedControl } from '../system/SegmentedControl';
 import { Showcase } from './shared';
+import { Text } from '../system';
 import './LayoutPage.css';
 
 type WidthMode = 'comfortable' | 'full';
@@ -59,20 +60,20 @@ export function LayoutPage() {
   }, []);
 
   return <>
-    <div className="layout-foundation-intro"><p>Use a centered container with a maximum width or fill the main area beside navigation. Both modes retain responsive gutters and shrink on narrower screens.</p><Badge icon={LayoutTemplate}>Container foundation</Badge></div>
-    <div className="layout-mode-notes"><article><Badge>Default</Badge><h2>Comfortable</h2><p>Center content within the shared maximum width. Use this for prose, forms, and documentation.</p></article><article><Badge>Optional</Badge><h2>Full</h2><p>Fill the main area allocated by the layout. Use this for boards, tables, and other wide layouts.</p></article></div>
+    <div className="layout-foundation-intro"><Text size="body">Use a centered container with a maximum width or fill the main area beside navigation. Both modes retain responsive gutters and shrink on narrower screens.</Text><Badge icon={LayoutTemplate}>Container foundation</Badge></div>
+    <div className="layout-mode-notes"><article><Badge>Default</Badge><Text size="heading-2">Comfortable</Text><Text size="body">Center content within the shared maximum width. Use this for prose, forms, and documentation.</Text></article><article><Badge>Optional</Badge><Text size="heading-2">Full</Text><Text size="body">Fill the main area allocated by the layout. Use this for boards, tables, and other wide layouts.</Text></article></div>
 
-    <section className="layout-foundation-choices" aria-labelledby="layout-foundations-heading"><h2 id="layout-foundations-heading">Layout components</h2><ul>
-      <li><h3><a href="#components/grid">Grid for input groups</a></h3><p>Align complete labeled inputs in rows or stacks. GridItem controls spans; GridSpacer reserves an empty grid cell.</p></li>
-      <li><h3><a href="#components/masonry">Masonry for uneven content</a></h3><p>Pack cards and examples into the shortest available columns. MasonryItem controls spans; MasonrySpacer reserves an invisible space.</p></li>
-      <li><h3><a href="#components/flex">Flex for rows and stacks</a></h3><p>Arrange and align content along one axis, with optional wrapping.</p></li>
-      <li><h3><a href="#components/workspace-content">WorkspaceContent for the main area</a></h3><p>Place it beside Sidebar and below Navbar, then choose Comfortable or Full width.</p></li>
-      <li><h3><a href="#components/workspace-layout">WorkspaceLayout for the sidebar and main area</a></h3><p>Arrange Sidebar and WorkspaceContent beneath Navbar with responsive wrapping.</p></li>
+    <section className="layout-foundation-choices" aria-labelledby="layout-foundations-heading"><Text size="heading-2" id="layout-foundations-heading">Layout components</Text><ul>
+      <li><Text size="heading-3"><a href="#components/grid">Grid for input groups</a></Text><Text size="body">Align complete labeled inputs in rows or stacks. GridItem controls spans; GridSpacer reserves an empty grid cell.</Text></li>
+      <li><Text size="heading-3"><a href="#components/masonry">Masonry for uneven content</a></Text><Text size="body">Pack cards and examples into the shortest available columns. MasonryItem controls spans; MasonrySpacer reserves an invisible space.</Text></li>
+      <li><Text size="heading-3"><a href="#components/flex">Flex for rows and stacks</a></Text><Text size="body">Arrange and align content along one axis, with optional wrapping.</Text></li>
+      <li><Text size="heading-3"><a href="#components/workspace-content">WorkspaceContent for the main area</a></Text><Text size="body">Place it beside Sidebar and below Navbar, then choose Comfortable or Full width.</Text></li>
+      <li><Text size="heading-3"><a href="#components/workspace-layout">WorkspaceLayout for the sidebar and main area</a></Text><Text size="body">Arrange Sidebar and WorkspaceContent beneath Navbar with responsive wrapping.</Text></li>
     </ul></section>
 
     <div className="document-section"><Showcase title="Compare container width modes" description="Preview either container mode independently of the documentation width preference." code={containerRecipe} language="css">
       <div className="layout-foundation-example"><Grid columns={{ base: 1, sm: 2 }} gap={5} align="end" className="layout-preview-controls"><GridItem span={1}><SegmentedControl label="Preview mode" name={`layout-mode-${modeId}`} options={[{ value: 'comfortable', label: 'Comfortable' }, { value: 'full', label: 'Full' }]} value={mode} onValueChange={value => setMode(value === 'full' ? 'full' : 'comfortable')} /></GridItem><GridItem span={1}><Select label="Available area" value={preview} onChange={event => setPreview(event.target.value)}><option value="wide">Wide example</option><option value="constrained">Constrained example</option></Select></GridItem></Grid>
-        <figure className="layout-preview-figure"><div className="layout-preview-scroll" role="region" aria-label="Container layout preview" tabIndex={0}><div className="layout-preview-viewport" data-area={preview} role="img" aria-label={`${mode === 'full' ? 'Full' : 'Comfortable'} container beside navigation. The content keeps its gutters; comfortable mode leaves unused space when the main area exceeds its shared cap.`}><div className="layout-preview-sidebar"><strong>Navigation</strong><span /><span /><span /></div><div className="layout-preview-main"><div className="layout-preview-content" data-content-width={mode}><header><strong>Main area</strong><Badge>{mode === 'full' ? 'Full' : 'Comfortable'}</Badge></header><div className="layout-preview-cards"><span /><span /><span /></div><div className="layout-preview-copy"><span /><span /><span /></div></div></div></div></div><figcaption>This schematic uses half-scale dimensions to show a wide container inside the page. The recipe and docs use the full shared token values.</figcaption></figure>
+        <figure className="layout-preview-figure"><div className="layout-preview-scroll" role="region" aria-label="Container layout preview" tabIndex={0}><div className="layout-preview-viewport" data-area={preview} role="img" aria-label={`${mode === 'full' ? 'Full' : 'Comfortable'} container beside navigation. The content keeps its gutters; comfortable mode leaves unused space when the main area exceeds its shared cap.`}><div className="layout-preview-sidebar"><Text bold>Navigation</Text><span /><span /><span /></div><div className="layout-preview-main"><div className="layout-preview-content" data-content-width={mode}><header><Text bold>Main area</Text><Badge>{mode === 'full' ? 'Full' : 'Comfortable'}</Badge></header><div className="layout-preview-cards"><span /><span /><span /></div><div className="layout-preview-copy"><span /><span /><span /></div></div></div></div></div><figcaption>This schematic uses half-scale dimensions to show a wide container inside the page. The recipe and docs use the full shared token values.</figcaption></figure>
       </div>
     </Showcase></div>
 
@@ -80,9 +81,9 @@ export function LayoutPage() {
       <GroupedInputsExample />
     </Showcase></div>
 
-    <section className="layout-token-section"><h2>Shared layout tokens</h2><p>The documentation shell and this recipe use the same CSS tokens. Changing the docs preference removes the maximum; it keeps the gutter.</p><dl className="layout-token-readout"><div><dt><code>--cr-layout-content-max</code></dt><dd>{tokens.max || 'Shared maximum'}<span>Comfortable container cap, including its gutters.</span></dd></div><div><dt><code>--cr-layout-gutter</code></dt><dd>{tokens.gutter || 'Responsive gutter'}<span>Current horizontal gutter. It responds to the viewport.</span></dd></div></dl></section>
+    <section className="layout-token-section"><Text size="heading-2">Shared layout tokens</Text><Text size="body">The documentation shell and this recipe use the same CSS tokens. Changing the docs preference removes the maximum; it keeps the gutter.</Text><dl className="layout-token-readout"><div><dt><code>--cr-layout-content-max</code></dt><dd>{tokens.max || 'Shared maximum'}<span>Comfortable container cap, including its gutters.</span></dd></div><div><dt><code>--cr-layout-gutter</code></dt><dd>{tokens.gutter || 'Responsive gutter'}<span>Current horizontal gutter. It responds to the viewport.</span></dd></div></dl></section>
 
-    <div className="component-notes"><h2><ShieldCheck size={17} aria-hidden="true" />Container behavior</h2><ul>{[
+    <div className="component-notes"><Text size="heading-2"><ShieldCheck size={17} aria-hidden="true" />Container behavior</Text><ul>{[
       'Comfortable mode caps the container width and shrinks to the available width on smaller screens.',
       'Full means the parent’s main area, so content stays beside the sidebar and inside the normal gutters.',
       'Individual components can retain their own width constraints inside a full-width container.',

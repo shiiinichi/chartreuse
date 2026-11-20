@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { LayoutDashboard, Plus, Search } from 'lucide-react';
 import {
   Badge, BrandMark, Button, Card, Checkbox, EmptyState, Fieldset, Flex, Navbar, NavbarItem,
-  Progress, Select, Sidebar, TextField, WorkspaceContent, WorkspaceLayout,
+  Progress, Select, Sidebar, TextField, WorkspaceContent, WorkspaceLayout, Text,
 } from '../../system';
 
 interface Task { id: string; title: string; project: string; checks: boolean[] }
@@ -78,14 +78,14 @@ export function TaskNavigationExample() {
                 All tasks <span className="sidebar-example-all-tasks-count">{tasks.length}</span>
               </Button>
               <Flex align="center" justify="space-between" wrap gap={2}>
-                <h3 className="sidebar-example-task-heading">Main tasks</h3>
+                <Text size="heading-3" className="sidebar-example-task-heading">Main tasks</Text>
                 <Badge>{filtered.length}</Badge>
               </Flex>
               <TextField label="Find a task" type="search" icon={Search} name="taskSearch" value={query}
                 onChange={event => setQuery(event.currentTarget.value)} autoComplete="off" spellCheck={false} />
             </Flex>
           }
-          footer={<small>Select a task to inspect it. Update checks to track completion.</small>}>
+          footer={<Text size="small">Select a task to inspect it. Update checks to track completion.</Text>}>
           {filtered.length > 0 ? (
             <Flex direction="column" gap={2} className="sidebar-example-list" role="group" aria-label="Select a main task">
               {filtered.map(task => {
@@ -102,8 +102,8 @@ export function TaskNavigationExample() {
                       </span>
                       <span className="sidebar-example-task-title">{task.title}</span>
                       <span className="sidebar-example-choice-meta">
-                        <small>{task.project}</small>
-                        <small>{done}/{task.checks.length}</small>
+                        <Text size="small">{task.project}</Text>
+                        <Text size="small">{done}/{task.checks.length}</Text>
                       </span>
                       <Progress value={done} max={task.checks.length} label={`${task.id} checklist progress`} />
                     </span>
@@ -125,7 +125,7 @@ export function TaskNavigationExample() {
                   {completed === selected.checks.length ? 'Complete' : 'In progress'}
                 </Badge>
               </Flex>
-              <h3>{selected.title}</h3>
+              <Text size="heading-3">{selected.title}</Text>
               <Fieldset legend="Checklist">
                 <Flex direction="column" gap={3}>
                   {selected.checks.map((checked, index) => (
@@ -137,8 +137,8 @@ export function TaskNavigationExample() {
                 </Flex>
               </Fieldset>
             </Flex>
-          ) : <p>No tasks match the current filters.</p>}
-          <p className="cr-sr-only" role="status">{announcement}</p>
+          ) : <Text size="body">No tasks match the current filters.</Text>}
+          <Text size="body" className="cr-sr-only" role="status">{announcement}</Text>
         </WorkspaceContent>
       </WorkspaceLayout>
     </Card>

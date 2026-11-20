@@ -8,7 +8,7 @@ import * as system from '@chartreuse/ui';
 import { colors, tokens, spacing } from '@chartreuse/ui/tokens';
 
 test('the built package exposes the documented public components and notification hook', () => {
-  const expected = ['Button', 'IconButton', 'BrandMark', 'Badge', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
+  const expected = ['Button', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps'];
   // BrandMark and ToastProvider are counted as reusable components, alongside the
   // component-specific APIs. Validate the public boundary, not private helpers.
   for (const name of expected) assert.equal(typeof system[name], 'function', `${name} is importable`);
@@ -176,14 +176,65 @@ test('Breadcrumbs defaults to decorative chevrons and accepts custom separators'
   assert.doesNotMatch(render({ items: items.slice(-1) }), /cr-breadcrumbs-separator/);
 });
 
-test('Tabs applies the requested size in both variants and defaults to md', () => {
-  const items = [{ value: 'board', label: 'Board', content: 'Tasks' }];
-  for (const variant of ['line', 'pill']) {
-    for (const size of [undefined, 'sm', 'md', 'lg']) {
-      const markup = renderToStaticMarkup(React.createElement(system.Tabs, { label: 'Workspace views', items, variant, size }));
-      assert.match(markup, new RegExp(`class="cr-tabs"[^>]* data-size="${size ?? 'md'}"`));
+test('EmptyState defaults to centered content and supports alignment in both variants', () => {
+  const render = props => renderToStaticMarkup(React.createElement(system.EmptyState, {
+    title: 'No tasks yet',
+    description: 'Create your first task.',
+    action: React.createElement('button', { type: 'button' }, 'Create task'),
+    ...props,
+  }));
+
+  const defaults = render();
+  assert.match(defaults, /data-variant="default" data-align="center"/);
+  assert.match(defaults, /<svg[^>]*width="26"/);
+
+  for (const variant of ['default', 'dashed']) {
+    for (const align of ['start', 'center', 'end']) {
+      const markup = render({ variant, align });
+      assert.match(markup, new RegExp(`data-variant="${variant}" data-align="${align}"`));
+      assert.match(markup, /<svg[^>]*aria-hidden="true"/);
+      assert.match(markup, /<h3 class="cr-text" data-size="heading-3">No tasks yet<\/h3><p class="cr-text" data-size="body">Create your first task\.<\/p><button type="button">Create task<\/button>/);
     }
   }
+});
+
+test('Tabs applies the requested variant and size and defaults to line and md', () => {
+  const items = [{ value: 'board', label: 'Board', content: 'Tasks' }];
+  for (const variant of [undefined, 'line', 'pill', 'highlight']) {
+    for (const size of [undefined, 'sm', 'md', 'lg']) {
+      const markup = renderToStaticMarkup(React.createElement(system.Tabs, { label: 'Workspace views', items, variant, size }));
+      assert.match(markup, new RegExp(`class="cr-tabs" data-variant="${variant ?? 'line'}" data-size="${size ?? 'md'}"`));
+    }
+  }
+});
+
+test('Card opts into dividers while forwarding native props and preserving section markup', () => {
+  const h = React.createElement;
+  const props = { id: 'settings', className: 'settings-card', 'aria-label': 'Workspace settings' };
+  const sections = [h('section', { key: 'repo' }, 'Repository'), h('section', { key: 'schedule' }, 'Schedule')];
+  const plain = renderToStaticMarkup(h(system.Card, props, sections));
+  const divided = renderToStaticMarkup(h(system.Card, { ...props, divided: true }, sections));
+
+  assert.equal(plain, '<article id="settings" aria-label="Workspace settings" class="cr-card settings-card"><section>Repository</section><section>Schedule</section></article>');
+  assert.equal(divided, plain.replace('class="cr-card settings-card"', 'class="cr-card settings-card" data-divided="true"'));
+  assert.equal(renderToStaticMarkup(h(system.Card, { dangerouslySetInnerHTML: { __html: '<strong>Settings</strong>' } })), '<article class="cr-card"><strong>Settings</strong></article>');
+});
+
+test('Card renders optional header and footer regions around plain or divided content', () => {
+  const h = React.createElement;
+  const header = h('h2', null, 'Settings');
+  const footer = h('button', { type: 'button' }, 'Save');
+  const children = h('section', null, 'Repository');
+  const render = (props, body) => renderToStaticMarkup(h(system.Card, props, body));
+  const headerMarkup = '<header class="cr-card-region"><h2>Settings</h2></header>';
+  const bodyMarkup = '<section>Repository</section>';
+  const footerMarkup = '<footer class="cr-card-region"><button type="button">Save</button></footer>';
+
+  assert.equal(render({ header, footer }, children), `<article class="cr-card">${headerMarkup}<div class="cr-card-region">${bodyMarkup}</div>${footerMarkup}</article>`);
+  assert.equal(render({ header, footer, divided: true }, children), `<article class="cr-card" data-divided="true">${headerMarkup}${bodyMarkup}${footerMarkup}</article>`);
+  assert.equal(render({ header }), `<article class="cr-card">${headerMarkup}</article>`);
+  assert.equal(render({ header: false, footer: 0 }), '<article class="cr-card"><footer class="cr-card-region">0</footer></article>');
+  assert.equal(render({ header: undefined, footer: null }, children), `<article class="cr-card"><div class="cr-card-region">${bodyMarkup}</div></article>`);
 });
 
 test('a button inside a form is non-submitting unless explicitly requested', () => {
@@ -228,7 +279,7 @@ test('agent activity uses its title as detail text when description and output a
       events: [{ id: 'review', title, ...fields }],
     }));
     assert.match(markup, /<summary class="cr-agent-activity-row">/);
-    assert.ok(markup.includes(`<p class="cr-agent-activity-description">${detailText}</p>`));
+    assert.ok(markup.includes(`<p class="cr-text cr-agent-activity-description" data-size="body">${detailText}</p>`));
     assert.doesNotMatch(markup, /<dt>Output<\/dt>/);
   }
 });
@@ -253,13 +304,35 @@ test('agent activity list renders every event directly with its row disclosure',
   assert.match(markup, /data-status="running"/);
 });
 
+test('agent activity single-line titles are available in full in both variants', () => {
+  const events = [
+    { id: 'review', title: 'Checked the supporting files', description: 'The totals agree.' },
+    { id: 'command', title: 'Read the command output', output: 'Done' },
+    { id: 'finish', title: 'Finished the review' },
+  ];
+  for (const variant of ['default', 'list']) {
+    const markup = renderToStaticMarkup(React.createElement(system.AgentActivity, {
+      events, variant, titleLines: 'single', initialVisibleCount: 2,
+    }));
+
+    assert.equal([...markup.matchAll(/data-single-line="true"/g)].length, events.length);
+    const detailTitles = [...markup.matchAll(/class="cr-text cr-agent-activity-detail-title"[^>]*>([^<]+)</g)].map(([, title]) => title);
+    assert.deepEqual(detailTitles, [events[0].title, events[1].title]);
+    assert.ok(markup.includes('<p class="cr-text cr-agent-activity-description" data-size="body">The totals agree.</p>'));
+    assert.ok(markup.includes(`<p class="cr-text cr-agent-activity-description" data-size="body">${events[2].title}</p>`));
+  }
+
+  const multiple = renderToStaticMarkup(React.createElement(system.AgentActivity, { events, titleLines: 'multiple' }));
+  assert.doesNotMatch(multiple, /data-single-line|cr-agent-activity-detail-title/);
+});
+
 test('conversation defaults to safe agent Markdown and plain user text', () => {
   const markup = renderToStaticMarkup(React.createElement(system.Conversation, { messages: [
     { id: 'user', role: 'user', body: '**Keep this literal**' },
     { id: 'agent', role: 'agent', body: '**Important**\n\n<script>unsafe()</script>\n\n[Bad link](javascript:unsafe())' },
   ] }));
   assert.ok(markup.includes('**Keep this literal**'), 'user messages retain plain-text formatting');
-  assert.ok(markup.includes('<strong>Important</strong>'), 'agent bodies render Markdown');
+  assert.ok(markup.includes('<strong class="cr-text" data-bold="true">Important</strong>'), 'agent bodies render Markdown');
   assert.ok(!markup.includes('<script>'));
   assert.ok(!markup.includes('href="javascript:'), 'message links retain the Markdown renderer URL policy');
 });

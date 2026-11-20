@@ -3,6 +3,7 @@ import type { ComponentPropsWithRef } from 'react';
 import { Check, ChevronRight, CircleAlert, Clock3, FilePenLine, Globe, LoaderCircle, MessageSquare, Network, Terminal, Wrench } from 'lucide-react';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
+import { Text } from './Text';
 import './agent-activity.css';
 
 export type AgentActivityKind = 'agent' | 'command' | 'tool' | 'file' | 'search' | 'message';
@@ -29,6 +30,8 @@ export interface AgentActivityEvent {
 
 type AgentActivityBase = {
   events: readonly AgentActivityEvent[];
+  /** Use 'single' to show event titles on one line with an ellipsis. Defaults to 'multiple'. */
+  titleLines?: 'single' | 'multiple';
   /** Custom group heading in the default variant or accessible name in the list variant. */
   label?: string;
   /** Use 'hover' to highlight the default variant's header. Defaults to 'none'. */
@@ -78,20 +81,21 @@ function ActivityState({ status }: { status: AgentActivityStatus }) {
   return <span className="cr-agent-activity-state" data-status={status}>{Icon && <Icon size={13} aria-hidden="true" className={status === 'running' ? 'cr-agent-activity-spin' : undefined} />}<span>{statusLabels[status]}</span></span>;
 }
 
-function ActivityRow({ event }: { event: AgentActivityEvent }) {
+function ActivityRow({ event, singleLineTitle }: { event: AgentActivityEvent; singleLineTitle: boolean }) {
   const [open, setOpen] = useState(event.defaultOpen ?? false);
   const kind = event.kind ?? 'tool';
   const status = statusOf(event);
   const duration = durationText(event.durationMs);
   const output = plainText(event.output ?? '');
   const hasOutput = output.trim() !== '';
-  const detailText = event.description?.trim() || (hasOutput ? '' : event.title.trim());
+  const fullTitle = event.title.trim();
+  const detailText = event.description?.trim() || (hasOutput ? '' : fullTitle);
   const hasLogFields = event.command !== undefined || event.input !== undefined || hasOutput;
   const expandable = Boolean(detailText) || hasLogFields || event.outputTruncated || event.exitCode !== undefined;
   const waitingForOutput = event.output === undefined && (kind === 'command' || kind === 'tool') && (status === 'running' || status === 'queued');
   const content = <>
     <span className="cr-agent-activity-kind">{renderIcon(event.icon ?? kindIcons[kind], { size: 16 })}</span>
-    <span className="cr-agent-activity-title">{event.title}</span>
+    <span className="cr-agent-activity-title" data-single-line={singleLineTitle || undefined}>{event.title}</span>
     <span className="cr-agent-activity-row-meta">{duration && <span className="cr-agent-activity-duration">{duration}</span>}<ActivityState status={status} /></span>
     {expandable && <ChevronRight className="cr-agent-activity-chevron" size={13} aria-hidden="true" />}
   </>;
@@ -99,27 +103,41 @@ function ActivityRow({ event }: { event: AgentActivityEvent }) {
     {expandable ? <details className="cr-agent-activity-event" open={open} onToggle={event => {
       if (event.target === event.currentTarget) setOpen(event.currentTarget.open);
     }}><summary className="cr-agent-activity-row">{content}</summary><div className="cr-agent-activity-detail">
-      {detailText && <p className="cr-agent-activity-description">{detailText}</p>}
+      {singleLineTitle && fullTitle && fullTitle !== detailText && <Text size="body" className="cr-agent-activity-detail-title">{fullTitle}</Text>}
+      {detailText && <Text size="body" className="cr-agent-activity-description">{detailText}</Text>}
       {hasLogFields && <dl>
         {event.command !== undefined && <><dt>Command</dt><dd><pre tabIndex={0} role="region" aria-label={`${event.title} command`}><code>{plainText(event.command)}</code></pre></dd></>}
         {event.input !== undefined && <><dt>Input</dt><dd><pre tabIndex={0} role="region" aria-label={`${event.title} input`}><code>{plainText(event.input)}</code></pre></dd></>}
         {hasOutput && <><dt>Output</dt><dd><pre tabIndex={0} role="region" aria-label={`${event.title} output`}><code>{output}</code></pre></dd></>}
       </dl>}
-      {waitingForOutput && <p className="cr-agent-activity-note">Waiting for output…</p>}
-      {event.outputTruncated && <p className="cr-agent-activity-note">Some output was omitted from the recorded preview.</p>}
-      {event.exitCode !== undefined && <p className="cr-agent-activity-exit">Exit code <code>{event.exitCode}</code></p>}
+      {waitingForOutput && <Text size="body" className="cr-agent-activity-note">Waiting for output…</Text>}
+      {event.outputTruncated && <Text size="body" className="cr-agent-activity-note">Some output was omitted from the recorded preview.</Text>}
+      {event.exitCode !== undefined && <Text size="body" className="cr-agent-activity-exit">Exit code <code>{event.exitCode}</code></Text>}
     </div></details> : <div className="cr-agent-activity-row">{content}</div>}
   </li>;
 }
 
-function ActivityList({ events, start }: { events: readonly AgentActivityEvent[]; start?: number }) {
+function ActivityList({ events, singleLineTitle, start }: { events: readonly AgentActivityEvent[]; singleLineTitle: boolean; start?: number }) {
   return <ol className="cr-agent-activity-list" role="list" start={start}>
-    {events.map(event => <ActivityRow event={event} key={event.id} />)}
+    {events.map(event => <ActivityRow event={event} singleLineTitle={singleLineTitle} key={event.id} />)}
   </ol>;
 }
 
 /** A chronological group of user-visible agent/tool events with on-demand details. */
-export function AgentActivity({ events, label, headerHighlight = 'none', initialVisibleCount = 6, announce = false, emptyMessage = 'No activity recorded.', open, defaultOpen = true, onOpenChange, className, ...props }: AgentActivityProps) {
+export function AgentActivity({
+  events,
+  titleLines = 'multiple',
+  label,
+  headerHighlight = 'none',
+  initialVisibleCount = 6,
+  announce = false,
+  emptyMessage = 'No activity recorded.',
+  open,
+  defaultOpen = true,
+  onOpenChange,
+  className,
+  ...props
+}: AgentActivityProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [historyBoundary] = useState(() => {
     const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : 6;
@@ -134,13 +152,14 @@ export function AgentActivity({ events, label, headerHighlight = 'none', initial
   const counts = [`${events.length} ${events.length === 1 ? 'activity' : 'activities'}`, running && `${running} running`, queued && `${queued} queued`, failed && `${failed} failed`, interrupted && `${interrupted} interrupted`].filter(Boolean).join(' · ');
   const announcement = announce && <span className="cr-agent-activity-announcement" role="status" aria-atomic="true">{heading}. {counts}.</span>;
   const rootClassName = ['cr-agent-activity', className].filter(Boolean).join(' ');
-  const empty = <p className="cr-agent-activity-empty">{emptyMessage}</p>;
+  const empty = <Text size="body" className="cr-agent-activity-empty">{emptyMessage}</Text>;
+  const singleLineTitle = titleLines === 'single';
 
   if (props.variant === 'list') {
     const { variant, ...listProps } = props;
     return <>
       <div role="group" aria-label={label ?? 'Agent activity'} {...listProps} className={rootClassName} data-variant={variant}>
-        {events.length > 0 ? <ActivityList events={events} /> : empty}
+        {events.length > 0 ? <ActivityList events={events} singleLineTitle={singleLineTitle} /> : empty}
       </div>
       {announcement}
     </>;
@@ -183,9 +202,9 @@ export function AgentActivity({ events, label, headerHighlight = 'none', initial
             <span>{earlier.length} earlier {earlier.length === 1 ? 'activity' : 'activities'}</span>
             {earlier.some(event => ['failed', 'interrupted'].includes(statusOf(event))) && <span className="cr-agent-activity-earlier-issue">Includes issues</span>}
           </summary>
-          <ActivityList events={earlier} />
+          <ActivityList events={earlier} singleLineTitle={singleLineTitle} />
         </details>}
-        {recent.length > 0 && <ActivityList events={recent} start={split + 1} />}
+        {recent.length > 0 && <ActivityList events={recent} singleLineTitle={singleLineTitle} start={split + 1} />}
       </div>
     </details>
     {announcement}

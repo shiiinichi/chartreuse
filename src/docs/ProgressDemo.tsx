@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { Button, Progress, Switch } from '../system/components';
 import { Showcase } from './shared';
+import { Text } from '../system';
 import './ProgressDemo.css';
 
 const modelWindow = 828400;
@@ -18,6 +19,6 @@ export function ProgressDemo() {
     <div className="progress-demo-options"><Switch label="Show label" checked={showLabel} onChange={event => setShowLabel(event.target.checked)} /><Switch label="Show value text" checked={showValue} onChange={event => setShowValue(event.target.checked)} /><Switch label="Show description" checked={showDescription} onChange={event => setShowDescription(event.target.checked)} /></div>
     <div className="progress-demo-context"><Progress value={context} max={modelWindow} label="Last reported context" showLabel={showLabel} valueText={showValue ? `${formatNumber.format(context)} / ${formatNumber.format(modelWindow)} tokens` : undefined} aria-valuetext={`${formatNumber.format(context)} of ${formatNumber.format(modelWindow)} tokens`} description={showDescription ? `${percentage}% of the reported model window. Context is separate from accumulated token usage.` : undefined} /></div>
     <div className="progress-demo-controls"><label className="reference-range">Reported context<input type="range" min="0" max={modelWindow} step="1" value={context} onChange={event => setContext(Number(event.target.value))} /></label><Button variant="secondary" size="sm" icon={RotateCcw} onClick={() => setContext(initialContext)}>Reset value</Button></div>
-    <p className="progress-demo-note">value and max set the native progress value. The caller provides labels, formatted values, units, and description.</p>
+    <Text size="body" className="progress-demo-note">value and max set the native progress value. The caller provides labels, formatted values, units, and description.</Text>
   </div></Showcase>;
 }

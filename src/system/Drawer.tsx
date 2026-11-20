@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { X } from 'lucide-react';
 import { IconButton } from './components';
+import { Text } from './Text';
 import './drawer.css';
 
 export interface DrawerProps {
@@ -55,7 +56,7 @@ export function Drawer({ open, onOpenChange, title, description, children, foote
   }, [open, mode]);
 
   const content = <>
-    <header className="cr-drawer-header"><div><h2 id={`${id}-title`} ref={heading} tabIndex={-1}>{title}</h2>{description && <p id={`${id}-description`}>{description}</p>}</div><IconButton size="sm" icon={X} label="Close drawer" onClick={() => {
+    <header className="cr-drawer-header"><div><Text size="heading-2" id={`${id}-title`} ref={heading} tabIndex={-1}>{title}</Text>{description && <Text size="body" id={`${id}-description`}>{description}</Text>}</div><IconButton size="sm" icon={X} label="Close drawer" onClick={() => {
       if (mode === 'modal') dialog.current?.close();
       else onOpenChange(false);
     }} /></header>

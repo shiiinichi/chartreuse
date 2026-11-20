@@ -4,6 +4,7 @@ import { Badge, Button, Switch } from '../system/components';
 import { Tree } from '../system/Tree';
 import type { TreeNode } from '../system/Tree';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './tree-demo.css';
 
 const calls = [
@@ -45,7 +46,7 @@ export function TreeDemo() {
   const call = calls.find(item => item.id === selected);
   const hierarchyCode = `import { useState } from 'react';
 import { GitBranch, RotateCcw, Terminal } from 'lucide-react';
-import { Badge, Button, Switch, Tree } from '@chartreuse/ui';
+import { Badge, Button, Switch, Tree, Text } from '@chartreuse/ui';
 import type { TreeNode } from '@chartreuse/ui';
 
 const calls = ${JSON.stringify(calls, null, 2)};
@@ -58,8 +59,8 @@ export function CallHierarchy() {
   const call = calls.find(item => item.id === selected);
   return <section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
     <header className="tree-demo-heading">
-      <div><h3 id="tree-demo-hierarchy-title"><GitBranch size={19} aria-hidden="true" />Call hierarchy</h3>
-        <p>Choose a call to inspect its result. The connecting lines show which call started the others.</p></div>
+      <div><Text size="heading-3" id="tree-demo-hierarchy-title"><GitBranch size={19} aria-hidden="true" />Call hierarchy</Text>
+        <Text size="body">Choose a call to inspect its result. The connecting lines show which call started the others.</Text></div>
       <span>4 calls · 0 active</span>
     </header>
     <div className="tree-demo-controls">
@@ -74,23 +75,23 @@ export function CallHierarchy() {
       renderNode={node => {
         const item = calls.find(entry => entry.id === node.id)!;
         return <div className="tree-demo-call">
-          <div className="tree-demo-call-title"><strong>{item.name}</strong><span>{item.call}</span></div>
+          <div className="tree-demo-call-title"><Text bold>{item.name}</Text><span>{item.call}</span></div>
           <div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div>
-          <p>{item.description}</p>
+          <Text size="body">{item.description}</Text>
           <div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>
             {item.tool && <span><Terminal size={14} aria-hidden="true" />{item.tool}</span>}
           </div>
         </div>;
       }} />
     <div className="tree-demo-detail" role="status" aria-live="polite" aria-atomic="true">
-      <strong>{call ? call.name + ' · ' + call.call : 'Select a call'}</strong>
-      <p>{call?.result ?? 'The selected call’s result appears here.'}</p>
+      <Text bold>{call ? call.name + ' · ' + call.call : 'Select a call'}</Text>
+      <Text size="body">{call?.result ?? 'The selected call’s result appears here.'}</Text>
     </div>
   </section>;
 }`;
   const filesCode = `import { useState } from 'react';
 import { FileCode2, FileText, Folder, FolderOpen } from 'lucide-react';
-import { Tree } from '@chartreuse/ui';
+import { Tree, Text } from '@chartreuse/ui';
 import type { TreeNode } from '@chartreuse/ui';
 
 const nodes: TreeNode[] = [{ id: 'workspace', label: 'component-library', icon: FolderOpen, children: [
@@ -116,30 +117,30 @@ export function WorkspaceFiles() {
   const [selected, setSelected] = useState(${JSON.stringify(selectedFile)});
   return <section className="tree-demo-files" aria-labelledby="tree-demo-files-title">
     <header className="tree-demo-heading"><div>
-      <h3 id="tree-demo-files-title">Plain file hierarchy</h3>
-      <p>The plain variant renders file and folder labels without card borders.</p>
+      <Text size="heading-3" id="tree-demo-files-title">Plain file hierarchy</Text>
+      <Text size="body">The plain variant renders file and folder labels without card borders.</Text>
     </div></header>
     <Tree label="Example workspace files" nodes={nodes} variant="plain"
       selectedId={selected} onSelectionChange={setSelected}
       defaultExpandedIds={['workspace', 'source', 'system']} />
-    <p className="tree-demo-selection">Selected: <code>{findNodeLabel(nodes, selected)}</code></p>
+    <Text size="body" className="tree-demo-selection">Selected: <code>{findNodeLabel(nodes, selected)}</code></Text>
   </section>;
 }`;
   return <div className="tree-demo">
     <ExampleGallery >
     <Showcase title="Controlled call hierarchy" description="Control selectedId and expandedIds to manage call selection and expansion. Connectors show parent-child relationships." code={hierarchyCode}><section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
-      <header className="tree-demo-heading"><div><h3 id="tree-demo-hierarchy-title"><GitBranch size={19} aria-hidden="true" />Call hierarchy</h3><p>Choose a call to inspect its result. The connecting lines show which call started the others.</p></div><span>4 calls · 0 active</span></header>
+      <header className="tree-demo-heading"><div><Text size="heading-3" id="tree-demo-hierarchy-title"><GitBranch size={19} aria-hidden="true" />Call hierarchy</Text><Text size="body">Choose a call to inspect its result. The connecting lines show which call started the others.</Text></div><span>4 calls · 0 active</span></header>
       <div className="tree-demo-controls"><Switch label="Show branch connectors" checked={connectors} onChange={event => setConnectors(event.target.checked)} /><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button></div>
       <Tree label="Call hierarchy" nodes={callNodes} selectedId={selected} onSelectionChange={setSelected}
         expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors}
         renderNode={node => {
           const item = calls.find(entry => entry.id === node.id)!;
-          return <div className="tree-demo-call"><div className="tree-demo-call-title"><strong>{item.name}</strong><span>{item.call}</span></div><div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div><p>{item.description}</p><div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>{item.tool && <span><Terminal size={14} aria-hidden="true" />{item.tool}</span>}</div></div>;
+          return <div className="tree-demo-call"><div className="tree-demo-call-title"><Text bold>{item.name}</Text><span>{item.call}</span></div><div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div><Text size="body">{item.description}</Text><div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>{item.tool && <span><Terminal size={14} aria-hidden="true" />{item.tool}</span>}</div></div>;
         }} />
-      <div className="tree-demo-detail" role="status" aria-live="polite" aria-atomic="true"><strong>{call ? `${call.name} · ${call.call}` : 'Select a call'}</strong><p>{call?.result ?? 'The selected call’s result appears here.'}</p></div>
+      <div className="tree-demo-detail" role="status" aria-live="polite" aria-atomic="true"><Text bold>{call ? `${call.name} · ${call.call}` : 'Select a call'}</Text><Text size="body">{call?.result ?? 'The selected call’s result appears here.'}</Text></div>
     </section></Showcase>
-    <Showcase title="Plain file hierarchy" description="The plain variant uses the same selection, expansion, and keyboard controls as the outlined tree." code={filesCode}><section className="tree-demo-files" aria-labelledby="tree-demo-files-title"><header className="tree-demo-heading"><div><h3 id="tree-demo-files-title">Plain file hierarchy</h3><p>The plain variant renders file and folder labels without card borders.</p></div></header><Tree label="Example workspace files" nodes={files} variant="plain" selectedId={selectedFile} onSelectionChange={setSelectedFile} defaultExpandedIds={['workspace', 'source', 'system']} /><p className="tree-demo-selection">Selected: <code>{findNodeLabel(files, selectedFile)}</code></p></section></Showcase>
+    <Showcase title="Plain file hierarchy" description="The plain variant uses the same selection, expansion, and keyboard controls as the outlined tree." code={filesCode}><section className="tree-demo-files" aria-labelledby="tree-demo-files-title"><header className="tree-demo-heading"><div><Text size="heading-3" id="tree-demo-files-title">Plain file hierarchy</Text><Text size="body">The plain variant renders file and folder labels without card borders.</Text></div></header><Tree label="Example workspace files" nodes={files} variant="plain" selectedId={selectedFile} onSelectionChange={setSelectedFile} defaultExpandedIds={['workspace', 'source', 'system']} /><Text size="body" className="tree-demo-selection">Selected: <code>{findNodeLabel(files, selectedFile)}</code></Text></section></Showcase>
     </ExampleGallery>
-    <p className="tree-demo-keyboard">Tab enters each tree once. Use ↑ ↓ to move, → ← to open branches or return to their parent, and Enter or Space to select. Type a name to jump to it.</p>
+    <Text size="body" className="tree-demo-keyboard">Tab enters each tree once. Use ↑ ↓ to move, → ← to open branches or return to their parent, and Enter or Space to select. Type a name to jump to it.</Text>
   </div>;
 }

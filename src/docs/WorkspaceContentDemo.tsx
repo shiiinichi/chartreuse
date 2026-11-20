@@ -11,6 +11,7 @@ import type { WorkspaceContentProps } from '../system/WorkspaceContent';
 import { WorkspaceLayout } from '../system/WorkspaceLayout';
 import { workspaceContentReferences } from './reference/workspace-content';
 import { Showcase } from './shared';
+import { Text } from '../system';
 import './workspace-content-demo.css';
 
 const widthOptions = [
@@ -37,7 +38,7 @@ export function WorkspaceContentDemo({ page = 'workspace-content' }: { page?: 'w
           </Navbar>
           <WorkspaceLayout>
             <Sidebar width={168} className="workspace-content-demo-sidebar" aria-label="Example project sidebar"
-              contentLabel="Project links" header={<strong>Projects</strong>}>
+              contentLabel="Project links" header={<Text bold>Projects</Text>}>
               <nav className="workspace-content-demo-links" aria-label="Example project pages">
                 <Flex direction="column" gap={1}>
                   <NavbarItem href="#record-search">Records</NavbarItem>
@@ -46,7 +47,7 @@ export function WorkspaceContentDemo({ page = 'workspace-content' }: { page?: 'w
               </nav>
             </Sidebar>
             <WorkspaceContent as="section" width={width} aria-labelledby={headingId} className="workspace-content-demo-body">
-              <h4 id={headingId}>Project overview</h4>
+              <Text size="heading-3" id={headingId}>Project overview</Text>
               <StatGroup aria-label="Project totals" columns={{ base: 1, sm: 2 }} gap={3}>
                 <Card className="workspace-content-demo-stat"><Stat label="Open tasks" value={12} /></Card>
                 <Card className="workspace-content-demo-stat"><Stat label="Ready for review" value={4} /></Card>

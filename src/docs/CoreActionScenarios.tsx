@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowRight, Bookmark, Check, FolderOpen, Plus, RotateCcw } from 'lucide-react';
 import { Alert, Button, IconButton, TextField, useToast } from '../system/components';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 
 const snippet = (...lines: string[]) => lines.join('\n');
 
@@ -13,7 +14,7 @@ export function ButtonScenarios() {
   return <ExampleGallery className="core-scenarios">
     <Showcase title="Button variants" description="Set variant to control action emphasis. Clicking a variant records it in local state." code={snippet(
       'import { useState } from "react";',
-      'import { Button } from "@chartreuse/ui";',
+      'import { Button, Text } from "@chartreuse/ui";',
       '',
       'function ButtonVariants() {',
       '  const [chosen, setChosen] = useState("");',
@@ -25,10 +26,10 @@ export function ButtonScenarios() {
       '        {variant.charAt(0).toUpperCase() + variant.slice(1)}',
       '      </Button>)}',
       '    </div>',
-      '    <p role="status">{chosen ? "Selected variant: " + chosen : "Select a variant."}</p>',
+      '    <Text size="body" role="status">{chosen ? "Selected variant: " + chosen : "Select a variant."}</Text>',
       '  </>;',
       '}',
-    )}><div className="core-example-stack"><div className="core-example-row">{variants.map(variant => <Button key={variant} variant={variant} onClick={() => setChosen(variant)}>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Button>)}</div><p className="core-example-result" role="status">{chosen ? 'Selected variant: ' + chosen : 'Select a variant.'}</p></div></Showcase>
+    )}><div className="core-example-stack"><div className="core-example-row">{variants.map(variant => <Button key={variant} variant={variant} onClick={() => setChosen(variant)}>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Button>)}</div><Text size="body" className="core-example-result" role="status">{chosen ? 'Selected variant: ' + chosen : 'Select a variant.'}</Text></div></Showcase>
     <Showcase title="Button sizes" description="Set size to sm, md (default), or lg." code={snippet(
       'import { Button } from "@chartreuse/ui";',
       '',
@@ -49,7 +50,7 @@ export function ButtonScenarios() {
     )}><div className="core-example-row"><Button icon={Plus}>Create task</Button><Button variant="secondary" iconRight={ArrowRight}>View workspace</Button></div></Showcase>
     <Showcase title="Controlled loading state" description="loading disables the button and displays a spinner. The secondary action clears the local loading state." code={snippet(
       'import { useState } from "react";',
-      'import { Button } from "@chartreuse/ui";',
+      'import { Button, Text } from "@chartreuse/ui";',
       '',
       'function PendingAction() {',
       '  const [loading, setLoading] = useState(false);',
@@ -57,10 +58,10 @@ export function ButtonScenarios() {
       '    <Button loading={loading} onClick={() => setLoading(true)}>Start action</Button>',
       '    <Button variant="secondary" disabled={!loading}',
       '      onClick={() => setLoading(false)}>Complete action</Button>',
-      '    <p role="status">{loading ? "Action pending." : "Action ready."}</p>',
+      '    <Text size="body" role="status">{loading ? "Action pending." : "Action ready."}</Text>',
       '  </>;',
       '}',
-    )}><div className="core-example-stack"><div className="core-example-row"><Button loading={loading} onClick={() => setLoading(true)}>Start action</Button><Button variant="secondary" disabled={!loading} onClick={() => setLoading(false)}>Complete action</Button></div><p className="core-example-result" role="status">{loading ? 'Action pending.' : 'Action ready.'}</p></div></Showcase>
+    )}><div className="core-example-stack"><div className="core-example-row"><Button loading={loading} onClick={() => setLoading(true)}>Start action</Button><Button variant="secondary" disabled={!loading} onClick={() => setLoading(false)}>Complete action</Button></div><Text size="body" className="core-example-result" role="status">{loading ? 'Action pending.' : 'Action ready.'}</Text></div></Showcase>
     <Showcase title="Disabled button" description="disabled applies the native button state and removes the control from sequential keyboard navigation." code={snippet(
       'import { Button } from "@chartreuse/ui";',
       '',
@@ -68,7 +69,7 @@ export function ButtonScenarios() {
     )}><Button disabled>Unavailable action</Button></Showcase>
     <Showcase title="Button and submit types" description="The default type is button. Set type to submit to invoke the form submit handler." code={snippet(
       'import { useState } from "react";',
-      'import { Button } from "@chartreuse/ui";',
+      'import { Button, Text } from "@chartreuse/ui";',
       '',
       'function FormActions() {',
       '  const [result, setResult] = useState("No action recorded.");',
@@ -79,10 +80,10 @@ export function ButtonScenarios() {
       '      Run button action',
       '    </Button>',
       '    <Button type="submit">Submit form</Button>',
-      '    <p role="status">{result}</p>',
+      '    <Text size="body" role="status">{result}</Text>',
       '  </form>;',
       '}',
-    )}><form className="core-example-stack" aria-label="Button form actions" onSubmit={event => { event.preventDefault(); setFormResult('Submit handler called.'); }}><div className="core-example-row"><Button variant="secondary" onClick={() => setFormResult('Button click handler called.')}>Run button action</Button><Button type="submit">Submit form</Button></div><p className="core-example-result" role="status">{formResult}</p></form></Showcase>
+    )}><form className="core-example-stack" aria-label="Button form actions" onSubmit={event => { event.preventDefault(); setFormResult('Submit handler called.'); }}><div className="core-example-row"><Button variant="secondary" onClick={() => setFormResult('Button click handler called.')}>Run button action</Button><Button type="submit">Submit form</Button></div><Text size="body" className="core-example-result" role="status">{formResult}</Text></form></Showcase>
   </ExampleGallery>;
 }
 
@@ -95,7 +96,7 @@ export function IconButtonScenarios() {
     <Showcase title="Toggle action with an accessible name" description="label supplies the accessible name; aria-pressed exposes the controlled bookmark state." code={snippet(
       'import { useState } from "react";',
       'import { Bookmark } from "lucide-react";',
-      'import { IconButton } from "@chartreuse/ui";',
+      'import { IconButton, Text } from "@chartreuse/ui";',
       '',
       'function BookmarkAction() {',
       '  const [bookmarked, setBookmarked] = useState(false);',
@@ -104,10 +105,10 @@ export function IconButtonScenarios() {
       '      label={bookmarked ? "Remove bookmark" : "Bookmark task"}',
       '      aria-pressed={bookmarked} variant={bookmarked ? "accent" : "secondary"}',
       '      onClick={() => setBookmarked(value => !value)} />',
-      '    <p role="status">{bookmarked ? "Task bookmarked." : "Task not bookmarked."}</p>',
+      '    <Text size="body" role="status">{bookmarked ? "Task bookmarked." : "Task not bookmarked."}</Text>',
       '  </>;',
       '}',
-    )}><div className="core-example-stack"><IconButton icon={Bookmark} label={bookmarked ? 'Remove bookmark' : 'Bookmark task'} aria-pressed={bookmarked} variant={bookmarked ? 'accent' : 'secondary'} onClick={() => setBookmarked(value => !value)} /><p className="core-example-result" role="status">{bookmarked ? 'Task bookmarked.' : 'Task not bookmarked.'}</p></div></Showcase>
+    )}><div className="core-example-stack"><IconButton icon={Bookmark} label={bookmarked ? 'Remove bookmark' : 'Bookmark task'} aria-pressed={bookmarked} variant={bookmarked ? 'accent' : 'secondary'} onClick={() => setBookmarked(value => !value)} /><Text size="body" className="core-example-result" role="status">{bookmarked ? 'Task bookmarked.' : 'Task not bookmarked.'}</Text></div></Showcase>
     <Showcase title="Icon button sizes and disabled state" description="IconButton accepts Button sizing and disabled props. label supplies its accessible name." code={snippet(
       'import { Plus, FolderOpen, RotateCcw } from "lucide-react";',
       'import { IconButton } from "@chartreuse/ui";',
@@ -121,7 +122,7 @@ export function IconButtonScenarios() {
     )}><div className="core-example-row"><IconButton size="sm" icon={Plus} label="Add task" variant="secondary" /><IconButton icon={FolderOpen} label="Open folder" variant="secondary" /><IconButton size="lg" icon={RotateCcw} label="Reset changes" variant="secondary" /><IconButton icon={RotateCcw} label="Reset changes (unavailable)" disabled /></div></Showcase>
     <Showcase title="Custom SVG icon" description="Pass an inline SVG element to icon. IconButton renders it as a decorative icon." code={snippet(
       'import { useState } from "react";',
-      'import { IconButton } from "@chartreuse/ui";',
+      'import { IconButton, Text } from "@chartreuse/ui";',
       '',
       'const workspaceIcon = <svg viewBox="0 0 24 24" fill="none"',
       '  stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">',
@@ -133,10 +134,10 @@ export function IconButtonScenarios() {
       '  return <>',
       '    <IconButton icon={workspaceIcon} label="Run workspace action"',
       '      variant="secondary" onClick={() => setClicks(value => value + 1)} />',
-      '    <p role="status">Activation count: {clicks}</p>',
+      '    <Text size="body" role="status">Activation count: {clicks}</Text>',
       '  </>;',
       '}',
-    )}><div className="core-example-stack"><IconButton icon={customWorkspaceIcon} label="Run workspace action" variant="secondary" onClick={() => setCustomClicks(value => value + 1)} /><p className="core-example-result" role="status">Activation count: {customClicks}</p></div></Showcase>
+    )}><div className="core-example-stack"><IconButton icon={customWorkspaceIcon} label="Run workspace action" variant="secondary" onClick={() => setCustomClicks(value => value + 1)} /><Text size="body" className="core-example-result" role="status">Activation count: {customClicks}</Text></div></Showcase>
   </ExampleGallery>;
 }
 

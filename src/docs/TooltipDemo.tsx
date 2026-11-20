@@ -5,6 +5,7 @@ import { Flex } from '../system/Flex';
 import { Grid, GridItem } from '../system/Grid';
 import { Tooltip } from '../system/Tooltip';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './tooltip-demo.css';
 
 const stackCss = `.tooltip-demo-stack { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
@@ -36,12 +37,12 @@ function BasicTooltip() {
   const id = useId();
   const [saved, setSaved] = useState(false);
   const [pinned, setPinned] = useState(false);
-  return <Showcase title="Descriptions on hover or focus" description="Buttons, links, and icon actions retain their accessible names and behavior. Tooltips provide supplemental descriptions." code={source('Button, Flex, IconButton, Tooltip', `export function BasicTooltip() {
+  return <Showcase title="Descriptions on hover or focus" description="Buttons, links, and icon actions retain their accessible names and behavior. Tooltips provide supplemental descriptions." code={source('Button, Flex, IconButton, Tooltip, Text', `export function BasicTooltip() {
   const id = useId();
   const [saved, setSaved] = useState(${saved});
   const [pinned, setPinned] = useState(${pinned});
   return <div className="tooltip-demo-stack">
-    <p id={id + '-hint'} className="tooltip-demo-note">State changes are local to this example.</p>
+    <Text size="body" id={id + '-hint'} className="tooltip-demo-note">State changes are local to this example.</Text>
     <Flex wrap align="center" gap={3}>
       <Tooltip content="Save the current draft without leaving this page.">
         <Button aria-describedby={id + '-hint'} onClick={() => setSaved(true)}>Save draft</Button>
@@ -54,17 +55,17 @@ function BasicTooltip() {
           aria-pressed={pinned} onClick={() => setPinned(value => !value)} />
       </Tooltip>
     </Flex>
-    <p className="tooltip-demo-note" role="status">
+    <Text size="body" className="tooltip-demo-note" role="status">
       {saved ? 'The sample draft is saved.' : 'No sample changes saved.'}
       {' '}{pinned ? 'The sample note is pinned.' : 'The sample note is not pinned.'}
-    </p>
+    </Text>
   </div>;
 }`, 'useId, useState', "import { Pin } from 'lucide-react';")}>
-    <div className="tooltip-demo-stack"><p id={`${id}-hint`} className="tooltip-demo-note">State changes are local to this example.</p><Flex wrap align="center" gap={3}>
+    <div className="tooltip-demo-stack"><Text size="body" id={`${id}-hint`} className="tooltip-demo-note">State changes are local to this example.</Text><Flex wrap align="center" gap={3}>
       <Tooltip content="Save the current draft without leaving this page."><Button aria-describedby={`${id}-hint`} onClick={() => setSaved(true)}>Save draft</Button></Tooltip>
       <Tooltip content="Read the available button variants and native behavior."><a className="tooltip-demo-link" href="#components/button">Button reference</a></Tooltip>
       <Tooltip content="Toggle the pinned state of this sample note."><IconButton icon={Pin} label="Pin sample note" variant="secondary" aria-pressed={pinned} onClick={() => setPinned(value => !value)} /></Tooltip>
-    </Flex><p className="tooltip-demo-note" role="status">{saved ? 'The sample draft is saved.' : 'No sample changes saved.'}{' '}{pinned ? 'The sample note is pinned.' : 'The sample note is not pinned.'}</p></div>
+    </Flex><Text size="body" className="tooltip-demo-note" role="status">{saved ? 'The sample draft is saved.' : 'No sample changes saved.'}{' '}{pinned ? 'The sample note is pinned.' : 'The sample note is not pinned.'}</Text></div>
   </Showcase>;
 }
 
@@ -83,35 +84,35 @@ function PlacementTooltips() {
 
 function TooltipInDialog() {
   const [open, setOpen] = useState(false);
-  return <Showcase title="Tooltips in dialogs and scrolling panels" description="The tooltip renders outside the scrolling panel to avoid clipping. Escape dismisses the tooltip before the dialog." code={source('Button, Dialog, Tooltip', `export function TooltipInDialog() {
+  return <Showcase title="Tooltips in dialogs and scrolling panels" description="The tooltip renders outside the scrolling panel to avoid clipping. Escape dismisses the tooltip before the dialog." code={source('Button, Dialog, Tooltip, Text', `export function TooltipInDialog() {
   const [open, setOpen] = useState(${open});
   return <div className="tooltip-demo-stack">
     <Button variant="secondary" onClick={() => setOpen(true)}>Open tooltip dialog</Button>
-    <p className="tooltip-demo-note">Open the dialog, then focus or hover Inspect a note.</p>
+    <Text size="body" className="tooltip-demo-note">Open the dialog, then focus or hover Inspect a note.</Text>
     <Dialog open={open} onOpenChange={setOpen} title="Tooltip in a scrolling panel"
       description="Focus or hover the note control to display its tooltip."
       footer={<Button onClick={() => setOpen(false)}>Done inspecting</Button>}>
       <div className="tooltip-demo-stack">
-        <p className="tooltip-demo-note">Press Escape once to dismiss an open tooltip. The dialog remains open.</p>
+        <Text size="body" className="tooltip-demo-note">Press Escape once to dismiss an open tooltip. The dialog remains open.</Text>
         <div className="tooltip-demo-scroll" role="region" aria-label="Scrollable tooltip example" tabIndex={0}>
           <div className="tooltip-demo-scroll-content">
             <Tooltip placement="top" openDelay={0} closeDelay={300}
               content="This description is outside the clipped panel and follows the note control.">
               <Button variant="secondary" autoFocus>Inspect a note</Button>
             </Tooltip>
-            <p className="tooltip-demo-note">Scroll the panel while the trigger remains visible. The tooltip follows the trigger.</p>
-            <p className="tooltip-demo-note">This content extends the panel to demonstrate scrolling.</p>
+            <Text size="body" className="tooltip-demo-note">Scroll the panel while the trigger remains visible. The tooltip follows the trigger.</Text>
+            <Text size="body" className="tooltip-demo-note">This content extends the panel to demonstrate scrolling.</Text>
           </div>
         </div>
       </div>
     </Dialog>
   </div>;
 }`, 'useState', '', `${stackCss}\n${scrollCss}`)}>
-    <div className="tooltip-demo-stack"><Button variant="secondary" onClick={() => setOpen(true)}>Open tooltip dialog</Button><p className="tooltip-demo-note">Open the dialog, then focus or hover Inspect a note.</p>
+    <div className="tooltip-demo-stack"><Button variant="secondary" onClick={() => setOpen(true)}>Open tooltip dialog</Button><Text size="body" className="tooltip-demo-note">Open the dialog, then focus or hover Inspect a note.</Text>
       <Dialog open={open} onOpenChange={setOpen} title="Tooltip in a scrolling panel" description="Focus or hover the note control to display its tooltip." footer={<Button onClick={() => setOpen(false)}>Done inspecting</Button>}>
-        <div className="tooltip-demo-stack"><p className="tooltip-demo-note">Press Escape once to dismiss an open tooltip. The dialog remains open.</p><div className="tooltip-demo-scroll" role="region" aria-label="Scrollable tooltip example" tabIndex={0}><div className="tooltip-demo-scroll-content">
+        <div className="tooltip-demo-stack"><Text size="body" className="tooltip-demo-note">Press Escape once to dismiss an open tooltip. The dialog remains open.</Text><div className="tooltip-demo-scroll" role="region" aria-label="Scrollable tooltip example" tabIndex={0}><div className="tooltip-demo-scroll-content">
           <Tooltip placement="top" openDelay={0} closeDelay={300} content="This description is outside the clipped panel and follows the note control."><Button variant="secondary" autoFocus>Inspect a note</Button></Tooltip>
-          <p className="tooltip-demo-note">Scroll the panel while the trigger remains visible. The tooltip follows the trigger.</p><p className="tooltip-demo-note">This content extends the panel to demonstrate scrolling.</p>
+          <Text size="body" className="tooltip-demo-note">Scroll the panel while the trigger remains visible. The tooltip follows the trigger.</Text><Text size="body" className="tooltip-demo-note">This content extends the panel to demonstrate scrolling.</Text>
         </div></div></div>
       </Dialog>
     </div>
@@ -159,7 +160,7 @@ function TooltipOptions() {
 
 function ControlledTooltip() {
   const [open, setOpen] = useState(false);
-  return <Showcase title="Control tooltip visibility" description="The parent owns open. The switch updates it directly; trigger interactions and Escape request changes through onOpenChange." code={source('Button, Grid, GridItem, Switch, Tooltip', `export function ControlledTooltip() {
+  return <Showcase title="Control tooltip visibility" description="The parent owns open. The switch updates it directly; trigger interactions and Escape request changes through onOpenChange." code={source('Button, Grid, GridItem, Switch, Tooltip, Text', `export function ControlledTooltip() {
   const [open, setOpen] = useState(${open});
   return <div className="tooltip-demo-stack">
     <Grid columns={1} gap={4}><GridItem span={1}>
@@ -170,29 +171,29 @@ function ControlledTooltip() {
       open={open} onOpenChange={setOpen}>
       <Button variant="secondary">Controlled tooltip trigger</Button>
     </Tooltip>
-    <p className="tooltip-demo-note">Current state: {open ? 'open' : 'closed'}.</p>
+    <Text size="body" className="tooltip-demo-note">Current state: {open ? 'open' : 'closed'}.</Text>
   </div>;
 }`, 'useState')}>
-    <div className="tooltip-demo-stack"><Grid columns={1} gap={4}><GridItem span={1}><Switch label="Controlled tooltip open" checked={open} onChange={event => setOpen(event.currentTarget.checked)} /></GridItem></Grid><Tooltip content="Visibility is controlled by the example’s open state." open={open} onOpenChange={setOpen}><Button variant="secondary">Controlled tooltip trigger</Button></Tooltip><p className="tooltip-demo-note">Current state: {open ? 'open' : 'closed'}.</p></div>
+    <div className="tooltip-demo-stack"><Grid columns={1} gap={4}><GridItem span={1}><Switch label="Controlled tooltip open" checked={open} onChange={event => setOpen(event.currentTarget.checked)} /></GridItem></Grid><Tooltip content="Visibility is controlled by the example’s open state." open={open} onOpenChange={setOpen}><Button variant="secondary">Controlled tooltip trigger</Button></Tooltip><Text size="body" className="tooltip-demo-note">Current state: {open ? 'open' : 'closed'}.</Text></div>
   </Showcase>;
 }
 
 function DisabledActionTooltip() {
-  return <Showcase title="Describe a disabled action" description="A focusable wrapper exposes the tooltip for a native disabled button. The reason also appears as visible text." code={source('Button, Tooltip', `<div className="tooltip-demo-stack">
+  return <Showcase title="Describe a disabled action" description="A focusable wrapper exposes the tooltip for a native disabled button. The reason also appears as visible text." code={source('Button, Tooltip, Text', `<div className="tooltip-demo-stack">
   <Tooltip content="An approved review is needed before this sample can be published.">
     <span className="tooltip-demo-disabled-target" role="group" tabIndex={0}
       aria-label="Publishing unavailable">
       <Button disabled>Publish update</Button>
     </span>
   </Tooltip>
-  <p className="tooltip-demo-note">Publishing is unavailable until this local review is approved.</p>
+  <Text size="body" className="tooltip-demo-note">Publishing is unavailable until this local review is approved.</Text>
 </div>`, '', '', `${stackCss}\n${disabledCss}`)}>
-    <div className="tooltip-demo-stack"><Tooltip content="An approved review is needed before this sample can be published."><span className="tooltip-demo-disabled-target" role="group" tabIndex={0} aria-label="Publishing unavailable"><Button disabled>Publish update</Button></span></Tooltip><p className="tooltip-demo-note">Publishing is unavailable until this local review is approved.</p></div>
+    <div className="tooltip-demo-stack"><Tooltip content="An approved review is needed before this sample can be published."><span className="tooltip-demo-disabled-target" role="group" tabIndex={0} aria-label="Publishing unavailable"><Button disabled>Publish update</Button></span></Tooltip><Text size="body" className="tooltip-demo-note">Publishing is unavailable until this local review is approved.</Text></div>
   </Showcase>;
 }
 
 export function TooltipDemo() {
-  return <div className="tooltip-demo"><p className="tooltip-demo-note">Hover or focus a trigger, move onto the tooltip to keep reading, or press Escape to dismiss it.</p><ExampleGallery>
+  return <div className="tooltip-demo"><Text size="body" className="tooltip-demo-note">Hover or focus a trigger, move onto the tooltip to keep reading, or press Escape to dismiss it.</Text><ExampleGallery>
     <BasicTooltip /><PlacementTooltips /><TooltipInDialog /><TooltipOptions /><ControlledTooltip /><DisabledActionTooltip />
   </ExampleGallery></div>;
 }

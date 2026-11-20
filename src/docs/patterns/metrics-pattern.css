@@ -93,7 +93,7 @@
     padding: var(--cr-space-5);
   }
 
-  .metrics-pattern-card-heading h4 {
+  .metrics-pattern-card-heading h3 {
     margin: 0 0 var(--cr-space-1);
     font-size: .875rem;
     font-weight: 550;

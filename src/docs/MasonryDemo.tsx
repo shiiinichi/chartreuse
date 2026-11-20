@@ -5,6 +5,7 @@ import { Grid, GridItem } from '../system/Grid';
 import type { GridGap, GridSpan } from '../system/Grid';
 import { Masonry, MasonryItem, MasonrySpacer } from '../system/Masonry';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './masonry-demo.css';
 
 const notes = [
@@ -15,28 +16,28 @@ const notes = [
 ] as const;
 
 function NoteCard({ note }: { note: typeof notes[number] }) {
-  return <Card className="masonry-demo-card"><h4>{note.title}</h4>{note.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</Card>;
+  return <Card className="masonry-demo-card"><Text size="heading-3">{note.title}</Text>{note.paragraphs.map(paragraph => <Text size="body" key={paragraph}>{paragraph}</Text>)}</Card>;
 }
 
 const noteSource = `const notes = ${JSON.stringify(notes, null, 2)} as const;
 
 function NoteCard({ note }: { note: typeof notes[number] }) {
   return <Card className="masonry-demo-card">
-    <h4>{note.title}</h4>
-    {note.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+    <Text size="heading-3">{note.title}</Text>
+    {note.paragraphs.map(paragraph => <Text size="body" key={paragraph}>{paragraph}</Text>)}
   </Card>;
 }`;
 const sampleStyles = `/* Example styles:
 .masonry-demo-stack { display: flex; flex-direction: column; gap: var(--cr-space-4); min-width: 0; }
 .masonry-demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cr-space-3); }
 .masonry-demo-card { display: flex; flex-direction: column; gap: var(--cr-space-3); min-width: 0; padding: var(--cr-space-4); }
-.masonry-demo-card > h4 { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 550; }
+.masonry-demo-card > h3 { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 550; }
 .masonry-demo-card > p { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
 .masonry-demo-caption { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
 .masonry-demo-frame { box-sizing: border-box; max-width: 100%; min-width: 0; padding: var(--cr-space-4); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); }
 */`;
 function exampleCode(components: string, example: string, react = false) {
-  return `${react ? "import { useState } from 'react';\n" : ''}import { ${components} } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\n${noteSource}\n\n${example}\n\n${sampleStyles}`;
+  return `${react ? "import { useState } from 'react';\n" : ''}import { ${components}, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\n${noteSource}\n\n${example}\n\n${sampleStyles}`;
 }
 const illustration: CSSProperties = { outline: '1px dashed var(--cr-color-input-border)', background: 'var(--cr-color-subtle)', borderRadius: 7 };
 const illustrationSource = `const illustration = {
@@ -91,13 +92,13 @@ function ChangingContent() {
     </div>
     <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}>
       <Card className="masonry-demo-card">
-        <h4>Expandable review notes</h4><p>Open the detail to change this card’s height.</p>
+        <Text size="heading-3">Expandable review notes</Text><Text size="body">Open the detail to change this card’s height.</Text>
         <Button variant="secondary" size="sm" aria-expanded={expanded}
           onClick={() => setExpanded(value => !value)}>
           {expanded ? 'Collapse review detail' : 'Expand review detail'}
         </Button>
-        {expanded && <p>The team checked the source, compared the rendered examples,
-          and recorded the remaining questions before handing the work over.</p>}
+        {expanded && <Text size="body">The team checked the source, compared the rendered examples,
+          and recorded the remaining questions before handing the work over.</Text>}
       </Card>
       {notes.slice(0, 3).map(note => <NoteCard key={note.id} note={note} />)}
       {extra && <NoteCard key="extra" note={notes[3]} />}
@@ -105,7 +106,7 @@ function ChangingContent() {
   </div>;
 }`, true)}>
     <div className="masonry-demo-stack"><div className="masonry-demo-actions"><Button variant="secondary" onClick={() => setExtra(value => !value)}>{extra ? 'Remove the extra note' : 'Add an extra note'}</Button></div>
-      <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><Card className="masonry-demo-card"><h4>Expandable review notes</h4><p>Open the detail to change this card’s height.</p><Button variant="secondary" size="sm" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? 'Collapse review detail' : 'Expand review detail'}</Button>{expanded && <p>The team checked the source, compared the rendered examples, and recorded the remaining questions before handing the work over.</p>}</Card>{notes.slice(0, 3).map(note => <NoteCard key={note.id} note={note} />)}{extra && <NoteCard key="extra" note={notes[3]} />}</Masonry>
+      <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><Card className="masonry-demo-card"><Text size="heading-3">Expandable review notes</Text><Text size="body">Open the detail to change this card’s height.</Text><Button variant="secondary" size="sm" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? 'Collapse review detail' : 'Expand review detail'}</Button>{expanded && <Text size="body">The team checked the source, compared the rendered examples, and recorded the remaining questions before handing the work over.</Text>}</Card>{notes.slice(0, 3).map(note => <NoteCard key={note.id} note={note} />)}{extra && <NoteCard key="extra" note={notes[3]} />}</Masonry>
     </div>
   </Showcase>;
 }
@@ -114,12 +115,12 @@ function FullWidthNote() {
   return <Showcase title="Span every column" description="A full-span item starts below the preceding columns. Later items continue below it." code={exampleCode('Card, Masonry, MasonryItem', `<Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}>
   {notes.slice(0, 3).map(note => <NoteCard key={note.id} note={note} />)}
   <MasonryItem span="full"><Card className="masonry-demo-card">
-    <h4>Layout decision</h4>
-    <p>This item starts below the preceding columns and spans the full container width.</p>
+    <Text size="heading-3">Layout decision</Text>
+    <Text size="body">This item starts below the preceding columns and spans the full container width.</Text>
   </Card></MasonryItem>
   <NoteCard note={notes[3]} /><NoteCard note={notes[0]} />
 </Masonry>`)}>
-    <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}>{notes.slice(0, 3).map(note => <NoteCard key={note.id} note={note} />)}<MasonryItem span="full"><Card className="masonry-demo-card"><h4>Layout decision</h4><p>This item starts below the preceding columns and spans the full container width.</p></Card></MasonryItem><NoteCard note={notes[3]} /><NoteCard note={notes[0]} /></Masonry>
+    <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}>{notes.slice(0, 3).map(note => <NoteCard key={note.id} note={note} />)}<MasonryItem span="full"><Card className="masonry-demo-card"><Text size="heading-3">Layout decision</Text><Text size="body">This item starts below the preceding columns and spans the full container width.</Text></Card></MasonryItem><NoteCard note={notes[3]} /><NoteCard note={notes[0]} /></Masonry>
   </Showcase>;
 }
 
@@ -130,13 +131,13 @@ export function MasonryDemo() {
 function ResponsiveItem() {
   return <Showcase title="Responsive column spans" description="The item spans one column at the base tier and two columns from the sm tier." code={exampleCode('Card, Masonry, MasonryItem', `<Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}>
   <MasonryItem span={{ base: 1, sm: 2 }}><Card className="masonry-demo-card">
-    <h4>Primary review notes</h4>
-    <p>This note has a wider span when the Masonry container reaches 480px.</p>
-    <p>Its height still comes from the content.</p>
+    <Text size="heading-3">Primary review notes</Text>
+    <Text size="body">This note has a wider span when the Masonry container reaches 480px.</Text>
+    <Text size="body">Its height still comes from the content.</Text>
   </Card></MasonryItem>
   {notes.map(note => <MasonryItem key={note.id}><NoteCard note={note} /></MasonryItem>)}
 </Masonry>`)}>
-    <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><MasonryItem span={{ base: 1, sm: 2 }}><Card className="masonry-demo-card"><h4>Primary review notes</h4><p>This note has a wider span when the Masonry container reaches 480px.</p><p>Its height still comes from the content.</p></Card></MasonryItem>{notes.map(note => <MasonryItem key={note.id}><NoteCard note={note} /></MasonryItem>)}</Masonry>
+    <Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><MasonryItem span={{ base: 1, sm: 2 }}><Card className="masonry-demo-card"><Text size="heading-3">Primary review notes</Text><Text size="body">This note has a wider span when the Masonry container reaches 480px.</Text><Text size="body">Its height still comes from the content.</Text></Card></MasonryItem>{notes.map(note => <MasonryItem key={note.id}><NoteCard note={note} /></MasonryItem>)}</Masonry>
   </Showcase>;
 }
 
@@ -166,13 +167,13 @@ function OrdinaryAndWrappedItems() {
   return <Showcase title="Apply spans with MasonryItem" description="Direct children occupy one column. MasonryItem sets a span while the child content retains its semantics." code={exampleCode('Card, Masonry, MasonryItem', `<Masonry columns={{ base: 1, sm: 2 }} gap={4}>
   <NoteCard note={notes[0]} /><NoteCard note={notes[1]} />
   <MasonryItem span="full" data-context="handoff">
-    <Card className="masonry-demo-card"><h4>Wrapped card</h4>
-      <p>MasonryItem sets the span. Card retains its article semantics.</p>
+    <Card className="masonry-demo-card"><Text size="heading-3">Wrapped card</Text>
+      <Text size="body">MasonryItem sets the span. Card retains its article semantics.</Text>
     </Card>
   </MasonryItem>
   <NoteCard note={notes[2]} /><NoteCard note={notes[3]} />
 </Masonry>`)}>
-    <Masonry columns={{ base: 1, sm: 2 }} gap={4}><NoteCard note={notes[0]} /><NoteCard note={notes[1]} /><MasonryItem span="full" data-context="handoff"><Card className="masonry-demo-card"><h4>Wrapped card</h4><p>MasonryItem sets the span. Card retains its article semantics.</p></Card></MasonryItem><NoteCard note={notes[2]} /><NoteCard note={notes[3]} /></Masonry>
+    <Masonry columns={{ base: 1, sm: 2 }} gap={4}><NoteCard note={notes[0]} /><NoteCard note={notes[1]} /><MasonryItem span="full" data-context="handoff"><Card className="masonry-demo-card"><Text size="heading-3">Wrapped card</Text><Text size="body">MasonryItem sets the span. Card retains its article semantics.</Text></Card></MasonryItem><NoteCard note={notes[2]} /><NoteCard note={notes[3]} /></Masonry>
   </Showcase>;
 }
 
@@ -200,10 +201,10 @@ export function ReservedSpace() {
       {reserve && <MasonrySpacer height={160} style={showOutline ? illustration : undefined} />}
       <NoteCard note={notes[1]} /><NoteCard note={notes[2]} />
     </Masonry>
-    <p className="masonry-demo-caption">${spacerCaption}</p>
+    <Text size="body" className="masonry-demo-caption">${spacerCaption}</Text>
   </div>;
 }`, true)}>
-    <div className="masonry-demo-stack"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Switch label="Reserve an empty slot" checked={reserve} onChange={event => setReserve(event.target.checked)} /></GridItem><GridItem span={1}><Switch label="Show spacer illustration" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /></GridItem></Grid><Masonry columns={{ base: 1, sm: 2 }} gap={4}><NoteCard note={notes[0]} />{reserve && <MasonrySpacer height={160} style={showOutline ? illustration : undefined} />}<NoteCard note={notes[1]} /><NoteCard note={notes[2]} /></Masonry><p className="masonry-demo-caption">{spacerCaption}</p></div>
+    <div className="masonry-demo-stack"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Switch label="Reserve an empty slot" checked={reserve} onChange={event => setReserve(event.target.checked)} /></GridItem><GridItem span={1}><Switch label="Show spacer illustration" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /></GridItem></Grid><Masonry columns={{ base: 1, sm: 2 }} gap={4}><NoteCard note={notes[0]} />{reserve && <MasonrySpacer height={160} style={showOutline ? illustration : undefined} />}<NoteCard note={notes[1]} /><NoteCard note={notes[2]} /></Masonry><Text size="body" className="masonry-demo-caption">{spacerCaption}</Text></div>
   </Showcase>;
 }
 
@@ -235,10 +236,10 @@ export function SizedSpace() {
       <MasonrySpacer height={height} span={span} style={showOutline ? illustration : undefined} />
       <NoteCard note={notes[1]} /><NoteCard note={notes[2]} /><NoteCard note={notes[3]} />
     </Masonry>
-    <p className="masonry-demo-caption">${spacerCaption}</p>
+    <Text size="body" className="masonry-demo-caption">${spacerCaption}</Text>
   </div>;
 }`, true)}>
-    <div className="masonry-demo-stack"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Select label="Reserved height" value={height} onChange={event => setHeight(Number(event.target.value))}><option value={80}>80px</option><option value={160}>160px</option><option value={240}>240px</option></Select></GridItem><GridItem span={1}><Select label="Reserved span" value={span} onChange={event => setSpan(event.target.value === 'full' ? 'full' : Number(event.target.value))}><option value={1}>1 column</option><option value={2}>2 columns</option><option value="full">Every column</option></Select></GridItem><GridItem span="full"><Switch label="Show sized spacer illustration" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /></GridItem></Grid><Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><NoteCard note={notes[0]} /><MasonrySpacer height={height} span={span} style={showOutline ? illustration : undefined} /><NoteCard note={notes[1]} /><NoteCard note={notes[2]} /><NoteCard note={notes[3]} /></Masonry><p className="masonry-demo-caption">{spacerCaption}</p></div>
+    <div className="masonry-demo-stack"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Select label="Reserved height" value={height} onChange={event => setHeight(Number(event.target.value))}><option value={80}>80px</option><option value={160}>160px</option><option value={240}>240px</option></Select></GridItem><GridItem span={1}><Select label="Reserved span" value={span} onChange={event => setSpan(event.target.value === 'full' ? 'full' : Number(event.target.value))}><option value={1}>1 column</option><option value={2}>2 columns</option><option value="full">Every column</option></Select></GridItem><GridItem span="full"><Switch label="Show sized spacer illustration" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /></GridItem></Grid><Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><NoteCard note={notes[0]} /><MasonrySpacer height={height} span={span} style={showOutline ? illustration : undefined} /><NoteCard note={notes[1]} /><NoteCard note={notes[2]} /><NoteCard note={notes[3]} /></Masonry><Text size="body" className="masonry-demo-caption">{spacerCaption}</Text></div>
   </Showcase>;
 }
 
@@ -268,10 +269,10 @@ export function ResponsiveSpace() {
         <NoteCard note={notes[1]} /><NoteCard note={notes[2]} />
       </Masonry>
     </div>
-    <p className="masonry-demo-caption">${spacerCaption}</p>
+    <Text size="body" className="masonry-demo-caption">${spacerCaption}</Text>
   </div>;
 }`, true)}>
-    <div className="masonry-demo-stack"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Select label="Responsive frame width" value={width} onChange={event => setWidth(event.target.value)}><option value="320">320px</option><option value="640">640px</option><option value="960">960px</option></Select></GridItem><GridItem span={1}><Switch label="Show responsive spacer illustration" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /></GridItem></Grid><div className="masonry-demo-frame" style={{ inlineSize: `${width}px` }}><Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><NoteCard note={notes[0]} /><MasonrySpacer visible={{ base: false, sm: true }} height={{ base: 80, md: 160 }} span={{ base: 1, md: 2 }} style={showOutline ? illustration : undefined} /><NoteCard note={notes[1]} /><NoteCard note={notes[2]} /></Masonry></div><p className="masonry-demo-caption">{spacerCaption}</p></div>
+    <div className="masonry-demo-stack"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Select label="Responsive frame width" value={width} onChange={event => setWidth(event.target.value)}><option value="320">320px</option><option value="640">640px</option><option value="960">960px</option></Select></GridItem><GridItem span={1}><Switch label="Show responsive spacer illustration" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /></GridItem></Grid><div className="masonry-demo-frame" style={{ inlineSize: `${width}px` }}><Masonry columns={{ base: 1, sm: 2, md: 3 }} gap={4}><NoteCard note={notes[0]} /><MasonrySpacer visible={{ base: false, sm: true }} height={{ base: 80, md: 160 }} span={{ base: 1, md: 2 }} style={showOutline ? illustration : undefined} /><NoteCard note={notes[1]} /><NoteCard note={notes[2]} /></Masonry></div><Text size="body" className="masonry-demo-caption">{spacerCaption}</Text></div>
   </Showcase>;
 }
 

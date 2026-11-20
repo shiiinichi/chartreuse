@@ -4,6 +4,7 @@ import { Badge, Button, Select, Switch } from '../system/components';
 import { FilePicker } from '../system/FilePicker';
 import { Grid, GridItem } from '../system/Grid';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './file-picker-demo.css';
 
 export function FilePickerDemo() {
@@ -22,7 +23,7 @@ export function FilePickerDemo() {
     <ExampleGallery maxColumns={1}>
     <Showcase span="full" title={mode === 'folder' ? 'Folder files and relative paths' : 'File selection and metadata'} description="Inspect browser-provided file metadata and reset the native selection." code={`import { useState } from 'react';
 import { Files, RotateCcw } from 'lucide-react';
-import { Badge, Button, FilePicker } from '@chartreuse/ui';
+import { Badge, Button, FilePicker, Text } from '@chartreuse/ui';
 
 export function FileSelectionExample() {
   const [files, setFiles] = useState<File[]>([]);
@@ -40,19 +41,19 @@ export function FileSelectionExample() {
       </div>
     </form>
     <section aria-label="Selected file metadata">
-        <h3><Files size={14} aria-hidden="true" /> Selected file metadata</h3>
+        <Text size="heading-3"><Files size={14} aria-hidden="true" /> Selected file metadata</Text>
         <Badge>{files.length} {files.length === 1 ? 'file' : 'files'}</Badge>
         {files.length ? <div role="region" aria-label="Selected file metadata" tabIndex={0}
           style={{ overflow: 'auto', maxBlockSize: 360 }}>
           <table>
             <thead><tr><th>Name and relative path</th><th>Size</th><th>Type</th></tr></thead>
             <tbody>{files.slice(0, 20).map((file, index) => <tr key={index}>
-              <td><strong>{file.name}</strong><br /><code>{file.webkitRelativePath || 'No folder-relative path'}</code></td>
+              <td><Text bold>{file.name}</Text><br /><code>{file.webkitRelativePath || 'No folder-relative path'}</code></td>
               <td>{file.size.toLocaleString()} B</td><td>{file.type || 'Unspecified'}</td>
             </tr>)}</tbody>
           </table>
-          {files.length > 20 && <p>{files.length - 20} more files selected.</p>}
-        </div> : <p>Select files or a folder to display names, sizes, MIME types, and relative paths.</p>}
+          {files.length > 20 && <Text size="body">{files.length - 20} more files selected.</Text>}
+        </div> : <Text size="body">Select files or a folder to display names, sizes, MIME types, and relative paths.</Text>}
     </section>
   </div>;
 }`}>
@@ -64,10 +65,10 @@ export function FileSelectionExample() {
               <Button type="reset" variant="secondary" size="sm" icon={RotateCcw}>Reset selection</Button>
             </div>
           </form>
-          <section className="file-picker-demo-metadata"><header><h3><Files size={14} aria-hidden="true" />Selected file metadata</h3><Badge>{files.length} {files.length === 1 ? 'file' : 'files'}</Badge></header>{files.length ? <div className="file-picker-demo-table" role="region" aria-label="Selected file metadata" tabIndex={0}><table><thead><tr><th>Name and relative path</th><th>Size</th><th>Type</th></tr></thead><tbody>{files.slice(0, 20).map((file, index) => <tr key={`${file.webkitRelativePath || file.name}-${index}`}><td><strong>{file.name}</strong><code>{file.webkitRelativePath || 'No folder-relative path'}</code></td><td>{file.size.toLocaleString()} B</td><td>{file.type || 'Unspecified'}</td></tr>)}</tbody></table>{files.length > 20 && <p>{files.length - 20} more files selected.</p>}</div> : <p className="file-picker-demo-empty">Select files or a folder to display names, sizes, MIME types, and relative paths.</p>}</section>
+          <section className="file-picker-demo-metadata"><header><Text size="heading-3"><Files size={14} aria-hidden="true" />Selected file metadata</Text><Badge>{files.length} {files.length === 1 ? 'file' : 'files'}</Badge></header>{files.length ? <div className="file-picker-demo-table" role="region" aria-label="Selected file metadata" tabIndex={0}><table><thead><tr><th>Name and relative path</th><th>Size</th><th>Type</th></tr></thead><tbody>{files.slice(0, 20).map((file, index) => <tr key={`${file.webkitRelativePath || file.name}-${index}`}><td><Text bold>{file.name}</Text><code>{file.webkitRelativePath || 'No folder-relative path'}</code></td><td>{file.size.toLocaleString()} B</td><td>{file.type || 'Unspecified'}</td></tr>)}</tbody></table>{files.length > 20 && <Text size="body">{files.length - 20} more files selected.</Text>}</div> : <Text size="body" className="file-picker-demo-empty">Select files or a folder to display names, sizes, MIME types, and relative paths.</Text>}</section>
       </div>
     </Showcase>
     </ExampleGallery>
-    <p className="file-picker-demo-note">File selection is local to this example. The browser supplies file names and folder-relative paths. Absolute filesystem paths are unavailable. Folder selection returns files; empty folders do not produce file entries. <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory" target="_blank" rel="noopener noreferrer">Directory input reference ↗</a></p>
+    <Text size="body" className="file-picker-demo-note">File selection is local to this example. The browser supplies file names and folder-relative paths. Absolute filesystem paths are unavailable. Folder selection returns files; empty folders do not produce file entries. <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory" target="_blank" rel="noopener noreferrer">Directory input reference ↗</a></Text>
   </div>;
 }

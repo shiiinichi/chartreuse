@@ -3,6 +3,7 @@ import type { ComponentPropsWithRef } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
+import { Text } from './Text';
 import './segmented-control.css';
 
 export interface SegmentedControlOption {
@@ -64,6 +65,6 @@ export function SegmentedControl({ label, name, options, value, defaultValue = '
       }} />
       <span className="cr-segmented-label">{renderIcon(option.icon, { size: 15 })}<span>{option.label}</span></span>
     </label>)}</div>
-    {(error || hint) && <p className="cr-segmented-message" id={descriptionId} data-error={!!error || undefined} role={error ? 'alert' : undefined}>{error && <AlertCircle size={12} aria-hidden="true" />}<span>{error || hint}</span></p>}
+    {(error || hint) && <Text size="body" className="cr-segmented-message" id={descriptionId} data-error={!!error || undefined} role={error ? 'alert' : undefined}>{error && <AlertCircle size={12} aria-hidden="true" />}<span>{error || hint}</span></Text>}
   </fieldset>;
 }

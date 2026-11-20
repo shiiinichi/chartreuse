@@ -2,6 +2,7 @@ import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useStat
 import type { ComponentPropsWithRef, CSSProperties, KeyboardEvent } from 'react';
 import { AlertCircle, Check, ChevronDown, Search, X } from 'lucide-react';
 import type { ControlSize } from './control-size';
+import { Text } from './Text';
 import './autocomplete.css';
 
 export interface AutocompleteOption {
@@ -173,11 +174,11 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
       }} />
       <div className="cr-autocomplete-actions">{selected && <button type="button" tabIndex={-1} disabled={disabled} aria-label={`Clear ${label}`} onPointerDown={event => event.preventDefault()} onClick={() => { updateValue(''); setSearching(false); setQuery(''); setOpen(true); setActive(firstEnabled); input.current?.focus(); }}><X size={13} aria-hidden="true" /></button>}<button type="button" tabIndex={-1} disabled={disabled} aria-label={`${expanded ? 'Hide' : 'Show'} ${label} options`} aria-expanded={expanded} onPointerDown={event => event.preventDefault()} onClick={() => { if (expanded) closeOptions(); else { input.current?.focus(); showOptions(); } }}><ChevronDown size={15} aria-hidden="true" /></button></div>
     </div>
-    {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
+    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {name && <input type="hidden" name={name} value={selected?.value || ''} disabled={disabled} />}
-    {error && <small className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" />{error}</small>}
+    {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" />{error}</Text>}
     <div ref={popup} id={listId} popover="manual" role="listbox" aria-label={`${label} options`} className="cr-autocomplete-popup" data-open={expanded} hidden={!expanded} style={{ '--cr-ac-left': `${position.left}px`, '--cr-ac-top': position.above ? 'auto' : `${position.top}px`, '--cr-ac-bottom': position.above ? `${position.bottom}px` : 'auto', '--cr-ac-width': `${position.width}px`, '--cr-ac-max-height': `${position.maxHeight}px` } as CSSProperties}>
-      {filtered.map((option, index) => <div key={option.value} id={`${listId}-${index}`} role="option" aria-selected={active === index} aria-disabled={option.disabled || undefined} className="cr-autocomplete-option" onPointerMove={() => { if (!option.disabled) setActive(index); }} onPointerDown={event => event.preventDefault()} onClick={() => choose(option)}><span><strong>{option.label}</strong>{option.description && <small>{option.description}</small>}</span>{selected?.value === option.value && <Check size={14} aria-hidden="true" />}</div>)}
+      {filtered.map((option, index) => <div key={option.value} id={`${listId}-${index}`} role="option" aria-selected={active === index} aria-disabled={option.disabled || undefined} className="cr-autocomplete-option" onPointerMove={() => { if (!option.disabled) setActive(index); }} onPointerDown={event => event.preventDefault()} onClick={() => choose(option)}><span><Text bold>{option.label}</Text>{option.description && <Text size="small">{option.description}</Text>}</span>{selected?.value === option.value && <Check size={14} aria-hidden="true" />}</div>)}
       {!filtered.length && <div className="cr-autocomplete-empty" role="status">{emptyMessage}</div>}
     </div>
   </div>;

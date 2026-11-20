@@ -4,6 +4,7 @@ import { Button } from '../system/components';
 import { AgentActivity } from '../system/AgentActivity';
 import type { AgentActivityEvent } from '../system/AgentActivity';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './agent-activity-demo.css';
 
 const initialEvents: AgentActivityEvent[] = [
@@ -13,7 +14,7 @@ const initialEvents: AgentActivityEvent[] = [
   { id: 'attachments', kind: 'tool', title: 'Supporting files listed', status: 'completed', durationMs: 180, output: 'order-summary.md\nreview-notes.md' },
   { id: 'explorer', kind: 'agent', title: 'Input inspection completed', status: 'completed', durationMs: 12400, description: 'This fixture uses sample order data. It does not contact an external service.' },
   { id: 'search', kind: 'command', title: 'Order summary checks located', status: 'completed', durationMs: 360, command: 'rg -n "order|summary|total" ./web/src ./web/test', output: 'web/src/summary.ts:18:export function orderTotal(items)\nweb/test/summary.test.ts:9:test("keeps the total consistent")', exitCode: 0 },
-  { id: 'review', kind: 'agent', title: 'Totals review completed', status: 'completed', durationMs: 17900, description: 'The recorded totals and supporting notes agree.' },
+  { id: 'review', kind: 'agent', title: 'Reviewed order totals, compared shipping adjustments with the supporting notes, and recorded the verification result', status: 'completed', durationMs: 17900, description: 'The recorded totals and supporting notes agree.' },
   { id: 'note', kind: 'message', title: 'Review evidence recorded', status: 'info', description: 'Expand command and tool events to inspect their recorded input and output.' },
   { id: 'report', kind: 'file', title: 'Review notes updated', status: 'completed', durationMs: 480, output: 'review-notes.md updated with the expected result.' },
   { id: 'checks', kind: 'command', title: 'Order summary tests running', status: 'running', command: 'npm test -- --run order-summary', output: 'Running order-summary tests…' },
@@ -28,7 +29,7 @@ const recordedEvents: AgentActivityEvent[] = [
 
 const exampleCode = `import { useState } from 'react';
 import { Check, Plus, RotateCcw, TriangleAlert } from 'lucide-react';
-import { AgentActivity, Button, type AgentActivityEvent } from '@chartreuse/ui';
+import { AgentActivity, Button, type AgentActivityEvent, Text } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
 const initialEvents: AgentActivityEvent[] = ${JSON.stringify(initialEvents, null, 2)};
@@ -64,10 +65,10 @@ export function ActivityTrailExample() {
       <Button variant="secondary" size="sm" icon={Plus} onClick={addActivity}>Add activity</Button>
       <Button variant="ghost" size="sm" icon={RotateCcw} onClick={reset}>Reset</Button>
     </div>
-    <p style={{ margin: 'var(--cr-space-3) 0 0', color: 'var(--cr-color-muted)',
+    <Text size="body" style={{ margin: 'var(--cr-space-3) 0 0', color: 'var(--cr-color-muted)',
       fontSize: '.75rem', lineHeight: 1.7 }}>
       These controls update local event state. They do not execute the displayed commands.
-    </p>
+    </Text>
   </div>;
 }`;
 
@@ -77,7 +78,7 @@ import '@chartreuse/ui/styles.css';
 const events: AgentActivityEvent[] = ${JSON.stringify(listEvents, null, 2)};
 
 export function ActivityListExample() {
-  return <AgentActivity variant="list" events={events} />;
+  return <AgentActivity variant="list" titleLines="single" events={events} />;
 }`;
 
 const recordedCode = `import { AgentActivity, type AgentActivityEvent } from '@chartreuse/ui';
@@ -99,11 +100,11 @@ export function AgentActivityDemo() {
     <Showcase title="Expandable activity events" description="Each event shows its title and status. Expand a row to inspect its command, input, or recorded output." code={exampleCode}>
       <div className="agent-activity-demo-panel"><AgentActivity key={revision} events={events} announce initialVisibleCount={6} />
         <div className="agent-activity-demo-controls"><Button variant="secondary" size="sm" icon={Check} onClick={complete} disabled={current?.status === 'completed'}>Mark tests passed</Button><Button variant="secondary" size="sm" icon={TriangleAlert} onClick={fail} disabled={current?.status === 'failed'}>Mark tests failed</Button><Button variant="secondary" size="sm" icon={Plus} onClick={() => setEvents(previous => [...previous, { id: `update-${previous.length}`, kind: 'tool', title: 'Task update saved', status: 'completed', durationMs: 180, output: 'The local demonstration update was recorded.' }])}>Add activity</Button><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setEvents(initialEvents); setRevision(value => value + 1); }}>Reset</Button></div>
-        <p className="agent-activity-demo-caption">These controls update local event state. They do not execute the displayed commands.</p>
+        <Text size="body" className="agent-activity-demo-caption">These controls update local event state. They do not execute the displayed commands.</Text>
       </div>
     </Showcase>
-    <Showcase title="Activity list" description="Show every event directly with its status and expandable details." code={listCode}>
-      <div className="agent-activity-demo-panel"><AgentActivity variant="list" events={listEvents} /></div>
+    <Showcase title="Activity list" description="Show every event directly. With single-line titles, expand a row to read the full title." code={listCode}>
+      <div className="agent-activity-demo-panel"><AgentActivity variant="list" titleLines="single" events={listEvents} /></div>
     </Showcase>
     <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. An event with no description or output shows its title in the details. The group header highlights on hover." code={recordedCode}>
       <div className="agent-activity-demo-panel"><AgentActivity label="Recorded session" events={recordedEvents} headerHighlight="hover" /></div>

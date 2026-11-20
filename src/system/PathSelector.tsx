@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useImperativeHandle, useRef, useState } 
 import type { ComponentPropsWithRef } from 'react';
 import { AlertCircle, FileText, Folder, FolderOpen, X } from 'lucide-react';
 import { Button, IconButton } from './components';
+import { Text } from './Text';
 import './path-selector.css';
 
 export interface PathSelectorProps extends Omit<ComponentPropsWithRef<'input'>, 'type' | 'value' | 'defaultValue' | 'size' | 'children'> {
@@ -99,8 +100,8 @@ export function PathSelector({ label, mode = 'folder', value, defaultValue = '',
       changePath(path);
       if (browseError) setBrowseError('');
     }} />{text.length > 0 && <IconButton className="cr-path-selector-clear" size="sm" icon={X} label={`Clear ${label.toLowerCase()}`} disabled={disabled} onClick={() => { inputRef.current?.focus({ preventScroll: true }); changePath(''); setBrowseError(''); setAnnouncement('Path cleared.'); }} />}{onBrowse && <Button className="cr-path-selector-browse" variant="ghost" icon={FolderOpen} loading={pending} disabled={disabled} aria-label={`Browse for a ${mode} path${pending ? ', choosing' : ''}`} onClick={browse}>Browse</Button>}</div>
-    {hint && !visibleError && <small id={`${id}-hint`}>{hint}</small>}
-    <div id={`${id}-error`} className={visibleError ? undefined : 'cr-sr-only'} role="alert" aria-atomic="true">{visibleError && <small className="cr-path-selector-error"><AlertCircle size={13} aria-hidden="true" /><span>{visibleError}</span></small>}</div>
+    {hint && !visibleError && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    <div id={`${id}-error`} className={visibleError ? undefined : 'cr-sr-only'} role="alert" aria-atomic="true">{visibleError && <Text size="small" className="cr-path-selector-error"><AlertCircle size={13} aria-hidden="true" /><span>{visibleError}</span></Text>}</div>
     <span className="cr-sr-only" role="status" aria-atomic="true">{announcement}</span>
   </div>;
 }

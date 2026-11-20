@@ -64,7 +64,7 @@ export function TaskBoardExample(props: Parameters<typeof TaskBoardPattern>[0]) 
 }`);
 
 export const workspacePatternCode = withPatternPreview(`import { useState } from 'react';
-import { Tabs, Alert, Swimlane, TaskCard, Button, TextField, WorkspaceContent } from '@chartreuse/ui';
+import { Tabs, Alert, Swimlane, TaskCard, Button, TextField, WorkspaceContent, Text } from '@chartreuse/ui';
 import type { TaskCardProps } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
@@ -74,8 +74,8 @@ export function WorkspacePattern(props: Parameters<typeof TaskBoardPattern>[0]) 
   return (
     <PatternPreview page="workspace">
       <WorkspaceContent as="section" width="full" aria-label="Example workspace content">
-        <h2>Development workspace</h2>
-        <p>Track task status, validation results, and workspace activity.</p>
+        <Text size="heading-2">Development workspace</Text>
+        <Text size="body">Track task status, validation results, and workspace activity.</Text>
         <Tabs label="Workspace views" items={[
           { value: 'board', label: 'Board', count: props.cards.length,
             content: <TaskBoardPattern {...props} /> },
@@ -84,7 +84,7 @@ export function WorkspacePattern(props: Parameters<typeof TaskBoardPattern>[0]) 
               All checks passed in this example.
             </Alert> },
           { value: 'activity', label: 'Activity',
-            content: <p>Task updates and validation events for this workspace.</p> },
+            content: <Text size="body">Task updates and validation events for this workspace.</Text> },
         ]} />
       </WorkspaceContent>
     </PatternPreview>
@@ -92,7 +92,7 @@ export function WorkspacePattern(props: Parameters<typeof TaskBoardPattern>[0]) 
 }`);
 
 export const agentMonitorPatternCode = withPatternPreview(`import { useState } from 'react';
-import { Grid, GridItem, Card, AgentCard, Progress, Tabs, WorkspaceContent } from '@chartreuse/ui';
+import { Grid, GridItem, Card, AgentCard, Progress, Tabs, WorkspaceContent, Text } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
 const agents = [
@@ -116,12 +116,12 @@ export function AgentMonitorPattern() {
               selected={selected === agent.name} onClick={() => setSelected(agent.name)} />)}
           </GridItem>
           <GridItem span={1}><Card style={{ padding: 24 }}>
-            <h3>{active.name}</h3><p>{active.task}</p>
-            <p>{active.elapsed} · {active.tokens} tokens</p>
+            <Text size="heading-3">{active.name}</Text><Text size="body">{active.task}</Text>
+            <Text size="body">{active.elapsed} · {active.tokens} tokens</Text>
             <Progress value={active.status === 'waiting' ? 0 : 24} label="Context window" />
             <Tabs label="Agent details" items={[
-              { value: 'activity', label: 'Activity', content: <p>Execution events for the selected agent.</p> },
-              { value: 'context', label: 'Context', content: <p>Implement the workspace task board using shared design tokens and components. Verify filtering, task dialogs, and status updates.</p> },
+              { value: 'activity', label: 'Activity', content: <Text size="body">Execution events for the selected agent.</Text> },
+              { value: 'context', label: 'Context', content: <Text size="body">Implement the workspace task board using shared design tokens and components. Verify filtering, task dialogs, and status updates.</Text> },
             ]} />
           </Card></GridItem>
         </Grid>

@@ -3,6 +3,7 @@ import type { ComponentPropsWithRef, KeyboardEvent, ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
+import { Text } from './Text';
 import './tree.css';
 
 export interface TreeNode {
@@ -182,7 +183,7 @@ export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSel
         <span className="cr-tree-toggle" data-empty={!hasChildren || undefined} aria-hidden="true">{hasChildren && <ChevronDown size={16} focusable="false" />}</span>
         <div className="cr-tree-content">{renderNode ? <>{renderNode(node, { selected: isSelected, expanded: isExpanded, level: item.level })}{node.description && <span id={descriptionId} className="cr-sr-only">{node.description}</span>}</> : <>
           <div className="cr-tree-label">{renderIcon(node.icon, { size: 16 })}<span>{node.label}</span></div>
-          {node.description && <p id={descriptionId} className="cr-tree-description">{node.description}</p>}
+          {node.description && <Text size="body" id={descriptionId} className="cr-tree-description">{node.description}</Text>}
         </>}</div>
       </div>
       {hasChildren && <ul className="cr-tree-group" role="group" hidden={!isExpanded}>{renderItems(node.children!)}</ul>}

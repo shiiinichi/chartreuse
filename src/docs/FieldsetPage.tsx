@@ -6,6 +6,7 @@ import { Grid, GridItem } from '../system/Grid';
 import { ExampleGallery, Showcase } from './shared';
 import { GuidanceNotes } from './GuidanceNotes';
 import { componentReferences } from './reference';
+import { Text } from '../system';
 import './FieldsetPage.css';
 
 interface GuidanceRule {
@@ -41,7 +42,7 @@ function DisabledGroupExample() {
   const [result, setResult] = useState<string | null>(null);
   return <Showcase title="Native fieldset disabled behavior" description="The fieldset disables its inputs and header action together. Disabled values are omitted from FormData."
     code={`import { useState } from 'react';
-import { Button, Checkbox, Fieldset, Grid, GridItem, Switch, TextField } from '@chartreuse/ui';
+import { Button, Checkbox, Fieldset, Grid, GridItem, Switch, TextField, Text } from '@chartreuse/ui';
 
 export function DisabledGroupExample() {
   const [disabled, setDisabled] = useState(true);
@@ -67,9 +68,9 @@ export function DisabledGroupExample() {
             </Grid>
       </Fieldset>
       <div><Button type="submit">Read group values</Button></div>
-      <p role="status" style={{ margin: 0, overflowWrap: 'anywhere' }}>
+      <Text size="body" role="status" style={{ margin: 0, overflowWrap: 'anywhere' }}>
         {result ?? 'Submit to inspect enabled field values in FormData.'}
-      </p>
+      </Text>
     </form>
   </>;
 }`}>
@@ -87,7 +88,7 @@ export function DisabledGroupExample() {
             </Grid>
         </Fieldset>
         <div className="fieldset-demo-actions"><Button type="submit">Read group values</Button></div>
-        <p className="fieldset-example-status" role="status" style={{ margin: 0, overflowWrap: 'anywhere' }}>{result ?? 'Submit to inspect enabled field values in FormData.'}</p>
+        <Text size="body" className="fieldset-example-status" role="status" style={{ margin: 0, overflowWrap: 'anywhere' }}>{result ?? 'Submit to inspect enabled field values in FormData.'}</Text>
       </form>
     </div>
   </Showcase>;
@@ -96,7 +97,7 @@ export function DisabledGroupExample() {
 const ruleEditorCode = `import { useEffect, useId, useRef, useState } from 'react';
 import { Check, Layers, Plus, Trash2 } from 'lucide-react';
 import { Alert, Badge, Button, EmptyState, Fieldset, Grid, GridItem,
-  IconButton, Select, Switch, TextField } from '@chartreuse/ui';
+  IconButton, Select, Switch, Text, TextField } from '@chartreuse/ui';
 
 interface GuidanceRule {
   id: string;
@@ -148,7 +149,7 @@ export function GuidanceRuleEditor() {
   };
 
   return <>
-    <p>{rules.length} {rules.length === 1 ? 'rule' : 'rules'} in this example</p>
+    <Text size="body">{rules.length} {rules.length === 1 ? 'rule' : 'rules'} in this example</Text>
     <Switch label="Disable groups" checked={disabled}
       onChange={event => setDisabled(event.target.checked)} />
     <form style={{ display: 'flex', flexDirection: 'column', gap: 24 }} onSubmit={event => {
@@ -180,9 +181,9 @@ export function GuidanceRuleEditor() {
               <option value="guidance">Guidance</option>
               <option value="requirement">Requirement</option>
             </Select>
-              <p id={modeHint} style={{ margin: '8px 0 0' }}>{rule.mode === 'guidance'
+              <Text size="body" id={modeHint} style={{ margin: '8px 0 0' }}>{rule.mode === 'guidance'
                 ? 'Record a preferred implementation approach; compliance is advisory.'
-                : 'Record an acceptance criterion required for each applicable change.'}</p>
+                : 'Record an acceptance criterion required for each applicable change.'}</Text>
             </GridItem>
             <GridItem span={1}><Select label="Status" name={rule.id + '.status'}
               value={rule.status} onChange={event => update(rule.id, {
@@ -255,7 +256,7 @@ export function FieldsetPage({ showGuidance = true }: { showGuidance?: boolean }
   };
 
   return <>
-    <div className="fieldset-page-intro"><p>A native <code>fieldset</code> groups related form controls. Its legend provides the group name; description, hint, and actions supply group-level context.</p><Badge icon={Layers}>Native form grouping</Badge></div>
+    <div className="fieldset-page-intro"><Text size="body">A native <code>fieldset</code> groups related form controls. Its legend provides the group name; description, hint, and actions supply group-level context.</Text><Badge icon={Layers}>Native form grouping</Badge></div>
     <ExampleGallery className="fieldset-page-examples" maxColumns={2}>
     <Showcase title="Legend, description, and hint" description="The legend names the group. Description and hint apply to its related controls." code={relatedControlsCode}>
       <div className="fieldset-demo" style={{ maxInlineSize: 520 }}><Fieldset legend="Task context" description="Repository and visibility values belong to the task context group." hint="The legend provides the accessible name for this group."><Grid columns={1} gap={4}><GridItem span={1}><TextField label="Task repository" name="taskRepository" defaultValue="sample-app" /></GridItem><GridItem span={1}><Select label="Task visibility" name="taskVisibility" defaultValue="team"><option value="team">Team workspace</option><option value="private">Private draft</option></Select></GridItem></Grid></Fieldset></div>
@@ -271,7 +272,7 @@ export function FieldsetPage({ showGuidance = true }: { showGuidance?: boolean }
             const modeHint = `${formId}-${rule.id}-mode-hint`;
             return <Fieldset key={rule.id} name={rule.id} legend={`Guidance rule ${index + 1}`} disabled={groupsDisabled} description={<span className="fieldset-rule-meta"><span>{rule.repository || 'All repositories'}</span><span aria-hidden="true">·</span><Badge tone={rule.status === 'active' ? 'success' : rule.status === 'paused' ? 'warning' : 'neutral'}>{rule.status.charAt(0).toUpperCase() + rule.status.slice(1)}</Badge></span>} actions={<IconButton icon={Trash2} label={`Remove guidance rule ${index + 1}`} onClick={() => remove(rule.id)} />}>
               <Grid columns={1} gap={4}><GridItem span={1}><TextField label="Title" name={`${rule.id}.title`} placeholder="Enter a rule title" value={rule.title} onChange={event => update(rule.id, { title: event.target.value })} ref={element => { if (element) titleInputs.current.set(rule.id, element); else titleInputs.current.delete(rule.id); }} required pattern=".*\S.*" title="Use at least one non-space character" /></GridItem>
-                <GridItem span={1}><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Select label="Mode" name={`${rule.id}.mode`} value={rule.mode} aria-describedby={modeHint} onChange={event => update(rule.id, { mode: event.target.value as GuidanceRule['mode'] })}><option value="guidance">Guidance</option><option value="requirement">Requirement</option></Select><p className="fieldset-mode-hint" id={modeHint}>{rule.mode === 'guidance' ? 'Record a preferred implementation approach; compliance is advisory.' : 'Record an acceptance criterion required for each applicable change.'}</p></GridItem><GridItem span={1}><Select label="Status" name={`${rule.id}.status`} value={rule.status} onChange={event => update(rule.id, { status: event.target.value as GuidanceRule['status'] })}><option value="draft">Draft</option><option value="active">Active</option><option value="paused">Paused</option></Select></GridItem></Grid></GridItem>
+                <GridItem span={1}><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Select label="Mode" name={`${rule.id}.mode`} value={rule.mode} aria-describedby={modeHint} onChange={event => update(rule.id, { mode: event.target.value as GuidanceRule['mode'] })}><option value="guidance">Guidance</option><option value="requirement">Requirement</option></Select><Text size="body" className="fieldset-mode-hint" id={modeHint}>{rule.mode === 'guidance' ? 'Record a preferred implementation approach; compliance is advisory.' : 'Record an acceptance criterion required for each applicable change.'}</Text></GridItem><GridItem span={1}><Select label="Status" name={`${rule.id}.status`} value={rule.status} onChange={event => update(rule.id, { status: event.target.value as GuidanceRule['status'] })}><option value="draft">Draft</option><option value="active">Active</option><option value="paused">Paused</option></Select></GridItem></Grid></GridItem>
                 <GridItem span={1}><TextField label="Repository" name={`${rule.id}.repository`} placeholder="All repositories" hint="Leave empty for all repositories, or enter a repository folder name or absolute path." value={rule.repository} onChange={event => update(rule.id, { repository: event.target.value })} /></GridItem>
               </Grid>
             </Fieldset>;

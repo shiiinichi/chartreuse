@@ -44,6 +44,8 @@ test('an agent can discover a component and retrieve its real props, notes, and 
   assert.ok(component.props.some(prop => prop.name === 'onBrowse'));
   assert.ok(component.notes.length);
   assert.equal(query('info', 'Button').component.props.find(prop => prop.name === 'type').defaultValue, "'button'");
+  const textSize = query('info', 'Text').component.props.find(prop => prop.name === 'size');
+  assert.equal(textSize.type, system.typography.map(({ id }) => `'${id}'`).join(' | '));
   const { code, language } = query('demo', 'PathSelector');
   assert.equal(language, 'tsx');
   assert.match(code, /import \{ PathSelector \} from '@chartreuse\/ui'/);

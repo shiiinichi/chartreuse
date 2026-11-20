@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Plus, Search } from 'lucide-react';
 import {
   Badge, BrandMark, Button, Card, EmptyState, Flex, Navbar, NavbarItem,
-  Sidebar, TextField, WorkspaceContent, WorkspaceLayout,
+  Sidebar, TextField, WorkspaceContent, WorkspaceLayout, Text,
 } from '../../system';
 
 const runTones = { Succeeded: 'success', Running: 'info', Waiting: 'warning', Failed: 'danger' } as const;
@@ -57,7 +57,7 @@ export function RunHistoryExample() {
           header={
             <Flex direction="column" gap={3}>
               <Flex align="center" justify="space-between" wrap gap={2}>
-                <h3>Run history</h3>
+                <Text size="heading-3">Run history</Text>
                 <Badge>{filtered.length}</Badge>
               </Flex>
               <TextField label="Search loaded runs" type="search" icon={Search} name="runSearch" value={query}
@@ -66,7 +66,7 @@ export function RunHistoryExample() {
           }
           footer={
             <Flex align="center" justify="space-between" wrap gap={2}>
-              <small>{runs.length} recorded runs</small>
+              <Text size="small">{runs.length} recorded runs</Text>
               <Button size="sm" variant="ghost" icon={Plus} onClick={loadMore}>Load more</Button>
             </Flex>
           }>
@@ -79,13 +79,13 @@ export function RunHistoryExample() {
                     aria-pressed={active} onClick={() => setSelectedId(run.id)}>
                     <span className="sidebar-example-choice">
                       <span className="sidebar-example-choice-meta">
-                        <strong>Coordinator</strong>
+                        <Text bold>Coordinator</Text>
                         <Badge variant="ghost" tone={runTones[run.status]} dot>{run.status}</Badge>
                       </span>
                       <span>{run.title}</span>
                       <span className="sidebar-example-choice-meta">
-                        <small>{run.provider}</small>
-                        <small>{run.time}</small>
+                        <Text size="small">{run.provider}</Text>
+                        <Text size="small">{run.time}</Text>
                       </span>
                     </span>
                   </Button>
@@ -101,10 +101,10 @@ export function RunHistoryExample() {
           {selected ? (
             <Flex direction="column" gap={4}>
               <Flex align="center" wrap gap={2}>
-                <h3>Coordinator</h3>
+                <Text size="heading-3">Coordinator</Text>
                 <Badge variant="ghost" tone={runTones[selected.status]} dot>{selected.status}</Badge>
               </Flex>
-              <p>{selected.title}</p>
+              <Text size="body">{selected.title}</Text>
               <dl className="sidebar-example-facts">
                 <div><dt>Run</dt><dd><code>{selected.id}</code></dd></div>
                 <div><dt>Provider</dt><dd>{selected.provider}</dd></div>
@@ -112,7 +112,7 @@ export function RunHistoryExample() {
                 <div><dt>Tokens</dt><dd>{selected.tokens.toLocaleString()}</dd></div>
               </dl>
             </Flex>
-          ) : <p>Change or clear the search to select a run.</p>}
+          ) : <Text size="body">Change or clear the search to select a run.</Text>}
         </WorkspaceContent>
       </WorkspaceLayout>
     </Card>

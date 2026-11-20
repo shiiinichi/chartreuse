@@ -3,6 +3,7 @@ import { Button, Checkbox, Select, Switch } from '../../system/components';
 import { Fieldset } from '../../system/Fieldset';
 import { Grid, GridItem } from '../../system/Grid';
 import { ExampleGallery, FormActions, FormScenario, ScenarioForm, formCode } from './shared';
+import { Text } from '../../system';
 
 function SelectSizes() {
   const sizes = ['sm', 'md', 'lg'] as const;
@@ -38,7 +39,7 @@ function SelectSizes() {
 function PrioritySelection() {
   const [priority, setPriority] = useState('medium');
   return <FormScenario title="Controlled select" description="Keep the selected option value in React state."
-    code={formCode("Select", `export function PriorityExample() {
+    code={formCode("Select, Text", `export function PriorityExample() {
   const [priority, setPriority] = useState('medium');
   return <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
     <Select label="Priority" name="priority" value={priority} onChange={event => setPriority(event.target.value)} hint="Choose the priority for this task.">
@@ -46,18 +47,18 @@ function PrioritySelection() {
       <option value="medium">Medium</option>
       <option value="high">High</option>
     </Select>
-    <p style={{ margin: 0 }}>Selected priority: {priority}</p>
+    <Text size="body" style={{ margin: 0 }}>Selected priority: {priority}</Text>
   </div>;
 }`, 'useState')}>
     <Select label="Priority" name="priority" value={priority} onChange={event => setPriority(event.target.value)} hint="Choose the priority for this task."><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></Select>
-    <p className="form-scenario-feedback">Selected priority: {priority}</p>
+    <Text size="body" className="form-scenario-feedback">Selected priority: {priority}</Text>
   </FormScenario>;
 }
 
 function DestinationSelection() {
   const [saved, setSaved] = useState('');
   return <FormScenario title="Grouped options and native validation" description="Use optgroup, a disabled placeholder, a disabled option, and required validation."
-    code={formCode("Select, Button", `export function DestinationExample() {
+    code={formCode("Select, Button, Text", `export function DestinationExample() {
   const [saved, setSaved] = useState('');
   return <form onReset={() => setSaved('')} onSubmit={event => {
     event.preventDefault();
@@ -78,14 +79,14 @@ function DestinationSelection() {
         <Button type="submit">Use destination</Button>
         <Button type="reset" variant="secondary">Reset destination</Button>
       </div>
-      <p role="status" style={{ margin: 0 }}>{saved ? 'Saved destination: ' + saved : 'No destination saved yet.'}</p>
+      <Text size="body" role="status" style={{ margin: 0 }}>{saved ? 'Saved destination: ' + saved : 'No destination saved yet.'}</Text>
     </div>
   </form>;
 }`, 'useState')}>
     <ScenarioForm className="form-scenario-form" aria-label="Destination workspace example" onReset={() => setSaved('')} onSubmit={event => { event.preventDefault(); setSaved(String(new FormData(event.currentTarget).get('destination') || '')); }}>
       <Select label="Destination workspace" name="destination" defaultValue="" required><option value="" disabled>Choose a workspace…</option><optgroup label="Active workspaces"><option value="component-library">Component library</option><option value="sample-app">Sample app</option></optgroup><optgroup label="Unavailable workspaces"><option value="archive" disabled>Archive — read only</option></optgroup></Select>
       <FormActions><Button type="submit">Use destination</Button><Button type="reset" variant="secondary">Reset destination</Button></FormActions>
-      <p className="form-scenario-feedback" role="status">{saved ? 'Saved destination: ' + saved : 'No destination saved yet.'}</p>
+      <Text size="body" className="form-scenario-feedback" role="status">{saved ? 'Saved destination: ' + saved : 'No destination saved yet.'}</Text>
     </ScenarioForm>
   </FormScenario>;
 }
@@ -128,22 +129,22 @@ export function SelectScenarios() {
 function ControlledCheckbox() {
   const [checked, setChecked] = useState(true);
   return <FormScenario title="Controlled checkbox" description="Store the checked state in React and associate the hint with the control."
-    code={formCode("Checkbox", `export function WorktreeExample() {
+    code={formCode("Checkbox, Text", `export function WorktreeExample() {
   const [checked, setChecked] = useState(true);
   return <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
     <Checkbox label="Create a worktree" name="worktree" checked={checked} onChange={event => setChecked(event.target.checked)} hint="Use a separate Git worktree for this task." />
-    <p style={{ margin: 0 }}>{checked ? 'Worktree preference: enabled.' : 'Worktree preference: disabled.'}</p>
+    <Text size="body" style={{ margin: 0 }}>{checked ? 'Worktree preference: enabled.' : 'Worktree preference: disabled.'}</Text>
   </div>;
 }`, 'useState')}>
     <Checkbox label="Create a worktree" name="worktree" checked={checked} onChange={event => setChecked(event.target.checked)} hint="Use a separate Git worktree for this task." />
-    <p className="form-scenario-feedback">{checked ? 'Worktree preference: enabled.' : 'Worktree preference: disabled.'}</p>
+    <Text size="body" className="form-scenario-feedback">{checked ? 'Worktree preference: enabled.' : 'Worktree preference: disabled.'}</Text>
   </FormScenario>;
 }
 
 function CheckboxForm() {
   const [saved, setSaved] = useState<string[] | null>(null);
   return <FormScenario title="Checkbox group in a native form" description="Place independent choices in a responsive grid. FormData includes checked values and omits unchecked values." wide span="full"
-    code={formCode("Button, Checkbox, Fieldset, Grid, GridItem", `export function ReviewPreferencesExample() {
+    code={formCode("Button, Checkbox, Fieldset, Grid, GridItem, Text", `export function ReviewPreferencesExample() {
   const [saved, setSaved] = useState<string[] | null>(null);
   return <form onReset={() => setSaved(null)} onSubmit={event => {
     event.preventDefault();
@@ -164,15 +165,15 @@ function CheckboxForm() {
         <Button type="submit">Save review preferences</Button>
         <Button type="reset" variant="secondary">Reset review preferences</Button>
       </div>
-      <p role="status" style={{ margin: 0 }}>{saved === null ? 'No preferences saved yet.'
-        : 'Saved: ' + (saved.join(', ') || 'none')}</p>
+      <Text size="body" role="status" style={{ margin: 0 }}>{saved === null ? 'No preferences saved yet.'
+        : 'Saved: ' + (saved.join(', ') || 'none')}</Text>
     </div>
   </form>;
 }`, 'useState')}>
     <ScenarioForm className="form-scenario-form" aria-label="Review context preferences example" onReset={() => setSaved(null)} onSubmit={event => { event.preventDefault(); setSaved(new FormData(event.currentTarget).getAll('reviewContext').map(String)); }}>
       <Fieldset legend="Review context"><Grid columns={{ base: 1, sm: 2 }} gap={4}><GridItem span={1}><Checkbox label="Attach the checklist" name="reviewContext" value="checklist" defaultChecked /></GridItem><GridItem span={1}><Checkbox label="Include the activity summary" name="reviewContext" value="activity" /></GridItem></Grid></Fieldset>
       <FormActions><Button type="submit">Save review preferences</Button><Button type="reset" variant="secondary">Reset review preferences</Button></FormActions>
-      <p className="form-scenario-feedback" role="status">{saved === null ? 'No preferences saved yet.' : 'Saved: ' + (saved.join(', ') || 'none')}</p>
+      <Text size="body" className="form-scenario-feedback" role="status">{saved === null ? 'No preferences saved yet.' : 'Saved: ' + (saved.join(', ') || 'none')}</Text>
     </ScenarioForm>
   </FormScenario>;
 }
@@ -203,22 +204,22 @@ export function CheckboxScenarios() {
 function ControlledSwitch() {
   const [enabled, setEnabled] = useState(true);
   return <FormScenario title="Controlled switch" description="Keep the checked state in React and display the current value."
-    code={formCode("Switch", `export function LiveUpdatesExample() {
+    code={formCode("Switch, Text", `export function LiveUpdatesExample() {
   const [enabled, setEnabled] = useState(true);
   return <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
     <Switch label="Live updates" name="liveUpdates" checked={enabled} onChange={event => setEnabled(event.target.checked)} hint="This example stores the setting in local state." />
-    <p style={{ margin: 0 }}>Live updates are {enabled ? 'on' : 'off'}.</p>
+    <Text size="body" style={{ margin: 0 }}>Live updates are {enabled ? 'on' : 'off'}.</Text>
   </div>;
 }`, 'useState')}>
     <Switch label="Live updates" name="liveUpdates" checked={enabled} onChange={event => setEnabled(event.target.checked)} hint="This example stores the setting in local state." />
-    <p className="form-scenario-feedback">Live updates are {enabled ? 'on' : 'off'}.</p>
+    <Text size="body" className="form-scenario-feedback">Live updates are {enabled ? 'on' : 'off'}.</Text>
   </FormScenario>;
 }
 
 function SwitchForm() {
   const [saved, setSaved] = useState<string | null>(null);
   return <FormScenario title="Switch in a native form" description="Submit and reset the underlying native checkbox with the form."
-    code={formCode("Button, Switch", `export function SoundPreferenceExample() {
+    code={formCode("Button, Switch, Text", `export function SoundPreferenceExample() {
   const [saved, setSaved] = useState<string | null>(null);
   return <form onReset={() => setSaved(null)} onSubmit={event => {
     event.preventDefault();
@@ -230,15 +231,15 @@ function SwitchForm() {
         <Button type="submit">Save sound preference</Button>
         <Button type="reset" variant="secondary">Reset sound preference</Button>
       </div>
-      <p role="status" style={{ margin: 0 }}>{saved === null ? 'No preference saved yet.'
-        : 'Saved sound cues: ' + saved}</p>
+      <Text size="body" role="status" style={{ margin: 0 }}>{saved === null ? 'No preference saved yet.'
+        : 'Saved sound cues: ' + saved}</Text>
     </div>
   </form>;
 }`, 'useState')}>
     <ScenarioForm className="form-scenario-form" aria-label="Sound preference example" onReset={() => setSaved(null)} onSubmit={event => { event.preventDefault(); setSaved(new FormData(event.currentTarget).has('soundCues') ? 'on' : 'off'); }}>
       <Switch label="Sound cues" name="soundCues" value="enabled" defaultChecked hint="Submit to display the current preference." />
       <FormActions><Button type="submit">Save sound preference</Button><Button type="reset" variant="secondary">Reset sound preference</Button></FormActions>
-      <p className="form-scenario-feedback" role="status">{saved === null ? 'No preference saved yet.' : 'Saved sound cues: ' + saved}</p>
+      <Text size="body" className="form-scenario-feedback" role="status">{saved === null ? 'No preference saved yet.' : 'Saved sound cues: ' + saved}</Text>
     </ScenarioForm>
   </FormScenario>;
 }

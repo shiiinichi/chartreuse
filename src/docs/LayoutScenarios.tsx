@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 import { ArrowRight, FolderOpen, Sparkles } from 'lucide-react';
-import { AgentCard, Button, CalloutBanner, Card, Drawer, Grid, GridItem, PagePanel, TaskCard, TextArea, TextField } from '../system';
+import { AgentCard, Button, CalloutBanner, Card, Drawer, Grid, GridItem, PagePanel, TaskCard, TextArea, TextField, Text } from '../system';
 import { MasonryItem } from '../system/Masonry';
 import { DrawerPage } from './DrawerPage';
 import { GridItemDemo } from './GridDemo';
@@ -55,7 +55,7 @@ function AgentCardScenarios() {
     )}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><Grid columns={{ base: 1, sm: 2 }} gap={4}>{agentStates.map(agent => <GridItem key={agent.name} span={1}><AgentCard {...agent} /></GridItem>)}</Grid></div></Showcase>
     <Showcase title="Controlled agent selection" description="The application owns the selection; selected supplies the card’s pressed state." code={source(
       'import { useState } from "react";',
-      'import { AgentCard, Grid, GridItem } from "@chartreuse/ui";',
+      'import { AgentCard, Grid, GridItem, Text } from "@chartreuse/ui";',
       '',
       `const agents = ${JSON.stringify(selectableAgents, null, 2)} as const;`,
       '',
@@ -68,10 +68,10 @@ function AgentCardScenarios() {
       '          onClick={() => setSelected(agent.name)} />',
       '      </GridItem>)}',
       '    </Grid>',
-      '    <p role="status">Inspecting: {selected}</p>',
+      '    <Text size="body" role="status">Inspecting: {selected}</Text>',
       '  </div>;',
       '}',
-    )}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><Grid columns={{ base: 1, sm: 2 }} gap={4}>{selectableAgents.map(agent => <GridItem key={agent.name} span={1}><AgentCard {...agent} selected={selected === agent.name} onClick={() => setSelected(agent.name)} /></GridItem>)}</Grid><p role="status">Inspecting: {selected}</p></div></Showcase>
+    )}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><Grid columns={{ base: 1, sm: 2 }} gap={4}>{selectableAgents.map(agent => <GridItem key={agent.name} span={1}><AgentCard {...agent} selected={selected === agent.name} onClick={() => setSelected(agent.name)} /></GridItem>)}</Grid><Text size="body" role="status">Inspecting: {selected}</Text></div></Showcase>
     <Showcase title="Caller-supplied runtime strings" description="Elapsed time and token counts are display strings. Without onClick the summary has no action." code={source(
       'import { AgentCard } from "@chartreuse/ui";',
       '',
@@ -97,17 +97,17 @@ function CalloutBannerScenarios() {
       '</div>',
     )}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><CalloutBanner eyebrow="Component documentation" title="Document component behavior." description="Record the public props, supported states, and integration constraints." /></div></Showcase>
     <Showcase title="Omit artwork and compose description content" description="Pass null for artwork to remove the illustration. Description accepts composed content." code={source(
-      'import { CalloutBanner } from "@chartreuse/ui";',
+      'import { CalloutBanner, Text } from "@chartreuse/ui";',
       '',
       '<div style={{ width: "100%", maxWidth: 640, margin: 0 }}>',
       '  <CalloutBanner title="Component review complete" artwork={null}',
-      '    description={<p>All <strong>four components</strong> have validated usage examples.</p>} />',
+      '    description={<Text size="body">All <Text bold>four components</Text> have validated usage examples.</Text>} />',
       '</div>',
-    )}><div style={{ width: '100%', maxWidth: 640, margin: 0 }}><CalloutBanner title="Component review complete" artwork={null} description={<p>All <strong>four components</strong> have validated usage examples.</p>} /></div></Showcase>
+    )}><div style={{ width: '100%', maxWidth: 640, margin: 0 }}><CalloutBanner title="Component review complete" artwork={null} description={<Text size="body">All <Text bold>four components</Text> have validated usage examples.</Text>} /></div></Showcase>
     <Showcase title="Custom artwork and action slots" description="artwork and action accept composed content. These buttons update a local status message." code={source(
       'import { useState } from "react";',
       'import { ArrowRight, Sparkles } from "lucide-react";',
-      'import { Button, CalloutBanner } from "@chartreuse/ui";',
+      'import { Button, CalloutBanner, Text } from "@chartreuse/ui";',
       '',
       'export function CalloutActions() {',
       '  const [nextStep, setNextStep] = useState("No example action selected.");',
@@ -119,10 +119,10 @@ function CalloutBannerScenarios() {
       '        <Button icon={ArrowRight} onClick={() => setNextStep("Checklist action selected.")}>Review checklist</Button>',
       '        <Button variant="ghost" onClick={() => setNextStep("Brief action selected.")}>Read the brief</Button>',
       '      </>} />',
-      '    <p role="status">{nextStep}</p>',
+      '    <Text size="body" role="status">{nextStep}</Text>',
       '  </div>;',
       '}',
-    )}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><CalloutBanner eyebrow="Review actions" title="Select a documentation action." description="Each button updates the local status message." artwork={<Sparkles size={72} aria-hidden="true" />} action={<><Button icon={ArrowRight} onClick={() => setNextStep('Checklist action selected.')}>Review checklist</Button><Button variant="ghost" onClick={() => setNextStep('Brief action selected.')}>Read the brief</Button></>} /><p role="status">{nextStep}</p></div></Showcase>
+    )}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><CalloutBanner eyebrow="Review actions" title="Select a documentation action." description="Each button updates the local status message." artwork={<Sparkles size={72} aria-hidden="true" />} action={<><Button icon={ArrowRight} onClick={() => setNextStep('Checklist action selected.')}>Review checklist</Button><Button variant="ghost" onClick={() => setNextStep('Brief action selected.')}>Read the brief</Button></>} /><Text size="body" role="status">{nextStep}</Text></div></Showcase>
   </ExampleGallery>;
 }
 
@@ -177,7 +177,7 @@ function DrawerScenarios() {
   return <ExampleGallery className="layout-scenarios" maxColumns={3}>
     <Showcase title="Controlled modal drawer" description="Modal mode uses a native dialog. Its close control, footer action, and Escape all update the controlled open state." code={source(
       'import { useState } from "react";',
-      'import { Button, Drawer } from "@chartreuse/ui";',
+      'import { Button, Drawer, Text } from "@chartreuse/ui";',
       '',
       'export function ModalDrawer() {',
       '  const [open, setOpen] = useState(false);',
@@ -186,11 +186,11 @@ function DrawerScenarios() {
       '    <Drawer open={open} onOpenChange={setOpen} mode="modal"',
       '      title="Review details" description="DOC-105 · Layout examples"',
       '      footer={<Button onClick={() => setOpen(false)}>Close details</Button>}>',
-      '      <p>Check that the source includes every item shown in the preview.</p>',
+      '      <Text size="body">Check that the source includes every item shown in the preview.</Text>',
       '    </Drawer>',
       '  </div>;',
       '}',
-    )}><div style={{ width: '100%', maxWidth: 380, margin: 0 }}><Button variant="secondary" onClick={() => setModalOpen(true)}>Open modal details</Button><Drawer open={modalOpen} onOpenChange={setModalOpen} mode="modal" title="Review details" description="DOC-105 · Layout examples" footer={<Button onClick={() => setModalOpen(false)}>Close details</Button>}><p>Check that the source includes every item shown in the preview.</p></Drawer></div></Showcase>
+    )}><div style={{ width: '100%', maxWidth: 380, margin: 0 }}><Button variant="secondary" onClick={() => setModalOpen(true)}>Open modal details</Button><Drawer open={modalOpen} onOpenChange={setModalOpen} mode="modal" title="Review details" description="DOC-105 · Layout examples" footer={<Button onClick={() => setModalOpen(false)}>Close details</Button>}><Text size="body">Check that the source includes every item shown in the preview.</Text></Drawer></div></Showcase>
     <Showcase title="Docked drawer in a fixed-height parent" description="Docked mode stays in the document layout and fills its parent’s height. The rest of the page remains available." code={source(
       'import { useState } from "react";',
       'import { Button, Drawer, TextArea } from "@chartreuse/ui";',
@@ -214,7 +214,7 @@ function DrawerScenarios() {
     )}><div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420, margin: 0 }}><Button variant="secondary" onClick={() => setDockedOpen(value => !value)}>{dockedOpen ? 'Hide docked notes' : 'Show docked notes'}</Button><div style={{ height: 340, border: '1px solid var(--cr-color-border)', background: 'var(--cr-color-subtle)' }}><Drawer open={dockedOpen} onOpenChange={setDockedOpen} mode="docked" title="Task notes" width={420} maxWidth={420} footer={<Button variant="secondary" onClick={() => setDockedOpen(false)}>Close notes</Button>}><TextArea label="Review notes" rows={5} defaultValue="Record implementation decisions and acceptance criteria." /></Drawer></div></div></Showcase>
     <Showcase title="Left drawer with a maximum width" description="The requested 560px width is capped at 340px. Modal drawers also fit within the viewport." code={source(
       'import { useState } from "react";',
-      'import { Button, Drawer } from "@chartreuse/ui";',
+      'import { Button, Drawer, Text } from "@chartreuse/ui";',
       '',
       'export function LeftDrawer() {',
       '  const [open, setOpen] = useState(false);',
@@ -222,11 +222,11 @@ function DrawerScenarios() {
       '    <Button variant="secondary" onClick={() => setOpen(true)}>Open left drawer</Button>',
       '    <Drawer open={open} onOpenChange={setOpen} mode="modal" side="left"',
       '      title="Workspace outline" width={560} maxWidth={340}>',
-      '      <p>The drawer opens from the left and uses the smaller width limit.</p>',
+      '      <Text size="body">The drawer opens from the left and uses the smaller width limit.</Text>',
       '    </Drawer>',
       '  </div>;',
       '}',
-    )}><div style={{ width: '100%', maxWidth: 380, margin: 0 }}><Button variant="secondary" onClick={() => setLeftOpen(true)}>Open left drawer</Button><Drawer open={leftOpen} onOpenChange={setLeftOpen} mode="modal" side="left" title="Workspace outline" width={560} maxWidth={340}><p>The drawer opens from the left and uses the smaller width limit.</p></Drawer></div></Showcase>
+    )}><div style={{ width: '100%', maxWidth: 380, margin: 0 }}><Button variant="secondary" onClick={() => setLeftOpen(true)}>Open left drawer</Button><Drawer open={leftOpen} onOpenChange={setLeftOpen} mode="modal" side="left" title="Workspace outline" width={560} maxWidth={340}><Text size="body">The drawer opens from the left and uses the smaller width limit.</Text></Drawer></div></Showcase>
     <DrawerPage />
   </ExampleGallery>;
 }
@@ -240,21 +240,21 @@ function PagePanelScenarios() {
   const [reviewed, setReviewed] = useState(false);
   return <ExampleGallery className="layout-scenarios layout-example-gallery" maxColumns={3}>
     <Showcase title="Fixed-height panel with a scrolling body" description="Give the parent a height. The panel fills it while longer body content scrolls independently." code={source(
-      'import { PagePanel } from "@chartreuse/ui";',
+      'import { PagePanel, Text } from "@chartreuse/ui";',
       '',
       `const sections = ${JSON.stringify(briefSections, null, 2)};`,
       '',
       '<div style={{ height: 340, width: "100%", maxWidth: 720, margin: 0 }}>',
       '  <PagePanel title="Component brief" description="Public API, scope, and validation requirements.">',
       '    {sections.map(section => <section key={section.title}>',
-      '      <h3>{section.title}</h3><p>{section.text}</p>',
+      '      <Text size="heading-3">{section.title}</Text><Text size="body">{section.text}</Text>',
       '    </section>)}',
       '  </PagePanel>',
       '</div>',
-    )}><div style={{ height: 340, width: '100%', maxWidth: 720, margin: 0 }}><PagePanel title="Component brief" description="Public API, scope, and validation requirements.">{briefSections.map(section => <section key={section.title}><h3>{section.title}</h3><p>{section.text}</p></section>)}</PagePanel></div></Showcase>
+    )}><div style={{ height: 340, width: '100%', maxWidth: 720, margin: 0 }}><PagePanel title="Component brief" description="Public API, scope, and validation requirements.">{briefSections.map(section => <section key={section.title}><Text size="heading-3">{section.title}</Text><Text size="body">{section.text}</Text></section>)}</PagePanel></div></Showcase>
     <Showcase title="Submit the body form from the footer" description="A footer button can submit the body’s form through its form attribute. This example saves the name locally." code={source(
       'import { useId, useState } from "react";',
-      'import { Button, PagePanel, TextField } from "@chartreuse/ui";',
+      'import { Button, PagePanel, TextField, Text } from "@chartreuse/ui";',
       '',
       'export function PanelForm() {',
       '  const formId = useId();',
@@ -270,16 +270,16 @@ function PagePanelScenarios() {
       '      <form id={formId} onSubmit={event => { event.preventDefault(); setSaved(name); }}>',
       '        <TextField label="Workspace name" value={name} required',
       '          onChange={event => setName(event.target.value)} />',
-      '        <p>The footer stays outside the scrolling form body.</p>',
+      '        <Text size="body">The footer stays outside the scrolling form body.</Text>',
       '      </form>',
       '    </PagePanel>',
       '  </div>;',
       '}',
-    )}><div style={{ height: 400, width: '100%', maxWidth: 720, margin: 0 }}><PagePanel title="Workspace name" description="Edit the draft, then save or reset it." footer={<><span role="status" style={{ flex: '1 1 200px' }}>Saved name: {saved}</span><Button variant="secondary" onClick={() => setName(saved)}>Reset draft</Button><Button type="submit" form={formId}>Save name</Button></>}><form id={formId} onSubmit={event => { event.preventDefault(); setSaved(name); }}><TextField label="Workspace name" value={name} required onChange={event => setName(event.target.value)} /><p>The footer stays outside the scrolling form body.</p></form></PagePanel></div></Showcase>
+    )}><div style={{ height: 400, width: '100%', maxWidth: 720, margin: 0 }}><PagePanel title="Workspace name" description="Edit the draft, then save or reset it." footer={<><span role="status" style={{ flex: '1 1 200px' }}>Saved name: {saved}</span><Button variant="secondary" onClick={() => setName(saved)}>Reset draft</Button><Button type="submit" form={formId}>Save name</Button></>}><form id={formId} onSubmit={event => { event.preventDefault(); setSaved(name); }}><TextField label="Workspace name" value={name} required onChange={event => setName(event.target.value)} /><Text size="body">The footer stays outside the scrolling form body.</Text></form></PagePanel></div></Showcase>
     <Showcase title="Header actions and separate navigation" description="leading, headerActions, and navigation render outside the scrolling body." code={source(
       'import { useId, useState } from "react";',
       'import { FolderOpen } from "lucide-react";',
-      'import { Button, PagePanel } from "@chartreuse/ui";',
+      'import { Button, PagePanel, Text } from "@chartreuse/ui";',
       '',
       'export function PanelNavigation() {',
       '  const overviewId = useId();',
@@ -292,17 +292,17 @@ function PagePanelScenarios() {
       '        <a href={"#" + overviewId}>Overview</a>',
       '        <a href={"#" + checklistId}>Checklist</a>',
       '      </nav>}>',
-      '      <section id={overviewId}><h3>Overview</h3>',
-      '        <p>Review the focused examples before the interactive workspace.</p>',
-      '        <p role="status">{reviewed ? "Reviewed in this example." : "Awaiting review."}</p>',
+      '      <section id={overviewId}><Text size="heading-3">Overview</Text>',
+      '        <Text size="body">Review the focused examples before the interactive workspace.</Text>',
+      '        <Text size="body" role="status">{reviewed ? "Reviewed in this example." : "Awaiting review."}</Text>',
       '      </section>',
-      '      <section id={checklistId}><h3>Checklist</h3>',
+      '      <section id={checklistId}><Text size="heading-3">Checklist</Text>',
       '        <ul><li>Read the public props.</li><li>Compare the preview with its source.</li><li>Check the available space.</li></ul>',
       '      </section>',
       '    </PagePanel>',
       '  </div>;',
       '}',
-    )}><div style={{ height: 380, width: '100%', maxWidth: 720, margin: 0 }}><PagePanel title="Review brief" leading={<FolderOpen size={24} aria-hidden="true" />} headerActions={<Button variant="secondary" onClick={() => setReviewed(true)}>Mark reviewed</Button>} navigation={<nav aria-label="Review brief sections" style={{ display: 'flex', flexWrap: 'wrap', gap: 16, padding: '12px 24px' }}><a href={'#' + overviewId}>Overview</a><a href={'#' + checklistId}>Checklist</a></nav>}><section id={overviewId}><h3>Overview</h3><p>Review the focused examples before the interactive workspace.</p><p role="status">{reviewed ? 'Reviewed in this example.' : 'Awaiting review.'}</p></section><section id={checklistId}><h3>Checklist</h3><ul><li>Read the public props.</li><li>Compare the preview with its source.</li><li>Check the available space.</li></ul></section></PagePanel></div></Showcase>
+    )}><div style={{ height: 380, width: '100%', maxWidth: 720, margin: 0 }}><PagePanel title="Review brief" leading={<FolderOpen size={24} aria-hidden="true" />} headerActions={<Button variant="secondary" onClick={() => setReviewed(true)}>Mark reviewed</Button>} navigation={<nav aria-label="Review brief sections" style={{ display: 'flex', flexWrap: 'wrap', gap: 16, padding: '12px 24px' }}><a href={'#' + overviewId}>Overview</a><a href={'#' + checklistId}>Checklist</a></nav>}><section id={overviewId}><Text size="heading-3">Overview</Text><Text size="body">Review the focused examples before the interactive workspace.</Text><Text size="body" role="status">{reviewed ? 'Reviewed in this example.' : 'Awaiting review.'}</Text></section><section id={checklistId}><Text size="heading-3">Checklist</Text><ul><li>Read the public props.</li><li>Compare the preview with its source.</li><li>Check the available space.</li></ul></section></PagePanel></div></Showcase>
     <PagePanelPage />
   </ExampleGallery>;
 }

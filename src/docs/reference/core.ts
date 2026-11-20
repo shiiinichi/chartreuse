@@ -2,6 +2,35 @@ import type { ComponentReference } from './types';
 
 export const coreReferences: ComponentReference[] = [
   {
+    name: 'Text',
+    slug: 'text',
+    summary: 'The Chartreuse type scale for headings, paragraphs, labels, and inline formatting.',
+    importCode: "import { Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `<Text size="heading-2">Review status</Text>
+<Text size="body">
+  The <Text bold>sign-off</Text> is due on <Text italic>Friday</Text>.
+  {' '}The <Text strikethrough>Thursday</Text> deadline has passed.
+</Text>
+<Text display="block" size="small" bold>Updated today</Text>`,
+    nativeElement: 'heading, paragraph, small, span, div, strong, em, or del depending on size, display, and formatting',
+    nativeProps: 'Forwards common HTML attributes, events, className, style, and ref to the single native element.',
+    props: [
+      { name: 'children', type: 'ReactNode', description: 'Text or inline content.' },
+      { name: 'size', type: "'display' | 'heading-1' | 'heading-2' | 'heading-3' | 'body' | 'small' | 'label'", defaultValue: 'Inherited typography', description: 'Applies a type preset and chooses the default element. Display and heading-1 render h1, heading-2 and heading-3 render their heading levels, body renders a paragraph, and small renders small.' },
+      { name: 'display', type: "'inline' | 'block'", defaultValue: 'Native display', description: 'Use inline for running text of any size. Block keeps native headings and renders other text in a div that can hold block content. Flex and grid still determine placement.' },
+      { name: 'bold', type: 'boolean', defaultValue: 'false', description: 'Applies a 700 font weight.' },
+      { name: 'italic', type: 'boolean', defaultValue: 'false', description: 'Applies italic styling.' },
+      { name: 'strikethrough', type: 'boolean', defaultValue: 'false', description: 'Draws a line through the text.' },
+      { name: 'ref', type: 'Ref<HTMLElement>', description: 'Native ref to the text element.' },
+    ],
+    notes: [
+      'Use Text for headings, paragraphs, and inline formatting. Pick a heading size that follows the document outline.',
+      'A preset overrides inherited font size, weight, and line height. Children inherit the new typography. Give nested Text its own size to change it, and use display="inline" within running text.',
+      'Omit size for inline formatting that follows the surrounding text. Bold, italic, and strikethrough can be combined.',
+      'Use layout gaps for spacing between text blocks. Place Text in GridItem or MasonryItem when it needs a column span. Text can also be a direct child of Grid, Masonry, or Flex.',
+    ],
+  },
+  {
     name: 'Button',
     slug: 'button',
     summary: 'A native button with visual variants, size presets, optional icons, and a loading state.',
@@ -281,12 +310,12 @@ export const coreReferences: ComponentReference[] = [
     name: 'Tabs',
     slug: 'tabs',
     summary: 'A labeled tab list and its content panels, with controlled or internal selection.',
-    importCode: "import { Activity, LayoutDashboard } from 'lucide-react';\nimport { Tabs } from '@chartreuse/ui';",
+    importCode: "import { Activity, LayoutDashboard } from 'lucide-react';\nimport { Tabs, Text } from '@chartreuse/ui';",
     usageCode: `<Tabs label="Workspace views" items={[
   { value: 'board', label: 'Board', icon: LayoutDashboard, count: 4,
-    content: <p>Tasks grouped by status.</p> },
+    content: <Text size="body">Tasks grouped by status.</Text> },
   { value: 'activity', label: 'Activity', icon: Activity,
-    content: <p>Recent task and agent updates.</p> },
+    content: <Text size="body">Recent task and agent updates.</Text> },
 ]} />`,
     nativeElement: 'div',
     nativeProps: 'Only TabsProps are accepted. Native root attributes and ref are not forwarded; tab and panel IDs are generated internally.',
@@ -301,7 +330,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'defaultValue', type: 'string', defaultValue: 'First item’s value', description: 'The initial selected key for uncontrolled usage.' },
       { name: 'value', type: 'string', description: 'The controlled selected key. Pair with onValueChange.' },
       { name: 'onValueChange', type: '(value: string) => void', description: 'Called when a tab is selected by click or keyboard.' },
-      { name: 'variant', type: "'line' | 'pill'", defaultValue: "'line'", description: 'The tab list’s visual treatment.' },
+      { name: 'variant', type: "'line' | 'pill' | 'highlight'", defaultValue: "'line'", description: 'Use highlight for a selected tab with a subtle fill, rounded top corners, and an accent underline.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Each tab button uses the same minimum height as a Button of the corresponding size.' },
       { name: 'className', type: 'string', description: 'Additional classes on the root div.' },
     ],
@@ -310,20 +339,37 @@ export const coreReferences: ComponentReference[] = [
   {
     name: 'Card',
     slug: 'card',
-    summary: 'An article surface with a border, radius, and shadow for composed content.',
-    importCode: "import { Card } from '@chartreuse/ui';",
-    usageCode: `<Card style={{ padding: 24 }}>
-  <h3>Workspace configuration</h3>
-  <p>Review repository settings and task defaults.</p>
+    summary: 'A rounded article surface with an optional header, footer, and divided body.',
+    importCode: "import { Card, Text } from '@chartreuse/ui';",
+    usageCode: `<Card divided aria-label="Workspace settings"
+  header={<Text size="heading-3">Workspace settings</Text>}
+  footer={<span>Changes apply to this workspace.</span>}>
+  <section>
+    <Text size="body" display="block" bold>Repository</Text>
+    <Text size="body">Choose the repository and default branch for this workspace.</Text>
+  </section>
+  <section>
+    <Text size="body" display="block" bold>Schedule</Text>
+    <Text size="body">Set how often the workspace checks for updates.</Text>
+  </section>
+  <section>
+    <Text size="body" display="block" bold>Notifications</Text>
+    <Text size="body">Choose where activity updates and alerts appear.</Text>
+  </section>
 </Card>`,
     nativeElement: 'article',
     nativeProps: 'Accepts HTMLAttributes<HTMLElement> and forwards them to article. className is merged; this type does not declare a ref prop.',
     props: [
-      { name: 'children', type: 'ReactNode', description: 'The card content.' },
+      { name: 'header', type: 'ReactNode', description: 'Content in a full-width header above the body.' },
+      { name: 'children', type: 'ReactNode', description: 'The card body. For a divided card, use one direct element child per section.' },
+      { name: 'footer', type: 'ReactNode', description: 'Content in a full-width footer below the body.' },
+      { name: 'divided', type: 'boolean', defaultValue: 'false', description: 'Place padded sections side by side with shared dividers. Sections wrap to fit the card width.' },
       { name: 'className', type: 'string', description: 'Additional classes on the article surface.' },
     ],
     notes: [
-      'Card adds a surface, border, radius, and shadow. It does not add padding or a button interaction.', 'Use native buttons and links inside the card for actions and navigation.'],
+      'Supply header or footer for built-in body padding and dividers between regions. An undivided Card with only children leaves spacing to its content.',
+      'Use native buttons and links inside the card for actions and navigation.',
+    ],
   },
   {
     name: 'Alert',
@@ -351,11 +397,11 @@ export const coreReferences: ComponentReference[] = [
     name: 'Divider',
     slug: 'divider',
     summary: 'A native horizontal rule separating groups of content.',
-    importCode: "import { Divider } from '@chartreuse/ui';",
+    importCode: "import { Divider, Text } from '@chartreuse/ui';",
     usageCode: `<section>
-  <p>Current configuration.</p>
+  <Text size="body">Current configuration.</Text>
   <Divider />
-  <p>Next action.</p>
+  <Text size="body">Next action.</Text>
 </section>`,
     nativeElement: 'hr',
     nativeProps: "Accepts ComponentPropsWithRef<'hr'>. Native attributes and ref are forwarded to the horizontal rule.",
@@ -479,7 +525,7 @@ export function ToastExample() {
     name: 'TaskCard',
     slug: 'task-card',
     summary: 'A task summary with compact wrapping metadata, status, priority, and assignee avatars.',
-    importCode: "import { useState } from 'react';\nimport { Button, Dialog, TaskCard } from '@chartreuse/ui';",
+    importCode: "import { useState } from 'react';\nimport { Button, Dialog, TaskCard, Text } from '@chartreuse/ui';",
     usageCode: `export function TaskCardExample() {
   const [open, setOpen] = useState(false);
   return <>
@@ -490,7 +536,7 @@ export function ToastExample() {
       assignees={['Alex Morgan', 'Sam Lee']} onClick={() => setOpen(true)} />
     <Dialog open={open} onOpenChange={setOpen} title="Implement the workspace task board"
       footer={<Button onClick={() => setOpen(false)}>Done</Button>}>
-      <p>Add status lanes, task search, and task detail dialogs.</p>
+      <Text size="body">Add status lanes, task search, and task detail dialogs.</Text>
     </Dialog>
   </>;
 }`,
@@ -546,12 +592,12 @@ export function ToastExample() {
   {
     name: 'EmptyState',
     slug: 'empty-state',
-    summary: 'An empty-view message with a decorative icon and optional action.',
-    importCode: "import { useState } from 'react';\nimport { ClipboardList } from 'lucide-react';\nimport { Button, EmptyState } from '@chartreuse/ui';",
+    summary: 'An empty-view message with a decorative icon, optional action, and configurable alignment.',
+    importCode: "import { useState } from 'react';\nimport { ClipboardList } from 'lucide-react';\nimport { Button, EmptyState, Text } from '@chartreuse/ui';",
     usageCode: `export function EmptyStateExample() {
   const [started, setStarted] = useState(false);
-  return started ? <p role="status">The task has been created. Add its details.</p> :
-    <EmptyState icon={ClipboardList} title="No tasks yet"
+  return started ? <Text size="body" role="status">The task has been created. Add its details.</Text> :
+    <EmptyState variant="dashed" align="start" icon={ClipboardList} title="No tasks yet"
       description="Create a task to start tracking work in this workspace."
       action={<Button onClick={() => setStarted(true)}>Create a task</Button>} />;
 }`,
@@ -562,6 +608,8 @@ export function ToastExample() {
       { name: 'description', type: 'string', required: true, description: 'Supporting context for the current state.' },
       { name: 'icon', type: 'IconSource', defaultValue: 'Circle', description: 'The decorative IconSource: Lucide icon, custom SVG component, or inline SVG JSX element.' },
       { name: 'action', type: 'ReactNode', description: 'Optional interactive content, such as a Button with a real callback.' },
+      { name: 'variant', type: "'default' | 'dashed'", defaultValue: "'default'", description: 'Use dashed for a compact panel with a dashed border.' },
+      { name: 'align', type: "'start' | 'center' | 'end'", defaultValue: "'center'", description: 'Aligns the icon, heading, description, and action in either variant. Start and end follow the writing direction.' },
     ],
     notes: ['Use action for the next step; the component does not create data or navigate by itself.'],
   },

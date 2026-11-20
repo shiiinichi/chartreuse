@@ -15,6 +15,7 @@ import detailCss from './patterns/record-detail-pattern.css?raw';
 import { MetricsPattern } from './patterns/MetricsPattern';
 import metricsSource from './patterns/MetricsPattern.tsx?raw';
 import metricsCss from './patterns/metrics-pattern.css?raw';
+import { Text } from '../system';
 
 /** Display the rendered pattern and its navigation with package imports for consumers. */
 function patternSource(source: string, css: string, page: SamplePatternId, componentName: string) {
@@ -48,6 +49,6 @@ export function SamplePatternPage({ name }: { name: SamplePatternId }) {
     <Showcase title={`${definition.label} composition`} description="The preview runs the source shown in Code. Data and mutations remain in component state." code={code}>
       <PatternPreview page={name}><Component /></PatternPreview>
     </Showcase>
-    <section className="component-notes"><h2>Implementation notes</h2><ul>{definition.notes.map(note => <li key={note}>{note}</li>)}</ul></section>
+    <section className="component-notes"><Text size="heading-2">Implementation notes</Text><ul>{definition.notes.map(note => <li key={note}>{note}</li>)}</ul></section>
   </>;
 }

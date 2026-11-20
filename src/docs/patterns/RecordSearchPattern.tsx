@@ -1,7 +1,7 @@
 import { useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { RotateCcw, Search } from 'lucide-react';
-import { Badge, Button, Card, Dialog, EmptyState, Flex, Form, Grid, GridItem, Select, TextField, WorkspaceContent } from '../../system';
+import { Badge, Button, Card, Dialog, EmptyState, Flex, Form, Grid, GridItem, Select, TextField, WorkspaceContent, Text } from '../../system';
 import './record-search-pattern.css';
 
 type RecordStatus = 'Active' | 'In review' | 'Archived';
@@ -80,8 +80,8 @@ export function RecordSearchPattern() {
   const directory = <div className="record-search-pattern">
     <Flex align="start" justify="space-between" wrap gap={3}>
       <div className="record-search-pattern-introduction">
-        <h2 className="record-search-pattern-heading" id={`${id}-title`}>Record directory</h2>
-        <p>Search the operational records by query, status, and type.</p>
+        <Text size="heading-2" className="record-search-pattern-heading" id={`${id}-title`}>Record directory</Text>
+        <Text size="body">Search the operational records by query, status, and type.</Text>
       </div>
       <Badge>12 local records</Badge>
     </Flex>
@@ -124,16 +124,16 @@ export function RecordSearchPattern() {
       </Form>
     </search>
 
-    <p className="record-search-pattern-filter-feedback">
+    <Text size="body" className="record-search-pattern-filter-feedback">
       {hasDraftChanges ? 'Filters changed. Choose Search records to apply them.' : 'Results reflect the submitted filters.'}
-    </p>
+    </Text>
 
     <section className="record-search-pattern-results" aria-labelledby={`${id}-results-title`}>
-      <h3 className="record-search-pattern-results-title" id={`${id}-results-title`}>Results</h3>
-      <p className="record-search-pattern-result-count" role="status" aria-atomic="true">
-        <strong>{results.length} of {records.length} records</strong>
+      <Text size="heading-3" className="record-search-pattern-results-title" id={`${id}-results-title`}>Results</Text>
+      <Text size="body" className="record-search-pattern-result-count" role="status" aria-atomic="true">
+        <Text bold>{results.length} of {records.length} records</Text>
         <span>{appliedSummary}</span>
-      </p>
+      </Text>
 
       {results.length === 0 ? <Card className="record-search-pattern-empty">
         <EmptyState title="No matching records" icon={Search}
@@ -144,12 +144,12 @@ export function RecordSearchPattern() {
           <Card className="record-search-pattern-result" aria-labelledby={`${id}-${record.id}`}>
             <Flex align="start" justify="space-between" wrap gap={3}>
               <div className="record-search-pattern-record-heading">
-                <p className="record-search-pattern-reference"><code>{record.id}</code><span>{record.type}</span></p>
-                <h4 id={`${id}-${record.id}`}>{record.title}</h4>
+                <Text size="body" className="record-search-pattern-reference"><code>{record.id}</code><span>{record.type}</span></Text>
+                <Text size="heading-3" id={`${id}-${record.id}`}>{record.title}</Text>
               </div>
               <Badge tone={statusTones[record.status]} dot>{record.status}</Badge>
             </Flex>
-            <p className="record-search-pattern-summary">{record.summary}</p>
+            <Text size="body" className="record-search-pattern-summary">{record.summary}</Text>
             <Flex className="record-search-pattern-record-footer" direction={{ base: 'column', sm: 'row' }}
               align={{ base: 'stretch', sm: 'center' }} justify="space-between" gap={3}>
               <dl className="record-search-pattern-metadata">
@@ -171,8 +171,8 @@ export function RecordSearchPattern() {
       footer={<Button type="button" variant="secondary" onClick={() => setSelectedRecord(null)}>Close details</Button>}>
       {selectedRecord && <div className="record-search-pattern-details">
         <Badge tone={statusTones[selectedRecord.status]} dot>{selectedRecord.status}</Badge>
-        <h3>Summary</h3>
-        <p>{selectedRecord.summary}</p>
+        <Text size="heading-3">Summary</Text>
+        <Text size="body">{selectedRecord.summary}</Text>
         <dl className="record-search-pattern-detail-metadata">
           <div><dt>Record ID</dt><dd><code>{selectedRecord.id}</code></dd></div>
           <div><dt>Type</dt><dd>{selectedRecord.type}</dd></div>

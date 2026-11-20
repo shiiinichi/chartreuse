@@ -28,7 +28,7 @@
   .record-search-pattern-list { display: flex; flex-direction: column; gap: var(--cr-space-4); margin: 0; padding: 0; list-style: none; }
   .record-search-pattern-result { display: flex; flex-direction: column; gap: var(--cr-space-4); min-inline-size: 0; padding: var(--cr-space-5); }
   .record-search-pattern-record-heading { flex: 1 1 18rem; min-inline-size: 0; }
-  .record-search-pattern-record-heading h4 { margin: var(--cr-space-2) 0 0; font-size: .9375rem; line-height: 1.6; font-weight: 550; overflow-wrap: anywhere; }
+  .record-search-pattern-record-heading h3 { margin: var(--cr-space-2) 0 0; font-size: .9375rem; line-height: 1.6; font-weight: 550; overflow-wrap: anywhere; }
   .record-search-pattern-reference { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--cr-space-2) var(--cr-space-3); margin: 0; color: var(--cr-color-muted); font-size: .6875rem; line-height: 1.6; }
   .record-search-pattern-reference code { font-family: var(--cr-font-mono); font-size: inherit; }
   .record-search-pattern-summary { margin: 0; color: var(--cr-color-muted); font-size: .8125rem; line-height: 1.8; overflow-wrap: anywhere; }

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { CheckCircle2, RefreshCw, RotateCcw, XCircle } from 'lucide-react';
-import { Badge, Button, Card, Flex, Grid, GridItem, Masonry, Progress, Select, Stat, StatGroup, Timeline, WorkspaceContent } from '../../system';
+import { Badge, Button, Card, Flex, Grid, GridItem, Masonry, Progress, Select, Stat, StatGroup, Timeline, WorkspaceContent, Text } from '../../system';
 import type { TimelineItem } from '../../system';
 import './metrics-pattern.css';
 
@@ -188,9 +188,9 @@ export function MetricsPattern() {
   const dashboard = <section className="metrics-pattern" aria-labelledby={`${id}-title`}>
     <Flex align="center" justify="space-between" wrap gap={4} className="metrics-pattern-header">
       <div className="metrics-pattern-heading">
-        <p className="metrics-pattern-eyebrow">Execution overview</p>
-        <h3 id={`${id}-title`}>Run metrics</h3>
-        <p>Volume, reliability, duration, and execution cost.</p>
+        <Text size="body" className="metrics-pattern-eyebrow">Execution overview</Text>
+        <Text size="heading-3" id={`${id}-title`}>Run metrics</Text>
+        <Text size="body">Volume, reliability, duration, and execution cost.</Text>
       </div>
       <Badge tone="info" dot>Sample dataset</Badge>
     </Flex>
@@ -212,7 +212,7 @@ export function MetricsPattern() {
         </GridItem>
       </Grid>
       <Flex align="center" justify="space-between" wrap gap={3}>
-        <p className="metrics-pattern-caption">Refresh adds one finished run. Reset restores the starting snapshot.</p>
+        <Text size="body" className="metrics-pattern-caption">Refresh adds one finished run. Reset restores the starting snapshot.</Text>
         <div className="metrics-pattern-actions">
           <Button size="sm" variant="secondary" icon={RefreshCw} loading={refreshing} onClick={refresh}>
             {refreshing ? 'Refreshing…' : 'Refresh snapshot'}
@@ -222,12 +222,12 @@ export function MetricsPattern() {
       </Flex>
     </Card>
 
-    <p className="metrics-pattern-status" role="status">{notice}</p>
+    <Text size="body" className="metrics-pattern-status" role="status">{notice}</Text>
 
     <div className="metrics-pattern-results" aria-busy={refreshing}>
       <Flex align="center" justify="space-between" wrap gap={2} className="metrics-pattern-scope">
-        <p><strong>{sample.label}</strong><span aria-hidden="true"> · </span>{scope}</p>
-        <p>Snapshot {results.length + 1} · <time dateTime={new Date(snapshot).toISOString()}>18 Nov · {clock.format(snapshot)} UTC</time></p>
+        <Text size="body"><Text bold>{sample.label}</Text><span aria-hidden="true"> · </span>{scope}</Text>
+        <Text size="body">Snapshot {results.length + 1} · <time dateTime={new Date(snapshot).toISOString()}>18 Nov · {clock.format(snapshot)} UTC</time></Text>
       </Flex>
 
       <StatGroup columns={{ base: 1, sm: 2, lg: 4 }} gap={4} aria-label={`${sample.label}: ${scope}`}>
@@ -244,8 +244,8 @@ export function MetricsPattern() {
       <Masonry columns={{ base: 1, md: 2 }} gap={4}>
         <Card className="metrics-pattern-content-card" aria-labelledby={`${id}-volume`}>
           <header className="metrics-pattern-card-heading">
-            <h4 id={`${id}-volume`}>Finished run volume</h4>
-            <p>{sample.interval} · UTC</p>
+            <Text size="heading-3" id={`${id}-volume`}>Finished run volume</Text>
+            <Text size="body">{sample.interval} · UTC</Text>
           </header>
           <ol className="metrics-pattern-bars" aria-label="Finished runs by interval">
             {sample.buckets.map((label, index) => <li key={label}>
@@ -255,13 +255,13 @@ export function MetricsPattern() {
               <span className="cr-sr-only">: {number.format(volume[index])} finished runs.</span>
             </li>)}
           </ol>
-          <p className="metrics-pattern-caption">{number.format(total.finished)} finished runs. New results enter the final interval.</p>
+          <Text size="body" className="metrics-pattern-caption">{number.format(total.finished)} finished runs. New results enter the final interval.</Text>
         </Card>
 
         <Card className="metrics-pattern-content-card" aria-labelledby={`${id}-reliability`}>
           <header className="metrics-pattern-card-heading">
-            <h4 id={`${id}-reliability`}>Service reliability</h4>
-            <p>Success rate within the selected window.</p>
+            <Text size="heading-3" id={`${id}-reliability`}>Service reliability</Text>
+            <Text size="body">Success rate within the selected window.</Text>
           </header>
           <div className="metrics-pattern-service-list">
             {serviceMetrics.map(metrics => <Progress key={metrics.service.id} label={metrics.service.name} showLabel
@@ -274,8 +274,8 @@ export function MetricsPattern() {
 
         <Card className="metrics-pattern-content-card" aria-labelledby={`${id}-runs`}>
           <header className="metrics-pattern-card-heading">
-            <h4 id={`${id}-runs`}>Recent run changes</h4>
-            <p>Latest finished runs for {scope.toLowerCase()}.</p>
+            <Text size="heading-3" id={`${id}-runs`}>Recent run changes</Text>
+            <Text size="body">Latest finished runs for {scope.toLowerCase()}.</Text>
           </header>
           <Timeline items={timeline} reverse aria-label={`Recent run changes: ${scope}`}
             pending={refreshing ? 'Recording the next run result…' : undefined} />

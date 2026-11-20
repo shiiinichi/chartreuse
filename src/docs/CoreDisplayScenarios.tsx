@@ -2,6 +2,7 @@ import { useId, useState } from 'react';
 import { Check, Clock3, MessageSquare, X } from 'lucide-react';
 import { Avatar, AvatarGroup, Badge, BrandMark, Button, Card, Divider, Select } from '../system/components';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 
 const snippet = (...lines: string[]) => lines.join('\n');
 const people = ['Alex Morgan', 'Sam Lee', 'Jamie Park', 'Taylor Reed', 'Robin Chen'];
@@ -116,13 +117,13 @@ export function AvatarGroupScenarios() {
       '}',
     )}><div className="core-example-stack core-example-field"><Select label="Visible people" value={max} onChange={event => setMax(Number(event.target.value))}>{[1, 2, 3, 4, 5].map(count => <option key={count} value={count}>{count}</option>)}</Select><AvatarGroup names={people} max={max} /></div></Showcase>
     <Showcase title="Accessible group context" description="Wrap AvatarGroup in a labeled group to identify the assignment represented by the names." code={snippet(
-      'import { AvatarGroup } from "@chartreuse/ui";',
+      'import { AvatarGroup, Text } from "@chartreuse/ui";',
       '',
       '<div role="group" aria-label="Assigned reviewers">',
-      '  <p>Assigned reviewers</p>',
+      '  <Text size="body">Assigned reviewers</Text>',
       '  <AvatarGroup names={["Alex Morgan", "Sam Lee"]} max={3} />',
       '</div>',
-    )}><div className="core-example-stack" role="group" aria-label="Assigned reviewers"><p className="core-example-note">Assigned reviewers</p><AvatarGroup names={['Alex Morgan', 'Sam Lee']} max={3} /></div></Showcase>
+    )}><div className="core-example-stack" role="group" aria-label="Assigned reviewers"><Text size="body" className="core-example-note">Assigned reviewers</Text><AvatarGroup names={['Alex Morgan', 'Sam Lee']} max={3} /></div></Showcase>
   </ExampleGallery>;
 }
 
@@ -130,45 +131,86 @@ export function CardScenarios() {
   const [acknowledged, setAcknowledged] = useState(false);
   const cardTitleId = useId();
   return <ExampleGallery className="core-scenarios">
+    <Showcase title="Divided card" description="The header and footer span the card. The content sections wrap to fit the available width." span="full" code={snippet(
+      'import { Card, Text } from "@chartreuse/ui";',
+      '',
+      '<Card divided aria-label="Workspace settings"',
+      '  header={<Text size="heading-3">Workspace settings</Text>}',
+      '  footer={<span>Changes apply to this workspace.</span>}>',
+      '  <section>',
+      '    <Text size="body" display="block" bold>Repository</Text>',
+      '    <Text size="body">Choose the repository and default branch for this workspace.</Text>',
+      '  </section>',
+      '  <section>',
+      '    <Text size="body" display="block" bold>Schedule</Text>',
+      '    <Text size="body">Set how often the workspace checks for updates.</Text>',
+      '  </section>',
+      '  <section>',
+      '    <Text size="body" display="block" bold>Notifications</Text>',
+      '    <Text size="body">Choose where activity updates and alerts appear.</Text>',
+      '  </section>',
+      '</Card>',
+    )}>
+      <Card divided className="core-example-divided-card" aria-label="Workspace settings"
+        header={<Text size="heading-3">Workspace settings</Text>}
+        footer={<span>Changes apply to this workspace.</span>}>
+        <section>
+          <Text size="body" display="block" bold>Repository</Text>
+          <Text size="body">Choose the repository and default branch for this workspace.</Text>
+        </section>
+        <section>
+          <Text size="body" display="block" bold>Schedule</Text>
+          <Text size="body">Set how often the workspace checks for updates.</Text>
+        </section>
+        <section>
+          <Text size="body" display="block" bold>Notifications</Text>
+          <Text size="body">Choose where activity updates and alerts appear.</Text>
+        </section>
+      </Card>
+    </Showcase>
     <Showcase title="Card content" description="Card renders an article element. Supply content as children and control spacing with classes or styles." code={snippet(
-      'import { Card } from "@chartreuse/ui";',
+      'import { Card, Text } from "@chartreuse/ui";',
       '',
       '<Card style={{ padding: 24, maxWidth: 380 }}>',
-      '  <h4>Workspace configuration</h4>',
-      '  <p>Review repository settings and task defaults.</p>',
+      '  <Text size="heading-3">Workspace configuration</Text>',
+      '  <Text size="body">Review repository settings and task defaults.</Text>',
       '</Card>',
-    )}><Card className="core-example-card"><h4>Workspace configuration</h4><p>Review repository settings and task defaults.</p></Card></Showcase>
+    )}><Card className="core-example-card"><Text size="heading-3">Workspace configuration</Text><Text size="body">Review repository settings and task defaults.</Text></Card></Showcase>
     <Showcase title="Card with an action" description="Compose a Button inside Card and manage its result in application state." code={snippet(
       'import { useState } from "react";',
-      'import { Card, Button } from "@chartreuse/ui";',
+      'import { Card, Button, Text } from "@chartreuse/ui";',
       '',
       'function CardAction() {',
       '  const [acknowledged, setAcknowledged] = useState(false);',
       '  return <Card style={{ padding: 24, maxWidth: 380 }}>',
-      '    <h4>Configuration review</h4>',
-      '    <p>Confirm that the branch settings match the deployment target.</p>',
+      '    <Text size="heading-3">Configuration review</Text>',
+      '    <Text size="body">Confirm that the branch settings match the deployment target.</Text>',
       '    <Button variant="secondary" onClick={() => setAcknowledged(true)}>Mark reviewed</Button>',
-      '    <p role="status">{acknowledged ? "Review recorded." : "Review pending."}</p>',
+      '    <Text size="body" role="status">{acknowledged ? "Review recorded." : "Review pending."}</Text>',
       '  </Card>;',
       '}',
-    )}><Card className="core-example-card"><h4>Configuration review</h4><p>Confirm that the branch settings match the deployment target.</p><Button variant="secondary" onClick={() => setAcknowledged(true)}>Mark reviewed</Button><p className="core-example-result" role="status" style={{ marginBlockStart: 16, marginBlockEnd: 0 }}>{acknowledged ? 'Review recorded.' : 'Review pending.'}</p></Card></Showcase>
-    <Showcase title="Card sections" description="Compose native header and footer elements with Divider. aria-labelledby connects the card to its heading." code={snippet(
+    )}><Card className="core-example-card"><Text size="heading-3">Configuration review</Text><Text size="body">Confirm that the branch settings match the deployment target.</Text><Button variant="secondary" onClick={() => setAcknowledged(true)}>Mark reviewed</Button><Text size="body" className="core-example-result" role="status" style={{ marginBlockStart: 16, marginBlockEnd: 0 }}>{acknowledged ? 'Review recorded.' : 'Review pending.'}</Text></Card></Showcase>
+    <Showcase title="Card header and footer" description="Use header and footer for content above and below the padded body." code={snippet(
       'import { useId } from "react";',
-      'import { Badge, Button, Card, Divider } from "@chartreuse/ui";',
+      'import { Badge, Button, Card, Text } from "@chartreuse/ui";',
       '',
       'function ReviewSummaryCard() {',
       '  const titleId = useId();',
-      '  return <Card aria-labelledby={titleId} style={{ padding: 24, maxWidth: 380 }}>',
-      '    <header style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>',
-      '      <h4 id={titleId}>Review summary</h4><Badge tone="info" dot>In progress</Badge>',
-      '    </header>',
-      '    <Divider />',
-      '    <p>Review the changed files and resolve open comments before merging.</p>',
-      '    <Divider />',
-      '    <footer><Button variant="secondary">View review notes</Button></footer>',
+      '  return <Card aria-labelledby={titleId} style={{ maxWidth: 380 }}',
+      '    header={<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>',
+      '      <Text size="heading-3" id={titleId} style={{ margin: 0 }}>Review summary</Text><Badge tone="info" dot>In progress</Badge>',
+      '    </div>}',
+      '    footer={<Button variant="secondary">View review notes</Button>}>',
+      '    <Text size="body">Review the changed files and resolve open comments before merging.</Text>',
       '  </Card>;',
       '}',
-    )}><Card className="core-example-card" aria-labelledby={cardTitleId}><header className="core-example-card-header"><h4 id={cardTitleId}>Review summary</h4><Badge tone="info" dot>In progress</Badge></header><Divider /><p className="core-example-card-section">Review the changed files and resolve open comments before merging.</p><Divider /><footer className="core-example-card-footer"><Button variant="secondary">View review notes</Button></footer></Card></Showcase>
+    )}>
+      <Card className="core-example-sectioned-card" aria-labelledby={cardTitleId}
+        header={<div className="core-example-card-header"><Text size="heading-3" id={cardTitleId}>Review summary</Text><Badge tone="info" dot>In progress</Badge></div>}
+        footer={<Button variant="secondary">View review notes</Button>}>
+        <Text size="body" className="core-example-card-section">Review the changed files and resolve open comments before merging.</Text>
+      </Card>
+    </Showcase>
   </ExampleGallery>;
 }
 
@@ -210,23 +252,23 @@ export function BrandMarkScenarios() {
 export function DividerScenarios() {
   return <ExampleGallery className="core-scenarios">
     <Showcase title="Semantic section separator" description="Divider renders a native hr element." code={snippet(
-      'import { Divider } from "@chartreuse/ui";',
+      'import { Divider, Text } from "@chartreuse/ui";',
       '',
       '<div>',
-      '  <p>Configuration summary.</p>',
+      '  <Text size="body">Configuration summary.</Text>',
       '  <Divider />',
-      '  <p>Validation results.</p>',
+      '  <Text size="body">Validation results.</Text>',
       '</div>',
-    )}><div className="core-example-field"><p className="core-example-note">Configuration summary.</p><Divider /><p className="core-example-note">Validation results.</p></div></Showcase>
+    )}><div className="core-example-field"><Text size="body" className="core-example-note">Configuration summary.</Text><Divider /><Text size="body" className="core-example-note">Validation results.</Text></div></Showcase>
     <Showcase title="Custom separator spacing" description="Use native style props to adjust the divider margins." code={snippet(
-      'import { Card, Divider } from "@chartreuse/ui";',
+      'import { Card, Divider, Text } from "@chartreuse/ui";',
       '',
       '<Card style={{ padding: 24, maxWidth: 380 }}>',
-      '  <h4>Deployment decision</h4>',
-      '  <p>Deploy after the required reviews are complete.</p>',
+      '  <Text size="heading-3">Deployment decision</Text>',
+      '  <Text size="body">Deploy after the required reviews are complete.</Text>',
       '  <Divider style={{ marginBlock: 32 }} />',
-      '  <p>Next step: review the changed files.</p>',
+      '  <Text size="body">Next step: review the changed files.</Text>',
       '</Card>',
-    )}><Card className="core-example-card"><h4>Deployment decision</h4><p>Deploy after the required reviews are complete.</p><Divider style={{ marginBlock: 32 }} /><p style={{ margin: 0 }}>Next step: review the changed files.</p></Card></Showcase>
+    )}><Card className="core-example-card"><Text size="heading-3">Deployment decision</Text><Text size="body">Deploy after the required reviews are complete.</Text><Divider style={{ marginBlock: 32 }} /><Text size="body" style={{ margin: 0 }}>Next step: review the changed files.</Text></Card></Showcase>
   </ExampleGallery>;
 }

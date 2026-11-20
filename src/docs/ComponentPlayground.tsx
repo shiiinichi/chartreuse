@@ -18,10 +18,12 @@ import { SidebarDemo } from './SidebarDemo';
 import { SliderDemo } from './SliderDemo';
 import { StatDemo, StatGroupDemo } from './StatDemo';
 import { SwimlaneDemo } from './SwimlaneDemo';
+import { TextDemo } from './TextDemo';
 import { TreeDemo } from './TreeDemo';
 import { WorkspaceContentDemo } from './WorkspaceContentDemo';
 import { Showcase } from './shared';
 import { componentReferences } from './reference';
+import { Text } from '../system';
 
 const CoreScenarios = lazy(() => import('./CoreScenarios').then(module => ({ default: module.CoreScenarios })));
 const FormScenarios = lazy(() => import('./FormScenarios').then(module => ({ default: module.FormScenarios })));
@@ -40,7 +42,7 @@ const demosWithOwnShowcases = new Set([
   'IconButton', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
   'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'Switch', 'Tabs', 'TaskCard',
-  'Steps', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
+  'Steps', 'Text', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
 ]);
 
 /** Scenario galleries own their frames; new simple playgrounds get a shared fallback. */
@@ -70,7 +72,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'BrandMark':
     case 'Divider':
     case 'ToastProvider':
-      return <Suspense fallback={<p className="muted">Loading examples…</p>}><CoreScenarios name={name} /></Suspense>;
+      return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><CoreScenarios name={name} /></Suspense>;
     case 'TextField':
     case 'TextArea':
     case 'Select':
@@ -79,18 +81,18 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Autocomplete':
     case 'FilePicker':
     case 'MessageComposer':
-      return <Suspense fallback={<p className="muted">Loading examples…</p>}><FormScenarios name={name} /></Suspense>;
+      return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><FormScenarios name={name} /></Suspense>;
     case 'AgentCard':
     case 'CalloutBanner':
     case 'TaskCard':
     case 'Drawer':
     case 'PagePanel':
     case 'GridItem':
-      return <Suspense fallback={<p className="muted">Loading examples…</p>}><LayoutScenarios name={name} /></Suspense>;
+      return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><LayoutScenarios name={name} /></Suspense>;
     case 'ActivityItem': return <ActivityItemDemo />;
     case 'AgentActivity': return <AgentActivityDemo />;
     case 'Blockquote': return <BlockquoteDemo />;
-    case 'Conversation': return <Suspense fallback={<p className="muted">Loading conversation example…</p>}><ConversationDemo /></Suspense>;
+    case 'Conversation': return <Suspense fallback={<Text size="body" className="muted">Loading conversation example…</Text>}><ConversationDemo /></Suspense>;
     case 'Dialog': return <ModalsPage showGuidance={false} />;
     case 'Disclosure': return <DisclosurePage showGuidance={false} />;
     case 'Fieldset': return <FieldsetPage showGuidance={false} />;
@@ -102,7 +104,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Masonry': return <MasonryDemo />;
     case 'MasonryItem': return <MasonryItemDemo />;
     case 'MasonrySpacer': return <MasonrySpacerDemo />;
-    case 'MarkdownRenderer': return <Suspense fallback={<p className="muted">Loading Markdown example…</p>}><MarkdownPage /></Suspense>;
+    case 'MarkdownRenderer': return <Suspense fallback={<Text size="body" className="muted">Loading Markdown example…</Text>}><MarkdownPage /></Suspense>;
     case 'Navbar': return <NavbarDemo />;
     case 'NavbarItem': return <NavbarItemDemo />;
     case 'NumberInput': return <NumberInputDemo />;
@@ -112,9 +114,10 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Slider': return <SliderDemo />;
     case 'Stat': return <StatDemo />;
     case 'StatGroup': return <StatGroupDemo />;
-    case 'Steps': return <Suspense fallback={<p className="muted">Loading examples…</p>}><StepsDemo /></Suspense>;
+    case 'Steps': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><StepsDemo /></Suspense>;
     case 'Swimlane': return <SwimlaneDemo />;
-    case 'Timeline': return <Suspense fallback={<p className="muted">Loading examples…</p>}><TimelineDemo /></Suspense>;
+    case 'Text': return <TextDemo />;
+    case 'Timeline': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><TimelineDemo /></Suspense>;
     case 'Tree': return <TreeDemo />;
     case 'Tooltip': return <TooltipDemo />;
     case 'WorkspaceContent': return <WorkspaceContentDemo />;

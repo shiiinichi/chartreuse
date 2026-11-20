@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useId, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ArrowDownToLine, ArrowRight, Check, Code2, Copy, Eye, Maximize2 } from 'lucide-react';
-import { Button, IconButton, useToast } from '../system';
+import { Button, IconButton, useToast, Text } from '../system';
 import { Masonry, MasonryItem } from '../system/Masonry';
 import type { MasonryProps } from '../system/Masonry';
 
@@ -40,18 +40,18 @@ export function Showcase({ title, description, code, children, className = '', t
   const [view, setView] = useState<'preview' | 'code'>('preview');
   const inheritedHeadingLevel = useContext(ShowcaseHeadingLevelContext);
   const inGallery = useContext(ExampleGalleryContext);
-  const Heading = (headingLevel ?? inheritedHeadingLevel) === 2 ? 'h2' : 'h3';
+  const headingSize = (headingLevel ?? inheritedHeadingLevel) === 2 ? 'heading-2' : 'heading-3';
   const id = useId();
   const previewId = `${id}-preview`;
   const codeId = `${id}-code`;
-  const frame = <section className={`showcase ${className}`} data-align={align} data-example-span={span}><header className="showcase-header"><div><Heading>{title}</Heading>{description && <p>{description}</p>}</div><div className="showcase-actions"><div className="view-switch" role="group" aria-label={`${title} display`}><button type="button" aria-pressed={view === 'preview'} aria-controls={previewId} onClick={() => setView('preview')} aria-label={`Preview ${title}`}><Eye size={13} aria-hidden="true" /></button><button type="button" aria-pressed={view === 'code'} aria-controls={codeId} onClick={() => setView('code')} aria-label={`View ${title} code`}><Code2 size={13} aria-hidden="true" /></button></div>{onExpand && <IconButton size="sm" icon={Maximize2} label={`Expand ${title}`} onClick={onExpand} />}</div></header>
+  const frame = <section className={`showcase ${className}`} data-align={align} data-example-span={span}><header className="showcase-header"><div><Text size={headingSize}>{title}</Text>{description && <Text size="body">{description}</Text>}</div><div className="showcase-actions"><div className="view-switch" role="group" aria-label={`${title} display`}><button type="button" aria-pressed={view === 'preview'} aria-controls={previewId} onClick={() => setView('preview')} aria-label={`Preview ${title}`}><Eye size={13} aria-hidden="true" /></button><button type="button" aria-pressed={view === 'code'} aria-controls={codeId} onClick={() => setView('code')} aria-label={`View ${title} code`}><Code2 size={13} aria-hidden="true" /></button></div>{onExpand && <IconButton size="sm" icon={Maximize2} label={`Expand ${title}`} onClick={onExpand} />}</div></header>
     <div className="showcase-preview" id={previewId} hidden={view !== 'preview'}>{children}</div><div className="showcase-code" id={codeId} hidden={view !== 'code'}><CodeBlock code={code} language={language} /></div>{toolbar && <footer className="showcase-footer">{toolbar}</footer>}
   </section>;
   return inGallery && span === 'full' ? <MasonryItem span="full" className="example-gallery-full">{frame}</MasonryItem> : frame;
 }
 
 export function SectionTitle({ title, description, action, onAction }: { title: string; description?: string; action?: string; onAction?: () => void }) {
-  return <div className="section-title"><div><h2>{title}</h2>{description && <p>{description}</p>}</div>{action && <button className="text-link" type="button" onClick={onAction}>{action}<ArrowRight size={14} aria-hidden="true" /></button>}</div>;
+  return <div className="section-title"><div><Text size="heading-2">{title}</Text>{description && <Text size="body">{description}</Text>}</div>{action && <button className="text-link" type="button" onClick={onAction}>{action}<ArrowRight size={14} aria-hidden="true" /></button>}</div>;
 }
 
 export function downloadFile(content: string, name: string, type = 'application/json') {

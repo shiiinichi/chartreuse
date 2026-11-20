@@ -5,18 +5,18 @@ export const contentReferences: ComponentReference[] = [
     name: 'ActivityItem',
     slug: 'activity-item',
     summary: 'A task update article with a leading rule, wrapping metadata, and optional changed-field details.',
-    importCode: "import { ActivityItem, Badge } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    importCode: "import { ActivityItem, Badge, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
     usageCode: `<ActivityItem
   identifier="TASK-001.6"
   title="Expose the requested team in directory search"
   metadata={<>
-    <strong>Added comment</strong>
+    <Text bold>Added comment</Text>
     <Badge>Agent</Badge>
     <time dateTime="2026-11-17T08:50:05+08:00">Nov 17, 2026, 8:50 AM</time>
   </>}
   footer="Changed: Comments"
 >
-  <p>Recorded completion evidence and the live inspector session.</p>
+  <Text size="body">Recorded completion evidence and the live inspector session.</Text>
 </ActivityItem>`,
     props: [
       { name: 'children', type: 'ReactNode', required: true, description: 'The update content, normally one or more paragraphs.' },
@@ -41,21 +41,21 @@ export const contentReferences: ComponentReference[] = [
     name: 'Blockquote',
     slug: 'blockquote',
     summary: 'A native blockquote in a figure, with a leading rule, optional background, and attribution.',
-    importCode: "import { Blockquote } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    importCode: "import { Blockquote, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
     usageCode: `<Blockquote attribution={<>Sam Lee · <cite>API review</cite></>}>
-  <p>Record the API change and its affected callers so the next reviewer can verify the migration.</p>
+  <Text size="body">Record the API change and its affected callers so the next reviewer can verify the migration.</Text>
 </Blockquote>
 
 // A neutral filled surface, or a colored tone for more emphasis.
 <Blockquote variant="filled" tone="success"
   attribution={<>Sam Lee · <cite>Illustrative review notes</cite></>}>
-  <p>The review is complete. All three specialist calls returned their findings.</p>
+  <Text size="body">The review is complete. All three specialist calls returned their findings.</Text>
 </Blockquote>
 
 // When the source is published, provide its URL separately.
 <Blockquote cite="https://example.com/review"
   attribution={<a href="https://example.com/review">Read the review</a>}>
-  <p>The implementation is ready for API and keyboard review.</p>
+  <Text size="body">The implementation is ready for API and keyboard review.</Text>
 </Blockquote>`,
     props: [
       { name: 'children', type: 'ReactNode', required: true, description: 'Quoted content inside a native blockquote. Wrap paragraphs in p elements.' },

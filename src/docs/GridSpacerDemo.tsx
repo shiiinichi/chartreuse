@@ -5,6 +5,7 @@ import { Grid, GridItem, GridSpacer } from '../system/Grid';
 import type { GridGap } from '../system/Grid';
 import { Select, Switch, TextField } from '../system/components';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './grid-spacer-demo.css';
 
 const outline: CSSProperties = { outline: '1px dashed var(--cr-color-input-border)', background: 'var(--cr-color-subtle)', borderRadius: 7 };
@@ -18,7 +19,7 @@ export function GridSpacerSample({ gap = 4, frameStyle }: { gap?: GridGap; frame
   const [reserve, setReserve] = useState(true);
   const [showOutline, setShowOutline] = useState(true);
   const code = `import { useState } from 'react';
-import { Fieldset, Grid, GridItem, GridSpacer, Switch, TextField } from '@chartreuse/ui';
+import { Fieldset, Grid, GridItem, GridSpacer, Switch, TextField, Text } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
 ${outlineSource}
@@ -42,9 +43,9 @@ export function ReservedInputSlot() {
         <GridItem span={1}><TextField label="Project reviewer" defaultValue="Sam Lee" /></GridItem>
       </Grid>
     </Fieldset>
-    <p style={{ margin: 0 }}>${illustrationCaption}</p>
-    <p style={{ margin: 0 }}>This example removes the spacer below 480px of grid width,
-      so the three fields stack without an empty row.</p>
+    <Text size="body" style={{ margin: 0 }}>${illustrationCaption}</Text>
+    <Text size="body" style={{ margin: 0 }}>This example removes the spacer below 480px of grid width,
+      so the three fields stack without an empty row.</Text>
   </div>;
 }`;
   return <Showcase title="Reserve a field position" description="Reserve an empty grid cell. Toggle the spacer to compare placement of subsequent inputs." code={code}>
@@ -59,8 +60,8 @@ export function ReservedInputSlot() {
         <GridItem span={1}><TextField label="Project owner" defaultValue="Alex Morgan" /></GridItem>
         <GridItem span={1}><TextField label="Project reviewer" defaultValue="Sam Lee" /></GridItem>
       </Grid></Fieldset>
-      <p>{illustrationCaption}</p>
-      <p>This example removes the spacer below 480px of grid width, so the three fields stack without an empty row.</p>
+      <Text size="body">{illustrationCaption}</Text>
+      <Text size="body">This example removes the spacer below 480px of grid width, so the three fields stack without an empty row.</Text>
     </div>
   </Showcase>;
 }
@@ -69,7 +70,7 @@ function SpanningSpacerSample() {
   const [span, setSpan] = useState(2);
   const [showOutline, setShowOutline] = useState(true);
   const code = `import { useState } from 'react';
-import { Fieldset, Grid, GridItem, GridSpacer, Select, Switch, TextField } from '@chartreuse/ui';
+import { Fieldset, Grid, GridItem, GridSpacer, Select, Switch, TextField, Text } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
 ${outlineSource}
@@ -94,9 +95,9 @@ export function WiderReservedSlot() {
         <GridItem span={1}><TextField label="Region" defaultValue="ap-southeast-1" /></GridItem>
       </Grid>
     </Fieldset>
-    <p style={{ margin: 0 }}>${illustrationCaption}</p>
-    <p style={{ margin: 0 }}>At wider grid sizes, the span setting reserves tracks;
-      gap controls the normal distance between cells.</p>
+    <Text size="body" style={{ margin: 0 }}>${illustrationCaption}</Text>
+    <Text size="body" style={{ margin: 0 }}>At wider grid sizes, the span setting reserves tracks;
+      gap controls the normal distance between cells.</Text>
   </div>;
 }`;
   return <Showcase title="Reserve several columns" description="GridSpacer accepts GridItem spans and reserves empty grid tracks." code={code}>
@@ -110,8 +111,8 @@ export function WiderReservedSlot() {
         <GridSpacer span={span} visible={{ base: false, sm: true }} style={showOutline ? outline : undefined} />
         <GridItem span={1}><TextField label="Region" defaultValue="ap-southeast-1" /></GridItem>
       </Grid></Fieldset>
-      <p>{illustrationCaption}</p>
-      <p>At wider grid sizes, the span setting reserves tracks; gap controls the normal distance between cells.</p>
+      <Text size="body">{illustrationCaption}</Text>
+      <Text size="body">At wider grid sizes, the span setting reserves tracks; gap controls the normal distance between cells.</Text>
     </div>
   </Showcase>;
 }

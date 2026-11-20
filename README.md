@@ -83,7 +83,7 @@ The documentation bundles Inter locally. Consumers can bundle `@fontsource-varia
 Place `Navbar` above `WorkspaceLayout` and put `Sidebar` and `WorkspaceContent` inside the layout. The navbar and content have independent width settings.
 
 ```tsx
-import { Navbar, NavbarItem, Sidebar, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';
+import { Navbar, NavbarItem, Sidebar, Text, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
 export function ProjectWorkspace() {
@@ -97,7 +97,9 @@ export function ProjectWorkspace() {
         <Sidebar width={192} aria-label="Projects" contentLabel="Project links">
           <nav aria-label="Project views"><NavbarItem href="/records">Records</NavbarItem></nav>
         </Sidebar>
-        <WorkspaceContent width="comfortable"><h1>Project overview</h1></WorkspaceContent>
+        <WorkspaceContent width="comfortable">
+          <Text size="heading-1">Project overview</Text>
+        </WorkspaceContent>
       </WorkspaceLayout>
     </>
   );
@@ -251,9 +253,11 @@ The [Markdown gallery](http://127.0.0.1:5173/#markdown) provides an editable sou
 The [Disclosure gallery](http://127.0.0.1:5173/#disclosures) demonstrates native `details` / `summary` with a chevron beside the title, a full-width summary row, and 13px typography. Use `defaultOpen` for the initial state, and give uncontrolled items a shared `name` to form an exclusive group. Items without a shared name can remain open together.
 
 ```tsx
+import { Disclosure, Text } from '@chartreuse/ui';
+
 <Disclosure title="How do disclosure groups behave?" defaultOpen>
-  <p>Uncontrolled items with the same name form an exclusive group.</p>
-  <p>Items without a shared name can remain open together.</p>
+  <Text size="body">Uncontrolled items with the same name form an exclusive group.</Text>
+  <Text size="body">Items without a shared name can remain open together.</Text>
 </Disclosure>
 ```
 
@@ -265,7 +269,7 @@ The [Fieldsets gallery](http://127.0.0.1:5173/#fieldsets) provides `Fieldset` wi
 
 `FilePicker` in [Form controls](http://127.0.0.1:5173/#forms) wraps a labeled native file input. It supports `mode="file"` or `mode="folder"`, `multiple`, `accept`, `required`, and `onFilesChange(files)`. A native reset clears the selection. Folder mode uses directory selection where available and provides a file-selection fallback. The demo displays browser-provided names, sizes, types, and folder-relative paths; it performs no upload or file-content read.
 
-The [Page panels gallery](http://127.0.0.1:5173/#page-panels) demonstrates a full-height `PagePanel` with `title`, `description`, optional `leading` / `headerActions` / `navigation` slots, a scrolling body, and an action `footer` outside that scroll region. Allocate a height in the parent and the panel fills it. The footer has 24px padding on every side and ends at the surface boundary. The settings example preserves local drafts across tabs; Save records a local snapshot and Cancel restores it.
+The [Page panels gallery](http://127.0.0.1:5173/#page-panels) demonstrates a full-height `PagePanel` with `title`, `description`, optional `leading` / `headerActions` / `navigation` slots, a scrolling body, and an action `footer` outside that scroll region. Allocate a height in the parent and the panel fills it. The footer has 24px padding on every side. When the surrounding scroll viewport is at least 480px tall, the footer docks at its bottom edge with square corners. The corners round again when the footer returns to its normal position. Set `stickyFooter={false}` to keep the footer in its normal position at any height. The settings example preserves local drafts across tabs. Save records a local snapshot, and Cancel restores it.
 
 ## Forms and field layouts
 
@@ -366,6 +370,21 @@ Earlier links such as `#buttons`, `#cards`, `#modals`, `#drawers`, `#fieldsets`,
 `PathSelector` is a text input for paths with optional `onBrowse(mode)` integration. It supports typing and pasting; the browse action appears when a host adapter is supplied. The gallery uses a simulated adapter. `CalloutBanner` displays a title, description, caller-supplied action, and optional artwork. The Overview page uses this component.
 
 ## Foundations
+
+Use `Text` for headings, paragraphs, and inline formatting. The `size` sets the type preset and native element. Use `display="inline"` for running text of any size and `display="block"` for a standalone block. Use the parent layout’s gap to space text blocks. See [the Text reference](http://127.0.0.1:5173/#components/text) and [the Typography scale](http://127.0.0.1:5173/#typography).
+
+```tsx
+import { Flex, Text } from '@chartreuse/ui';
+
+<Flex direction="column" gap={3}>
+  <Text size="heading-2">Release review</Text>
+  <Text size="body">
+    The checklist is <Text bold>ready</Text> for <Text italic>final review</Text>.
+    {' '}The due date moved from <Text strikethrough>Thursday</Text> to Friday.
+  </Text>
+  <Text display="block" size="small">Updated today</Text>
+</Flex>
+```
 
 The base palette is evergreen `#024340`, light evergreen `#096864`, chartreuse `#DBFFAD`, paper `#FFFDF6`, canvas `#F2F0E6`, muted `#52645F`, and border `#CECCC3`. Supporting colors define agent, status, and feedback styles. Semantic tokens map these primitives to component roles in light and dark themes.
 

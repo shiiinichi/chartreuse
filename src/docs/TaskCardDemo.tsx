@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import { Check, MessageSquare, RotateCcw } from 'lucide-react';
 import { Badge, Button, Dialog, Switch, TaskCard, useToast } from '../system/components';
 import { Showcase } from './shared';
+import { Text } from '../system';
 import './TaskCardDemo.css';
 
 const initialInfo = { dependencyCompleted: 1, dependencyTotal: 1, related: 1, comments: 2, attachments: 1 };
@@ -37,9 +38,9 @@ export function TaskCardDemo() {
         onClick={() => setOpen(true)} />
     </div>
     <div className="task-card-demo-actions"><Button variant="secondary" size="sm" icon={MessageSquare} disabled={!extras} onClick={() => { setInfo(previous => ({ ...previous, comments: previous.comments + 1 })); notify('Example comment count increased'); }}>Add example comment</Button><Button variant="secondary" size="sm" disabled={!extras} onClick={() => setInfo({ dependencyCompleted: 0, dependencyTotal: 0, related: 0, comments: 0, attachments: 0 })}>Show zero counts</Button><Button variant="ghost" size="sm" icon={RotateCcw} onClick={reset}>Reset example</Button></div>
-    <p className="task-card-demo-caption">{hideMetadataLabels
+    <Text size="body" className="task-card-demo-caption">{hideMetadataLabels
       ? 'Hover over or focus an indicator to read its full label.'
-      : 'Each metadata icon stays with its label as the card narrows. Optional counts appear when supplied, including zero.'}</p>
-    <Dialog open={open} onOpenChange={setOpen} title={title} description="TASK-024 · Example task" footer={<Button icon={Check} onClick={() => setOpen(false)}>Done</Button>}><div className="task-card-demo-details"><div className="demo-row"><Badge tone="success" dot>Done</Badge><Badge tone="warning">High priority</Badge></div><p>Include the requested team in directory search results.</p><dl><div><dt>Checklist</dt><dd>4 of 4 items complete</dd></div>{extras && <><div><dt>Dependencies</dt><dd>{info.dependencyCompleted} of {info.dependencyTotal} complete</dd></div><div><dt>Related cards</dt><dd>{info.related}</dd></div><div><dt>Comments</dt><dd>{info.comments}</dd></div><div><dt>Attached files</dt><dd>{info.attachments}</dd></div></>}</dl></div></Dialog>
+      : 'Each metadata icon stays with its label as the card narrows. Optional counts appear when supplied, including zero.'}</Text>
+    <Dialog open={open} onOpenChange={setOpen} title={title} description="TASK-024 · Example task" footer={<Button icon={Check} onClick={() => setOpen(false)}>Done</Button>}><div className="task-card-demo-details"><div className="demo-row"><Badge tone="success" dot>Done</Badge><Badge tone="warning">High priority</Badge></div><Text size="body">Include the requested team in directory search results.</Text><dl><div><dt>Checklist</dt><dd>4 of 4 items complete</dd></div>{extras && <><div><dt>Dependencies</dt><dd>{info.dependencyCompleted} of {info.dependencyTotal} complete</dd></div><div><dt>Related cards</dt><dd>{info.related}</dd></div><div><dt>Comments</dt><dd>{info.comments}</dd></div><div><dt>Attached files</dt><dd>{info.attachments}</dd></div></>}</dl></div></Dialog>
   </div></Showcase>;
 }

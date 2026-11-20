@@ -18,6 +18,18 @@ const guides = [
       'Use WorkspaceLayout beneath Navbar to arrange Sidebar and WorkspaceContent. Choose Comfortable or Full on WorkspaceContent.',
     ],
   },
+  {
+    id: 'typography',
+    label: 'Typography',
+    description: 'Use Text for the shared type scale, semantic headings, and inline formatting.',
+    notes: [
+      'Use Text with size="display" or size="heading-1" through size="heading-3" for headings, and size="body" for paragraphs.',
+      'The Typography foundation lists all seven presets, including size="small" and size="label".',
+      'An explicit size overrides inherited typography and applies to its children. Nested Text can set another size.',
+      'Use bold, italic, and strikethrough for emphasis. Omit size for inline formatting that follows the surrounding text.',
+      'Use display="block" for a standalone text block and display="inline" within running text. Use GridItem or MasonryItem when the text needs to span columns.',
+    ],
+  },
   ...samplePatternDefinitions,
 ];
 

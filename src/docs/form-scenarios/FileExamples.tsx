@@ -4,11 +4,12 @@ import { FilePicker } from '../../system/FilePicker';
 import { MasonryItem } from '../../system/Masonry';
 import { FilePickerDemo } from '../FilePickerDemo';
 import { ExampleGallery, FormActions, FormScenario, ScenarioForm, formCode } from './shared';
+import { Text } from '../../system';
 
 function FileForm() {
   const [saved, setSaved] = useState<string[] | null>(null);
   return <FormScenario title="File names from FormData" description="Display selected file names from FormData in local state."
-    code={formCode("FilePicker, Button", `export function EvidenceFormExample() {
+    code={formCode("FilePicker, Button, Text", `export function EvidenceFormExample() {
   const [saved, setSaved] = useState<string[] | null>(null);
   return <form onReset={() => setSaved(null)} onSubmit={event => {
     event.preventDefault();
@@ -22,15 +23,15 @@ function FileForm() {
         <Button type="submit">Read file names</Button>
         <Button type="reset" variant="secondary">Reset evidence</Button>
       </div>
-      <p role="status" style={{ margin: 0 }}>{saved === null ? 'No file names read.'
-        : 'Selected file names: ' + (saved.join(', ') || 'none')}</p>
+      <Text size="body" role="status" style={{ margin: 0 }}>{saved === null ? 'No file names read.'
+        : 'Selected file names: ' + (saved.join(', ') || 'none')}</Text>
     </div>
   </form>;
 }`, 'useState')}>
     <ScenarioForm className="form-scenario-form" aria-label="File metadata form example" onReset={() => setSaved(null)} onSubmit={event => { event.preventDefault(); const files = new FormData(event.currentTarget).getAll('evidence'); setSaved(files.filter((entry): entry is File => entry instanceof File && !!entry.name).map(file => file.name)); }}>
       <FilePicker label="Review evidence" name="evidence" multiple accept=".md,.txt,.pdf" hint="Select Markdown, text, or PDF files." />
       <FormActions><Button type="submit">Read file names</Button><Button type="reset" variant="secondary">Reset evidence</Button></FormActions>
-      <p className="form-scenario-feedback" role="status">{saved === null ? 'No file names read.' : 'Selected file names: ' + (saved.join(', ') || 'none')}</p>
+      <Text size="body" className="form-scenario-feedback" role="status">{saved === null ? 'No file names read.' : 'Selected file names: ' + (saved.join(', ') || 'none')}</Text>
     </ScenarioForm>
   </FormScenario>;
 }

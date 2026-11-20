@@ -51,7 +51,7 @@ export const globalTokens: TokenDefinition[] = [
     name: '--cr-font-sans', type: 'font-family',
     defaultValue: "'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     description: 'Shared sans-serif family used where component CSS explicitly references it.', source: root, availability: 'library-css',
-    notes: ['This is a family token. Individual component font sizes, weights, and line heights are generally literal CSS values; the JS typography descriptors do not create CSS custom properties.'],
+    notes: ['Text size presets use this font family. The typography descriptors list each preset’s size, weight, and line height.'],
   },
   {
     name: '--cr-font-mono', type: 'font-family', defaultValue: "'SFMono-Regular', Consolas, 'Liberation Mono', monospace",
@@ -120,7 +120,7 @@ export const globalTokenNotes = [
   'The @chartreuse/ui/tokens exports are static JavaScript data. colors maps primitive names to value, CSS token, and role descriptors. tokens.colors contains their literal values.',
   'Semantic --cr-color-* values contain literal light-dark() branches. Equal light-mode values do not make them aliases of --cr-evergreen, --cr-paper, or another primitive.',
   'CSS spacing is expressed in rem. The numeric spacing and tokens.spacing px strings in JavaScript match a 16px root font; they do not change when the root font size changes.',
-  'typography and radii are JavaScript descriptors; consumption varies by component. Per-component tables list var() references, including those used by helper controls rendered by the component.',
+  'The typography descriptors list the Text presets. Per-component tables list var() references, including those used by helper controls rendered by the component.',
   'Local component declarations can shadow inherited globals, and variant/tone aliases are assigned on the component itself. Override the correct scope or use the documented prop; a root override of a locally assigned alias will not win automatically.',
   'Layout maximum/gutter variables are distributed with the library but currently consumed by the documentation container and its recipe. Grid separately responds to its own container width.',
 ];

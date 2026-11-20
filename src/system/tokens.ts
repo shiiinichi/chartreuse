@@ -21,13 +21,13 @@ export const spacing = [
 ] as const;
 
 export const typography = [
-  { name: 'Display', size: 56, weight: 500, lineHeight: 1.1, sample: 'Component documentation' },
-  { name: 'Heading 1', size: 36, weight: 550, lineHeight: 1.2, sample: 'Workspace configuration' },
-  { name: 'Heading 2', size: 24, weight: 550, lineHeight: 1.3, sample: 'Task status and assignments' },
-  { name: 'Heading 3', size: 18, weight: 600, lineHeight: 1.4, sample: 'Recent activity' },
-  { name: 'Body', size: 14, weight: 400, lineHeight: 1.65, sample: 'Use components and tokens to build application interfaces.' },
-  { name: 'Small', size: 12, weight: 450, lineHeight: 1.5, sample: 'Supporting text for fields and controls.' },
-  { name: 'Label', size: 10, weight: 600, lineHeight: 1.5, sample: 'COMPONENTS AND DESIGN TOKENS' },
+  { id: 'display', name: 'Display', size: 56, weight: 500, lineHeight: 1.1, sample: 'Workspace overview' },
+  { id: 'heading-1', name: 'Heading 1', size: 36, weight: 550, lineHeight: 1.2, sample: 'Workspace configuration' },
+  { id: 'heading-2', name: 'Heading 2', size: 24, weight: 550, lineHeight: 1.3, sample: 'Task status and assignments' },
+  { id: 'heading-3', name: 'Heading 3', size: 18, weight: 600, lineHeight: 1.4, sample: 'Recent activity' },
+  { id: 'body', name: 'Body', size: 14, weight: 400, lineHeight: 1.65, sample: 'Use components and tokens to build application interfaces.' },
+  { id: 'small', name: 'Small', size: 12, weight: 450, lineHeight: 1.5, sample: 'Supporting text for fields and controls.' },
+  { id: 'label', name: 'Label', size: 10, weight: 600, lineHeight: 1.5, sample: 'COMPONENTS AND DESIGN TOKENS' },
 ] as const;
 
 export const radii = { sm: 4, md: 7, lg: 10, xl: 14, full: 999 } as const;

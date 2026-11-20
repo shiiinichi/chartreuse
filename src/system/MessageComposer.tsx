@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, FormEvent, ReactNode } from 'react';
 import { AlertCircle, ArrowUp } from 'lucide-react';
 import { Button } from './components';
+import { Text } from './Text';
 import './message-composer.css';
 
 export interface MessageComposerProps extends Omit<ComponentPropsWithRef<'textarea'>, 'children' | 'value' | 'defaultValue' | 'onSubmit'> {
@@ -112,7 +113,7 @@ export function MessageComposer({
           if (!disabled && !sendingRef.current && event.currentTarget.value.trim()) event.currentTarget.form?.requestSubmit();
         }
       }} />
-    <div className="cr-message-composer-footer"><div className="cr-message-composer-hint" id={hasHint ? `${id}-hint` : undefined}>{pending ? 'Sending message…' : hint}</div><div className="cr-message-composer-actions"><div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <p className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></p>}</div><Button type="submit" icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} /></div></div>
+    <div className="cr-message-composer-footer"><div className="cr-message-composer-hint" id={hasHint ? `${id}-hint` : undefined}>{pending ? 'Sending message…' : hint}</div><div className="cr-message-composer-actions"><div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <Text size="body" className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></Text>}</div><Button type="submit" icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} /></div></div>
     <span className="cr-sr-only" role="status" aria-atomic="true">{announcement}</span>
   </form>;
 }

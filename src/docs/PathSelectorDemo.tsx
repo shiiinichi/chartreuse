@@ -3,6 +3,7 @@ import { Check, RotateCcw } from 'lucide-react';
 import { Badge, Button, Select, Switch } from '../system/components';
 import { PathSelector } from '../system/PathSelector';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './path-selector-demo.css';
 
 export function PathSelectorDemo() {
@@ -25,9 +26,9 @@ export function PathSelectorDemo() {
       } : undefined} />
       <div className="path-selector-demo-actions"><Button type="reset" variant="secondary" size="sm" icon={RotateCcw}>Reset path</Button><Button type="submit" size="sm" icon={Check}>Use path</Button></div>
     </form>
-    <div className="path-selector-demo-submitted"><strong>Submitted path</strong>{submitted === null ? <p>A path submitted from the example form appears here.</p> : <code>{submitted}</code>}</div></Showcase>
+    <div className="path-selector-demo-submitted"><Text bold>Submitted path</Text>{submitted === null ? <Text size="body">A path submitted from the example form appears here.</Text> : <code>{submitted}</code>}</div></Showcase>
     <Showcase title="Manual entry" description="A path field with no browse adapter." code={`import { PathSelector } from '@chartreuse/ui';\n\n<PathSelector label="Manual path" name="manualPath"\n  defaultValue={${JSON.stringify('C:\\Projects\\sample-project')}}\n  hint="Type or paste a path; no browse adapter is connected." />`}><PathSelector label="Manual path" name="manualPath" defaultValue={'C:\\Projects\\sample-project'} hint="Type or paste a path; no browse adapter is connected." /></Showcase>
     </ExampleGallery>
-    <p className="path-selector-demo-note">PathSelector only stores a string. It does not read files, normalize paths, or check whether a location exists. Supply onBrowse from your desktop, native, or backend picker when your application has one.</p>
+    <Text size="body" className="path-selector-demo-note">PathSelector only stores a string. It does not read files, normalize paths, or check whether a location exists. Supply onBrowse from your desktop, native, or backend picker when your application has one.</Text>
   </div>;
 }

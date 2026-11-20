@@ -4,6 +4,7 @@ import { Button, TextArea, TextField } from '../../system/components';
 import { Flex } from '../../system/Flex';
 import { Grid, GridItem } from '../../system/Grid';
 import { ExampleGallery, FormActions, FormScenario, ScenarioForm, formCode } from './shared';
+import { Text } from '../../system';
 import './text-field-examples.css';
 
 function TextFieldSizes() {
@@ -32,15 +33,15 @@ function TextFieldSizes() {
 function ControlledTextField() {
   const [name, setName] = useState('');
   return <FormScenario title="Controlled input" description="Store the input value in React state and update it on change."
-    code={formCode("TextField", `export function TaskNameExample() {
+    code={formCode("TextField, Text", `export function TaskNameExample() {
   const [name, setName] = useState('');
   return <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
     <TextField label="Task name" name="taskName" value={name} onChange={event => setName(event.target.value)} hint="Name the change or investigation." placeholder="Review the API" />
-    <p style={{ margin: 0 }}>Draft: {name || 'No task name entered.'}</p>
+    <Text size="body" style={{ margin: 0 }}>Draft: {name || 'No task name entered.'}</Text>
   </div>;
 }`, 'useState')}>
     <TextField label="Task name" name="taskName" value={name} onChange={event => setName(event.target.value)} hint="Name the change or investigation." placeholder="Review the API" />
-    <p className="form-scenario-feedback">Draft: {name || 'No task name entered.'}</p>
+    <Text size="body" className="form-scenario-feedback">Draft: {name || 'No task name entered.'}</Text>
   </FormScenario>;
 }
 
@@ -65,7 +66,7 @@ function BranchValidation() {
 function PrefixForm() {
   const [saved, setSaved] = useState('');
   return <FormScenario title="Native validation and form reset" description="Submit a named field with required, length, and pattern constraints. Reset restores the default value."
-    code={formCode("TextField, Button", `export function PrefixFormExample() {
+    code={formCode("TextField, Button, Text", `export function PrefixFormExample() {
   const [saved, setSaved] = useState('');
   return <form onReset={() => setSaved('')} onSubmit={event => {
     event.preventDefault();
@@ -77,14 +78,14 @@ function PrefixForm() {
         <Button type="submit">Save prefix</Button>
         <Button type="reset" variant="secondary">Reset prefix</Button>
       </div>
-      <p role="status" style={{ margin: 0 }}>{saved ? 'Saved prefix: ' + saved : 'No prefix saved yet.'}</p>
+      <Text size="body" role="status" style={{ margin: 0 }}>{saved ? 'Saved prefix: ' + saved : 'No prefix saved yet.'}</Text>
     </div>
   </form>;
 }`, 'useState')}>
     <ScenarioForm className="form-scenario-form" aria-label="Project prefix example" onReset={() => setSaved('')} onSubmit={event => { event.preventDefault(); setSaved(String(new FormData(event.currentTarget).get('prefix') || '')); }}>
       <TextField label="Project prefix" name="prefix" defaultValue="TASK" required minLength={2} maxLength={8} pattern="[A-Z](?:[A-Z0-9]|-)*" title="Start with an uppercase letter; use uppercase letters, numbers, or hyphens." hint="2–8 characters. Start with an uppercase letter." spellCheck={false} autoCapitalize="characters" />
       <FormActions><Button type="submit">Save prefix</Button><Button type="reset" variant="secondary">Reset prefix</Button></FormActions>
-      <p className="form-scenario-feedback" role="status">{saved ? 'Saved prefix: ' + saved : 'No prefix saved yet.'}</p>
+      <Text size="body" className="form-scenario-feedback" role="status">{saved ? 'Saved prefix: ' + saved : 'No prefix saved yet.'}</Text>
     </ScenarioForm>
   </FormScenario>;
 }
@@ -179,7 +180,7 @@ function SubmittedSearch() {
   const [query, setQuery] = useState('');
   const [matches, setMatches] = useState<string[] | null>(null);
   return <FormScenario title="Submit a search form" description="Submit with Enter or Search tasks. Filter a local task array after submission."
-    code={formCode('Button, Flex, Grid, GridItem, TextField', `const tasks = ${JSON.stringify(localTasks, null, 2)};
+    code={formCode('Button, Flex, Grid, GridItem, TextField, Text', `const tasks = ${JSON.stringify(localTasks, null, 2)};
 
 export function SubmittedSearchExample() {
   const [query, setQuery] = useState('');
@@ -201,10 +202,10 @@ export function SubmittedSearchExample() {
           <Button type="submit" icon={Search}>Search tasks</Button>
           <Button type="reset" variant="secondary">Reset task search</Button>
         </Flex>
-        <p className="input-example-status" role="status">
+        <Text size="body" className="input-example-status" role="status">
           {matches === null ? 'Submit a query to display matching tasks.'
             : matches.length + ' task' + (matches.length === 1 ? '' : 's') + ' matched the last search.'}
-        </p>
+        </Text>
         {!!matches?.length && <ul className="input-example-results">
           {matches.map(task => <li key={task}>{task}</li>)}
         </ul>}
@@ -220,7 +221,7 @@ ${searchExampleCss}
       <Flex direction="column" gap={4}>
         <Grid columns={1} gap={4}><GridItem span={1}><TextField label="Search local tasks" name="searchQuery" type="search" icon={Search} value={query} onChange={event => setQuery(event.currentTarget.value)} hint="Search for review or tests. An empty query returns every task." /></GridItem></Grid>
         <Flex wrap gap={3}><Button type="submit" icon={Search}>Search tasks</Button><Button type="reset" variant="secondary">Reset task search</Button></Flex>
-        <p className="input-example-status" role="status">{matches === null ? 'Submit a query to display matching tasks.' : `${matches.length} task${matches.length === 1 ? '' : 's'} matched the last search.`}</p>
+        <Text size="body" className="input-example-status" role="status">{matches === null ? 'Submit a query to display matching tasks.' : `${matches.length} task${matches.length === 1 ? '' : 's'} matched the last search.`}</Text>
         {!!matches?.length && <ul className="input-example-results">{matches.map(task => <li key={task}>{task}</li>)}</ul>}
       </Flex>
     </ScenarioForm></search>
@@ -288,15 +289,15 @@ export function TextFieldScenarios() {
 function ControlledNotes() {
   const [notes, setNotes] = useState('');
   return <FormScenario title="Controlled textarea" description="Store multiline text in React state and display its String.length count."
-    code={formCode("TextArea", `export function NotesExample() {
+    code={formCode("TextArea, Text", `export function NotesExample() {
   const [notes, setNotes] = useState('');
   return <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
     <TextArea label="Workspace notes" name="workspaceNotes" rows={4} value={notes} onChange={event => setNotes(event.target.value)} placeholder="Describe the change and its constraints…" hint="Record the change, constraints, and verification results." />
-    <p style={{ margin: 0 }}>{notes.length} UTF-16 code units in this draft.</p>
+    <Text size="body" style={{ margin: 0 }}>{notes.length} UTF-16 code units in this draft.</Text>
   </div>;
 }`, 'useState')}>
     <TextArea label="Workspace notes" name="workspaceNotes" rows={4} value={notes} onChange={event => setNotes(event.target.value)} placeholder="Describe the change and its constraints…" hint="Record the change, constraints, and verification results." />
-    <p className="form-scenario-feedback">{notes.length} UTF-16 code units in this draft.</p>
+    <Text size="body" className="form-scenario-feedback">{notes.length} UTF-16 code units in this draft.</Text>
   </FormScenario>;
 }
 
@@ -321,7 +322,7 @@ function SummaryValidation() {
 function DecisionForm() {
   const [saved, setSaved] = useState('');
   return <FormScenario title="Textarea in a native form" description="Read the named value through FormData and restore defaultValue on form reset."
-    code={formCode("TextArea, Button", `export function DecisionExample() {
+    code={formCode("TextArea, Button, Text", `export function DecisionExample() {
   const [saved, setSaved] = useState('');
   return <form onReset={() => setSaved('')} onSubmit={event => {
     event.preventDefault();
@@ -333,14 +334,14 @@ function DecisionForm() {
         <Button type="submit">Save decision</Button>
         <Button type="reset" variant="secondary">Reset decision</Button>
       </div>
-      <p role="status" style={{ margin: 0 }}>{saved ? 'Saved decision: ' + saved : 'No decision saved yet.'}</p>
+      <Text size="body" role="status" style={{ margin: 0 }}>{saved ? 'Saved decision: ' + saved : 'No decision saved yet.'}</Text>
     </div>
   </form>;
 }`, 'useState')}>
     <ScenarioForm className="form-scenario-form" aria-label="Decision note example" onReset={() => setSaved('')} onSubmit={event => { event.preventDefault(); setSaved(String(new FormData(event.currentTarget).get('decision') || '')); }}>
       <TextArea label="Decision note" name="decision" rows={3} required defaultValue="Keep the review notes with the task." />
       <FormActions><Button type="submit">Save decision</Button><Button type="reset" variant="secondary">Reset decision</Button></FormActions>
-      <p className="form-scenario-feedback" role="status">{saved ? 'Saved decision: ' + saved : 'No decision saved yet.'}</p>
+      <Text size="body" className="form-scenario-feedback" role="status">{saved ? 'Saved decision: ' + saved : 'No decision saved yet.'}</Text>
     </ScenarioForm>
   </FormScenario>;
 }

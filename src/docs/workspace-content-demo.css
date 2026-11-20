@@ -10,7 +10,7 @@
   .workspace-content-demo-links { padding: var(--cr-space-2); }
 
   .workspace-content-demo-body { --cr-layout-content-max: 34rem; padding-block: var(--cr-space-5); }
-  .workspace-content-demo-body h4 { margin-block-end: var(--cr-space-4); font-size: 1.125rem; font-weight: 550; }
+  .workspace-content-demo-body h3 { margin-block-end: var(--cr-space-4); font-size: 1.125rem; font-weight: 550; }
   .workspace-content-demo-stat { padding: var(--cr-space-4); }
 
   @container workspace-content-demo (inline-size < calc(168px + 24rem)) {

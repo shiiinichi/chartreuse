@@ -6,6 +6,7 @@ import { Flex } from '../system/Flex';
 import type { FlexAlignment, FlexDirection, FlexJustification } from '../system/Flex';
 import { Grid, GridItem } from '../system/Grid';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './flex-demo.css';
 
 const cellStyles = `.flex-demo-frame { box-sizing: border-box; padding: 16px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); min-width: 0; max-width: 100%; }
@@ -103,7 +104,7 @@ function WrappingExample() {
 
 function SpacingExample() {
   const [gap, setGap] = useState<3 | 6>(3);
-  return <Showcase title="Set spacing in a vertical stack" description="gap applies a spacing token between direct children in a column." code={source('Flex, Grid, GridItem, Badge, Button, Select', `export function ContentStack() {
+  return <Showcase title="Set spacing in a vertical stack" description="gap applies a spacing token between direct children in a column." code={source('Flex, Grid, GridItem, Badge, Button, Select, Text', `export function ContentStack() {
   const [gap, setGap] = useState<3 | 6>(${gap});
   return <div className="flex-demo-stack">
     <Grid columns={1} gap={4}><GridItem span={1}>
@@ -116,8 +117,8 @@ function SpacingExample() {
     <div className="flex-demo-frame">
       <Flex direction="column" align="start" gap={gap}>
         <Badge tone="info">Ready for review</Badge>
-        <h4 className="flex-demo-title">Review brief</h4>
-        <p className="flex-demo-copy">The status, brief, and action use the selected spacing token.</p>
+        <Text size="heading-3" className="flex-demo-title">Review brief</Text>
+        <Text size="body" className="flex-demo-copy">The status, brief, and action use the selected spacing token.</Text>
         <Button size="sm" variant="secondary">Read the brief</Button>
       </Flex>
     </div>
@@ -126,13 +127,13 @@ function SpacingExample() {
 .flex-demo-stack { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
 .flex-demo-title { margin: 0; font-size: 16px; line-height: 1.5; font-weight: 550; }
 .flex-demo-copy { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }`)}>
-    <div className="flex-demo-stack"><Grid columns={1} gap={4}><GridItem span={1}><Select label="Stack spacing" value={gap} onChange={event => setGap(Number(event.currentTarget.value) as 3 | 6)}><option value={3}>space-3 · 12px</option><option value={6}>space-6 · 24px</option></Select></GridItem></Grid><div className="flex-demo-frame"><Flex direction="column" align="start" gap={gap}><Badge tone="info">Ready for review</Badge><h4 className="flex-demo-title">Review brief</h4><p className="flex-demo-copy">The status, brief, and action use the selected spacing token.</p><Button size="sm" variant="secondary">Read the brief</Button></Flex></div></div>
+    <div className="flex-demo-stack"><Grid columns={1} gap={4}><GridItem span={1}><Select label="Stack spacing" value={gap} onChange={event => setGap(Number(event.currentTarget.value) as 3 | 6)}><option value={3}>space-3 · 12px</option><option value={6}>space-6 · 24px</option></Select></GridItem></Grid><div className="flex-demo-frame"><Flex direction="column" align="start" gap={gap}><Badge tone="info">Ready for review</Badge><Text size="heading-3" className="flex-demo-title">Review brief</Text><Text size="body" className="flex-demo-copy">The status, brief, and action use the selected spacing token.</Text><Button size="sm" variant="secondary">Read the brief</Button></Flex></div></div>
   </Showcase>;
 }
 
 function ResponsiveExample() {
   const [width, setWidth] = useState('full');
-  return <Showcase span="full" title="Respond to container width" description="Items stack below 480px of container width and form a row at wider widths. Each instance responds to its own container." code={source('Flex, Grid, GridItem, Button, Select', `export function ResponsiveRow() {
+  return <Showcase span="full" title="Respond to container width" description="Items stack below 480px of container width and form a row at wider widths. Each instance responds to its own container." code={source('Flex, Grid, GridItem, Button, Select, Text', `export function ResponsiveRow() {
   const [width, setWidth] = useState(${JSON.stringify(width)});
   return <div className="flex-demo-stack">
     <Grid columns={1} gap={4}><GridItem span={1}>
@@ -146,7 +147,7 @@ function ResponsiveExample() {
     <div className="flex-demo-frame" style={{ width: width === 'full' ? '100%' : Number(width), maxWidth: '100%' }}>
       <Flex direction={{ base: 'column', sm: 'row' }}
         align={{ base: 'stretch', sm: 'center' }} justify="space-between" gap={4}>
-        <p className="flex-demo-copy flex-demo-grow">Component review ready.</p>
+        <Text size="body" className="flex-demo-copy flex-demo-grow">Component review ready.</Text>
         <Button size="sm">Open review</Button>
         <Button size="sm" variant="secondary">Keep editing</Button>
       </Flex>
@@ -156,7 +157,7 @@ function ResponsiveExample() {
 .flex-demo-stack { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
 .flex-demo-copy { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
 .flex-demo-grow { flex: 1; }`)}>
-    <div className="flex-demo-stack"><Grid columns={1} gap={4}><GridItem span={1}><Select label="Responsive preview width" value={width} onChange={event => setWidth(event.currentTarget.value)}><option value="full">Available space</option><option value="280">Narrow · 280px</option><option value="640">Wide · 640px</option></Select></GridItem></Grid><div className="flex-demo-frame" style={{ width: width === 'full' ? '100%' : Number(width), maxWidth: '100%' }}><Flex direction={{ base: 'column', sm: 'row' }} align={{ base: 'stretch', sm: 'center' }} justify="space-between" gap={4}><p className="flex-demo-copy flex-demo-grow">Component review ready.</p><Button size="sm">Open review</Button><Button size="sm" variant="secondary">Keep editing</Button></Flex></div></div>
+    <div className="flex-demo-stack"><Grid columns={1} gap={4}><GridItem span={1}><Select label="Responsive preview width" value={width} onChange={event => setWidth(event.currentTarget.value)}><option value="full">Available space</option><option value="280">Narrow · 280px</option><option value="640">Wide · 640px</option></Select></GridItem></Grid><div className="flex-demo-frame" style={{ width: width === 'full' ? '100%' : Number(width), maxWidth: '100%' }}><Flex direction={{ base: 'column', sm: 'row' }} align={{ base: 'stretch', sm: 'center' }} justify="space-between" gap={4}><Text size="body" className="flex-demo-copy flex-demo-grow">Component review ready.</Text><Button size="sm">Open review</Button><Button size="sm" variant="secondary">Keep editing</Button></Flex></div></div>
   </Showcase>;
 }
 

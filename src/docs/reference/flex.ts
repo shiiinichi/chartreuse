@@ -3,7 +3,7 @@ import type { ComponentReference } from './types';
 export const flexReferences: ComponentReference[] = [{
   name: 'Flex', slug: 'flex',
   summary: 'A container-responsive flex layout with row or column direction, spacing-token gaps, alignment, and wrapping.',
-  importCode: "import { Flex, Button } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  importCode: "import { Flex, Button, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `<Flex gap={3} align="center" wrap>
   <Button>Save changes</Button>
   <Button variant="secondary">Cancel</Button>
@@ -12,7 +12,7 @@ export const flexReferences: ComponentReference[] = [{
 // Stack in a narrow container and share a row when space permits.
 <Flex direction={{ base: 'column', sm: 'row' }}
   align={{ base: 'stretch', sm: 'center' }} justify="space-between" gap={4}>
-  <p>The review is ready.</p>
+  <Text size="body">The review is ready.</Text>
   <Button>Open review</Button>
 </Flex>`,
   nativeElement: 'div query container containing one div flex container',

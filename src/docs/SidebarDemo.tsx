@@ -1,4 +1,4 @@
-import { Flex } from '../system';
+import { Flex, Text } from '../system';
 import { RunHistoryExample } from './sidebar-examples/RunHistoryExample';
 import { TaskNavigationExample } from './sidebar-examples/TaskNavigationExample';
 import runHistorySource from './sidebar-examples/RunHistoryExample.tsx?raw';
@@ -15,11 +15,11 @@ function exampleCode(source: string) {
 export function SidebarDemo() {
   return (
     <Flex direction="column" gap={8}>
-      <p className="body-copy">
+      <Text size="body" className="body-copy">
         The examples place a <a href="#components/navbar">Navbar</a> above a{' '}
         <a href="#components/workspace-layout">WorkspaceLayout</a> that holds the sidebar and{' '}
         <a href="#components/workspace-content">WorkspaceContent</a>. The sidebar header and footer remain visible while the body scrolls.
-      </p>
+      </Text>
       <ExampleGallery maxColumns={1}>
         <Showcase title="Floating run history" description="Filter local run records and select a run to inspect its metadata."
           code={exampleCode(runHistorySource)}>

@@ -22,6 +22,7 @@
   .cr-agent-activity-row { padding: var(--cr-space-2); }
   .cr-agent-activity-kind { display: inline-flex; flex: none; color: var(--cr-color-muted); }
   .cr-agent-activity-title { min-inline-size: 0; flex: 1; overflow-wrap: anywhere; font-weight: 450; }
+  .cr-agent-activity-title:where([data-single-line]) { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .cr-agent-activity-row-meta { display: flex; flex-wrap: wrap; justify-content: end; align-items: center; gap: var(--cr-space-3); margin-inline-start: auto; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.5; }
   .cr-agent-activity-duration { white-space: nowrap; font-variant-numeric: tabular-nums; }
   .cr-agent-activity-state { display: inline-flex; align-items: center; gap: var(--cr-space-1); white-space: nowrap; }
@@ -29,6 +30,8 @@
   .cr-agent-activity-state[data-status='queued'], .cr-agent-activity-state[data-status='info'] { color: var(--cr-color-muted); }
   .cr-agent-activity-detail { margin-block: var(--cr-space-2) var(--cr-space-3); margin-inline: 32px var(--cr-space-2); padding: var(--cr-space-3); min-inline-size: 0; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-subtle); }
   .cr-agent-activity-detail :where(p, dl, dt, dd, pre) { margin: 0; }
+  :where(.cr-agent-activity-detail > p, .cr-agent-activity-empty) { font-size: inherit; line-height: inherit; }
+  .cr-agent-activity-detail-title { margin-block-end: var(--cr-space-2); overflow-wrap: anywhere; font-weight: 450; }
   .cr-agent-activity-detail dl { display: grid; gap: var(--cr-space-2); }
   .cr-agent-activity-description { color: var(--cr-color-muted); overflow-wrap: anywhere; }
   .cr-agent-activity-description + dl:not(:empty) { margin-block-start: var(--cr-space-3); }

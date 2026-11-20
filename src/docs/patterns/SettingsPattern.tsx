@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Bell, GitBranch, Save, SlidersHorizontal, Undo2 } from 'lucide-react';
-import { Alert, Badge, Button, Fieldset, Flex, Form, FormLayout, Grid, GridItem, PagePanel, Select, Switch, Tabs, TextArea, TextField, WorkspaceContent } from '../../system';
+import { Alert, Badge, Button, Fieldset, Flex, Form, FormLayout, Grid, GridItem, PagePanel, Select, Switch, Tabs, TextArea, TextField, WorkspaceContent, Text } from '../../system';
 import './settings-pattern.css';
 
 type SettingsTab = 'general' | 'execution' | 'notifications';
@@ -144,9 +144,9 @@ export function SettingsPattern() {
       description="Edit project metadata, run defaults, and notification preferences."
       headerActions={<Badge tone={dirty ? 'warning' : 'neutral'}>{dirty ? 'Unsaved draft' : 'Saved'}</Badge>}
       footer={<Flex className="settings-pattern-footer" align="center" justify="space-between" wrap gap={3}>
-        <p className="settings-pattern-status" role="status" aria-atomic="true">
+        <Text size="body" className="settings-pattern-status" role="status" aria-atomic="true">
           {announcement || (dirty ? 'Unsaved changes across settings sections.' : 'Saved settings match the current draft.')}
-        </p>
+        </Text>
         <Flex className="settings-pattern-actions" wrap gap={2}>
           <Button type="reset" form={formId} variant="secondary" icon={Undo2} disabled={!dirty}>Discard changes</Button>
           <Button type="submit" form={formId} icon={Save} disabled={!dirty}>Save changes</Button>
@@ -160,7 +160,7 @@ export function SettingsPattern() {
         <Tabs className="settings-pattern-tabs" label="Workspace settings sections" value={activeTab}
           onValueChange={value => setActiveTab(value as SettingsTab)} items={[
             { value: 'general', label: 'General', icon: SlidersHorizontal, content: <div className="settings-pattern-section">
-              <div className="settings-pattern-section-heading"><h3>General</h3><p>Identify this workspace and set its initial view.</p></div>
+              <div className="settings-pattern-section-heading"><Text size="heading-3">General</Text><Text size="body">Identify this workspace and set its initial view.</Text></div>
               <Fieldset legend="Workspace identity" description="The slug is used in workspace URLs and configuration references.">
                 <FormLayout layout="vertical"><Grid columns={{ base: 1, sm: 2 }} gap={4}>
                   <GridItem span={1}><TextField label="Workspace name" name="workspaceName" required maxLength={72}
@@ -197,7 +197,7 @@ export function SettingsPattern() {
               <Alert tone="info" title="Local settings example">Save creates an in-memory snapshot. Reloading the page restores the initial values.</Alert>
             </div> },
             { value: 'execution', label: 'Execution', icon: GitBranch, content: <div className="settings-pattern-section">
-              <div className="settings-pattern-section-heading"><h3>Execution</h3><p>Define branch conventions and defaults for new task runs.</p></div>
+              <div className="settings-pattern-section-heading"><Text size="heading-3">Execution</Text><Text size="body">Define branch conventions and defaults for new task runs.</Text></div>
               <Fieldset legend="Branches and worktrees" description="Keep generated branches and checkout directories consistent across tasks.">
                 <FormLayout layout="vertical"><Grid columns={{ base: 1, sm: 2 }} gap={4}>
                   <GridItem span={1}><TextField label="Branch prefix" name="branchPrefix" required
@@ -232,7 +232,7 @@ export function SettingsPattern() {
               </Fieldset>
             </div> },
             { value: 'notifications', label: 'Notifications', icon: Bell, content: <div className="settings-pattern-section">
-              <div className="settings-pattern-section-heading"><h3>Notifications</h3><p>Choose delivery settings and which task events should be included.</p></div>
+              <div className="settings-pattern-section-heading"><Text size="heading-3">Notifications</Text><Text size="body">Choose delivery settings and which task events should be included.</Text></div>
               <Fieldset legend="Email delivery" description="Use a team mailbox for workspace notifications.">
                 <FormLayout layout="vertical"><Grid columns={1} gap={4}>
                   <GridItem span={1}><Switch label="Enable email notifications" name="emailNotifications" checked={draft.emailNotifications}

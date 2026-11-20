@@ -98,6 +98,10 @@ const dialogRuntime: RuntimeVariableDefinition[] = [
 /** Source-audited token usage for the 24 components defined in components.tsx. */
 export const coreTokenDocs: ComponentTokenDoc[] = [
   {
+    component: 'Text', componentTokens: [], globalTokens: globals('font-sans'),
+    notes: ['A size preset uses the shared sans-serif font family and the size, weight, and line height shown in the Typography foundation. With size omitted, native and inherited typography apply.'],
+  },
+  {
     component: 'Button', componentTokens: buttonAliases(), globalTokens: buttonGlobals,
     notes: ['Consumption: styles.css .cr-button, its data-variant selectors, shared base typography, and :focus-visible rules.', 'Control sizes, gaps, padding, font size/weight/line-height, disabled opacity, and the 1s loading spin are literal rules or props, not additional CSS tokens. --cr-duration-fast controls transitions only.'],
   },
@@ -146,12 +150,12 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['Consumption: styles.css .cr-progress and native progress pseudo-elements use radius/track/fill tokens. Optional .cr-progress-group text uses the listed typography/colors and --cr-space-2 gap.', 'The bare bar has no label-text layout by default. Its 4px thickness and optional text sizes are literal CSS; value/max are native progress attributes, not CSS implementation variables.'],
   },
   {
-    component: 'Tabs', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'color-muted', 'color-primary', 'color-subtle', 'radius-md', 'color-surface', 'shadow-sm'),
-    notes: ['Consumption: styles.css shared tab-button typography/focus, .cr-tab-list, counts, active underline, and the optional pill-variant selectors.', 'The pill variant adds radius, surface, and shadow tokens. Tab buttons share Button minimum heights and font sizes. Gaps, padding, underline thickness, and panel spacing are set in CSS.'],
+    component: 'Tabs', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'color-muted', 'color-primary', 'color-subtle', 'radius-md', 'color-surface', 'shadow-sm', 'space-1', 'space-3'),
+    notes: ['The highlight variant uses --cr-color-subtle for the selected tab, --cr-color-primary for its label and underline, and --cr-radius-md for its top corners. Its gap and button padding use --cr-space-1 and --cr-space-3.', 'The pill variant adds radius, surface, and shadow tokens. Tab buttons share Button minimum heights and font sizes.'],
   },
   {
-    component: 'Card', componentTokens: [], globalTokens: globals('color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-text'),
-    notes: ['Consumption: styles.css .cr-card. The card itself defines no local custom properties.', 'Card has no built-in padding or font-family declaration. Its children and surrounding application own typography and content layout; arbitrary children are not counted as owned token consumers.'],
+    component: 'Card', componentTokens: [], globalTokens: globals('color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-text', 'space-4'),
+    notes: ['Header, footer, and divided sections use --cr-space-4 for padding. An undivided body uses the same padding when header or footer is supplied.', 'Dividers use --cr-color-border. Card content inherits typography from its surroundings.'],
   },
   {
     component: 'Alert', componentTokens: toneAliases('info'),
@@ -196,7 +200,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['Consumption: styles.css .cr-agent-card/header/icon/task/facts, shared button typography/focus, and its owned status Badge. Status supports info/success/warning/neutral, while hover/selection directly uses --cr-color-success-bg.', 'Badge tone aliases belong to the nested Badge. The card has no local CSS variables.', 'Card padding, icon surface size/7px radius, type sizes, and runtime data spacing are literal rules; elapsed/tokens are display props.'],
   },
   {
-    component: 'EmptyState', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-success-bg', 'color-muted'),
-    notes: ['Consumption: styles.css .cr-empty-state, its icon surface, and description. The SVG inherits currentColor.', 'Padding, gaps, icon-surface dimensions/16px radius, heading size, and description width are literal CSS. The optional action is caller-supplied content, so its tokens are not inferred as EmptyState-owned dependencies.'],
+    component: 'EmptyState', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-success-bg', 'color-muted', 'color-border', 'radius-lg', 'space-3', 'space-5', 'space-6'),
+    notes: ['The default variant uses --cr-color-success-bg for the icon surface. The description and the dashed variant’s icon use --cr-color-muted.', 'The dashed panel uses --cr-color-border and --cr-radius-lg for its outline, --cr-space-3 for the content gap, and --cr-space-5 and --cr-space-6 for padding.'],
   },
 ];

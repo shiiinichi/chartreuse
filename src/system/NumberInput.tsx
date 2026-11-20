@@ -2,6 +2,7 @@ import { useEffect, useId, useImperativeHandle, useRef, useState } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import type { ControlSize } from './control-size';
+import { Text } from './Text';
 import './number-input.css';
 
 export interface NumberInputProps extends Omit<ComponentPropsWithRef<'input'>, 'type' | 'size' | 'children' | 'value' | 'defaultValue' | 'onChange'> {
@@ -92,7 +93,7 @@ export function NumberInput({ label, size = 'md', value, defaultValue = null, on
         <button type="button" className="cr-number-input-step" aria-label={`Decrease ${label}`} aria-controls={id} onPointerDown={event => { if (event.button === 0) { event.preventDefault(); input.current?.focus({ preventScroll: true }); } }} onClick={() => changeStep(-1)}><ChevronDown size={13} aria-hidden="true" /></button>
       </div>}
     </div>
-    {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
-    {error && <small className="cr-field-error" id={`${id}-error`} role="alert"><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></small>}
+    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    {error && <Text size="small" className="cr-field-error" id={`${id}-error`} role="alert"><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></Text>}
   </div>;
 }

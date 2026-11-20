@@ -10,6 +10,7 @@
   .cr-conversation-message:not([data-role='user']) > .cr-conversation-message-header { padding-inline-end: calc(var(--cr-space-4) + 1px); }
   .cr-conversation-message-header > strong { font-weight: 550; overflow-wrap: anywhere; }
   .cr-conversation-message-header > :where(time, .cr-conversation-time) { margin-inline-start: auto; color: var(--cr-color-muted); font-size: .6875rem; font-variant-numeric: tabular-nums; text-align: end; overflow-wrap: anywhere; }
+  :where(.cr-conversation-plain, .cr-conversation-empty, .cr-conversation-pending) { font: inherit; }
   .cr-conversation-plain { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
   .cr-conversation-message[data-role='user'] {
     box-sizing: border-box;

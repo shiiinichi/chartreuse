@@ -144,12 +144,12 @@
   .type-foundation-sample > div { font-size: 11px; font-weight: 500; letter-spacing: -.2px; }
   .type-foundation-sample > div > span { font-size: 8px; font-weight: 400; letter-spacing: 0; color: var(--cr-color-muted); }
   .spacing-foundation-sample { display: flex; position: relative; justify-content: center; align-items: flex-end; gap: 11px; min-block-size: 105px; padding: 18px 22px 31px; background-image: linear-gradient(90deg, transparent calc(100% - 1px), light-dark(#dce2d124, #65775a10) 0), linear-gradient(0deg, transparent calc(100% - 1px), light-dark(#dce2d124, #65775a10) 0); background-size: 8px 8px; border-radius: 9px 9px 0 0; }
-  .spacing-foundation-sample > span { inline-size: 23px; block-size: 16px; border: 1px solid light-dark(#afc19d, #748a63); border-radius: 2px; background: light-dark(#e9efde, #41563b); }
+  .spacing-foundation-sample > span:empty { inline-size: 23px; block-size: 16px; border: 1px solid light-dark(#afc19d, #748a63); border-radius: 2px; background: light-dark(#e9efde, #41563b); }
   .spacing-foundation-sample > span:nth-child(2) { block-size: 24px; }
   .spacing-foundation-sample > span:nth-child(3) { block-size: 32px; }
   .spacing-foundation-sample > span:nth-child(4) { block-size: 40px; }
   .spacing-foundation-sample > span:nth-child(5) { block-size: 48px; background: light-dark(#d7e5c5, #6c8559); }
-  .spacing-foundation-sample > i { position: absolute; inset-block-end: 9px; font: normal 7px/1 var(--cr-font-mono); color: var(--cr-color-muted); letter-spacing: .2em; }
+  .spacing-foundation-label { position: absolute; inset-block-end: 9px; font: 7px/1 var(--cr-font-mono); color: var(--cr-color-muted); letter-spacing: .2em; }
   .overview-showcases { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
   .showcase { min-inline-size: 0; background: var(--cr-color-surface); border: 1px solid var(--cr-color-border); border-radius: 9px; display: flex; flex-direction: column; }
   .showcase-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 15px var(--cr-space-6); border-block-end: 1px solid var(--cr-color-border); }
@@ -254,7 +254,6 @@
   .type-scale-row > div { display: flex; flex-direction: column; gap: 6px; }
   .type-scale-row strong { font-size: 11px; font-weight: 550; }
   .type-scale-row code { font-size: 9px; color: var(--cr-color-muted); }
-  .type-scale-row > p { font-size: var(--type-size); font-weight: var(--type-weight); line-height: var(--type-leading); letter-spacing: -.03em; overflow-wrap: anywhere; }
   .spacing-intro { display: flex; align-items: center; gap: 48px; padding: 30px; border: 1px solid var(--cr-color-border); border-radius: 10px; background: var(--cr-color-surface); margin-block-end: 30px; }
   .spacing-grid-art { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 24px; inline-size: 180px; flex-shrink: 0; background: var(--cr-color-subtle); border-radius: 7px; }
   .spacing-grid-art > div { block-size: 48px; border-radius: 4px; border: 1px solid #a2bc89; background: light-dark(#d9e8c8, #627852); }
@@ -387,8 +386,8 @@
   .modal-split-showcase .modal-launch > span { max-inline-size: none; }
   .split-card-details { font-size: 12px; }
   .split-card-details > section { margin-block-start: 24px; }
-  .split-card-details h3 { font-size: 24px; line-height: 1.4; font-weight: 500; letter-spacing: -.8px; margin-block-start: 12px; }
-  .split-card-details h4 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; line-height: 1.6; font-weight: 550; }
+  .split-card-title { font-size: 24px; line-height: 1.4; font-weight: 500; letter-spacing: -.8px; margin-block-start: 12px; }
+  .split-card-section-title { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; line-height: 1.6; font-weight: 550; }
   .split-card-details section > p { color: var(--cr-color-muted); font-size: 12px; line-height: 1.9; margin-block-start: 12px; }
   .split-card-details > .cr-alert { margin-block-start: 25px; }
   .split-related-card { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; inline-size: 100%; padding: 17px; margin-block-start: 17px; background: var(--cr-color-canvas); border: 1px solid var(--cr-color-border); border-radius: 8px; text-align: start; }
@@ -551,7 +550,7 @@
     .type-foundation-sample > div { font-size: 9px; }
     .type-foundation-sample > div > span { font-size: 7px; }
     .spacing-foundation-sample { gap: 8px; padding-inline: 16px; }
-    .spacing-foundation-sample > span { inline-size: 18px; }
+    .spacing-foundation-sample > span:empty { inline-size: 18px; }
     .button-demo.compact .cr-button { font-size: 9px; }
     .button-demo.compact .demo-row { gap: 6px; }
     .color-grid { gap: 12px; }
@@ -678,9 +677,9 @@
     .type-foundation-sample > span { font-size: 48px; }
     .type-foundation-sample > div { font-size: 9px; }
     .spacing-foundation-sample { min-block-size: 96px; padding: 15px 5px 28px 18px; gap: 6px; }
-    .spacing-foundation-sample > span { inline-size: 15px; }
+    .spacing-foundation-sample > span:empty { inline-size: 15px; }
     .spacing-foundation-sample > span:nth-child(5) { block-size: 44px; }
-    .spacing-foundation-sample > i { font-size: 5px; letter-spacing: .15em; }
+    .spacing-foundation-label { font-size: 5px; letter-spacing: .15em; }
     .overview-showcases, .two-column, .forms-page-grid, .semantic-grid { grid-template-columns: 1fr; }
     .overview-showcases { gap: 18px; }
     .showcase-header { padding-block: 16px; }
@@ -721,7 +720,6 @@
     .typography-intro h2 { font-size: 26px; }
     .type-scale-row { grid-template-columns: 1fr; gap: 20px; }
     .type-scale-row > div { flex-direction: row; justify-content: space-between; align-items: center; }
-    .type-scale-row > p { font-size: min(var(--type-size), 2.6rem); }
     .spacing-intro { flex-direction: column; align-items: stretch; padding: 24px; gap: 20px; }
     .spacing-grid-art { inline-size: 150px; }
     .spacing-row { grid-template-columns: 60px 40px 1fr; gap: 8px; }
@@ -780,7 +778,7 @@
     .type-foundation-sample > div { display: none; }
     .type-foundation-sample { justify-content: center; }
     .spacing-foundation-sample { gap: 5px; }
-    .spacing-foundation-sample > span { inline-size: 12px; }
+    .spacing-foundation-sample > span:empty { inline-size: 12px; }
     .button-demo.compact .cr-button { font-size: 9px; }
     .agent-compact-heading > .cr-badge { font-size: 7px; }
   }

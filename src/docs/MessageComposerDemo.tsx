@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Check, MessageSquare } from 'lucide-react';
 import { Badge, Switch } from '../system/components';
 import { MessageComposer } from '../system/MessageComposer';
+import { Text } from '../system';
 import './message-composer-demo.css';
 
 export function MessageComposerDemo() {
@@ -17,6 +18,6 @@ export function MessageComposerDemo() {
       if (fail) throw new Error('Simulated send failed. The draft has been retained.');
       setMessages(previous => [...previous, { id: Date.now(), text: message }]);
     }} />
-    <div className="composer-demo-results"><div><h3><MessageSquare size={14} aria-hidden="true" />Submitted messages</h3><Badge>{messages.length}</Badge></div>{messages.length === 0 ? <p className="composer-demo-empty">Submitted messages appear here and remain in this example.</p> : <ol>{messages.map(message => <li key={message.id}><div><strong>You</strong><span><Check size={11} aria-hidden="true" />Submitted</span></div><p>{message.text}</p></li>)}</ol>}</div>
+    <div className="composer-demo-results"><div><Text size="heading-3"><MessageSquare size={14} aria-hidden="true" />Submitted messages</Text><Badge>{messages.length}</Badge></div>{messages.length === 0 ? <Text size="body" className="composer-demo-empty">Submitted messages appear here and remain in this example.</Text> : <ol>{messages.map(message => <li key={message.id}><div><Text bold>You</Text><span><Check size={11} aria-hidden="true" />Submitted</span></div><Text size="body">{message.text}</Text></li>)}</ol>}</div>
   </div>;
 }

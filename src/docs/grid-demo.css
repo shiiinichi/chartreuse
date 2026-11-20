@@ -12,7 +12,7 @@
   .grid-demo-cell { display: grid; place-items: center; min-block-size: 34px; padding: 4px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-sm); background: var(--cr-color-success-bg); color: var(--cr-color-text); font: 500 12px/1.5 var(--cr-font-mono); }
   .grid-demo-card { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; block-size: 100%; padding: 20px; }
   .grid-demo-section .cr-grid-item > .cr-agent-card { block-size: 100%; }
-  .grid-demo-card > :is(h3, h4) { margin: 0; font-size: 16px; line-height: 1.6; font-weight: 550; }
+  .grid-demo-card > h3 { margin: 0; font-size: 16px; line-height: 1.6; font-weight: 550; }
   .grid-demo-card > p { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
   .grid-demo-card > .cr-field { inline-size: 100%; }
   .grid-demo-contract { max-inline-size: 100%; overflow: auto; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); }

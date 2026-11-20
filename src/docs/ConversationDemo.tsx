@@ -9,6 +9,7 @@ import type { ConversationMessage } from '../system/Conversation';
 import { Drawer } from '../system/Drawer';
 import { MessageComposer } from '../system/MessageComposer';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './conversation-demo.css';
 
 const initialReply = 'The workspace review is complete. The **task summary** matches the checklist.\n\n- Record review decisions in the task summary.\n- Store the supporting notes in `review-notes.md`.\n- Include verification steps for the next reviewer.\n\nExpand the activity group above to inspect the review command and its recorded output.';
@@ -104,7 +105,7 @@ function conversationSource(technical: boolean) {
   return `import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { Check, RotateCcw } from 'lucide-react';
-import { AgentActivity, Button, Conversation, MessageComposer, Switch } from '@chartreuse/ui';
+import { AgentActivity, Button, Conversation, MessageComposer, Switch, Text } from '@chartreuse/ui';
 import type { AgentActivityEvent, ConversationMessage } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
@@ -176,10 +177,10 @@ export function TaskConversationExample() {
         gap: 12, marginTop: 12 }}>
         <Button variant="secondary" size="sm" icon={Check}
           disabled={!pending} onClick={completeReply}>Complete sample reply</Button>
-        <p style={{ flex: '1 1 220px', margin: 0, fontSize: 12, lineHeight: 1.75,
+        <Text size="body" style={{ flex: '1 1 220px', margin: 0, fontSize: 12, lineHeight: 1.75,
           color: 'var(--cr-color-muted)' }}>
           Send a message, then complete the sample reply. No provider or backend is contacted.
-        </p>
+        </Text>
       </div>
     </div>
   </div>;
@@ -207,7 +208,7 @@ export function EmptyConversationExample() {
 
 const drawerSource = `import { useRef, useState } from 'react';
 import { MessageSquare } from 'lucide-react';
-import { AgentActivity, Button, Conversation, Drawer, MessageComposer } from '@chartreuse/ui';
+import { AgentActivity, Button, Conversation, Drawer, MessageComposer, Text } from '@chartreuse/ui';
 import type { AgentActivityEvent, ConversationMessage } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
@@ -226,10 +227,10 @@ export function ConversationDrawerExample() {
     ]);
   };
   return <div style={{ display: 'grid', justifyItems: 'start', gap: 16 }}>
-    <p style={{ margin: 0, color: 'var(--cr-color-muted)', fontSize: 12, lineHeight: 1.75 }}>
+    <Text size="body" style={{ margin: 0, color: 'var(--cr-color-muted)', fontSize: 12, lineHeight: 1.75 }}>
       The transcript has no fixed height or scroll rules. Its host can place the composer
       in a persistent drawer footer.
-    </p>
+    </Text>
     <Button variant="secondary" icon={MessageSquare} onClick={() => setOpen(true)}>
       Open conversation drawer
     </Button>
@@ -246,7 +247,7 @@ function ConversationDrawerExample() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState(initialMessages);
   const nextId = useRef(1);
-  return <div className="conversation-drawer-demo"><p>The transcript has no fixed height or scroll rules. Its host can place the composer in a persistent drawer footer.</p><Button variant="secondary" icon={MessageSquare} onClick={() => setOpen(true)}>Open conversation drawer</Button>
+  return <div className="conversation-drawer-demo"><Text size="body">The transcript has no fixed height or scroll rules. Its host can place the composer in a persistent drawer footer.</Text><Button variant="secondary" icon={MessageSquare} onClick={() => setOpen(true)}>Open conversation drawer</Button>
     <Drawer open={open} onOpenChange={setOpen} mode="modal" width={480} maxWidth={640} title="Orchestrator" description="Task conversation with a persistent message composer." footer={<MessageComposer label="Message in the conversation drawer" hint="Messages stay in this local example." rows={2} onSend={body => {
       const id = nextId.current++;
       setMessages(previous => [...previous, { id: `drawer-user-${id}`, role: 'user', body, timeLabel: 'Just now' }, { id: `drawer-agent-${id}`, role: 'agent', sender: 'Codex', body: drawerReply, timeLabel: 'Just now' }]);
@@ -280,7 +281,7 @@ export function ConversationDemo() {
           setMessages(previous => [...previous, { id: `user-${id + 1}`, role: 'user', body, timeLabel: 'Just now' }]);
           setPending(true);
           return new Promise<void>(resolve => { finishSend.current = resolve; });
-        }} /><div className="conversation-demo-reply-control"><Button variant="secondary" size="sm" icon={Check} disabled={!pending} onClick={finishReply}>Complete sample reply</Button><p>Send a message, then complete the sample reply. No provider or backend is contacted.</p></div></div>
+        }} /><div className="conversation-demo-reply-control"><Button variant="secondary" size="sm" icon={Check} disabled={!pending} onClick={finishReply}>Complete sample reply</Button><Text size="body">Send a message, then complete the sample reply. No provider or backend is contacted.</Text></div></div>
       </div>
     </Showcase>
     <Showcase title="Empty and pending states" description="An empty conversation shows its empty message. A pending response replaces that message with a status indicator." code={emptyConversationSource(emptyPending)}><div className="conversation-demo-panel"><div className="conversation-demo-options"><Switch label="Show pending response" checked={emptyPending} onChange={event => setEmptyPending(event.target.checked)} /></div><Conversation messages={[]} pending={emptyPending} label="Empty conversation example" emptyMessage="No messages in this conversation." /></div></Showcase>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useImperativeHandle, useMemo, useRef, us
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { AlertCircle, FileText, Folder, X } from 'lucide-react';
 import { IconButton } from './components';
+import { Text } from './Text';
 import './file-picker.css';
 
 export interface FilePickerProps extends Omit<ComponentPropsWithRef<'input'>, 'type' | 'value' | 'defaultValue' | 'children'> {
@@ -91,10 +92,10 @@ export function FilePicker({ label, mode = 'file', hint, error, onFilesChange, m
       onChange?.(event);
       onFilesChange?.(selected);
     }} />{files.length > 0 && <IconButton className="cr-file-picker-clear" icon={X} size="sm" label={`Clear ${label.toLowerCase()} selection`} disabled={disabled} onClick={() => clearSelection(true)} />}</div>
-    {hasHint && !error && <small id={`${id}-hint`}>{hint}</small>}
-    {folderFallback && <small className="cr-file-picker-fallback" id={`${id}-fallback`}>Folder selection is not supported in this browser. Select files instead.</small>}
-    {files.length > 0 && <div className="cr-file-picker-selection"><div><Icon size={16} aria-hidden="true" /><strong>{selection.title}</strong><span>{selection.count} · {selection.size}</span></div><ul>{selection.paths.map((path, index) => <li key={`${path}-${index}`}><code>{path}</code></li>)}{files.length > 3 && <li className="cr-file-picker-more">{files.length - 3} more {files.length - 3 === 1 ? 'file' : 'files'}</li>}</ul></div>}
-    <div id={`${id}-error`} className={error ? undefined : 'cr-sr-only'} role="alert" aria-atomic="true">{error && <small className="cr-file-picker-error"><AlertCircle size={13} aria-hidden="true" /><span>{error}</span></small>}</div>
+    {hasHint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    {folderFallback && <Text size="small" className="cr-file-picker-fallback" id={`${id}-fallback`}>Folder selection is not supported in this browser. Select files instead.</Text>}
+    {files.length > 0 && <div className="cr-file-picker-selection"><div><Icon size={16} aria-hidden="true" /><Text bold>{selection.title}</Text><span>{selection.count} · {selection.size}</span></div><ul>{selection.paths.map((path, index) => <li key={`${path}-${index}`}><code>{path}</code></li>)}{files.length > 3 && <li className="cr-file-picker-more">{files.length - 3} more {files.length - 3 === 1 ? 'file' : 'files'}</li>}</ul></div>}
+    <div id={`${id}-error`} className={error ? undefined : 'cr-sr-only'} role="alert" aria-atomic="true">{error && <Text size="small" className="cr-file-picker-error"><AlertCircle size={13} aria-hidden="true" /><span>{error}</span></Text>}</div>
     <span className="cr-sr-only" role="status" aria-atomic="true">{announcement}</span>
   </div>;
 }

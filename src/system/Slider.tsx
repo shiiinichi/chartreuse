@@ -1,6 +1,7 @@
 import { useEffect, useId, useImperativeHandle, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties } from 'react';
 import { AlertCircle } from 'lucide-react';
+import { Text } from './Text';
 import './slider.css';
 
 export interface SliderProps extends Omit<ComponentPropsWithRef<'input'>, 'type' | 'children' | 'size' | 'value' | 'defaultValue' | 'min' | 'max' | 'step'> {
@@ -77,7 +78,7 @@ export function Slider({ label, value, defaultValue, min = 0, max = 100, step = 
         onValueChange?.(next);
         onChange?.(event);
       }} />
-    {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
-    {error && <small className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></small>}
+    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></Text>}
   </div>;
 }

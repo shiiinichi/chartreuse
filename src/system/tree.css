@@ -16,7 +16,7 @@
   .cr-tree-content { min-inline-size: 0; flex: 1; overflow-wrap: anywhere; }
   .cr-tree-label { display: flex; align-items: center; gap: 8px; font-weight: 550; }
   .cr-tree-label > svg { flex: 0 0 auto; }
-  .cr-tree-description { margin: 8px 0 0; color: var(--cr-color-muted); }
+  .cr-tree-description { margin: 8px 0 0; color: var(--cr-color-muted); font: inherit; }
   .cr-tree-group { margin-block-start: 12px; margin-inline-start: 12px; padding: 0; padding-inline-start: 20px; border-inline-start: 1px solid var(--cr-color-input-border); }
   .cr-tree-group[hidden] { display: none; }
   .cr-tree-group > .cr-tree-item::before { content: ''; position: absolute; inset-inline-start: -20px; inset-block-start: 28px; inline-size: 16px; border-block-start: 1px solid var(--cr-color-input-border); pointer-events: none; }

@@ -4,6 +4,7 @@ import { BookOpen, Check, Code2, Copy, RotateCcw } from 'lucide-react';
 import { Alert, Badge, Button, TextArea } from '../system/components';
 import { MarkdownRenderer } from '../system/MarkdownRenderer';
 import { ExampleGallery, copyText, Showcase } from './shared';
+import { Text } from '../system';
 import './markdown-page.css';
 
 const exampleMarkdown = [
@@ -137,10 +138,10 @@ export function MarkdownPage() {
   const rendererCode = markdownUsage(source);
 
   return <>
-    <div className="markdown-page-intro"><p>MarkdownRenderer supports CommonMark and GFM content in notes, comments, reports, and conversation messages.</p><div><Badge>CommonMark + GFM</Badge><Button variant="secondary" size="sm" icon={RotateCcw} disabled={source === exampleMarkdown} onClick={() => { setSource(exampleMarkdown); setCopied(false); }}>Reset example</Button></div></div>
+    <div className="markdown-page-intro"><Text size="body">MarkdownRenderer supports CommonMark and GFM content in notes, comments, reports, and conversation messages.</Text><div><Badge>CommonMark + GFM</Badge><Button variant="secondary" size="sm" icon={RotateCcw} disabled={source === exampleMarkdown} onClick={() => { setSource(exampleMarkdown); setCopied(false); }}>Reset example</Button></div></div>
     <ExampleGallery className="markdown-examples" maxColumns={3}><Showcase span="full" title="Editable Markdown source and preview" description="Edit the Markdown source to update the preview. The source view shows the corresponding React usage." code={rendererCode}><div className="markdown-playground">
-      <section className="markdown-source-panel"><header><h2><Code2 size={15} aria-hidden="true" />Source</h2><Button variant="ghost" size="sm" icon={copied ? Check : Copy} onClick={async () => setCopied(await copyText(source))}>{copied ? 'Copied' : 'Copy source'}</Button></header><div><TextArea label="Markdown source" name="markdownSource" value={source} onChange={event => { setSource(event.target.value); setCopied(false); }} rows={24} spellCheck={false} autoCapitalize="none" autoCorrect="off" /></div><p>Edit the source to preview headings, lists, tables, task lists, and code blocks.</p></section>
-      <section className="markdown-preview-panel" aria-busy={source !== deferredSource || undefined}><header><h2><BookOpen size={15} aria-hidden="true" />Preview</h2><span>Live rendering</span></header><div onClick={followPreviewFragment}><MarkdownRenderer>{deferredSource}</MarkdownRenderer></div></section>
+      <section className="markdown-source-panel"><header><Text size="heading-2"><Code2 size={15} aria-hidden="true" />Source</Text><Button variant="ghost" size="sm" icon={copied ? Check : Copy} onClick={async () => setCopied(await copyText(source))}>{copied ? 'Copied' : 'Copy source'}</Button></header><div><TextArea label="Markdown source" name="markdownSource" value={source} onChange={event => { setSource(event.target.value); setCopied(false); }} rows={24} spellCheck={false} autoCapitalize="none" autoCorrect="off" /></div><Text size="body">Edit the source to preview headings, lists, tables, task lists, and code blocks.</Text></section>
+      <section className="markdown-preview-panel" aria-busy={source !== deferredSource || undefined}><header><Text size="heading-2"><BookOpen size={15} aria-hidden="true" />Preview</Text><span>Live rendering</span></header><div onClick={followPreviewFragment}><MarkdownRenderer>{deferredSource}</MarkdownRenderer></div></section>
     </div></Showcase>
     <Showcase title="Tables and task lists" description="GFM checklist items retain their read-only checkbox state; wide tables scroll within the rendered content." code={markdownUsage(gfmMarkdown)}><div className="markdown-focused-sample"><MarkdownRenderer>{gfmMarkdown}</MarkdownRenderer></div></Showcase>
     <Showcase title="Inline and fenced code" description="Language labels, copy actions, and keyboard-scrollable code blocks are supplied by the renderer." code={markdownUsage(codeMarkdown)}><div className="markdown-focused-sample"><MarkdownRenderer>{codeMarkdown}</MarkdownRenderer></div></Showcase>

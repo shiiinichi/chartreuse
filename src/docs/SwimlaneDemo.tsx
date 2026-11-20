@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FolderOpen, RotateCcw } from 'lucide-react';
-import { Badge, Button, Card, EmptyState, Grid, GridItem, IconButton, Swimlane } from '../system';
+import { Badge, Button, Card, EmptyState, Grid, GridItem, IconButton, Swimlane, Text } from '../system';
 import { TaskBoard } from './Demos';
 import { ExampleGallery, Showcase } from './shared';
 import './swimlane-demo.css';
@@ -13,7 +13,7 @@ const statusLanes = [
 const boardCode = String.raw`import { useState } from 'react';
 import { Check, GitBranch, Plus, Search } from 'lucide-react';
 import { AvatarGroup, Button, Dialog, IconButton, Select, Swimlane,
-  TaskCard, TextArea, TextField, useToast } from '@chartreuse/ui';
+  TaskCard, Text, TextArea, TextField, useToast } from '@chartreuse/ui';
 import type { TaskCardProps } from '@chartreuse/ui';
 
 const initialTasks: TaskCardProps[] = [
@@ -83,7 +83,7 @@ export function TaskBoardExample() {
   return <>
     <div className="pattern-workspace board-only">
       <div className="pattern-toolbar">
-        <div><h2>Task board</h2><p>Filter tasks, inspect details, and update status.</p></div>
+        <div><Text size="heading-2">Task board</Text><Text size="body">Filter tasks, inspect details, and update status.</Text></div>
         <Button icon={Plus} size="sm" onClick={() => { setNewStatus('todo'); setOpen(true); }}>New task</Button>
       </div>
       <div className="board-search"><TextField label="Find a task" name="taskSearch"
@@ -108,13 +108,13 @@ export function TaskBoardExample() {
       title={selected?.title || 'Task details'} description={selected?.taskId}
       footer={<Button onClick={() => setSelected(null)} size="sm">Done<Check size={14} aria-hidden="true" /></Button>}>
       {selected && <div className="stack">
-        <p className="muted">{selected.description || 'No description provided.'}</p>
+        <Text size="body" className="muted">{selected.description || 'No description provided.'}</Text>
         <Select label="Move task to" value={selected.status} onChange={event => {
           const status = event.target.value as TaskCardProps['status'];
           setTasks(previous => previous.map(task => task.taskId === selected.taskId ? { ...task, status } : task));
           setSelected({ ...selected, status }); notify('Task status updated');
         }}>{columns.map(column => <option key={column.id} value={column.id}>{column.name}</option>)}</Select>
-        {selected.branch && <p className="muted small"><GitBranch size={13} aria-hidden="true" /> {selected.branch}</p>}
+        {selected.branch && <Text size="body" className="muted small"><GitBranch size={13} aria-hidden="true" /> {selected.branch}</Text>}
         <AvatarGroup names={selected.assignees || []} />
       </div>}
     </Dialog>
@@ -140,26 +140,26 @@ const lanes = ${JSON.stringify(statusLanes, null, 2)} as const;
 </div>`}><div style={{ width: '100%', maxWidth: 800, margin: 0 }}><Grid columns={{ base: 1, sm: 2 }} gap={4}>{statusLanes.map(lane => <GridItem key={lane.title} span={1}><Swimlane title={lane.title} tone={lane.tone} count={lane.items.length} description={lane.description}>{lane.items.map(item => <Card key={item} style={{ padding: 16 }}>{item}</Card>)}</Swimlane></GridItem>)}</Grid></div></Showcase>
     <Showcase title="Custom empty state and reference content" description="emptyContent renders when the lane has no children. Add a reference card, then clear it with the header action." code={`import { useState } from 'react';
 import { FolderOpen, RotateCcw } from 'lucide-react';
-import { Badge, Button, Card, EmptyState, IconButton, Swimlane } from '@chartreuse/ui';
+import { Badge, Button, Card, EmptyState, IconButton, Swimlane, Text } from '@chartreuse/ui';
 
 export function ReferenceLane() {
   const [hasNote, setHasNote] = useState(false);
   return <div style={{ width: '100%', maxWidth: 420, margin: 0 }}>
     <Swimlane title="Reference notes" count={hasNote ? 1 : 0}
-      description={<p>Review the <strong>definition of done</strong> before closing the task.</p>}
+      description={<Text size="body">Review the <Text bold>definition of done</Text> before closing the task.</Text>}
       action={<IconButton icon={RotateCcw} label="Reset reference lane" size="sm"
         disabled={!hasNote} onClick={() => setHasNote(false)} />}
       emptyContent={<EmptyState icon={FolderOpen} title="No reference notes"
         description="Add the acceptance criteria for this review."
         action={<Button variant="secondary" onClick={() => setHasNote(true)}>Add reference note</Button>} />}>
       {hasNote ? <Card style={{ padding: 16 }}>
-        <Badge tone="info">Reference</Badge><h4>Definition of done</h4>
-        <p>An example is complete when its preview matches the displayed source.</p>
+        <Badge tone="info">Reference</Badge><Text size="heading-3">Definition of done</Text>
+        <Text size="body">An example is complete when its preview matches the displayed source.</Text>
         <ul><li>Use the public component API.</li><li>Verify labels and responsive layout.</li></ul>
       </Card> : null}
     </Swimlane>
   </div>;
-}`}><div style={{ width: '100%', maxWidth: 420, margin: 0 }}><Swimlane title="Reference notes" count={hasNote ? 1 : 0} description={<p>Review the <strong>definition of done</strong> before closing the task.</p>} action={<IconButton icon={RotateCcw} label="Reset reference lane" size="sm" disabled={!hasNote} onClick={() => setHasNote(false)} />} emptyContent={<EmptyState icon={FolderOpen} title="No reference notes" description="Add the acceptance criteria for this review." action={<Button variant="secondary" onClick={() => setHasNote(true)}>Add reference note</Button>} />}>{hasNote ? <Card style={{ padding: 16 }}><Badge tone="info">Reference</Badge><h4>Definition of done</h4><p>An example is complete when its preview matches the displayed source.</p><ul><li>Use the public component API.</li><li>Verify labels and responsive layout.</li></ul></Card> : null}</Swimlane></div></Showcase>
+}`}><div style={{ width: '100%', maxWidth: 420, margin: 0 }}><Swimlane title="Reference notes" count={hasNote ? 1 : 0} description={<Text size="body">Review the <Text bold>definition of done</Text> before closing the task.</Text>} action={<IconButton icon={RotateCcw} label="Reset reference lane" size="sm" disabled={!hasNote} onClick={() => setHasNote(false)} />} emptyContent={<EmptyState icon={FolderOpen} title="No reference notes" description="Add the acceptance criteria for this review." action={<Button variant="secondary" onClick={() => setHasNote(true)}>Add reference note</Button>} />}>{hasNote ? <Card style={{ padding: 16 }}><Badge tone="info">Reference</Badge><Text size="heading-3">Definition of done</Text><Text size="body">An example is complete when its preview matches the displayed source.</Text><ul><li>Use the public component API.</li><li>Verify labels and responsive layout.</li></ul></Card> : null}</Swimlane></div></Showcase>
     <Showcase span="full" title="Task board with status lanes" description="Filter tasks across all four lanes, create tasks, inspect details, and update their status. The source includes each interaction." code={boardCode}><TaskBoard /></Showcase>
   </ExampleGallery>;
 }

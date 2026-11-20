@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import { Check, FileText, History, MessageSquare, RotateCcw } from 'lucide-react';
 import {
   ActivityItem, Avatar, Badge, Breadcrumbs, Button, Card, Checkbox,
-  Conversation, MarkdownRenderer, MessageComposer, Progress, Select, Tabs, WorkspaceContent,
+  Conversation, MarkdownRenderer, MessageComposer, Progress, Select, Tabs, WorkspaceContent, Text,
 } from '../../system';
 import type { ConversationMessage, Tone } from '../../system';
 import './record-detail-pattern.css';
@@ -166,9 +166,9 @@ export function RecordDetailPattern() {
 
     <header className="record-detail-pattern-header">
       <div>
-        <p className="record-detail-pattern-identifier">CFG-184</p>
-        <h2 id={`${id}-title`}>Reduce the staging response cache TTL</h2>
-        <p>Review the configuration change and record the checks required for approval.</p>
+        <Text size="body" className="record-detail-pattern-identifier">CFG-184</Text>
+        <Text size="heading-2" id={`${id}-title`}>Reduce the staging response cache TTL</Text>
+        <Text size="body">Review the configuration change and record the checks required for approval.</Text>
       </div>
       <Badge tone={statusTones[saved.status]} dot>{statusLabels[saved.status]}</Badge>
     </header>
@@ -176,7 +176,7 @@ export function RecordDetailPattern() {
     <div className="record-detail-pattern-layout">
       <div className="record-detail-pattern-main">
         <Card className="record-detail-pattern-card" aria-labelledby={`${id}-record-heading`}>
-          <h3 id={`${id}-record-heading`}>Record details</h3>
+          <Text size="heading-3" id={`${id}-record-heading`}>Record details</Text>
           <dl className="record-detail-pattern-metadata">
             <div><dt>Service</dt><dd><code>api-worker</code></dd></div>
             <div><dt>Environment</dt><dd><Badge>Staging</Badge></dd></div>
@@ -214,7 +214,7 @@ export function RecordDetailPattern() {
       <aside className="record-detail-pattern-side" aria-label="Review controls and activity">
         <Card className="record-detail-pattern-card" aria-labelledby={`${id}-review-heading`}>
           <div className="record-detail-pattern-card-heading">
-            <h3 id={`${id}-review-heading`}>Review state</h3>
+            <Text size="heading-3" id={`${id}-review-heading`}>Review state</Text>
             <Badge tone={dirty ? 'warning' : 'neutral'}>{dirty ? 'Unsaved changes' : 'Saved'}</Badge>
           </div>
           <form onSubmit={saveReview} aria-labelledby={`${id}-review-heading`} className="record-detail-pattern-review-form">
@@ -256,21 +256,21 @@ export function RecordDetailPattern() {
               valueText={`${checkedCount} of ${reviewChecks.length}`} />
             <div className="record-detail-pattern-save">
               <Button type="submit" icon={Check}>Save review</Button>
-              <p>Save applies the status, owner, and checklist to this local record.</p>
-              <p className="record-detail-pattern-feedback" role="status" aria-atomic="true">{feedback}</p>
+              <Text size="body">Save applies the status, owner, and checklist to this local record.</Text>
+              <Text size="body" className="record-detail-pattern-feedback" role="status" aria-atomic="true">{feedback}</Text>
             </div>
           </form>
         </Card>
 
         <Card className="record-detail-pattern-card" aria-labelledby={`${id}-activity-heading`}>
           <div className="record-detail-pattern-card-heading">
-            <h3 id={`${id}-activity-heading`}><History size={16} aria-hidden="true" />Activity</h3>
+            <Text size="heading-3" id={`${id}-activity-heading`}><History size={16} aria-hidden="true" />Activity</Text>
             <Badge>{activity.length}</Badge>
           </div>
           <ol className="record-detail-pattern-activity" reversed>
             {[...activity].reverse().map(entry => <li key={entry.id}>
               <ActivityItem title={entry.title} metadata={<span>{entry.actor} · {entry.time}</span>}>
-                <p>{entry.detail}</p>
+                <Text size="body">{entry.detail}</Text>
               </ActivityItem>
             </li>)}
           </ol>

@@ -3,7 +3,7 @@ import type { ComponentReference } from './types';
 export const sidebarReferences: ComponentReference[] = [{
   name: 'Sidebar', slug: 'sidebar',
   summary: 'An aside with persistent header and footer slots and an independently scrolling body.',
-  importCode: "import type { ReactNode } from 'react';\nimport { Button, Flex, Navbar, NavbarItem, Sidebar, TextField, WorkspaceContent, WorkspaceLayout } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  importCode: "import type { ReactNode } from 'react';\nimport { Button, Flex, Navbar, NavbarItem, Sidebar, TextField, WorkspaceContent, WorkspaceLayout, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `type RunHistoryProps = {
   query: string;
   onQueryChange: (query: string) => void;
@@ -37,7 +37,7 @@ export function WorkspaceExample({ children }: { children: ReactNode }) {
       </Navbar>
       <WorkspaceLayout>
         <Sidebar variant="flush" aria-label="Workspace tools" contentLabel="Workspace links"
-          header={<strong>Workspace tools</strong>} style={{ blockSize: 620 }}>
+          header={<Text bold>Workspace tools</Text>} style={{ blockSize: 620 }}>
           <nav aria-label="Workspace pages">
             <Flex direction="column" gap={1}>
               <NavbarItem href="/tasks">All tasks</NavbarItem>

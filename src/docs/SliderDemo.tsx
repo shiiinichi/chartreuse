@@ -3,6 +3,7 @@ import { Check, RotateCcw } from 'lucide-react';
 import { Button } from '../system/components';
 import { Slider } from '../system/Slider';
 import { ExampleGallery, Showcase } from './shared';
+import { Text } from '../system';
 import './slider-demo.css';
 
 export function SliderDemo() {
@@ -14,7 +15,7 @@ export function SliderDemo() {
     <Showcase title="Native form submission and reset" description="An uncontrolled slider submits its named value and resets to its default." code={`import { Slider, Button } from '@chartreuse/ui';\n\n<form onSubmit={event => {\n  event.preventDefault();\n  console.log(new FormData(event.currentTarget).get('confidence'));\n}}>\n  <Slider label="Review confidence" name="confidence"\n    min={0} max={100} step={5} defaultValue={65}\n    formatValue={value => value + '%'} />\n  <Button type="reset" variant="secondary">Reset</Button>\n  <Button type="submit">Save preference</Button>\n</form>`}><form className="slider-demo-form" aria-label="Slider preference example" onSubmit={event => { event.preventDefault(); setSaved(`${new FormData(event.currentTarget).get('confidence')}%`); }} onReset={() => setSaved(null)}>
       <Slider label="Review confidence" name="confidence" min={0} max={100} step={5} defaultValue={65} formatValue={value => `${value}%`} hint="This uncontrolled range participates in the form and resets to 65%." />
       <div className="slider-demo-actions"><Button type="reset" variant="secondary" size="sm" icon={RotateCcw}>Reset</Button><Button type="submit" size="sm" icon={Check}>Save preference</Button></div>
-      <p className="slider-demo-saved" role="status">{saved ? `Saved confidence: ${saved}.` : 'Save a preference to see its submitted value.'}</p>
+      <Text size="body" className="slider-demo-saved" role="status">{saved ? `Saved confidence: ${saved}.` : 'Save a preference to see its submitted value.'}</Text>
     </form></Showcase>
     <Showcase title="Value formatting, validation, and disabled state" description="Format value text, display an application validation message, and disable a managed preference." code={`import { useState } from 'react';\nimport { Slider } from '@chartreuse/ui';\n\nfunction StateExamples() {\n  const [duration, setDuration] = useState(${duration});\n  return <>\n    <Slider label="Session length" min={5} max={60} step={5}\n      value={duration} onValueChange={setDuration}\n      formatValue={value => value + ' minutes'}\n      error={duration < 20 ? 'Choose at least 20 minutes for this example.' : undefined} />\n    <Slider label="Managed preference" defaultValue={40} disabled\n      formatValue={value => value + '%'} />\n  </>;\n}`}><div className="slider-demo-states"><Slider label="Session length" min={5} max={60} step={5} value={duration} onValueChange={setDuration} formatValue={value => `${value} minutes`} error={duration < 20 ? 'Choose at least 20 minutes for this example.' : undefined} hint="Validation requires a session of at least 20 minutes." /><Slider label="Managed preference" defaultValue={40} formatValue={value => `${value}%`} disabled hint="This setting is managed by the workspace." /></div></Showcase>
   </ExampleGallery>;

@@ -7,12 +7,17 @@
   .core-example-field { inline-size: min(100%, 520px); min-inline-size: 0; }
   .core-example-result, .core-example-note { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
   .core-example-result { min-block-size: 1.8em; }
-  .core-example-card { inline-size: min(100%, 380px); min-inline-size: 0; padding: var(--cr-space-6); }
-  .core-example-card > :is(h3, h4) { margin: 0 0 var(--cr-space-3); font-size: 18px; line-height: 1.5; font-weight: 550; }
+  .core-example-card, .core-example-sectioned-card { inline-size: min(100%, 380px); min-inline-size: 0; }
+  .core-example-card { padding: var(--cr-space-6); }
+  .core-example-card > h3 { margin: 0 0 var(--cr-space-3); font-size: 18px; line-height: 1.5; font-weight: 550; }
   .core-example-card > p { margin: 0 0 var(--cr-space-4); color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
-  .core-example-card-header, .core-example-card-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-3); }
-  .core-example-card-header > h4 { margin: 0; font-size: 16px; line-height: 1.5; font-weight: 550; }
+  .core-example-card-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--cr-space-3); }
+  .core-example-card-header > h3 { margin: 0; font-size: 16px; line-height: 1.5; font-weight: 550; }
   .core-example-card-section { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .core-example-divided-card > header > h3 { font-size: 16px; font-weight: 600; }
+  .core-example-divided-card > section > div.cr-text { margin: 0; font-size: inherit; font-weight: 600; }
+  .core-example-divided-card > section > p { margin-block-start: var(--cr-space-2); color: var(--cr-color-muted); }
+  .core-example-divided-card > footer { color: var(--cr-color-muted); }
   .core-example-brand-size { display: grid; justify-items: start; gap: var(--cr-space-2); margin: 0; color: var(--cr-color-text); }
   .core-example-brand-size > figcaption { color: var(--cr-color-muted); font: 12px/1.5 var(--cr-font-mono); }
   .core-example-brand-surface { display: flex; align-items: center; gap: var(--cr-space-3); min-inline-size: 0; padding: var(--cr-space-6); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); color: var(--cr-color-text); background: var(--cr-color-surface); font-size: 13px; }

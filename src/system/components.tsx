@@ -6,6 +6,7 @@ import type { ControlSize } from './control-size';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 import { Tooltip } from './Tooltip';
+import { Text } from './Text';
 
 export type Tone = 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 const cx = (...names: (string | undefined | false)[]) => names.filter(Boolean).join(' ');
@@ -56,8 +57,8 @@ export function TextField({ label, size = 'md', hint, error, icon, className, id
   return <div className={cx('cr-field', className)}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
     <div className="cr-input-wrap" data-cr-input-size={size}>{renderIcon(icon, { size: 16 })}<input {...props} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
-    {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
-    {error && <small className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></small>}
+    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></Text>}
   </div>;
 }
 
@@ -67,8 +68,8 @@ export function TextArea({ label, hint, error, id: suppliedId, className, ...pro
   const id = suppliedId || generatedId;
   return <div className={cx('cr-field', className)}><label htmlFor={id}>{label}{props.required && ' *'}</label>
     <textarea {...props} id={id} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} />
-    {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
-    {error && <small id={`${id}-error`} className="cr-field-error">{error}</small>}
+    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    {error && <Text size="small" id={`${id}-error`} className="cr-field-error">{error}</Text>}
   </div>;
 }
 
@@ -87,8 +88,8 @@ export function Select({ label, size = 'md', hint, error, hideLabel = false, id:
   const controlSize = typeof size === 'string' ? size : 'md';
   return <div className={cx('cr-field', className)}><label htmlFor={id} className={hideLabel ? 'cr-sr-only' : undefined}>{label}{props.required && ' *'}</label>
     <div className="cr-select-wrap" data-cr-input-size={isListbox ? undefined : controlSize}><select {...props} size={nativeSize} className="cr-input cr-select" id={id} data-cr-autofocus={props.autoFocus || undefined} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined}>{children}</select><ChevronDown size={14} aria-hidden="true" /></div>
-    {hint && !error && <small id={`${id}-hint`}>{hint}</small>}
-    {error && <small id={`${id}-error`} className="cr-field-error">{error}</small>}
+    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
+    {error && <Text size="small" id={`${id}-error`} className="cr-field-error">{error}</Text>}
   </div>;
 }
 
@@ -96,13 +97,13 @@ export interface CheckboxProps extends Omit<ComponentPropsWithRef<'input'>, 'typ
 export function Checkbox({ label, hint, className, id: suppliedId, ...props }: CheckboxProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
-  return <label htmlFor={id} className={cx('cr-checkbox', className)}><input {...props} type="checkbox" id={id} aria-describedby={hint ? `${id}-hint` : undefined} /><span>{label}{hint && <small id={`${id}-hint`}>{hint}</small>}</span></label>;
+  return <label htmlFor={id} className={cx('cr-checkbox', className)}><input {...props} type="checkbox" id={id} aria-describedby={hint ? `${id}-hint` : undefined} /><span>{label}{hint && <Text size="small" id={`${id}-hint`}>{hint}</Text>}</span></label>;
 }
 
 export function Switch({ label, hint, className, id: suppliedId, ...props }: CheckboxProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
-  return <label htmlFor={id} className={cx('cr-switch', className)}><input {...props} id={id} type="checkbox" role="switch" aria-describedby={hint ? `${id}-hint` : undefined} /><span className="cr-switch-track" aria-hidden="true"><span /></span><span>{label}{hint && <small id={`${id}-hint`}>{hint}</small>}</span></label>;
+  return <label htmlFor={id} className={cx('cr-switch', className)}><input {...props} id={id} type="checkbox" role="switch" aria-describedby={hint ? `${id}-hint` : undefined} /><span className="cr-switch-track" aria-hidden="true"><span /></span><span>{label}{hint && <Text size="small" id={`${id}-hint`}>{hint}</Text>}</span></label>;
 }
 
 export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> { name: string; size?: 'sm' | 'md' | 'lg'; color?: 'green' | 'peach' | 'blue' | 'purple'; showName?: boolean }
@@ -144,7 +145,7 @@ export interface TabsProps {
   defaultValue?: string;
   value?: string;
   onValueChange?: (value: string) => void;
-  variant?: 'line' | 'pill';
+  variant?: 'line' | 'pill' | 'highlight';
   size?: ControlSize;
   className?: string;
 }
@@ -167,14 +168,34 @@ export function Tabs({ items, label, defaultValue, value, onValueChange, variant
   </div>{items.map(item => <div key={item.value} role="tabpanel" aria-labelledby={`${id}-tab-${item.value}`} hidden={selected !== item.value} tabIndex={selected === item.value ? 0 : -1}><div className="cr-tab-content">{item.content}</div></div>)}</div>;
 }
 
-export function Card({ children, className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <article {...props} className={cx('cr-card', className)}>{children}</article>;
+export interface CardProps extends HTMLAttributes<HTMLElement> {
+  header?: ReactNode;
+  footer?: ReactNode;
+  divided?: boolean;
+}
+
+export function Card(cardProps: CardProps) {
+  const { header, children, footer, className, divided = false, ...props } = cardProps;
+  // Keep the body mounted when slot content appears or disappears.
+  const hasSlots = 'header' in cardProps || 'footer' in cardProps;
+  const hasHeader = header != null && typeof header !== 'boolean';
+  const hasFooter = footer != null && typeof footer !== 'boolean';
+  const hasBody = children != null && typeof children !== 'boolean';
+  const content = hasSlots ? <>
+    {hasHeader && <header className="cr-card-region">{header}</header>}
+    {!divided && hasBody ? <div className="cr-card-region">{children}</div> : children}
+    {hasFooter && <footer className="cr-card-region">{footer}</footer>}
+  </> : children;
+
+  return <article {...props} className={cx('cr-card', className)} data-divided={divided ? 'true' : undefined}>
+    {content}
+  </article>;
 }
 
 export interface AlertProps extends HTMLAttributes<HTMLDivElement> { tone?: Tone; title: string; children?: ReactNode; onDismiss?: () => void }
 export function Alert({ tone = 'info', title, children, onDismiss, className, ...props }: AlertProps) {
   const Icon = { neutral: Info, info: Info, success: CircleCheck, warning: TriangleAlert, danger: AlertCircle }[tone];
-  return <div {...props} className={cx('cr-alert', className)} data-tone={tone}><Icon size={18} aria-hidden="true" /><div><strong>{title}</strong>{children && <p>{children}</p>}</div>{onDismiss && <IconButton size="sm" label={`Dismiss ${title}`} icon={X} onClick={onDismiss} />}</div>;
+  return <div {...props} className={cx('cr-alert', className)} data-tone={tone}><Icon size={18} aria-hidden="true" /><div><Text bold>{title}</Text>{children && <Text size="body">{children}</Text>}</div>{onDismiss && <IconButton size="sm" label={`Dismiss ${title}`} icon={X} onClick={onDismiss} />}</div>;
 }
 
 export function Divider({ className, ...props }: ComponentPropsWithRef<'hr'>) {
@@ -331,7 +352,7 @@ export function Dialog({ open, onOpenChange, title, description, children, foote
     }
   }, [open, freezeHeight]);
   return <dialog ref={ref} className={cx('cr-dialog', className)} data-size={size} data-freeze-height={freezeHeight} style={widthStyle} aria-labelledby={`${id}-title`} aria-describedby={description ? `${id}-description` : undefined} onClose={() => onOpenChange(false)}>
-    <header className="cr-dialog-header"><div><h2 id={`${id}-title`}>{title}</h2>{description && <p id={`${id}-description`}>{description}</p>}</div><IconButton icon={X} label="Close dialog" onClick={() => ref.current?.close()} /></header>
+    <header className="cr-dialog-header"><div><Text size="heading-2" id={`${id}-title`}>{title}</Text>{description && <Text size="body" id={`${id}-description`}>{description}</Text>}</div><IconButton icon={X} label="Close dialog" onClick={() => ref.current?.close()} /></header>
     {sideContent ? <DialogSplit open={open} sideContent={sideContent} contentLabel={contentLabel} sideContentLabel={sideContentLabel} resizable={resizableSplit} minWidth={sideContentMinWidth} maxWidth={sideContentMaxWidth}>{children}</DialogSplit> : <div className="cr-dialog-body">{children}</div>}{footer && <footer className="cr-dialog-footer">{footer}</footer>}
   </dialog>;
 }
@@ -446,7 +467,7 @@ export function TaskCard({ taskId, title, description, status = 'todo', priority
   })}>
     <button ref={actionButton} type="button" className="cr-task-button" onClick={onClick} disabled={!onClick} aria-describedby={metadata.length ? metadataId : undefined}>
       <span className="cr-task-meta"><span className="cr-mono">{taskId}</span><Badge tone={priority === 'high' ? 'warning' : 'neutral'}>{priority === 'high' && <TriangleAlert size={11} aria-hidden="true" />}{priority.charAt(0).toUpperCase() + priority.slice(1)}</Badge></span>
-      <h3>{title}</h3>{description && <p>{description}</p>}{branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
+      <Text size="heading-3">{title}</Text>{description && <Text size="body">{description}</Text>}{branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
     </button>
     {metadata.length > 0 && <ul className="cr-task-metadata" id={metadataId}>
       {metadata.map(item => {
@@ -469,13 +490,27 @@ export function AgentCard({ name, task, status = 'running', tokens = '2.4k', ela
   const tone: Tone = status === 'succeeded' ? 'success' : status === 'waiting' ? 'warning' : status === 'idle' ? 'neutral' : 'info';
   const labels = { running: 'Running', succeeded: 'Complete', waiting: 'Waiting', idle: 'Idle' };
   return <button type="button" className="cr-agent-card" aria-pressed={selected} onClick={onClick} disabled={!onClick}>
-    <span className="cr-agent-header"><span className="cr-agent-icon"><Network size={17} aria-hidden="true" /></span><strong>{name}</strong><Badge tone={tone} dot>{labels[status]}</Badge></span>
+    <span className="cr-agent-header"><span className="cr-agent-icon"><Network size={17} aria-hidden="true" /></span><Text bold>{name}</Text><Badge tone={tone} dot>{labels[status]}</Badge></span>
     <span className="cr-agent-task">{task}</span><span className="cr-agent-facts"><span><Clock3 size={12} aria-hidden="true" />{elapsed}</span><span>{tokens} tokens</span></span>
   </button>;
 }
 
-export function EmptyState({ title, description, icon = Circle, action }: { title: string; description: string; icon?: IconSource; action?: ReactNode }) {
-  return <div className="cr-empty-state"><span>{renderIcon(icon, { size: 26 })}</span><h3>{title}</h3><p>{description}</p>{action}</div>;
+export interface EmptyStateProps {
+  title: string;
+  description: string;
+  icon?: IconSource;
+  action?: ReactNode;
+  variant?: 'default' | 'dashed';
+  align?: 'start' | 'center' | 'end';
+}
+
+export function EmptyState({ title, description, icon = Circle, action, variant = 'default', align = 'center' }: EmptyStateProps) {
+  return <div className="cr-empty-state" data-variant={variant} data-align={align}>
+    <span className="cr-empty-state-icon">{renderIcon(icon, { size: variant === 'dashed' ? 24 : 26 })}</span>
+    <Text size="heading-3">{title}</Text>
+    <Text size="body">{description}</Text>
+    {action}
+  </div>;
 }
 
 export type { CSSProperties, ReactNode };

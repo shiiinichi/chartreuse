@@ -2,6 +2,7 @@ import { useId } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { MarkdownRenderer } from './MarkdownRenderer';
+import { Text } from './Text';
 import './conversation.css';
 
 export type ConversationRole = 'user' | 'agent' | 'system';
@@ -42,9 +43,9 @@ function ConversationTurn({ message }: { message: ConversationMessage }) {
   const time = message.timeLabel ?? message.dateTime;
   return <li className="cr-conversation-turn">
     <article className="cr-conversation-message" data-role={message.role} aria-labelledby={`${id}-sender`}>
-      <header className="cr-conversation-message-header"><strong id={`${id}-sender`}>{sender}</strong>{time && (message.dateTime ? <time dateTime={message.dateTime}>{time}</time> : <span className="cr-conversation-time">{time}</span>)}</header>
+      <header className="cr-conversation-message-header"><Text bold id={`${id}-sender`}>{sender}</Text>{time && (message.dateTime ? <time dateTime={message.dateTime}>{time}</time> : <span className="cr-conversation-time">{time}</span>)}</header>
       {message.activity !== undefined && message.activity !== null && <div className="cr-conversation-activity">{message.activity}</div>}
-      <div className="cr-conversation-body" data-format={format}>{format === 'markdown' ? <MarkdownRenderer>{message.body}</MarkdownRenderer> : <p className="cr-conversation-plain">{message.body}</p>}</div>
+      <div className="cr-conversation-body" data-format={format}>{format === 'markdown' ? <MarkdownRenderer>{message.body}</MarkdownRenderer> : <Text size="body" className="cr-conversation-plain">{message.body}</Text>}</div>
     </article>
   </li>;
 }
@@ -56,8 +57,8 @@ export function Conversation({ messages, label = 'Conversation', emptyMessage = 
   const announcement = [messages.length ? `${messages.length} ${messages.length === 1 ? 'message' : 'messages'}. Last message from ${sender}.` : 'No messages.', pending && pendingLabel].filter(Boolean).join(' ');
   return <>
     <div {...props} className={['cr-conversation', className].filter(Boolean).join(' ')} role="log" aria-label={label} aria-live="off">
-      {messages.length > 0 ? <ol className="cr-conversation-list" role="list">{messages.map(message => <ConversationTurn key={message.id} message={message} />)}</ol> : !pending && <p className="cr-conversation-empty">{emptyMessage}</p>}
-      {pending && <p className="cr-conversation-pending"><LoaderCircle size={15} aria-hidden="true" /><span>{pendingLabel}</span></p>}
+      {messages.length > 0 ? <ol className="cr-conversation-list" role="list">{messages.map(message => <ConversationTurn key={message.id} message={message} />)}</ol> : !pending && <Text size="body" className="cr-conversation-empty">{emptyMessage}</Text>}
+      {pending && <Text size="body" className="cr-conversation-pending"><LoaderCircle size={15} aria-hidden="true" /><span>{pendingLabel}</span></Text>}
     </div>
     {announce && <span className="cr-conversation-announcement" role="status" aria-atomic="true">{announcement}</span>}
   </>;

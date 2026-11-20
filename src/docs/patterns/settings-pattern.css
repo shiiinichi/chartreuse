@@ -1,7 +1,7 @@
 @layer docs-content {
   .settings-pattern-frame { container: settings-pattern / inline-size; block-size: 48rem; min-inline-size: 0; min-block-size: 0; }
   .pattern-preview .settings-pattern-panel { border: 0; border-radius: 0; background: transparent; }
-  .pattern-preview .settings-pattern-panel > .cr-page-panel-footer {
+  .pattern-preview .settings-pattern-panel > .cr-page-panel-footer:not([data-stuck]) {
     border-end-start-radius: calc(var(--cr-radius-lg) - 1px);
     border-end-end-radius: calc(var(--cr-radius-lg) - 1px);
   }

@@ -5,6 +5,8 @@ import type { Components, ExtraProps } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Check, Copy } from 'lucide-react';
 import { IconButton } from './components';
+import { Text } from './Text';
+import type { TextProps } from './Text';
 import './markdown-renderer.css';
 
 export interface MarkdownRendererProps {
@@ -41,7 +43,19 @@ function MarkdownLink({ node: _node, href, children, footnoteLabelId, ...props }
   return <a {...props} href={href} aria-describedby={describedBy} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>{children}</a>;
 }
 
+function markdownText(format: Pick<TextProps, 'size' | 'bold' | 'italic' | 'strikethrough'>) {
+  return function MarkdownText({ node: _node, ...props }: ComponentPropsWithoutRef<'span'> & ExtraProps) {
+    return <Text {...props} {...format} />;
+  };
+}
+
 const baseComponents: Components = {
+  h1: markdownText({ size: 'heading-1' }),
+  h3: markdownText({ size: 'heading-3' }),
+  p: markdownText({ size: 'body' }),
+  strong: markdownText({ bold: true }),
+  em: markdownText({ italic: true }),
+  del: markdownText({ strikethrough: true }),
   pre: MarkdownCodeBlock,
   table: ({ node: _node, ...props }) => <div className="cr-markdown-table" tabIndex={0} role="region" aria-label="Markdown table"><table {...props} /></div>,
   img: ({ node: _node, src, alt, ...props }) => src ? <img {...props} src={src} alt={alt || ''} loading="lazy" decoding="async" referrerPolicy="no-referrer" /> : <span className="cr-markdown-unavailable-image">{alt || 'Image unavailable'}</span>,
@@ -60,7 +74,7 @@ export function MarkdownRenderer({ children, className }: MarkdownRendererProps)
     components={{
       ...baseComponents,
       a: props => <MarkdownLink {...props} footnoteLabelId={footnoteLabelId} />,
-      h2: ({ node: _node, id: headingId, ...props }) => <h2 {...props} id={headingId === 'footnote-label' ? footnoteLabelId : headingId} />,
+      h2: ({ node: _node, id: headingId, ...props }) => <Text {...props} size="heading-2" id={headingId === 'footnote-label' ? footnoteLabelId : headingId} />,
     }}
   >{children}</Markdown></div>;
 }

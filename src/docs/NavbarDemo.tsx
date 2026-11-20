@@ -6,6 +6,7 @@ import type { NavbarProps } from '../system/Navbar';
 import { SegmentedControl } from '../system/SegmentedControl';
 import { navbarReferences } from './reference/navbar';
 import { Showcase } from './shared';
+import { Text } from '../system';
 import './navbar-demo.css';
 
 const widthOptions = [
@@ -40,7 +41,7 @@ export function NavbarDemo() {
             onValueChange={value => setWidth(value === 'full' ? 'full' : 'comfortable')} />
         </Flex>
         <Navbar size={size} width={width} variant={variant} className="navbar-demo-bar" aria-label="Example site"
-          brand={<a href="#overview"><BrandMark /><span className="navbar-demo-brand">Chartreuse<small>Design system</small></span></a>}
+          brand={<a href="#overview"><BrandMark /><span className="navbar-demo-brand">Chartreuse<Text size="small">Design system</Text></span></a>}
           actions={<a href="#getting-started">Get started</a>}>
           <Flex align="center" wrap gap={2}>
             <NavbarItem href="#components/navbar" aria-current="page">Navbar</NavbarItem>

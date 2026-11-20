@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
+import { Text } from './Text';
 import './content-blocks.css';
 
 export interface ActivityItemProps extends Omit<ComponentPropsWithRef<'article'>, 'title' | 'children'> {
@@ -19,7 +20,7 @@ export function ActivityItem({ title, identifier, metadata, footer, children, cl
   const hasFooter = footer !== undefined && footer !== null && footer !== false;
   return <article {...props} className={['cr-activity-item', className].filter(Boolean).join(' ')} aria-label={ariaLabel} aria-labelledby={labelledBy || (!ariaLabel && hasTitle ? `${id}-title` : undefined)}>
     {(hasTitle || hasIdentifier || hasMetadata) && <header className="cr-activity-item-header">
-      {(hasTitle || hasIdentifier) && <div className="cr-activity-item-title-row">{hasIdentifier && <span className="cr-activity-item-identifier">{identifier}</span>}{hasTitle && <h3 id={`${id}-title`} className="cr-activity-item-title">{title}</h3>}</div>}
+      {(hasTitle || hasIdentifier) && <div className="cr-activity-item-title-row">{hasIdentifier && <span className="cr-activity-item-identifier">{identifier}</span>}{hasTitle && <Text size="heading-3" id={`${id}-title`} className="cr-activity-item-title">{title}</Text>}</div>}
       {hasMetadata && <div className="cr-activity-item-metadata">{metadata}</div>}
     </header>}
     <div className="cr-activity-item-content">{children}</div>
