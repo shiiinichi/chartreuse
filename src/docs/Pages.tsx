@@ -199,6 +199,17 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.10.0',
+    date: '2026-11-21',
+    title: 'Select popup sizing and optional checkmarks',
+    summary: 'Select popups fit longer options on one line. Autocomplete, ButtonSelect, and Select let you choose whether to show a selection icon.',
+    changes: [
+      'Select uses fixed-height, single-line rows. The popup matches the trigger width and expands within the viewport for longer options. Grouped choices are indented under their labels.',
+      'Autocomplete, ButtonSelect, and Select hide the selection checkmark by default. Pass checkmark for the standard icon or pass a custom icon.',
+      'Removed keyboard-only focus marks and the green outlines from FilePicker and PathSelector. Active text inputs use the feathered border.',
+    ],
+  },
+  {
     version: '1.9.0',
     date: '2026-11-21',
     title: 'Shared option pickers and active states',
