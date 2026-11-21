@@ -37,7 +37,7 @@ export function ViewSelect() {
     { name: 'ref', type: 'Ref<HTMLButtonElement>', description: 'Native ref to the trigger.' },
   ],
   notes: [
-    'The built-in picker shares Autocomplete’s panel and option styles. Arrow keys move through enabled choices. Enter or Space commits the highlighted choice.',
+    'The built-in picker shares Autocomplete’s panel and option styles. Use Arrow keys to move through enabled choices, Home or End to jump to either end, or type to match the start of a label. Enter or Space selects the highlighted option. Escape closes the popup.',
     'Custom content sizes to its contents by default. Give width-filling content such as Flex or Grid a definite width on the content or panel, or use matchTriggerWidth.',
     'Use native controls within custom content and call close() when the user finishes. Escape and outside clicks dismiss the popover.',
     'Give the trigger an accessible name that describes the choice. Label groups of related controls in custom content.',
@@ -237,7 +237,8 @@ export const coreReferences: ComponentReference[] = [
     ],
     notes: [
       "Use Grid and GridItem for peer fields in either direction: columns={1} gap={4} for a vertical stack, or columns={{ base: 1, sm: 2 }} gap={4} for a responsive row. Put each whole labeled control in GridItem span={1}.",
-      'Single-choice dropdowns use the shared Autocomplete and ButtonSelect popup. Use multiple or a numeric size greater than one for an inline native listbox.',
+      'Single-choice dropdowns use the shared Autocomplete and ButtonSelect popup. Inside the popup, Arrow keys, Home, End, and typing move the highlight. Enter or Space selects the highlighted option. Escape closes the popup.',
+      'Use multiple or a numeric size greater than one for an inline native listbox. Browsers without the Popover API use the native picker for single-choice dropdowns.',
       'When using hideLabel, retain visible context that identifies the field’s purpose.'],
   },
   {

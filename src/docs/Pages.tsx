@@ -199,6 +199,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.9.0',
+    date: '2026-11-21',
+    title: 'Shared option pickers and active states',
+    summary: 'Select, ButtonSelect, and Autocomplete share a popup design. A common palette styles active controls across light and dark themes.',
+    changes: [
+      'ButtonSelect accepts an options array and shows the selected label on the trigger. The built-in popup matches the trigger width by default. Use content to render a custom picker.',
+      'Single-choice Select uses the shared popup with native option groups, form values, and validation. Set multiple or a numeric size greater than one for an inline listbox.',
+      'AgentActivity list mode adds a group heading with status counts. Lists with more than six events can collapse from the heading or footer. The footer also jumps back to the heading.',
+      'The --cr-color-active, --cr-color-on-active, and --cr-color-active-border tokens set the active palette. MessageComposer uses the shared field focus styling.',
+    ],
+  },
+  {
     version: '1.8.0',
     date: '2026-11-20',
     title: 'Workspace navigation, tables, and ButtonSelect sizing',

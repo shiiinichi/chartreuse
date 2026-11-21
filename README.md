@@ -182,7 +182,7 @@ GitHub manages the repository and npm package visibility separately. Review what
 
 ## Components
 
-The library exports 66 components. [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
+The library exports 66 components. [Latest GitHub release](https://github.com/shiiinichi/chartreuse/releases/latest) · [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
 
 ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, Pagination, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Table, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
@@ -253,7 +253,7 @@ Split resizing is optional and off by default. Set `resizableSplit` to enable po
 
 The [Form controls gallery](http://127.0.0.1:5173/#forms) includes `Autocomplete` and `MessageComposer`. Autocomplete accepts labeled options with `value`, `label`, optional `description`, and `disabled`; use `value` / `onValueChange` for a controlled selection or `defaultValue` for an uncontrolled one. Arrow keys move through enabled matches, Enter commits a selection, and Escape restores the selected label. `name` submits the selected option ID as a hidden form value. The searchable input retains its label, hint/error relationships, disabled and required semantics. Suggestions use a native top-layer popover so gallery and form containers do not clip them.
 
-Single-choice `Select` dropdowns use the same popup as Autocomplete and ButtonSelect. Keep using native `<option>` and `<optgroup>` children, `value` or `defaultValue`, and `onChange`. The `multiple` prop or a numeric `size` greater than one displays an inline native listbox.
+Single-choice `Select` dropdowns use the same popup as Autocomplete and ButtonSelect. Pass native `<option>` and `<optgroup>` children and set `value` or `defaultValue`. Read `event.currentTarget.value` in `onChange` and pass `name` to include the selected value in form submission. The `multiple` prop or a numeric `size` greater than one displays an inline native listbox. [Select reference](https://shiiinichi.github.io/chartreuse/#components/select)
 
 `MessageComposer` combines a labeled textarea, hint, and send action. The caller implements submission in the required `onSend(message)` callback, which can be synchronous or asynchronous. Submission displays a busy state; failures retain the draft, and successful sends clear the submitted text. Edits made while submission is pending are retained. Enter adds a new line; Command/Ctrl+Enter sends. The gallery simulates success, delay, and failure within the example.
 
@@ -403,7 +403,7 @@ import { Flex, Text } from '@chartreuse/ui';
 
 The base palette is evergreen `#024340`, light evergreen `#096864`, chartreuse `#DBFFAD`, paper `#FFFDF6`, canvas `#F2F0E6`, muted `#52645F`, and border `#CECCC3`. Supporting colors define agent, status, and feedback styles. Semantic tokens map these primitives to component roles in light and dark themes.
 
-Active highlights use `--cr-color-active` (Evergreen) and `--cr-color-on-active` (Paper). `--cr-color-active-border` gives filled controls a visible edge on dark surfaces. Set these variables on an application wrapper to customize its active palette.
+Active highlights use `--cr-color-active` (Evergreen) and `--cr-color-on-active` (Paper). `--cr-color-active-border` gives filled controls a visible edge on dark surfaces. Set these variables on an application wrapper to theme pressed buttons, selected options, checked switches, and tab underlines. [Design tokens](https://shiiinichi.github.io/chartreuse/#tokens)
 
 ```css
 .workspace {
