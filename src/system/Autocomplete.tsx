@@ -1,16 +1,14 @@
 import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, KeyboardEvent } from 'react';
-import { AlertCircle, Check, ChevronDown, Search, X } from 'lucide-react';
+import { AlertCircle, ChevronDown, Search, X } from 'lucide-react';
 import type { ControlSize } from './control-size';
+import { OptionList, revealActiveOption } from './OptionList';
+import type { OptionListItem } from './OptionList';
+import { matchOptionListAnchor, optionListMaxHeight, trackOptionListAnchor } from './option-list-anchor';
 import { Text } from './Text';
 import './autocomplete.css';
 
-export interface AutocompleteOption {
-  value: string;
-  label: string;
-  description?: string;
-  disabled?: boolean;
-}
+export interface AutocompleteOption extends OptionListItem {}
 
 export interface AutocompleteProps extends Omit<ComponentPropsWithRef<'input'>, 'value' | 'defaultValue' | 'onChange' | 'size' | 'type'> {
   label: string;
@@ -36,7 +34,7 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
   const [searching, setSearching] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
-  const [position, setPosition] = useState({ left: 0, top: 0, bottom: 0, width: 0, maxHeight: 280, above: false });
+  const [position, setPosition] = useState({ left: 0, top: 0, bottom: 0, width: 0, maxHeight: optionListMaxHeight, above: false });
   const selectedValue = value ?? internalValue;
   const selected = options.find(option => option.value === selectedValue && !option.disabled);
   const filterText = searching ? query.trim().toLocaleLowerCase() : '';
@@ -98,34 +96,22 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
       if ('hidePopover' in panel && panel.matches(':popover-open')) panel.hidePopover();
       return;
     }
+    const anchor = input.current;
+    const host = root.current;
+    const doc = panel.ownerDocument;
+    const view = doc.defaultView;
+    if (!anchor || !host || !view) return;
     if ('showPopover' in panel && !panel.matches(':popover-open')) panel.showPopover();
-    let frame = 0;
-    const place = () => {
-      const rect = input.current?.getBoundingClientRect();
-      if (!rect) return;
-      const below = window.innerHeight - rect.bottom - 14;
-      const above = rect.top - 14;
-      const useAbove = below < 180 && above > below;
-      const width = Math.min(rect.width, Math.max(0, window.innerWidth - 16));
-      setPosition({ left: Math.max(8, Math.min(rect.left, window.innerWidth - width - 8)), top: rect.bottom + 6, bottom: window.innerHeight - rect.top + 6, width, maxHeight: Math.max(72, Math.min(280, useAbove ? above : below)), above: useAbove });
+
+    const stopTracking = trackOptionListAnchor(anchor, view, target => host.contains(target),
+      (rect, viewport) => setPosition(matchOptionListAnchor(rect, viewport)), closeOptions);
+    const outside = (event: PointerEvent) => {
+      if (!event.composedPath().includes(host)) closeOptions();
     };
-    const schedule = (event?: Event) => {
-      if (event?.target instanceof Node && panel.contains(event.target)) return;
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(place);
-    };
-    const outside = (event: PointerEvent) => { if (event.target instanceof Node && !root.current?.contains(event.target)) closeOptions(); };
-    place();
-    const observer = new ResizeObserver(() => schedule());
-    if (input.current) observer.observe(input.current);
-    window.addEventListener('resize', schedule);
-    document.addEventListener('scroll', schedule, true);
-    document.addEventListener('pointerdown', outside, true);
+    doc.addEventListener('pointerdown', outside, true);
     return () => {
-      observer.disconnect(); window.cancelAnimationFrame(frame);
-      window.removeEventListener('resize', schedule);
-      document.removeEventListener('scroll', schedule, true);
-      document.removeEventListener('pointerdown', outside, true);
+      stopTracking();
+      doc.removeEventListener('pointerdown', outside, true);
     };
   }, [expanded]);
 
@@ -136,13 +122,7 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
 
   useEffect(() => {
     if (!expanded || active < 0) return;
-    const panel = popup.current;
-    const option = document.getElementById(`${listId}-${active}`);
-    if (!panel || !option) return;
-    const top = option.offsetTop;
-    const bottom = top + option.offsetHeight;
-    if (top < panel.scrollTop + 6) panel.scrollTop = Math.max(0, top - 6);
-    else if (bottom > panel.scrollTop + panel.clientHeight - 6) panel.scrollTop = bottom - panel.clientHeight + 6;
+    revealActiveOption(popup.current, `${listId}-${active}`);
   }, [expanded, active, filterText, listId]);
 
   function navigate(event: KeyboardEvent<HTMLInputElement>) {
@@ -177,9 +157,9 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {name && <input type="hidden" name={name} value={selected?.value || ''} disabled={disabled} />}
     {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" />{error}</Text>}
-    <div ref={popup} id={listId} popover="manual" role="listbox" aria-label={`${label} options`} className="cr-autocomplete-popup" data-open={expanded} hidden={!expanded} style={{ '--cr-ac-left': `${position.left}px`, '--cr-ac-top': position.above ? 'auto' : `${position.top}px`, '--cr-ac-bottom': position.above ? `${position.bottom}px` : 'auto', '--cr-ac-width': `${position.width}px`, '--cr-ac-max-height': `${position.maxHeight}px` } as CSSProperties}>
-      {filtered.map((option, index) => <div key={option.value} id={`${listId}-${index}`} role="option" aria-selected={active === index} aria-disabled={option.disabled || undefined} className="cr-autocomplete-option" onPointerMove={() => { if (!option.disabled) setActive(index); }} onPointerDown={event => event.preventDefault()} onClick={() => choose(option)}><span><Text bold>{option.label}</Text>{option.description && <Text size="small">{option.description}</Text>}</span>{selected?.value === option.value && <Check size={14} aria-hidden="true" />}</div>)}
-      {!filtered.length && <div className="cr-autocomplete-empty" role="status">{emptyMessage}</div>}
+    <div ref={popup} id={listId} popover="manual" role="listbox" aria-label={`${label} options`} className="cr-autocomplete-popup cr-option-list-popup" data-open={expanded} hidden={!expanded} style={{ '--cr-ac-left': `${position.left}px`, '--cr-ac-top': position.above ? 'auto' : `${position.top}px`, '--cr-ac-bottom': position.above ? `${position.bottom}px` : 'auto', '--cr-ac-width': `${position.width}px`, '--cr-ac-max-height': `${position.maxHeight}px` } as CSSProperties}>
+      <OptionList id={listId} options={filtered} active={active} value={selected?.value} emptyMessage={emptyMessage}
+        onActivate={setActive} onSelect={choose} optionClassName="cr-autocomplete-option" emptyClassName="cr-autocomplete-empty" />
     </div>
   </div>;
 }

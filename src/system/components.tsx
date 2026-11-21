@@ -1,12 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
-import { AlertCircle, CheckCheck, ChevronDown, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
+import { AlertCircle, CheckCheck, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
 import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip as TaskAttachmentsIcon } from 'lucide-react';
 import type { ControlSize } from './control-size';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 import { Tooltip } from './Tooltip';
 import { Text } from './Text';
+
+export { Select } from './Select';
+export type { SelectProps } from './Select';
 
 export type Tone = 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 const cx = (...names: (string | undefined | false)[]) => names.filter(Boolean).join(' ');
@@ -68,26 +71,6 @@ export function TextArea({ label, hint, error, id: suppliedId, className, ...pro
   const id = suppliedId || generatedId;
   return <div className={cx('cr-field', className)}><label htmlFor={id}>{label}{props.required && ' *'}</label>
     <textarea {...props} id={id} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} />
-    {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
-    {error && <Text size="small" id={`${id}-error`} className="cr-field-error">{error}</Text>}
-  </div>;
-}
-
-export interface SelectProps extends Omit<ComponentPropsWithRef<'select'>, 'size'> {
-  label: string;
-  size?: ControlSize | number;
-  hint?: string;
-  error?: string;
-  hideLabel?: boolean;
-}
-export function Select({ label, size = 'md', hint, error, hideLabel = false, id: suppliedId, className, children, ...props }: SelectProps) {
-  const generatedId = useId();
-  const id = suppliedId || generatedId;
-  const nativeSize = typeof size === 'number' ? size : undefined;
-  const isListbox = props.multiple || (nativeSize ?? 1) > 1;
-  const controlSize = typeof size === 'string' ? size : 'md';
-  return <div className={cx('cr-field', className)}><label htmlFor={id} className={hideLabel ? 'cr-sr-only' : undefined}>{label}{props.required && ' *'}</label>
-    <div className="cr-select-wrap" data-cr-input-size={isListbox ? undefined : controlSize}><select {...props} size={nativeSize} className="cr-input cr-select" id={id} data-cr-autofocus={props.autoFocus || undefined} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined}>{children}</select><ChevronDown size={14} aria-hidden="true" /></div>
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {error && <Text size="small" id={`${id}-error`} className="cr-field-error">{error}</Text>}
   </div>;

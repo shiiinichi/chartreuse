@@ -8,8 +8,8 @@
   .cr-segmented-label { display: flex; align-items: center; justify-content: center; flex: 1; gap: var(--cr-space-2); box-sizing: border-box; min-block-size: 32px; min-inline-size: 32px; max-inline-size: 100%; padding: 5px var(--cr-space-3); border: 1px solid transparent; border-radius: var(--cr-radius-sm); color: var(--cr-color-muted); background: transparent; font: inherit; line-height: 1.5; cursor: pointer; overflow-wrap: anywhere; }
   .cr-segmented-label > svg { display: block; flex: 0 0 auto; }
   .cr-segmented-label > span { min-inline-size: 0; }
-  .cr-segmented-input:checked + .cr-segmented-label { border-color: var(--cr-color-input-border); color: var(--cr-color-text); background: var(--cr-color-surface); font-weight: 550; box-shadow: var(--cr-shadow-sm); }
-  :where(.cr-segmented-control[data-variant='solid']) .cr-segmented-input:checked + .cr-segmented-label { border-color: var(--cr-color-primary); color: var(--cr-color-on-primary); background: var(--cr-color-primary); }
+  .cr-segmented-input:checked + .cr-segmented-label { border-color: var(--cr-color-active); color: var(--cr-color-text); background: var(--cr-color-surface); font-weight: 550; box-shadow: 0 0 0 1px light-dark(transparent, var(--cr-color-active-border)); }
+  :where(.cr-segmented-control[data-variant='solid']) .cr-segmented-input:checked + .cr-segmented-label { border-color: var(--cr-color-active-border); color: var(--cr-color-on-active); background: var(--cr-color-active); box-shadow: var(--cr-shadow-sm); }
   .cr-segmented-input:not(:disabled, :checked) + .cr-segmented-label:hover { color: var(--cr-color-text); background: var(--cr-color-surface); }
   .cr-segmented-input:focus-visible + .cr-segmented-label { position: relative; z-index: 1; outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
   .cr-segmented-input:disabled + .cr-segmented-label { opacity: .45; cursor: not-allowed; }

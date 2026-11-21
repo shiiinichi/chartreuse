@@ -202,8 +202,7 @@ export function TabsScenarios() {
       '  const [size, setSize] = useState<(typeof sizes)[number]>("md");',
       '  return <>',
       '    <div role="group" aria-label="Tab size">',
-      '      {sizes.map(option => <Button key={option} size={option}',
-      '        variant={size === option ? "primary" : "secondary"}',
+      '      {sizes.map(option => <Button key={option} size={option} variant="secondary"',
       '        aria-pressed={size === option} onClick={() => setSize(option)}>{option}</Button>)}',
       '    </div>',
       '    <Tabs label="Line tabs" size={size} items={items} />',
@@ -214,7 +213,7 @@ export function TabsScenarios() {
     )}>
       <div className="core-example-stack">
         <div className="core-example-row" role="group" aria-label="Tab size">
-          {tabSizes.map(option => <Button key={option} size={option} variant={size === option ? 'primary' : 'secondary'}
+          {tabSizes.map(option => <Button key={option} size={option} variant="secondary"
             aria-pressed={size === option} onClick={() => setSize(option)}>{option}</Button>)}
         </div>
         <Tabs label="Line tabs" size={size} items={tabItems} />

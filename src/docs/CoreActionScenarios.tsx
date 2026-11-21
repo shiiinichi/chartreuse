@@ -103,12 +103,12 @@ export function IconButtonScenarios() {
       '  return <>',
       '    <IconButton icon={Bookmark}',
       '      label={bookmarked ? "Remove bookmark" : "Bookmark task"}',
-      '      aria-pressed={bookmarked} variant={bookmarked ? "accent" : "secondary"}',
+      '      aria-pressed={bookmarked} variant="secondary"',
       '      onClick={() => setBookmarked(value => !value)} />',
       '    <Text size="body" role="status">{bookmarked ? "Task bookmarked." : "Task not bookmarked."}</Text>',
       '  </>;',
       '}',
-    )}><div className="core-example-stack"><IconButton icon={Bookmark} label={bookmarked ? 'Remove bookmark' : 'Bookmark task'} aria-pressed={bookmarked} variant={bookmarked ? 'accent' : 'secondary'} onClick={() => setBookmarked(value => !value)} /><Text size="body" className="core-example-result" role="status">{bookmarked ? 'Task bookmarked.' : 'Task not bookmarked.'}</Text></div></Showcase>
+    )}><div className="core-example-stack"><IconButton icon={Bookmark} label={bookmarked ? 'Remove bookmark' : 'Bookmark task'} aria-pressed={bookmarked} variant="secondary" onClick={() => setBookmarked(value => !value)} /><Text size="body" className="core-example-result" role="status">{bookmarked ? 'Task bookmarked.' : 'Task not bookmarked.'}</Text></div></Showcase>
     <Showcase title="Icon button sizes and disabled state" description="IconButton accepts Button sizing and disabled props. label supplies its accessible name." code={snippet(
       'import { Plus, FolderOpen, RotateCcw } from "lucide-react";',
       'import { IconButton } from "@chartreuse/ui";',

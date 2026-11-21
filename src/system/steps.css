@@ -1,10 +1,12 @@
 @layer cr-components {
   .cr-steps > .cr-sequence-item { --_cr-sequence-color: var(--cr-color-muted); }
   .cr-steps > .cr-sequence-item[data-status='complete'] { --_cr-sequence-color: var(--cr-color-success); }
-  .cr-steps > .cr-sequence-item[data-status='current'] { --_cr-sequence-color: var(--cr-color-primary); }
+  .cr-steps > .cr-sequence-item[data-status='current'] { --_cr-sequence-color: var(--cr-color-active); }
   .cr-steps > .cr-sequence-item[data-status='error'] { --_cr-sequence-color: var(--cr-color-danger); }
   .cr-steps > .cr-sequence-item[aria-current='step'] > .cr-sequence-marker { border-width: 2px; }
   .cr-steps[data-marker-variant='outline'] > .cr-sequence-item[data-status='complete'] > .cr-sequence-marker { background: var(--cr-color-success-bg); }
+  .cr-steps[data-marker-variant='outline'] > .cr-sequence-item[data-status='current'] > .cr-sequence-marker { color: light-dark(var(--cr-color-active), var(--cr-color-text)); box-shadow: 0 0 0 1px light-dark(transparent, var(--cr-color-active-border)); }
+  .cr-steps[data-marker-variant='solid'] > .cr-sequence-item[data-status='current'] > .cr-sequence-marker { background: var(--cr-color-active); color: var(--cr-color-on-active); border-color: var(--cr-color-active-border); }
   .cr-step-number { font: 500 11px/1 var(--cr-font-mono); }
   .cr-step-dot { inline-size: 5px; block-size: 5px; border-radius: var(--cr-radius-full); background: currentColor; }
 }

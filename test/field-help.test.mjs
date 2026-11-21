@@ -54,6 +54,24 @@ test('Select forwards the native row count and preserves listbox options', () =>
   assert.match(dropdown.markup, /data-cr-input-size="md"/);
 });
 
+test('single-choice Select retains its native form owner and authored option groups', () => {
+  const h = React.createElement;
+  const field = {
+    name: 'Select', Component: Select, tag: 'select',
+    children: h(React.Fragment, null,
+      h('option', { value: '', disabled: true }, 'Choose a workspace'),
+      h('optgroup', { label: 'Current' }, h('option', { value: 'team' }, 'Team')),
+      h('optgroup', { label: 'Archived', disabled: true }, h('option', { value: 'archive' }, 'Archive'))),
+  };
+  const { control, markup } = renderField(field, { form: 'workspace-form', required: true, defaultValue: 'team' });
+
+  assert.match(control[0], /\bform="workspace-form"/);
+  assert.match(control[0], /\brequired=""/);
+  assert.match(markup, /<option[^>]*value=""[^>]*disabled=""[^>]*>Choose a workspace<\/option>/);
+  assert.match(markup, /<optgroup label="Current"><option[^>]*value="team"[^>]*selected=""[^>]*>Team<\/option><\/optgroup>/);
+  assert.match(markup, /<optgroup label="Archived" disabled="">/);
+});
+
 test('field helper text follows the native input control and remains its accessible description', () => {
   for (const field of fields) {
     const { id, markup, control } = renderField(field, { hint: 'Supporting detail.' });

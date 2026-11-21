@@ -202,7 +202,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures.
 
-`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for the `line`, `pill`, and `highlight` styles. The default size is `"md"`, and each size matches the corresponding `Button` height. Use `variant="highlight"` to give the selected tab a subtle fill and an accent underline.
+`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for the `line`, `pill`, and `highlight` styles. The default size is `"md"`, and each size matches the corresponding `Button` height. Selected tabs use an Evergreen underline. The `pill` style adds a raised surface, and the `highlight` style adds a subtle fill with rounded top corners.
 
 `Breadcrumbs` uses chevrons by default. Set `separator` to decorative text or JSX, or pass `null` to hide separators.
 
@@ -210,7 +210,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `SegmentedControl` uses named native radios for a single visible choice. Set `variant="solid"` for a filled selection. `Slider` uses a native range input with formatted values. Both support controlled or uncontrolled state, native form behavior, disabled states, and accessible hints/errors. The Iconography page uses these components for its Size and Stroke controls.
 
-`ButtonSelect` uses the same sizes, variants, and tokens as `Button`. The trigger and popover fit their own contents by default. Use `panelClassName` to set a custom popover width, or pass `matchTriggerWidth` to match the trigger's width. When the popover sizes independently, give width-filling `Flex` or `Grid` content an explicit width on the content or panel. Render the current selection as its children and pass a list, grid, or other controls through `content`. A content renderer receives `close()` so it can dismiss the popover when the user finishes. [ButtonSelect examples](https://shiiinichi.github.io/chartreuse/#components/button-select)
+`ButtonSelect` uses the same sizes and variants as `Button`. Pass `options` to use the built-in picker, which shares Autocomplete’s popup styles and matches the trigger width by default. Use `defaultValue` for an initial choice or `value` and `onValueChange` to control selection. Supply `content` for a custom picker with its own layout and controls. The custom panel sizes to its contents by default, supports `panelClassName` and `matchTriggerWidth`, and passes `close()` to content renderers. [ButtonSelect examples](https://shiiinichi.github.io/chartreuse/#components/button-select)
 
 `Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots.
 
@@ -252,6 +252,8 @@ Split resizing is optional and off by default. Set `resizableSplit` to enable po
 ```
 
 The [Form controls gallery](http://127.0.0.1:5173/#forms) includes `Autocomplete` and `MessageComposer`. Autocomplete accepts labeled options with `value`, `label`, optional `description`, and `disabled`; use `value` / `onValueChange` for a controlled selection or `defaultValue` for an uncontrolled one. Arrow keys move through enabled matches, Enter commits a selection, and Escape restores the selected label. `name` submits the selected option ID as a hidden form value. The searchable input retains its label, hint/error relationships, disabled and required semantics. Suggestions use a native top-layer popover so gallery and form containers do not clip them.
+
+Single-choice `Select` dropdowns use the same popup as Autocomplete and ButtonSelect. Keep using native `<option>` and `<optgroup>` children, `value` or `defaultValue`, and `onChange`. The `multiple` prop or a numeric `size` greater than one displays an inline native listbox.
 
 `MessageComposer` combines a labeled textarea, hint, and send action. The caller implements submission in the required `onSend(message)` callback, which can be synchronous or asynchronous. Submission displays a busy state; failures retain the draft, and successful sends clear the submitted text. Edits made while submission is pending are retained. Enter adds a new line; Command/Ctrl+Enter sends. The gallery simulates success, delay, and failure within the example.
 
@@ -400,6 +402,8 @@ import { Flex, Text } from '@chartreuse/ui';
 ```
 
 The base palette is evergreen `#024340`, light evergreen `#096864`, chartreuse `#DBFFAD`, paper `#FFFDF6`, canvas `#F2F0E6`, muted `#52645F`, and border `#CECCC3`. Supporting colors define agent, status, and feedback styles. Semantic tokens map these primitives to component roles in light and dark themes.
+
+Active highlights use `--cr-color-active` (Evergreen) and `--cr-color-on-active` (Paper). `--cr-color-active-border` gives filled controls a visible edge on dark surfaces. Set these variables on an application wrapper to customize its active palette.
 
 ```css
 .workspace {

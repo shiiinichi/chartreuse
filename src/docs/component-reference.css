@@ -51,7 +51,7 @@
   .component-reference-playground[data-component='Divider'] .showcase-preview > .reference-demo-stack { gap: 0; }
   .reference-demo-narrow { inline-size: 100%; max-inline-size: 520px; }
   .reference-range { display: flex; flex-direction: column; gap: 12px; inline-size: min(100%, 360px); font-size: 13px; color: var(--cr-color-muted); }
-  .reference-range > input { inline-size: 100%; margin: 0; accent-color: var(--cr-color-primary); }
+  .reference-range > input { inline-size: 100%; margin: 0; accent-color: var(--cr-color-active); }
   .reference-card-example { inline-size: min(100%, 380px); padding: 28px; }
   .reference-card-example > h3 { margin-block: 22px 10px; font-size: 18px; font-weight: 550; }
   .reference-card-example > p { margin-block-end: 22px; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }

@@ -17,8 +17,12 @@
   .cr-button-select-panel {
     position: fixed;
     inset: auto;
-    box-sizing: border-box;
     inline-size: max-content;
+    opacity: 0;
+  }
+
+  .cr-button-select-panel:where(:not(.cr-option-list-popup)) {
+    box-sizing: border-box;
     margin: 0;
     padding: var(--cr-space-2);
     border: 1px solid var(--cr-color-border);
@@ -28,7 +32,6 @@
     box-shadow: var(--cr-shadow-lg);
     overflow: auto;
     overscroll-behavior: contain;
-    opacity: 0;
   }
 
   .cr-button-select-panel[data-positioned] { opacity: 1; }

@@ -112,8 +112,9 @@
   }
 
   :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] {
-    background: var(--cr-color-primary);
-    color: var(--cr-color-on-primary);
+    background: var(--cr-color-active);
+    color: var(--cr-color-on-active);
+    box-shadow: inset 0 0 0 1px var(--cr-color-active-border);
     font-weight: 650;
   }
 
@@ -121,6 +122,7 @@
     :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] {
     background: var(--cr-evergreen-light);
     color: var(--cr-color-text);
+    box-shadow: none;
   }
 
   .cr-navbar-item:where(a):focus-visible,
@@ -197,7 +199,7 @@
     color: var(--cr-color-muted);
   }
 
-  :is(.cr-navbar-sidebar-toggle, .cr-navbar-sidebar-pin).cr-button[data-variant='ghost']:hover:not(:disabled) {
+  :is(.cr-navbar-sidebar-toggle, .cr-navbar-sidebar-pin).cr-button[data-variant='ghost']:hover:where(:not(:disabled)) {
     background: transparent;
     color: var(--cr-color-text);
   }
@@ -219,10 +221,20 @@
   }
 
   .cr-navbar-sidebar-toggle.cr-button[aria-expanded='true'][data-variant='ghost'],
-  .cr-navbar-sidebar-pin.cr-button[aria-pressed='true'][data-variant='ghost'] { color: var(--cr-color-primary); }
+  .cr-navbar-sidebar-pin.cr-button[aria-pressed='true'][data-variant='ghost'] {
+    --button-bg: transparent;
+    border-color: transparent;
+    color: var(--cr-color-on-active);
+  }
 
-  .cr-navbar-sidebar-toggle[aria-expanded='true']:not(:hover)::before {
-    background: color-mix(in srgb, currentColor 9%, transparent);
+  :is(.cr-navbar-sidebar-toggle[aria-expanded='true'], .cr-navbar-sidebar-pin[aria-pressed='true'])::before {
+    background: var(--cr-color-active);
+    box-shadow: inset 0 0 0 1px var(--cr-color-active-border);
+  }
+
+  :where(.cr-navbar[data-surface='evergreen'] > .cr-navbar-inner) > .cr-navbar-sidebar-toggle[aria-expanded='true']::before {
+    background: var(--cr-evergreen-light);
+    box-shadow: none;
   }
 
   .cr-navbar-sidebar-toggle[aria-expanded='true']::after {
@@ -249,6 +261,7 @@
 
   @media (forced-colors: active) {
     :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] { border: 1px solid LinkText; }
+    .cr-navbar-sidebar-toggle[aria-expanded='true']::before { background: var(--cr-color-active); }
     .cr-navbar-sidebar-toggle[aria-expanded='true']::after { border-color: ButtonText; }
   }
 }

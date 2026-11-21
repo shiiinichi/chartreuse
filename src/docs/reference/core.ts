@@ -3,39 +3,30 @@ import type { ComponentReference } from './types';
 export const buttonSelectReference: ComponentReference = {
   name: 'ButtonSelect',
   slug: 'button-select',
-  summary: 'A Button that opens an anchored popover for choices, grids, or other interactive content.',
-  importCode: "import { useState } from 'react';\nimport { Button, ButtonSelect } from '@chartreuse/ui';",
-  usageCode: `export function ViewSelect() {
-  const [view, setView] = useState('Grid');
+  summary: 'A Button that opens an anchored option picker with support for custom popover content.',
+  importCode: "import { ButtonSelect } from '@chartreuse/ui';",
+  usageCode: `const views = [
+  { value: 'grid', label: 'Grid' },
+  { value: 'list', label: 'List' },
+  { value: 'board', label: 'Board' },
+];
 
-  return <ButtonSelect variant="secondary" aria-label={'View layout, ' + view}
-    content={({ close }) => (
-      <div role="group" aria-label="View layout" style={{ display: 'grid', gap: 'var(--cr-space-1)' }}>
-        {['Grid', 'List', 'Board'].map(option => {
-          const selected = option === view;
-          return <Button key={option} size="sm" variant={selected ? 'primary' : 'ghost'}
-            style={{
-              border: 0,
-              outlineOffset: 1,
-              fontWeight: selected ? 650 : undefined,
-              backgroundColor: selected ? undefined : 'transparent',
-            }}
-            aria-pressed={selected}
-            onClick={() => { setView(option); close(); }}>
-            {option}
-          </Button>;
-        })}
-      </div>
-    )}>
-    {view}
-  </ButtonSelect>;
+export function ViewSelect() {
+  return <ButtonSelect variant="secondary" aria-label="View layout"
+    options={views} defaultValue="grid" style={{ inlineSize: '10rem' }} />;
 }`,
   nativeElement: 'button and div[popover]',
   nativeProps: 'Button props, native events, className, style, and ref target the trigger. ButtonSelect manages its button type, popover target, and expanded state. The onClick handler can prevent the native toggle with preventDefault().',
   props: [
-    { name: 'children', type: 'ReactNode', description: 'The trigger content, aligned to the start. Show the current choice or a summary here.' },
-    { name: 'content', type: 'ReactNode | ((controls: ButtonSelectControls) => ReactNode)', required: true, description: 'Content inside the popover. Use the render function to call close() when the user finishes.' },
-    { name: 'matchTriggerWidth', type: 'boolean', defaultValue: 'false', description: 'Matches the popover to the rendered trigger width, subject to the available viewport width.' },
+    { name: 'options', type: 'readonly ButtonSelectOption[]', description: 'Choices for the built-in picker. Each option has a unique string value and label, with optional description and disabled fields.' },
+    { name: 'value', type: "ButtonProps['value']", description: 'Controlled option ID in the built-in picker. Custom content mode forwards value to Button.' },
+    { name: 'defaultValue', type: "ButtonProps['defaultValue']", description: 'Initial option ID for an uncontrolled picker. Custom content mode forwards defaultValue to Button.' },
+    { name: 'onValueChange', type: '(value: string) => void', description: 'Called when the user chooses an enabled option.' },
+    { name: 'placeholder', type: 'string', defaultValue: "'Select an option'", description: 'Trigger text before a choice is made in the built-in picker.' },
+    { name: 'emptyMessage', type: 'string', defaultValue: "'No options available.'", description: 'Message shown when the built-in picker has no options.' },
+    { name: 'children', type: 'ReactNode', description: 'Custom trigger content. The built-in picker uses the selected label or placeholder by default.' },
+    { name: 'content', type: 'ReactNode | ((controls: ButtonSelectControls) => ReactNode)', description: 'Replaces the built-in options with custom popover content. The render function receives close().' },
+    { name: 'matchTriggerWidth', type: 'boolean', defaultValue: 'true for options, false for custom content', description: 'Matches the popover to the rendered trigger width, subject to the available viewport width.' },
     { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger'", defaultValue: "'primary'", description: 'Uses the corresponding Button variant and tokens.' },
     { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Uses the corresponding Button size.' },
     { name: 'icon', type: 'IconSource', description: 'Leading icon passed to Button.' },
@@ -46,10 +37,10 @@ export const buttonSelectReference: ComponentReference = {
     { name: 'ref', type: 'Ref<HTMLButtonElement>', description: 'Native ref to the trigger.' },
   ],
   notes: [
-    'The trigger and popover each fit their own contents by default. Give width-filling content such as Flex or Grid a definite width on the content or panel, or use matchTriggerWidth.',
-    'Keep selection state in the owner and use children to display the current value or a summary. Call close() after a single choice or from an explicit confirmation button.',
-    'Use native controls inside the popover. Tab reaches those controls in order, Escape closes the popover, and clicking outside dismisses it. Focus returns to the trigger when closing from inside the panel.',
-    'Provide an accessible name with context when the trigger shows only a value or an icon. Label groups of related controls within the panel.',
+    'The built-in picker shares Autocomplete’s panel and option styles. Arrow keys move through enabled choices. Enter or Space commits the highlighted choice.',
+    'Custom content sizes to its contents by default. Give width-filling content such as Flex or Grid a definite width on the content or panel, or use matchTriggerWidth.',
+    'Use native controls within custom content and call close() when the user finishes. Escape and outside clicks dismiss the popover.',
+    'Give the trigger an accessible name that describes the choice. Label groups of related controls in custom content.',
   ],
 };
 
@@ -108,7 +99,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'onClick', type: '(event: MouseEvent<HTMLButtonElement>) => void', description: 'Handles the native click event when enabled.' },
     ],
     notes: [
-      'Provide a visible label that names the action. Use IconButton when the action has only an icon. Custom icons receive control sizing and decorative SVG attributes.', 'Native form attributes such as form and name are supported.'],
+      'Provide a visible label that names the action. Use IconButton when the action has only an icon. Custom icons receive control sizing and decorative SVG attributes.', 'Set aria-pressed for a toggle button. Pressed buttons use the evergreen active highlight.', 'Native form attributes such as form and name are supported.'],
   },
   buttonSelectReference,
   {
@@ -224,7 +215,7 @@ export const coreReferences: ComponentReference[] = [
   {
     name: 'Select',
     slug: 'select',
-    summary: 'A labeled native select with a decorative arrow, optional hint, and error feedback.',
+    summary: 'A labeled native select with the shared option popup, optional hint, and error feedback.',
     importCode: "import { Select } from '@chartreuse/ui';",
     usageCode: `<Select label="Priority" name="priority" defaultValue="medium">
   <option value="low">Low</option>
@@ -246,7 +237,8 @@ export const coreReferences: ComponentReference[] = [
     ],
     notes: [
       "Use Grid and GridItem for peer fields in either direction: columns={1} gap={4} for a vertical stack, or columns={{ base: 1, sm: 2 }} gap={4} for a responsive row. Put each whole labeled control in GridItem span={1}.",
-      'Options use native browser UI. When using hideLabel, retain visible context that identifies the field’s purpose.'],
+      'Single-choice dropdowns use the shared Autocomplete and ButtonSelect popup. Use multiple or a numeric size greater than one for an inline native listbox.',
+      'When using hideLabel, retain visible context that identifies the field’s purpose.'],
   },
   {
     name: 'Checkbox',
@@ -385,7 +377,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'defaultValue', type: 'string', defaultValue: 'First item’s value', description: 'The initial selected key for uncontrolled usage.' },
       { name: 'value', type: 'string', description: 'The controlled selected key. Pair with onValueChange.' },
       { name: 'onValueChange', type: '(value: string) => void', description: 'Called when a tab is selected by click or keyboard.' },
-      { name: 'variant', type: "'line' | 'pill' | 'highlight'", defaultValue: "'line'", description: 'Use highlight for a selected tab with a subtle fill, rounded top corners, and an accent underline.' },
+      { name: 'variant', type: "'line' | 'pill' | 'highlight'", defaultValue: "'line'", description: 'Selected tabs use an Evergreen underline. Pill tabs add a raised surface, and highlight tabs add a subtle fill with rounded top corners.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Each tab button uses the same minimum height as a Button of the corresponding size.' },
       { name: 'className', type: 'string', description: 'Additional classes on the root div.' },
     ],

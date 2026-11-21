@@ -1,7 +1,7 @@
 import type { ComponentTokenDoc } from './types';
 
 const paginationGlobals = [
-  '--cr-color-focus', '--cr-color-muted', '--cr-color-on-primary', '--cr-color-primary',
+  '--cr-color-focus', '--cr-color-muted', '--cr-color-active', '--cr-color-on-active', '--cr-color-active-border',
   '--cr-color-subtle', '--cr-color-text', '--cr-duration-fast', '--cr-font-sans',
   '--cr-radius-md', '--cr-shadow-sm', '--cr-space-1', '--cr-space-4',
 ];
@@ -21,7 +21,7 @@ export const tableTokenDocs: ComponentTokenDoc[] = [
     globalTokens: paginationGlobals,
     notes: [
       'The ellipsis width uses space-4. The shared font and muted color style the ellipses and compact page summary.',
-      'The current page uses the primary button palette. Other page buttons and the previous and next buttons use the ghost palette.',
+      'The current page uses the solid evergreen highlight. Other page buttons and the previous and next buttons use the ghost palette.',
     ],
   },
   {

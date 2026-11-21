@@ -36,11 +36,12 @@ test('Button icon slots render decorative SVGs without a tabindex', () => {
 
 test('ButtonSelect preserves Button styling and connects the trigger to arbitrary controls', () => {
   const h = React.createElement;
-  const buttonProps = { variant: 'accent', size: 'lg', className: 'column-toggle', style: { '--button-bg': 'rebeccapurple' }, iconRight: h('svg') };
+  const buttonProps = { variant: 'accent', size: 'lg', className: 'column-toggle', style: { '--button-bg': 'rebeccapurple' }, iconRight: h('svg'), name: 'intent', value: 'columns' };
   const buttonMarkup = renderToStaticMarkup(h(system.Button, buttonProps, 'Columns'));
   const markup = renderToStaticMarkup(h(system.ButtonSelect, {
     ...buttonProps,
     panelClassName: 'column-picker',
+    options: [{ value: 'grid', label: 'Grid view' }],
     content: ({ close }) => h('div', { role: 'group', 'aria-label': 'Visible columns' },
       h(system.Checkbox, { label: 'Owner', defaultChecked: true }),
       h(system.Button, { onClick: close }, 'Done')),
@@ -58,6 +59,33 @@ test('ButtonSelect preserves Button styling and connects the trigger to arbitrar
     .replace(/ popovertarget="[^"]+" aria-controls="[^"]+" aria-expanded="false"/i, ''), buttonMarkup);
   assert.match(markup, /role="group" aria-label="Visible columns"/);
   assert.match(markup, /type="checkbox"/);
+  assert.doesNotMatch(markup, /Grid view|role="listbox"/);
+});
+
+test('ButtonSelect options render the shared listbox and selected label', () => {
+  const markup = renderToStaticMarkup(React.createElement(system.ButtonSelect, {
+    'aria-label': 'View layout',
+    defaultValue: 'grid',
+    options: [
+      { value: 'grid', label: 'Grid', description: 'Cards in columns' },
+      { value: 'board', label: 'Board', disabled: true },
+    ],
+  }));
+
+  const trigger = markup.match(/<button\b[^>]*>/)?.[0] ?? '';
+  const panelId = trigger.match(/popovertarget="([^"]+)"/i)?.[1];
+  assert.ok(panelId);
+  assert.ok(trigger.includes(`aria-controls="${panelId}"`));
+  assert.match(trigger, /role="combobox"/);
+  assert.match(markup, /<span class="cr-button-select-label">Grid<\/span>/);
+  assert.match(markup, /role="listbox" aria-label="View layout"/);
+  assert.match(markup, /class="[^"]*\bcr-option-list-popup\b/);
+  assert.match(markup, /Cards in columns/);
+  const options = markup.match(/<div\b[^>]*\brole="option"[^>]*>/g) ?? [];
+  assert.equal(options.length, 2);
+  assert.match(options[0], /aria-selected="false"/);
+  assert.match(options[1], /aria-disabled="true"/);
+  assert.match(markup, /\blucide-check\b/);
 });
 
 async function readReferenceModule(filename) {

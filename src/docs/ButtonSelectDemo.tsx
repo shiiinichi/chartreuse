@@ -8,30 +8,15 @@ import { ExampleGallery, Showcase } from './shared';
 
 const variantsCode = variantsSource.replace("from '../system'", "from '@chartreuse/ui'").trim();
 
-function ViewSelect() {
-  const [view, setView] = useState('Grid');
+const views = [
+  { value: 'grid', label: 'Grid' },
+  { value: 'list', label: 'List' },
+  { value: 'board', label: 'Board' },
+];
 
-  return <ButtonSelect variant="secondary" aria-label={`View layout, ${view}`}
-    content={({ close }) => (
-      <div role="group" aria-label="View layout" style={{ display: 'grid', gap: 'var(--cr-space-1)' }}>
-        {['Grid', 'List', 'Board'].map(option => {
-          const selected = option === view;
-          return <Button key={option} size="sm" variant={selected ? 'primary' : 'ghost'}
-            style={{
-              border: 0,
-              outlineOffset: 1,
-              fontWeight: selected ? 650 : undefined,
-              backgroundColor: selected ? undefined : 'transparent',
-            }}
-            aria-pressed={selected}
-            onClick={() => { setView(option); close(); }}>
-            {option}
-          </Button>;
-        })}
-      </div>
-    )}>
-    {view}
-  </ButtonSelect>;
+function ViewSelect() {
+  return <ButtonSelect variant="secondary" aria-label="View layout"
+    options={views} defaultValue="grid" style={{ inlineSize: '10rem' }} />;
 }
 
 const columns = ['Owner', 'Status', 'Priority', 'Due date'];

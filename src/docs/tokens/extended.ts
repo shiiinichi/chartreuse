@@ -8,7 +8,7 @@ const fieldGlobals = names('font-sans color-text color-muted color-danger color-
 // palettes and the primary-button hover shadow are not active for that variant.
 const ghostButtonGlobals = names('font-sans color-text color-focus color-subtle radius-md duration-fast');
 const primaryButtonGlobals = names('font-sans color-text color-focus radius-md duration-fast color-primary color-on-primary shadow-sm');
-const markdownGlobals = globals(names('color-text color-muted color-success color-success-bg color-focus color-border color-subtle color-canvas color-primary font-sans font-mono radius-sm radius-md'), ghostButtonGlobals);
+const markdownGlobals = globals(names('color-text color-muted color-success color-success-bg color-focus color-border color-subtle color-canvas color-active font-sans font-mono radius-sm radius-md'), ghostButtonGlobals);
 const gridGapGlobals = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map(step => `--cr-space-${step}`);
 const tiers = ['base', 'sm', 'md', 'lg', 'xl'] as const;
 
@@ -83,10 +83,10 @@ const sliderHooks: TokenDefinition[] = [
     notes: ['The range target’s 40px/44px block size is a separate literal CSS value, not this token.'],
   },
   {
-    name: '--cr-slider-fill', description: 'Filled track and thumb color.', type: 'color', defaultValue: 'var(--cr-color-primary)',
+    name: '--cr-slider-fill', description: 'Filled track and thumb color.', type: 'color', defaultValue: 'var(--cr-color-active)',
     source: { file: systemFile('slider.css'), selector: '.cr-slider-input' },
     sources: [{ file: systemFile('slider.css'), selector: ".cr-slider-input[aria-invalid='true']", detail: 'Validation assigns var(--cr-color-danger).' }, { file: systemFile('slider.css'), selector: '.cr-slider-input', detail: '@media (forced-colors: active) assigns Highlight; native thumb overrides use ButtonText.' }],
-    references: ['--cr-color-primary', '--cr-color-danger'],
+    references: ['--cr-color-active', '--cr-color-danger'],
     notes: ['This is a stateful local alias. Preserve the invalid-state distinction when overriding it. Forced-colors rules also replace the track/thumb paint directly.'],
   },
   {
@@ -168,7 +168,7 @@ function sequenceRuntime(component: 'Timeline' | 'Steps'): RuntimeVariableDefini
   return [
     {
       name: '--_cr-sequence-color', description: 'Internal per-entry marker border/fill/foreground color derived from tone or step status.',
-      source: { file: systemFile(timeline ? 'sequence.css' : 'steps.css'), selector: timeline ? '.cr-sequence-item' : '.cr-steps > .cr-sequence-item', detail: timeline ? 'Base/neutral Timeline entries use --cr-color-primary. timeline.css success/info/warning/danger entries use matching semantic colors; pending entries use muted.' : 'Steps defaults to muted; complete/current/error selectors use success/primary/danger respectively. Upcoming entries keep muted.' },
+      source: { file: systemFile(timeline ? 'sequence.css' : 'steps.css'), selector: timeline ? '.cr-sequence-item' : '.cr-steps > .cr-sequence-item', detail: timeline ? 'Base/neutral Timeline entries use --cr-color-primary. timeline.css success/info/warning/danger entries use matching semantic colors; pending entries use muted.' : 'Steps defaults to muted. Complete, current, and error selectors use success, active, and danger colors respectively.' },
       notes: [timeline ? 'Use item.tone for built-in marker states. Pending state is component-owned.' : 'Use current or item.status for the process state. The complete outline marker also consumes the shared success background.', 'The leading underscore marks an implementation variable; public geometry/line hooks do not replace this state mapping.'],
     },
     {
@@ -183,9 +183,9 @@ function sequenceRuntime(component: 'Timeline' | 'Steps'): RuntimeVariableDefini
 export const extendedTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'Autocomplete', componentTokens: [],
-    globalTokens: globals(fieldGlobals, names('color-subtle color-border color-success-bg radius-lg shadow-lg')),
+    globalTokens: globals(fieldGlobals, names('color-subtle color-active color-on-active color-active-border radius-lg shadow-lg')),
     runtimeVariables: ['left', 'top', 'bottom', 'width', 'max-height'].map(part => ({ name: `--cr-ac-${part}`, description: `Measured popup ${part}; recomputed for the current input, viewport, and available space.`, source: { file: systemFile('Autocomplete.tsx'), detail: 'The popup’s inline style serializes position; autocomplete.css .cr-autocomplete-popup consumes the same exact names.' }, notes: ['Positioning is owned by the combobox. Do not use its geometry variables as theme tokens.'] })),
-    notes: ['No component-owned styling tokens are declared. autocomplete.css supplies the listbox/actions; shared .cr-field, .cr-required, .cr-input, and .cr-field-error rules in styles.css supply labels, input states, and validation.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared large radius and shadow. The active option uses the success background.'],
+    notes: ['autocomplete.css positions the popup and styles the field actions. Autocomplete and ButtonSelect share the panel and option styles in option-list.css.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared large radius and shadow. The active option uses the solid evergreen highlight and its paired foreground.'],
   },
   {
     component: 'MessageComposer', componentTokens: [],
@@ -204,7 +204,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'MarkdownRenderer', componentTokens: [], globalTokens: markdownGlobals,
-    notes: ['No component-owned CSS custom properties are declared. markdown-renderer.css uses semantic colors, fonts, small/medium radii, and the primary color for GFM checkboxes; code-copy IconButton transitively consumes ghost Button focus/fast-motion/radius globals.', 'Heading sizes, paragraph rhythm, table/code padding, and maximum heights remain literal CSS. Markdown code typography consumes --cr-font-mono directly.'],
+    notes: ['markdown-renderer.css uses semantic colors, fonts, small and medium radii, and the active color for GFM checkboxes. The code-copy IconButton uses the shared ghost Button palette.', 'Heading sizes, paragraph rhythm, table/code padding, and maximum heights remain literal CSS. Markdown code typography consumes --cr-font-mono directly.'],
   },
   {
     component: 'Disclosure', componentTokens: [],
@@ -255,7 +255,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component-owned CSS variables are declared. The activity-specific and shared left-rule rules in content-blocks.css consume shared spacing, text/border colors, and link/focus colors.', 'Identifier, title, metadata, and footer type sizes are literal CSS. Supplied metadata badges/actions retain their own component token contracts.'],
   },
   {
-    component: 'Tree', componentTokens: [], globalTokens: names('color-text font-sans color-border radius-md color-surface color-subtle color-success color-success-bg color-focus color-muted color-input-border').sort(),
+    component: 'Tree', componentTokens: [], globalTokens: names('color-text font-sans color-border radius-md color-surface color-subtle color-active color-on-active color-active-border color-focus color-muted color-input-border').sort(),
     runtimeVariables: [{ name: '--cr-tree-closed-rotation', description: 'Chevron angle for a closed branch in the current text direction.', source: { file: systemFile('tree.css'), selector: '.cr-tree:dir(rtl)', detail: 'RTL assigns 90deg; .cr-tree-toggle > svg consumes a -90deg fallback. Expanded branches use a direct 0deg rule.' }, notes: ['Internal direction state. Set dir/use inherited document direction rather than overriding the angle.'] }],
     notes: ['No component styling hooks are declared for Tree. tree.css uses shared neutral/selected colors and the input-border color for branch connectors.', 'Node gaps/padding, line widths, indentation, type size, 400px container adjustment, and coarse-pointer sizes are literal CSS, not shared spacing tokens. Custom node content retains its own tokens.'],
   },
@@ -264,12 +264,12 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component-owned CSS variables are declared. agent-activity.css consumes shared status colors and 4/8/12px spacing steps, with monospace output and fast chevron transitions.', 'The 1s running spin, 440px container breakpoint, row heights, output height, and margins expressed in pixels are literal CSS. Coarse-pointer and reduced-motion rules adjust those styles without additional tokens.'],
   },
   {
-    component: 'SegmentedControl', componentTokens: [], globalTokens: names('color-text font-sans space-2 space-1 color-border color-subtle radius-md space-3 radius-sm color-muted color-input-border color-surface color-primary color-on-primary shadow-sm color-focus color-danger').sort(),
-    notes: ['The solid variant uses color-primary for the selected segment fill and color-on-primary for its label. The outline variant uses color-surface and color-input-border. Required-marker danger color comes from styles.css.', 'The segment sizes, track inset, optical error-icon adjustment, and coarse-pointer height are literal CSS. Selection uses native radio state.'],
+    component: 'SegmentedControl', componentTokens: [], globalTokens: names('color-text font-sans space-2 space-1 color-border color-subtle radius-md space-3 radius-sm color-muted color-surface color-active color-on-active color-active-border shadow-sm color-focus color-danger').sort(),
+    notes: ['The selected segment uses the raised surface with an evergreen outline in the outline variant. The solid variant uses an evergreen fill with its paired foreground. The required marker uses the danger color.', 'The segment sizes, track inset, optical error-icon adjustment, and coarse-pointer height are literal CSS. Selection uses native radio state.'],
   },
   {
     component: 'Slider', componentTokens: sliderHooks,
-    globalTokens: globals(names('space-2 space-3 color-muted color-primary color-subtle radius-md radius-full color-input-border color-focus'), names('font-sans color-text color-danger')),
+    globalTokens: globals(names('space-2 space-3 color-muted color-active color-active-border color-subtle radius-md radius-full color-input-border color-focus'), names('font-sans color-text color-danger')),
     runtimeVariables: [
       { name: '--cr-slider-progress', description: 'The normalized percentage of the current range value.', source: { file: systemFile('Slider.tsx'), detail: 'The native input inline style assigns the current progress percentage after consumer style values.' }, notes: ['Owned by value/min/max; use the range props and onValueChange rather than overriding its fill percentage.'] },
       { name: '--cr-slider-direction', description: 'Gradient direction matching the input’s text direction.', source: { file: systemFile('slider.css'), selector: '.cr-slider-input', detail: 'Default to right; :dir(rtl) assigns to left.' }, notes: ['Internal direction value; use dir or the document direction.'] },
@@ -278,7 +278,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Navbar', componentTokens: [],
-    globalTokens: names('layout-content-max layout-gutter font-sans evergreen evergreen-light color-surface color-text color-muted color-subtle color-border color-primary color-on-primary color-focus radius-md radius-full space-1 space-2 space-3 space-4 space-6').sort(),
+    globalTokens: names('layout-content-max layout-gutter font-sans evergreen evergreen-light color-surface color-text color-muted color-subtle color-border color-active color-on-active color-active-border color-focus radius-md radius-full space-1 space-2 space-3 space-4 space-6').sort(),
     runtimeVariables: [
       { name: '--_cr-navbar-item-height', description: 'Minimum item height set by Navbar size.', source: { file: systemFile('navbar.css'), selector: '.cr-navbar' }, notes: ['Medium uses 2.5rem and Large uses 3rem.'] },
     ],
@@ -286,16 +286,16 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'NavbarItem', componentTokens: [],
-    globalTokens: names('evergreen-light color-text color-muted color-subtle color-primary color-on-primary color-focus radius-md space-2 space-3').sort(),
-    notes: ['NavbarItem links use the shared subtle fill on hover and the shared focus color. The current page uses the primary fill by default. The dark green Navbar uses --cr-evergreen-light with light text. Content items use the shared spacing token to separate their children.'],
+    globalTokens: names('evergreen-light color-text color-muted color-subtle color-active color-on-active color-active-border color-focus radius-md space-2 space-3').sort(),
+    notes: ['NavbarItem links use the shared subtle fill on hover and the shared focus color. The current page uses Evergreen by default and Light Evergreen on an evergreen Navbar. Content items use the shared spacing token to separate their children.'],
   },
   {
-    component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-lg shadow-sm space-4 color-input-border color-focus evergreen paper').sort(),
+    component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-lg shadow-sm space-4 color-input-border color-focus color-active color-on-active color-active-border').sort(),
     runtimeVariables: [
       { name: '--cr-sidebar-width', description: 'Positive width prop serialized as pixels on the sidebar root.', source: { file: systemFile('Sidebar.tsx'), detail: 'sizing assigns the width recipe inline, with 280px fallback in sidebar.css.' }, notes: ['Use width. The native style prop is merged after the sizing recipe, but the variable remains part of layout implementation rather than a palette/spacing token.'] },
       { name: '--cr-sidebar-max-width', description: 'Positive maxWidth prop in pixels, otherwise 100%.', source: { file: systemFile('Sidebar.tsx'), detail: 'sizing assigns the cap inline; sidebar.css also constrains it to available width.' }, notes: ['Use maxWidth for the supported sizing contract.'] },
     ],
-    notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and large-radius/small-shadow globals in floating mode.', 'The body scrollbar consumes input-border. A pressed ghost Button in the body uses evergreen and paper for its selection highlight.', 'Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
+    notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and large-radius/small-shadow globals in floating mode.', 'The body scrollbar uses --cr-color-input-border. Pressed ghost buttons use the shared active palette, and nested badge colors resolve in the dark scheme on that fill.', 'Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
   },
   {
     component: 'WorkspaceContent', componentTokens: [],
@@ -337,8 +337,8 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Steps', componentTokens: sequenceHooks('Steps'),
-    globalTokens: names('space-3 space-4 space-6 space-8 color-border color-text font-sans color-primary radius-full color-surface color-on-primary color-muted color-focus color-success color-danger color-success-bg font-mono').sort(),
+    globalTokens: names('space-3 space-4 space-6 space-8 color-border color-text font-sans color-active color-on-active color-active-border radius-full color-surface color-on-primary color-muted color-focus color-success color-danger color-success-bg font-mono').sort(),
     runtimeVariables: sequenceRuntime('Steps'),
-    notes: ['Steps.tsx imports sequence.css and steps.css. It uses the four shared sequence hooks without Timeline’s marker-size/date-column overrides; default markers use space-8.', 'The shared hooks are assigned locally. Scope per-Steps overrides to .cr-steps or the compound .cr-sequence.cr-steps root (or its inline style); assigning them only on :root does not override the local defaults.', 'Step status selects muted/success/primary/danger markers. Complete outline markers additionally consume success-bg, numbered markers consume font-mono, and solid markers consume on-primary. There is no Steps info/warning palette consumption.', 'Marker numbers, status border widths, typography, and horizontal item widths are literal CSS. Icons use currentColor, and supplied content has its own independent styling contract.'],
+    notes: ['Steps.tsx imports sequence.css and steps.css. It uses the four shared sequence hooks without Timeline’s marker-size/date-column overrides; default markers use space-8.', 'The shared hooks are assigned locally. Scope per-Steps overrides to .cr-steps or the compound .cr-sequence.cr-steps root (or its inline style); assigning them only on :root does not override the local defaults.', 'Upcoming, complete, current, and error markers use muted, success, active, and danger colors respectively. Complete outline markers use the success background and current solid markers use the active foreground. Numbered markers use the shared monospace font.', 'Marker numbers, status border widths, typography, and horizontal item widths are literal CSS. Icons use currentColor, and supplied content has its own independent styling contract.'],
   },
 ];

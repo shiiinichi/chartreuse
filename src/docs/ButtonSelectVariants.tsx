@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ButtonSelect, Flex } from '../system';
+import { ButtonSelect, Flex } from '../system';
 
 const variants = [
   { value: 'primary', label: 'Primary' },
@@ -14,28 +14,12 @@ type VariantChoice = (typeof variants)[number];
 function VariantPicker({ initial }: { initial: VariantChoice }) {
   const [selected, setSelected] = useState(initial);
 
-  return <ButtonSelect variant={selected.value} matchTriggerWidth style={{ inlineSize: '8rem' }}
+  return <ButtonSelect variant={selected.value} style={{ inlineSize: '8rem' }}
     aria-label={`${initial.label} style example, ${selected.label}`}
-    content={({ close }) => (
-      <Flex direction="column" gap={1} role="group" aria-label="Button style">
-        {variants.map(option => {
-          const isSelected = option.value === selected.value;
-          return <Button key={option.value} size="sm" variant={isSelected ? 'primary' : 'ghost'}
-            style={{
-              border: 0,
-              outlineOffset: 1,
-              fontWeight: isSelected ? 650 : undefined,
-              backgroundColor: isSelected ? undefined : 'transparent',
-            }}
-            aria-pressed={isSelected}
-            onClick={() => { setSelected(option); close(); }}>
-            {option.label}
-          </Button>;
-        })}
-      </Flex>
-    )}>
-    {selected.label}
-  </ButtonSelect>;
+    options={variants} value={selected.value} onValueChange={value => {
+      const next = variants.find(option => option.value === value);
+      if (next) setSelected(next);
+    }} />;
 }
 
 export function ButtonSelectVariants() {

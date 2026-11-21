@@ -48,6 +48,7 @@ export const treeReferences: ComponentReference[] = [{
     'Enter and Space select; arrow keys move focus without changing the selected node. Keep the inspector or other actions beside the tree, rather than inside its node content.',
     'TreeNode IDs must be stable and unique within the tree. Supply expandedIds/onExpandedChange or defaultExpandedIds independently from controlled or uncontrolled selection.',
     'A custom renderNode may show status, time, descriptions, and counts, as in the call hierarchy. Keep node.label visible, supply a concise description for supplemental accessible context, and avoid nested links, buttons, or form controls.',
+    'Soft badges in Tree rows keep their light palette in both themes and selection states.',
     'Use outline nodes for multiline summaries and plain rows for compact navigation. Indentation responds to the tree’s container width so the same component fits panels and wider pages.',
   ],
 }];

@@ -37,7 +37,7 @@ export const segmentedControlReferences: ComponentReference[] = [
       { name: 'error', type: 'string', description: 'Validation message and invalid state; replaces the visible hint.' },
       { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the track and distributes options evenly within the available width.' },
       { name: 'size', type: "'sm' | 'md'", defaultValue: "'md'", description: 'Default 40px track or compact 32px track. Touch targets expand for coarse pointers.' },
-      { name: 'variant', type: "'outline' | 'solid'", defaultValue: "'outline'", description: 'The selected segment uses an outlined surface or a solid primary fill.' },
+      { name: 'variant', type: "'outline' | 'solid'", defaultValue: "'outline'", description: 'The selected segment uses a raised surface with an evergreen outline or a solid evergreen fill.' },
       { name: 'form', type: 'string', description: 'Native form ID forwarded to the fieldset and each radio for form association outside its DOM subtree.' },
       { name: 'className', type: 'string', description: 'Additional classes on the outer fieldset.' },
       { name: 'ref', type: 'Ref<HTMLFieldSetElement>', description: 'Native ref to the outer fieldset.' },

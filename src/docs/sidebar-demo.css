@@ -16,7 +16,6 @@
     --cr-color-on-primary: var(--cr-paper);
   }
   .sidebar-example-all-tasks { justify-content: flex-start; }
-  .sidebar-example-all-tasks[aria-pressed='true'] { background: var(--cr-color-success-bg); }
   .sidebar-example-all-tasks-count { margin-inline-start: auto; }
 
   .sidebar-example-project-filter > label,

@@ -26,9 +26,10 @@ const semanticColors = [
   ['subtle', '#f2f2e9', '#233a31', 'Inset surfaces and hover backgrounds.'],
   ['border', '#dedfd5', '#3f554a', 'Surface-separation borders and neutral progress tracks.'],
   ['input-border', '#849080', '#819386', 'Stronger form-control and interactive-surface border.'],
-  ['primary', '#024340', '#dbffad', 'Primary action surface and selected-control accent.'],
+  ['primary', '#024340', '#dbffad', 'Primary action surface.'],
   ['on-primary', '#fffdf6', '#024340', 'Content drawn on the primary action surface.'],
-  ['focus', '#0a7366', '#dbffad', 'Keyboard focus outlines and selected interactive borders.'],
+  ['active-border', '#024340', '#819386', 'Border that defines the edge of an active highlight against the surrounding surface.'],
+  ['focus', '#0a7366', '#dbffad', 'Keyboard focus outlines and focus effects.'],
   ['success', '#0a7366', '#a5dcac', 'Success foreground and completed progress fill.'],
   ['success-bg', '#eaf1e3', '#284332', 'Success-tinted surface.'],
   ['info', '#125996', '#a4c9e9', 'Informational foreground.'],
@@ -45,7 +46,7 @@ export const globalTokens: TokenDefinition[] = [
     name: `--cr-${key}`, type: 'color', defaultValue, description, source: root,
     availability: 'library-css' as const,
     sources: [{ file: 'src/system/tokens.ts', detail: `colors.${descriptorKey} contains an independent JS value and this CSS-variable name.` }],
-    notes: ['Primitive palette value. Semantic --cr-color-* variables use their own literal light/dark values, so they do not automatically follow a primitive override.'],
+    notes: ['Semantic colors with literal light-dark() values have independent defaults.'],
   })),
   {
     name: '--cr-font-sans', type: 'font-family',
@@ -108,6 +109,16 @@ export const globalTokens: TokenDefinition[] = [
   ] as const).map(([size, defaultValue, description]) => ({
     name: `--cr-shadow-${size}`, type: 'box-shadow', defaultValue, description, source: root, availability: 'library-css' as const,
   })),
+  {
+    name: '--cr-color-active', type: 'color', defaultValue: 'var(--cr-evergreen)',
+    description: 'Solid evergreen highlight for active controls in both themes.', source: root, availability: 'library-css',
+    references: ['--cr-evergreen'],
+  },
+  {
+    name: '--cr-color-on-active', type: 'color', defaultValue: 'var(--cr-paper)',
+    description: 'Content drawn on the solid active highlight.', source: root, availability: 'library-css',
+    references: ['--cr-paper'],
+  },
   ...semanticColors.map(([role, light, dark, description]) => ({
     name: `--cr-color-${role}`, type: 'color', defaultValue: `light-dark(${light}, ${dark})`, description,
     source: root, availability: 'library-css' as const, themes: { light, dark },
@@ -118,7 +129,7 @@ export const globalTokens: TokenDefinition[] = [
 export const globalTokenNotes = [
   'These rows list published CSS custom properties. No individual font-size, font-weight, line-height, control-height, or icon-size variables are generated from the JS descriptors.',
   'The @chartreuse/ui/tokens exports are static JavaScript data. colors maps primitive names to value, CSS token, and role descriptors. tokens.colors contains their literal values.',
-  'Semantic --cr-color-* values contain literal light-dark() branches. Equal light-mode values do not make them aliases of --cr-evergreen, --cr-paper, or another primitive.',
+  'Theme-adaptive semantic colors use literal light-dark() branches. The solid active highlight and its foreground reference --cr-evergreen and --cr-paper. Forced colors uses the system highlight palette.',
   'CSS spacing is expressed in rem. The numeric spacing and tokens.spacing px strings in JavaScript match a 16px root font; they do not change when the root font size changes.',
   'The typography descriptors list the Text presets. Per-component tables list var() references, including those used by helper controls rendered by the component.',
   'Local component declarations can shadow inherited globals, and variant/tone aliases are assigned on the component itself. Override the correct scope or use the documented prop; a root override of a locally assigned alias will not win automatically.',

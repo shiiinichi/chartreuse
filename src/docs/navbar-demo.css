@@ -57,11 +57,11 @@
     overflow-wrap: anywhere;
   }
 
-  .navbar-release-link.cr-button[aria-current='true'] { background: var(--cr-color-success-bg); }
   .navbar-release-link.cr-button > svg { flex: none; color: var(--cr-color-success); }
   .navbar-release-link strong, .navbar-release-link small { display: block; }
   .navbar-release-link strong { font-size: .75rem; font-weight: 650; }
   .navbar-release-link small { margin-block-start: 2px; color: var(--cr-color-muted); font: 450 .6875rem/1.5 var(--cr-font-mono); }
+  .navbar-release-link[aria-current='true'] :is(svg, small) { color: inherit; }
 
   .navbar-release-activity {
     display: grid;

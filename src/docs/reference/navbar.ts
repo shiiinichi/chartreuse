@@ -93,7 +93,7 @@ export const navbarReferences: ComponentReference[] = [{
   notes: [
     'Large can be combined with every variant. The workspace bar fills the center column.',
     'The bar surface spans the parent. The width setting applies to the inner row of links, branding, and actions.',
-    'Evergreen uses a lighter evergreen highlight for the current page. Use native style to supply a custom background and colorScheme.',
+    'Current links use a solid evergreen highlight by default. The evergreen surface uses Light Evergreen for current links and open sidebar toggles. Use native style to supply a custom background and colorScheme.',
     'The deprecated dark-green variant is an alias for the default layout with the evergreen surface. Existing callers can migrate to surface="evergreen".',
     'NavbarItem links retain their styles inside Flex. Direct native anchors and router links also receive the navbar link styles. Mark the current route with aria-current="page".',
     'Content wraps in reading order when space is limited. Give each navigation landmark a distinct name when a page contains multiple navigations.',
