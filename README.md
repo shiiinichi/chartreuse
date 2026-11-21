@@ -255,7 +255,7 @@ The [Form controls gallery](http://127.0.0.1:5173/#forms) includes `Autocomplete
 
 Single-choice `Select` dropdowns use the same popup as Autocomplete and ButtonSelect. Pass native `<option>` and `<optgroup>` children and set `value` or `defaultValue`. Read `event.currentTarget.value` in `onChange` and pass `name` to include the selected value in form submission. The `multiple` prop or a numeric `size` greater than one displays an inline native listbox. [Select reference](https://shiiinichi.github.io/chartreuse/#components/select)
 
-Built-in options use fixed-height, single-line rows. The popup starts at the trigger width and expands for longer options within the viewport. Set `matchTriggerWidth` on `Autocomplete` or `ButtonSelect` to keep the popup at the trigger width and truncate overflowing text with an ellipsis.
+Built-in options use fixed-height, single-line rows. The popup starts at the trigger width and expands for longer options within the viewport. Set `matchTriggerWidth` on `Autocomplete` or `ButtonSelect` to keep the popup at the trigger width and truncate overflowing text with an ellipsis. When upgrading from 1.10.0, pass this prop explicitly on any `ButtonSelect` that should keep its fixed popup width.
 
 `Autocomplete`, `ButtonSelect`, and single-choice `Select` hide the selection checkmark by default. Add `checkmark` for the standard icon or pass a custom icon, such as `checkmark={CircleCheck}`. The prop accepts Lucide icons, SVG components, and inline SVG elements.
 

@@ -199,6 +199,17 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.11.0',
+    date: '2026-11-21',
+    title: 'ButtonSelect and Autocomplete popup sizing',
+    summary: 'Narrow controls can show the full option text when the viewport has room.',
+    changes: [
+      'ButtonSelect and Autocomplete match Select’s fixed row height. Each label and its optional description share one line.',
+      'Built-in popups start at the trigger width and expand within the viewport to fit longer options.',
+      'Autocomplete adds matchTriggerWidth. Enable it on either picker to keep the trigger width and truncate overflow with an ellipsis. Pass it explicitly on ButtonSelect to retain the width behavior from 1.10.0.',
+    ],
+  },
+  {
     version: '1.10.0',
     date: '2026-11-21',
     title: 'Select popup sizing and optional checkmarks',
