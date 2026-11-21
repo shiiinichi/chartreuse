@@ -7,7 +7,6 @@
   .conversation-demo-reply-control > p, .conversation-drawer-demo > p { margin: 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.75; }
   .conversation-demo-reply-control > p { flex: 1 1 220px; }
   .conversation-drawer-demo { display: grid; justify-items: start; gap: var(--cr-space-4); }
-  .conversation-demo .cr-conversation [tabindex='-1']:focus { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .conversation-demo .cr-conversation .footnotes { scroll-margin-block: var(--cr-space-6); }
   .conversation-demo .cr-conversation .cr-markdown-code-block { max-inline-size: 100%; }
 }

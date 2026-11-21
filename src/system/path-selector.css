@@ -4,12 +4,10 @@
   .cr-path-selector > small { margin-block-start: -4px; color: var(--cr-color-muted); font-size: .6875rem; }
   .cr-path-selector-control { display: flex; align-items: center; min-inline-size: 0; min-block-size: 40px; border: 1px solid var(--cr-color-input-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); transition: border-color var(--cr-duration-fast); }
   .cr-path-selector-control:hover:not(:has(input:disabled)) { border-color: var(--cr-color-text); }
-  .cr-path-selector-control:focus-within { border-color: var(--cr-color-focus); outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .cr-path-selector[data-error='true'] .cr-path-selector-control, .cr-path-selector-control:has(input:user-invalid) { border-color: var(--cr-color-danger); }
   .cr-path-selector-icon { margin-inline-start: 12px; color: var(--cr-color-muted); flex-shrink: 0; }
   .cr-path-selector-input { box-sizing: border-box; flex: 1 1 auto; inline-size: 100%; min-inline-size: 0; min-block-size: 38px; padding: 8px 10px; border: 0; border-radius: var(--cr-radius-md); outline: none; background: transparent; color: inherit; font: 400 .8125rem/1.5 var(--cr-font-sans); }
   .cr-path-selector-input::placeholder { color: var(--cr-color-muted); opacity: 1; }
-  .cr-path-selector-input:focus-visible { outline: none; }
   .cr-path-selector-input:disabled { cursor: not-allowed; }
   .cr-path-selector-control > .cr-path-selector-clear { min-inline-size: 32px; min-block-size: 32px; padding: 6px; margin-inline-end: 3px; }
   .cr-path-selector-control > .cr-path-selector-browse { min-block-size: 38px; padding: 8px 12px; border: 0; border-inline-start: 1px solid var(--cr-color-border); border-radius: 0 6px 6px 0; background: var(--cr-color-subtle); box-shadow: none; font-size: .8125rem; flex-shrink: 0; }
@@ -23,5 +21,4 @@
     .cr-path-selector-control > .cr-path-selector-browse { min-block-size: 44px; }
   }
   @media (prefers-reduced-motion: reduce) { .cr-path-selector-control { transition: none; } }
-  @media (forced-colors: active) { .cr-path-selector-control:focus-within { outline-color: Highlight; } }
 }

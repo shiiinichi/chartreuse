@@ -7,7 +7,6 @@
   .token-disclosure-title { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 12px; inline-size: 100%; }
   .token-disclosure-title > .cr-badge { font-size: 10px; font-weight: 450; }
   .design-token-scroll { min-inline-size: 0; max-inline-size: 100%; max-block-size: min(640px, 72dvh); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); }
-  .design-token-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .design-token-table { inline-size: 100%; min-inline-size: 1100px; border-collapse: separate; border-spacing: 0; text-align: start; font: 400 13px/1.8 var(--cr-font-sans); }
   .design-token-table thead { position: sticky; inset-block-start: 0; z-index: 2; }
   .design-token-table :is(th, td) { padding: 14px 16px; border-block-end: 1px solid var(--cr-color-border); vertical-align: top; }

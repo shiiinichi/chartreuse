@@ -6,7 +6,6 @@
   .cr-disclosure-summary:hover { background: var(--cr-color-subtle); }
   .cr-disclosure[data-header-highlight='open'][open] > .cr-disclosure-summary,
   .cr-disclosure[data-header-highlight='always'] > .cr-disclosure-summary { background: var(--cr-color-subtle); }
-  .cr-disclosure-summary:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -4px; }
   .cr-disclosure-title { flex: 1; min-inline-size: 0; overflow-wrap: break-word; }
   .cr-disclosure-chevron { flex-shrink: 0; color: var(--cr-color-muted); rotate: -90deg; transition: rotate var(--cr-duration-fast); }
   .cr-disclosure-summary:dir(rtl) > .cr-disclosure-chevron { rotate: 90deg; }
@@ -31,7 +30,6 @@
   }
   @media (forced-colors: active) {
     .cr-disclosure, .cr-disclosure-group { border-color: CanvasText; }
-    .cr-disclosure-summary:focus-visible { outline-color: Highlight; }
     .cr-disclosure-chevron { color: CanvasText; }
   }
 }

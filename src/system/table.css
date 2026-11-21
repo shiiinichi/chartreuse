@@ -17,7 +17,6 @@
   }
 
   .cr-table-scroll:not(:last-child) { border-end-start-radius: 0; border-end-end-radius: 0; }
-  .cr-table-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -2px; }
 
   .cr-table {
     inline-size: 100%;

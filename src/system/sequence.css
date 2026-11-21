@@ -15,7 +15,6 @@
   .cr-sequence-body > :not(:first-child) { margin-block-start: var(--cr-space-3); }
   .cr-sequence-body :where(pre, code) { max-inline-size: 100%; text-align: start; }
   .cr-sequence[data-orientation='horizontal'] { display: flex; align-items: stretch; gap: var(--cr-sequence-gap); max-inline-size: 100%; padding-block: 4px; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
-  .cr-sequence[data-orientation='horizontal']:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .cr-sequence[data-orientation='horizontal'] > .cr-sequence-item { --_cr-sequence-marker-offset: 0px; display: flex; flex-direction: column; flex: 1 0 180px; gap: 12px; min-inline-size: 0; padding-block-end: 0; }
   .cr-sequence[data-orientation='horizontal'] > .cr-sequence-item:not(:last-child)::after { inset-inline-start: calc(50% + var(--cr-sequence-marker-size) / 2); inset-block-start: calc(var(--cr-sequence-marker-size) / 2); inset-block-end: auto; inline-size: calc(100% + var(--cr-sequence-gap) - var(--cr-sequence-marker-size)); block-size: 0; border-inline-start: 0; border-block-start: 1px solid var(--cr-sequence-line-color); }
   .cr-sequence[data-orientation='horizontal'] > .cr-sequence-item > .cr-sequence-marker { align-self: center; }

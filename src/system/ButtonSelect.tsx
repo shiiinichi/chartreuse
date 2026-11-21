@@ -3,6 +3,7 @@ import type { KeyboardEvent, ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from './components';
 import type { ButtonProps } from './components';
+import type { IconSource } from './icons';
 import { findOptionByTyping, isOptionNavigationKey, nextOptionIndex, OptionList, revealActiveOption } from './OptionList';
 import type { OptionListItem } from './OptionList';
 import { optionListFlipThreshold, optionListMaxHeight, optionListViewport, trackOptionListAnchor } from './option-list-anchor';
@@ -22,6 +23,8 @@ export interface ButtonSelectProps extends Omit<ButtonProps,
   content?: ReactNode | ((controls: ButtonSelectControls) => ReactNode);
   /** Choices displayed in the built-in popover. */
   options?: readonly ButtonSelectOption[];
+  /** Show the standard checkmark or a custom icon beside the selected built-in option. Hidden by default. */
+  checkmark?: boolean | IconSource;
   onValueChange?: (value: string) => void;
   placeholder?: string;
   emptyMessage?: string;
@@ -60,7 +63,7 @@ function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: W
 const noOptions: readonly ButtonSelectOption[] = [];
 
 /** A Button that reveals a list of choices or caller-supplied content. */
-export function ButtonSelect({ children, content, options = noOptions, value, defaultValue, onValueChange,
+export function ButtonSelect({ children, content, options = noOptions, value, defaultValue, checkmark, onValueChange,
   placeholder = 'Select an option', emptyMessage = 'No options available.', matchTriggerWidth, panelClassName,
   className, iconRight = ChevronDown, disabled, loading, ref, onBlur, onKeyDown, ...props }: ButtonSelectProps) {
   const panelId = `${useId()}-button-select`;
@@ -194,7 +197,7 @@ export function ButtonSelect({ children, content, options = noOptions, value, de
         if (event.target === event.currentTarget) setExpanded(event.newState === 'open');
       }}>
       {builtIn ? <OptionList id={panelId} options={options} active={expanded ? activeIndex : -1}
-        value={selected?.value} emptyMessage={emptyMessage} onActivate={setActive} onSelect={choose} />
+        value={selected?.value} checkmark={checkmark} emptyMessage={emptyMessage} onActivate={setActive} onSelect={choose} />
         : typeof content === 'function' ? content({ close }) : content}
     </div>
   </>;

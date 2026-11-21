@@ -29,7 +29,7 @@ const semanticColors = [
   ['primary', '#024340', '#dbffad', 'Primary action surface.'],
   ['on-primary', '#fffdf6', '#024340', 'Content drawn on the primary action surface.'],
   ['active-border', '#024340', '#819386', 'Border that defines the edge of an active highlight against the surrounding surface.'],
-  ['focus', '#0a7366', '#dbffad', 'Keyboard focus outlines and focus effects.'],
+  ['focus', '#0a7366', '#dbffad', 'Active field borders and dialog splitter hover.'],
   ['success', '#0a7366', '#a5dcac', 'Success foreground and completed progress fill.'],
   ['success-bg', '#eaf1e3', '#284332', 'Success-tinted surface.'],
   ['info', '#125996', '#a4c9e9', 'Informational foreground.'],

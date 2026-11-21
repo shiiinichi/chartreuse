@@ -10,7 +10,6 @@
   .cr-number-input-step:last-child { border-end-end-radius: inherit; }
   .cr-number-input-step > svg { display: block; }
   .cr-number-input-step:hover { z-index: 1; color: var(--cr-color-text); background: var(--cr-color-subtle); }
-  .cr-number-input-step:focus-visible { z-index: 2; outline: 2px solid var(--cr-color-focus); outline-offset: -2px; color: var(--cr-color-text); background: var(--cr-color-subtle); }
   .cr-number-input:dir(rtl) .cr-number-input-steppers { transform-origin: left center; }
   @media (hover: hover) and (pointer: fine) {
     /* Keep the compact rail's glyphs and separator within their targets. */

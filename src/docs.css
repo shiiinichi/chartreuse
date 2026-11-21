@@ -7,7 +7,7 @@
   :where(button, input, select, textarea) { font: inherit; color: inherit; }
   button { cursor: pointer; }
   button:disabled { cursor: not-allowed; }
-  :where(button, a, input, select, textarea, [tabindex='0']):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
+  :focus { outline: none; }
   :where(h1, h2, h3, h4, p) { margin: 0; }
   :where(h1, h2, h3) { text-wrap: balance; }
   :where(p, li) { text-wrap: pretty; }
@@ -55,7 +55,6 @@
   .nav-group h2 { font-size: 8px; font-weight: 550; letter-spacing: .11em; text-transform: uppercase; color: var(--cr-color-muted); padding: 0 10px; margin-block-end: 7px; }
   .nav-group > a { display: flex; position: relative; align-items: center; gap: 11px; min-block-size: 33px; padding: 7px 10px; margin-block-end: 2px; border: 1px solid transparent; border-radius: 6px; text-decoration: none; color: var(--cr-color-muted); font-size: 11px; line-height: 1.5; }
   .nav-group > a:hover { color: var(--cr-color-text); background: var(--cr-color-subtle); }
-  .docs-nav .nav-group > a:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -2px; }
   .nav-group > a[aria-current='page'] { background: var(--cr-color-active); color: var(--cr-color-on-active); border-color: var(--cr-color-active-border); font-weight: 550; }
   .nav-tag { margin-inline-start: auto; font-size: 8px; border: 1px solid var(--cr-color-border); background: var(--cr-color-canvas); padding: 0 4px; border-radius: 3px; }
   .nav-group > a[aria-current='page'] .nav-tag { color: var(--cr-color-muted); }
@@ -237,7 +236,7 @@
   .color-card { display: flex; flex-direction: column; border: 1px solid var(--cr-color-border); background: var(--cr-color-surface); border-radius: 8px; padding: 0; text-align: start; min-inline-size: 0; }
   .color-swatch { block-size: 110px; inline-size: 100%; background: var(--swatch); border-radius: 7px 7px 0 0; padding: 12px; display: flex; justify-content: flex-end; align-items: flex-start; border-block-end: 1px solid #52645f20; }
   .color-swatch > svg { padding: 6px; inline-size: 14px; block-size: 14px; border-radius: 5px; background: #fffdf6; color: #024340; opacity: 0; transition: opacity 150ms; }
-  .color-card:hover .color-swatch > svg, .color-card:focus-visible .color-swatch > svg { opacity: 1; }
+  .color-card:hover .color-swatch > svg { opacity: 1; }
   .color-card-info { display: flex; flex-direction: column; inline-size: 100%; gap: 6px; padding: 14px 12px; }
   .color-card-info strong { font-size: 12px; font-weight: 550; }
   .color-card-info code { font-size: 9px; color: var(--cr-color-muted); }
@@ -410,7 +409,6 @@
     .split-comments-header .cr-select { font-size: 10px; padding-inline: 9px 28px; }
   }
   .split-comments-feed { flex: 1 1 auto; min-block-size: 100px; padding: var(--cr-space-6); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
-  .split-comments-feed:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -4px; }
   .split-comment { padding: 15px; border: 1px solid var(--cr-color-border); border-radius: 8px; background: var(--cr-color-canvas); }
   .split-comment:not(:last-child) { margin-block-end: 15px; }
   .split-comment-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
@@ -489,7 +487,6 @@
   .search-dialog .cr-dialog-body { padding: 0; }
   .search-dialog-input { display: flex; align-items: center; gap: 12px; padding: 16px 24px; border-block: 1px solid var(--cr-color-border); }
   .search-dialog-input > input { inline-size: 100%; min-inline-size: 0; border: 0; padding: 5px 0; background: transparent; font-size: 13px; }
-  .search-dialog-input > input:focus-visible { outline-offset: 5px; }
   .search-results { padding: 8px; max-block-size: min(45dvh, 420px); overflow-y: auto; }
   .search-results > button { display: flex; align-items: center; gap: 14px; padding: 10px 14px; inline-size: 100%; text-align: start; border: 1px solid transparent; background: none; border-radius: 5px; }
   .search-results > button:is(:hover, :focus) { background: var(--cr-color-active); color: var(--cr-color-on-active); border-color: var(--cr-color-active-border); }

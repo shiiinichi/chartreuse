@@ -20,7 +20,6 @@
   .cr-markdown strong { font-weight: 650; }
   .cr-markdown a { color: var(--cr-color-success); text-underline-offset: 3px; text-decoration-thickness: 1px; overflow-wrap: anywhere; }
   .cr-markdown a:hover { text-decoration-thickness: 2px; }
-  .cr-markdown a:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; border-radius: 2px; }
   .cr-markdown-unavailable-link { color: inherit; }
   .cr-markdown blockquote { margin: 20px 0; padding: 10px 18px; border-inline-start: 3px solid var(--cr-color-success); border-radius: 0 var(--cr-radius-sm) var(--cr-radius-sm) 0; background: var(--cr-color-success-bg); color: var(--cr-color-muted); }
   .cr-markdown blockquote > :first-child { margin-block-start: 0; }
@@ -34,7 +33,6 @@
   .cr-markdown-code-bar > .cr-button > svg { inline-size: 13px; block-size: 13px; }
   .cr-markdown pre { min-inline-size: 0; max-inline-size: 100%; max-block-size: min(60dvh, 480px); margin: 0; padding: 17px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; color: var(--cr-color-text); font: .75rem/1.85 var(--cr-font-mono); white-space: pre; tab-size: 2; }
   .cr-markdown pre code { display: block; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; white-space: pre; overflow-wrap: normal; }
-  .cr-markdown pre:focus-visible, .cr-markdown-table:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -3px; }
   .cr-markdown-table { min-inline-size: 0; max-inline-size: 100%; max-block-size: 480px; margin-block: 20px; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); scrollbar-width: thin; }
   .cr-markdown table { inline-size: 100%; min-inline-size: 480px; border-collapse: collapse; font-size: .8125rem; line-height: 1.7; }
   .cr-markdown :is(th, td) { padding: 10px 13px; border-inline-end: 1px solid var(--cr-color-border); border-block-end: 1px solid var(--cr-color-border); text-align: start; vertical-align: top; }

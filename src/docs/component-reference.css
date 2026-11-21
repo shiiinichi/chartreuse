@@ -3,7 +3,7 @@
   .documentation-breadcrumbs > ol { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; list-style: none; margin: 0; padding: 0; }
   .documentation-breadcrumbs li { display: inline-flex; align-items: center; gap: 10px; }
   .documentation-breadcrumbs a { color: var(--cr-color-muted); text-decoration: none; text-underline-offset: 3px; }
-  .documentation-breadcrumbs a:hover, .documentation-breadcrumbs a:focus-visible { text-decoration: underline; }
+  .documentation-breadcrumbs a:hover { text-decoration: underline; }
   .documentation-breadcrumbs [aria-current='page'] { color: var(--cr-color-text); font-weight: 550; }
   .component-reference { min-inline-size: 0; }
   .component-reference .document-title-row > h1 { min-inline-size: 0; max-inline-size: 100%; overflow-wrap: anywhere; }
@@ -21,7 +21,6 @@
   .component-reference-section > .code-block { margin-block: 16px; }
   .component-reference-section > .code-block pre { font-size: 13px; line-height: 1.8; }
   .component-api-scroll { max-inline-size: 100%; max-block-size: min(680px, 75dvh); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); scrollbar-width: thin; }
-  .component-api-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .component-api-table { inline-size: 100%; min-inline-size: 760px; border-collapse: separate; border-spacing: 0; text-align: start; font-size: 13px; line-height: 1.75; }
   .component-api-table thead { position: sticky; inset-block-start: 0; z-index: 2; }
   .component-api-table th, .component-api-table td { padding: 14px 16px; vertical-align: top; border-block-end: 1px solid var(--cr-color-border); }

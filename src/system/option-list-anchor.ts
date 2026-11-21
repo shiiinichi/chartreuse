@@ -1,5 +1,6 @@
 export const optionListMaxHeight = 280;
 export const optionListFlipThreshold = 180;
+export const optionListViewportInset = 8;
 
 export function optionListViewport(view: Window, doc: Document) {
   const layoutHeight = doc.documentElement.clientHeight;
@@ -13,14 +14,17 @@ export function optionListViewport(view: Window, doc: Document) {
   };
 }
 
-export function matchOptionListAnchor(rect: DOMRect, { left, top, right, bottom, layoutHeight }: ReturnType<typeof optionListViewport>) {
+export function matchOptionListAnchor(rect: DOMRect, { left, top, right, bottom, layoutHeight }: ReturnType<typeof optionListViewport>,
+  preferredWidth = rect.width, alignRight = false) {
   const below = bottom - rect.bottom - 14;
   const above = rect.top - top - 14;
   const useAbove = below < optionListFlipThreshold && above > below;
-  const width = Math.min(rect.width, Math.max(0, right - left - 16));
+  const inset = optionListViewportInset;
+  const width = Math.min(preferredWidth, Math.max(0, right - left - 2 * inset));
+  const start = alignRight ? rect.right - width : rect.left;
 
   return {
-    left: Math.max(left + 8, Math.min(rect.left, right - width - 8)),
+    left: Math.max(left + inset, Math.min(start, right - width - inset)),
     top: rect.bottom + 6,
     bottom: layoutHeight - rect.top + 6,
     width,

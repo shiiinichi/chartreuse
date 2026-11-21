@@ -2,14 +2,17 @@ import { useCallback, useId, useImperativeHandle, useLayoutEffect, useRef, useSt
 import type { ComponentPropsWithRef, KeyboardEvent, MouseEvent } from 'react';
 import { ChevronDown } from 'lucide-react';
 import type { ControlSize } from './control-size';
+import type { IconSource } from './icons';
 import { findOptionByTyping, isOptionNavigationKey, nextOptionIndex, OptionList, revealActiveOption } from './OptionList';
 import type { OptionListGroup, OptionListItem } from './OptionList';
-import { matchOptionListAnchor, trackOptionListAnchor } from './option-list-anchor';
+import { matchOptionListAnchor, optionListViewport, optionListViewportInset, trackOptionListAnchor } from './option-list-anchor';
 import { Text } from './Text';
 
 export interface SelectProps extends Omit<ComponentPropsWithRef<'select'>, 'size'> {
   label: string;
   size?: ControlSize | number;
+  /** Show the standard checkmark or a custom icon beside the selected popup option. Hidden by default. */
+  checkmark?: boolean | IconSource;
   hint?: string;
   error?: string;
   hideLabel?: boolean;
@@ -37,7 +40,7 @@ function currentOption(list: ReturnType<typeof readOptions>) {
   return selected >= 0 ? selected : nextOptionIndex(list.options, -1, 'Home');
 }
 
-export function Select({ label, size = 'md', hint, error, hideLabel = false, id: suppliedId, className, children,
+export function Select({ label, size = 'md', checkmark, hint, error, hideLabel = false, id: suppliedId, className, children,
   ref, onBlur, onClick, onMouseDown, onKeyDown, ...props }: SelectProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
@@ -77,16 +80,24 @@ export function Select({ label, size = 'md', hint, error, hideLabel = false, id:
     if (!view) return;
     if (!panel.matches(':popover-open')) panel.showPopover();
 
+    const place = (rect: DOMRect, viewport: ReturnType<typeof optionListViewport>) => {
+      if (trigger.matches(':disabled')) { close(); return; }
+      const direction = view.getComputedStyle(trigger).direction;
+      const availableWidth = Math.max(0, viewport.right - viewport.left - 2 * optionListViewportInset);
+      panel.style.direction = direction;
+      panel.style.minWidth = `${Math.min(rect.width, availableWidth)}px`;
+      panel.style.maxWidth = `${availableWidth}px`;
+      const { width } = panel.getBoundingClientRect();
+      const position = matchOptionListAnchor(rect, viewport, width, direction === 'rtl');
+      panel.style.left = `${position.left}px`;
+      panel.style.top = position.above ? 'auto' : `${position.top}px`;
+      panel.style.bottom = position.above ? `${position.bottom}px` : 'auto';
+      panel.style.maxHeight = `${position.maxHeight}px`;
+    };
     const stopTracking = trackOptionListAnchor(trigger, view,
-      target => trigger.contains(target) || panel.contains(target), (rect, viewport) => {
-        if (trigger.matches(':disabled')) { close(); return; }
-        const position = matchOptionListAnchor(rect, viewport);
-        panel.style.left = `${position.left}px`;
-        panel.style.top = position.above ? 'auto' : `${position.top}px`;
-        panel.style.bottom = position.above ? `${position.bottom}px` : 'auto';
-        panel.style.width = `${position.width}px`;
-        panel.style.maxHeight = `${position.maxHeight}px`;
-      }, close);
+      target => trigger.contains(target) || panel.contains(target), place, close);
+    const resize = new view.ResizeObserver(() => place(trigger.getBoundingClientRect(), optionListViewport(view, doc)));
+    resize.observe(panel, { box: 'border-box' });
     const outside = (event: PointerEvent) => {
       const path = event.composedPath();
       if (!path.includes(panel) && !path.includes(trigger) && !Array.from(trigger.labels ?? []).some(label => path.includes(label))) close();
@@ -103,6 +114,7 @@ export function Select({ label, size = 'md', hint, error, hideLabel = false, id:
     doc.addEventListener('pointerdown', outside, true);
     return () => {
       stopTracking();
+      resize.disconnect();
       observer.disconnect();
       form?.removeEventListener('reset', close);
       trigger.removeEventListener('change', close);
@@ -199,7 +211,7 @@ export function Select({ label, size = 'md', hint, error, hideLabel = false, id:
       <ChevronDown size={14} aria-hidden="true" />
       {!isListbox && <div ref={popup} id={listId} popover="manual" hidden={!expanded} className="cr-select-popup cr-option-list-popup"
         role="listbox" aria-label={props['aria-label']} aria-labelledby={props['aria-labelledby'] ?? (props['aria-label'] ? undefined : labelId)}>
-        {expanded && <OptionList id={listId} options={list.options} groups={list.groups} active={activeIndex} value={list.selected}
+        {expanded && <OptionList id={listId} options={list.options} groups={list.groups} active={activeIndex} value={list.selected} checkmark={checkmark}
           emptyMessage="No options available." onActivate={setActive} onSelect={choose} />}
       </div>}
     </div>

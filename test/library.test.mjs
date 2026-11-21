@@ -41,6 +41,7 @@ test('ButtonSelect preserves Button styling and connects the trigger to arbitrar
   const markup = renderToStaticMarkup(h(system.ButtonSelect, {
     ...buttonProps,
     panelClassName: 'column-picker',
+    checkmark: true,
     options: [{ value: 'grid', label: 'Grid view' }],
     content: ({ close }) => h('div', { role: 'group', 'aria-label': 'Visible columns' },
       h(system.Checkbox, { label: 'Owner', defaultChecked: true }),
@@ -85,7 +86,36 @@ test('ButtonSelect options render the shared listbox and selected label', () => 
   assert.equal(options.length, 2);
   assert.match(options[0], /aria-selected="false"/);
   assert.match(options[1], /aria-disabled="true"/);
-  assert.match(markup, /\blucide-check\b/);
+  assert.doesNotMatch(markup, /\bcr-option-list-checkmark\b/);
+});
+
+test('built-in pickers can show the standard checkmark or a custom selection icon', () => {
+  const h = React.createElement;
+  const options = [
+    { value: 'grid', label: 'Grid' },
+    { value: 'board', label: 'Board' },
+  ];
+  const customIcon = h('svg', { className: 'custom-selection-icon', 'aria-hidden': false, tabIndex: 0 });
+  const pickers = [
+    [system.Autocomplete, { label: 'View layout' }],
+    [system.ButtonSelect, { 'aria-label': 'View layout' }],
+  ];
+  for (const [Component, props] of pickers) {
+    const render = checkmark => renderToStaticMarkup(h(Component, {
+      ...props, defaultValue: 'grid', options, checkmark,
+    }));
+    assert.doesNotMatch(render(undefined), /\bcr-option-list-checkmark\b/);
+    assert.doesNotMatch(render(false), /\bcr-option-list-checkmark\b/);
+    assert.match(render(true), /\blucide-check\b/);
+    const rows = render(customIcon).match(/<div\b[^>]*\brole="option"[^>]*>.*?<\/div>/g) ?? [];
+    assert.equal(rows.length, 2);
+    const icon = rows[0].match(/<svg\b[^>]*>/)?.[0] ?? '';
+    assert.match(icon, /\bclass="custom-selection-icon cr-option-list-checkmark"/);
+    assert.match(icon, /aria-hidden="true"/);
+    assert.match(icon, /focusable="false"/);
+    assert.doesNotMatch(icon, /\btabindex=/i);
+    assert.doesNotMatch(rows[1], /<svg\b/);
+  }
 });
 
 async function readReferenceModule(filename) {

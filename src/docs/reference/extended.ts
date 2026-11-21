@@ -14,6 +14,7 @@ export const extendedReferences: ComponentReference[] = [
       { name: 'options', type: 'readonly AutocompleteOption[]', required: true, description: 'Options with value, label, optional description, and optional disabled state.' },
       { name: 'value', type: 'string', description: 'Selected option value for a controlled combobox.' },
       { name: 'defaultValue', type: 'string', defaultValue: '""', description: 'Initial selected option value when uncontrolled.' },
+      { name: 'checkmark', type: 'boolean | IconSource', defaultValue: 'false', description: 'Shows a selection icon beside the selected option. Pass true for the standard checkmark or supply a custom icon.' },
       { name: 'onValueChange', type: '(value: string) => void', description: 'Called when an option is selected or the selection is cleared.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the input control, associated with aria-describedby.' },
       { name: 'error', type: 'string', description: 'Validation message and invalid state; replaces the displayed hint.' },

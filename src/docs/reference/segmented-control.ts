@@ -52,7 +52,7 @@ export const segmentedControlReferences: ComponentReference[] = [
       'Disabling a selected option preserves its selection. Native disabled inputs are omitted from form submission; update value in the owner if that choice should be cleared.',
       'Use value with onValueChange for controlled state, or defaultValue for internal state. Reset controlled values from the owning form’s onReset handler.',
       'Keep labels short and visible. Icons supplement the text and accept Lucide icons, custom React SVG components, or SVG JSX through IconSource.',
-      'Options wrap inside narrow containers. Both variants show a visible keyboard focus ring in either color scheme.',
+      'Options wrap inside narrow containers.',
     ],
   },
 ];

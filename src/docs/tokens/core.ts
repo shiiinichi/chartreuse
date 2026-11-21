@@ -6,10 +6,10 @@ const globals = (...names: string[]) => [...new Set(names.map(name => name.start
 const tones = ['success', 'info', 'warning', 'danger'] as const;
 const toneGlobals = (selected: readonly string[] = tones) => selected.flatMap(tone => [`color-${tone}`, `color-${tone}-bg`]);
 
-const buttonGlobals = globals('font-sans', 'color-text', 'color-focus', 'color-primary', 'color-on-primary',
+const buttonGlobals = globals('font-sans', 'color-text', 'color-primary', 'color-on-primary',
   'radius-md', 'duration-fast', 'color-surface', 'color-input-border', 'chartreuse', 'evergreen',
   'color-danger', 'shadow-sm', 'color-subtle', 'color-active', 'color-on-active', 'color-active-border');
-const ghostButtonGlobals = globals('font-sans', 'color-text', 'color-focus', 'radius-md', 'duration-fast', 'color-subtle');
+const ghostButtonGlobals = globals('font-sans', 'color-text', 'radius-md', 'duration-fast', 'color-subtle');
 const fieldGlobals = globals('font-sans', 'color-text', 'color-muted', 'color-surface', 'color-input-border',
   'radius-md', 'color-focus', 'color-danger');
 const badgeGlobals = globals('font-sans', 'radius-sm', 'color-muted', 'color-subtle', ...toneGlobals());
@@ -106,7 +106,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Button', componentTokens: buttonAliases(), globalTokens: buttonGlobals,
-    notes: ['Consumption: styles.css .cr-button, its data-variant selectors, shared base typography, and :focus-visible rules.', 'Buttons use the evergreen active palette when aria-pressed is true or aria-current is page or true.', 'Control sizes, gaps, padding, font size/weight/line-height, disabled opacity, and the 1s loading spin are literal rules or props, not additional CSS tokens. --cr-duration-fast controls transitions only.'],
+    notes: ['Consumption: styles.css .cr-button, its data-variant selectors, and shared base typography.', 'Buttons use the evergreen active palette when aria-pressed is true or aria-current is page or true.', 'Control sizes, gaps, padding, font size/weight/line-height, disabled opacity, and the 1s loading spin are literal rules or props, not additional CSS tokens. --cr-duration-fast controls transitions only.'],
   },
   {
     component: 'ButtonSelect', componentTokens: buttonAliases(),
@@ -127,22 +127,22 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'TextField', componentTokens: [], globalTokens: fieldGlobals,
-    notes: ['Consumption: styles.css .cr-field, .cr-input, .cr-input-wrap icon, placeholder, required marker, error helper, hover/invalid state, and shared input focus/typography rules.', 'The size prop uses the same minimum heights as Button. CSS sets typography, padding, and the icon inset.', 'On coarse pointers a media query increases the default minimum height and input font size.'],
+    notes: ['Consumption: styles.css .cr-field, .cr-input, .cr-input-wrap icon, placeholder, required marker, error helper, and shared input styles. The active field uses --cr-color-focus for its feathered border.', 'The size prop uses the same minimum heights as Button. CSS sets typography, padding, and the icon inset.', 'On coarse pointers a media query increases the default minimum height and input font size.'],
   },
   {
     component: 'TextArea', componentTokens: [], globalTokens: fieldGlobals,
-    notes: ['Consumption: styles.css .cr-field/.cr-input, textarea.cr-input, placeholder/error rules, and shared input focus/typography. It uses the same global field palette as TextField.', 'The minimum textarea height, padding, type sizes, and vertical-resize behavior are literal CSS. No local textarea variables exist.'],
+    notes: ['Consumption: styles.css .cr-field/.cr-input, textarea.cr-input, placeholder/error rules, and shared input typography. It uses the same global field palette as TextField.', 'The minimum textarea height, padding, type sizes, and vertical-resize behavior are literal CSS. No local textarea variables exist.'],
   },
   {
     component: 'Select', componentTokens: [], globalTokens: globals(...fieldGlobals, 'color-active', 'color-on-active', 'color-active-border', 'radius-lg', 'shadow-lg'),
     notes: ['The trigger uses shared field styles and a chevron in --cr-color-muted. The single-choice popup shares the panel and option styles in option-list.css.', 'Dropdown size presets share Button minimum heights. Native listboxes keep their row-based height and use active colors for checked options where the browser allows styling.'],
   },
   {
-    component: 'Checkbox', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-active', 'color-focus'),
-    notes: ['Consumption: styles.css .cr-checkbox typography, its native input accent-color, and the shared native input focus rule.', 'The checkbox and hint inherit the component text color. Hint type size, checkbox dimensions, and coarse-pointer hit-area minimum are literal CSS, not spacing/size tokens.'],
+    component: 'Checkbox', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-active'),
+    notes: ['Consumption: styles.css .cr-checkbox typography and its native input accent-color.', 'The checkbox and hint inherit the component text color. Hint type size, checkbox dimensions, and coarse-pointer hit-area minimum are literal CSS, not spacing/size tokens.'],
   },
   {
-    component: 'Switch', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-muted', 'paper', 'color-active', 'color-on-active', 'color-active-border', 'color-focus', 'radius-full', 'duration-fast'),
+    component: 'Switch', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-muted', 'paper', 'color-active', 'color-on-active', 'color-active-border', 'radius-full', 'duration-fast'),
     notes: ['The checked track uses the active fill and border. The unchecked thumb uses --cr-paper and the checked thumb uses --cr-color-on-active.', 'Track/thumb dimensions and travel distance are literal CSS. --cr-duration-fast controls thumb transition. Reduced-motion disables it without changing the token.'],
   },
   {
@@ -158,7 +158,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['Consumption: styles.css .cr-progress and native progress pseudo-elements use radius/track/fill tokens. Optional .cr-progress-group text uses the listed typography/colors and --cr-space-2 gap.', 'The bare bar has no label-text layout by default. Its 4px thickness and optional text sizes are literal CSS; value/max are native progress attributes, not CSS implementation variables.'],
   },
   {
-    component: 'Tabs', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'color-muted', 'color-active', 'color-active-border', 'color-subtle', 'radius-md', 'color-surface', 'shadow-sm', 'space-1', 'space-3'),
+    component: 'Tabs', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-border', 'color-muted', 'color-active', 'color-active-border', 'color-subtle', 'radius-md', 'color-surface', 'shadow-sm', 'space-1', 'space-3'),
     notes: ['Selected tabs use --cr-color-active for the underline and --cr-color-text for the foreground. Pill tabs use --cr-color-surface and --cr-shadow-sm for the selected tab. Highlight tabs use --cr-color-subtle for the selected fill, --cr-radius-md for the top corners, and --cr-space-1 and --cr-space-3 for the gap and button padding.', 'Tab buttons share Button minimum heights and font sizes.'],
   },
   {
@@ -167,8 +167,8 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Alert', componentTokens: toneAliases('info'),
-    globalTokens: globals('font-sans', 'radius-md', 'color-muted', 'color-subtle', ...toneGlobals(), 'color-focus', 'duration-fast'),
-    notes: ['Consumption: styles.css .cr-alert, generic non-neutral tone aliases, and its optional owned ghost IconButton dismissal control. The border is a color-mix of currentColor, so it follows the foreground alias.', 'The .cr-alert > .cr-button rule makes the dismiss button inherit the Alert foreground. The child’s normal ghost foreground token does not replace this inherited color; its focus, radius, duration, and subtle hover background remain applicable.', 'Alert padding, gaps, font size, and border mixing percentage are literal values.'],
+    globalTokens: globals('font-sans', 'radius-md', 'color-muted', 'color-subtle', ...toneGlobals(), 'duration-fast'),
+    notes: ['Consumption: styles.css .cr-alert, generic non-neutral tone aliases, and its optional owned ghost IconButton dismissal control. The border is a color-mix of currentColor, so it follows the foreground alias.', 'The .cr-alert > .cr-button rule makes the dismiss button inherit the Alert foreground. The button keeps its ghost radius, transition duration, and subtle hover background.', 'Alert padding, gaps, font size, and border mixing percentage are literal values.'],
   },
   {
     component: 'Divider', componentTokens: [], globalTokens: globals('color-border'),
@@ -194,17 +194,17 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['Consumption: styles.css .cr-toast and its leading SVG, generic [data-tone] foreground aliases, plus the owned ghost dismissal IconButton.', 'Only the leading notification icon consumes --tone-fg (with --cr-color-success fallback). The toast surface stays --cr-color-surface; the generic --tone-bg assignment is not consumed by the toast and is not offered as a background hook.', 'A neutral toast assigns no local --tone-fg. It can inherit that alias from an ancestor; the success fallback is used only when the alias is unset.', 'Position offsets, maximum width, padding, and the 5-second lifetime are literal values or JavaScript behavior. Button aliases apply only on the child dismiss button.'],
   },
   {
-    component: 'Breadcrumbs', componentTokens: [], globalTokens: globals('font-sans', 'color-muted', 'color-text', 'color-focus'),
-    notes: ['Consumption: styles.css .cr-breadcrumbs, its current-page item, and link focus rule. Links and separator SVGs inherit currentColor.', 'Gaps, font size, underline offset, and the 2px focus-corner radius are literal CSS. The underline prop selects rules; it does not set a CSS variable.'],
+    component: 'Breadcrumbs', componentTokens: [], globalTokens: globals('font-sans', 'color-muted', 'color-text'),
+    notes: ['Consumption: styles.css .cr-breadcrumbs, its current-page item, and link underline styles. Links and separator SVGs inherit currentColor.', 'Gaps, font size, and underline offset are literal CSS. The underline prop selects rules; it does not set a CSS variable.'],
   },
   {
     component: 'TaskCard', componentTokens: [],
-    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-focus', 'color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
+    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
     notes: ['Consumption: styles.css task button/identifier/metadata/footer rules plus owned Card, Badge, and AvatarGroup helpers. Task status selects neutral/info/warning/success Badge palettes; priority can select warning. Danger is not a TaskCard status.', 'Badge tone aliases are assigned on the nested Badge elements and are documented on Badge, not as TaskCard-root styling hooks.', 'Metadata/type sizes, card/footer padding, gaps, and avatar palettes remain literal CSS. Counts and progress ratios are content props; no task-specific custom properties are defined.', 'With hideMetadataLabels, Tooltip supplies the floating labels.'],
   },
   {
     component: 'AgentCard', componentTokens: [],
-    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-focus', 'color-surface', 'color-border', 'radius-lg', 'color-active', 'color-on-active', 'color-active-border', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
+    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-surface', 'color-border', 'radius-lg', 'color-active', 'color-on-active', 'color-active-border', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
     notes: ['The pressed card uses the solid active fill and its paired foreground. The status badge uses its own info, success, warning, or neutral tone.', 'Badge tone aliases belong to the nested Badge. The card has no local CSS variables.', 'Card padding, icon surface size/7px radius, type sizes, and runtime data spacing are literal rules. elapsed and tokens are display props.'],
   },
   {

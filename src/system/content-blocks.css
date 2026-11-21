@@ -27,7 +27,6 @@
   .cr-activity-item-footer { min-inline-size: 0; color: var(--cr-color-muted); font-size: .75rem; line-height: 1.7; }
   :where(.cr-blockquote, .cr-activity-item) a { color: var(--cr-color-success); text-decoration-thickness: 1px; text-underline-offset: 3px; }
   :where(.cr-blockquote, .cr-activity-item) a:hover { text-decoration-thickness: 2px; }
-  :where(.cr-blockquote, .cr-activity-item) a:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; border-radius: 2px; }
   @media (forced-colors: active) {
     :where(.cr-blockquote, .cr-activity-item) { border-inline-start-color: CanvasText; }
     .cr-blockquote[data-tone] { border-inline-start-color: CanvasText; }

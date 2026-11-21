@@ -1,7 +1,7 @@
 import type { ComponentTokenDoc } from './types';
 
 const paginationGlobals = [
-  '--cr-color-focus', '--cr-color-muted', '--cr-color-active', '--cr-color-on-active', '--cr-color-active-border',
+  '--cr-color-muted', '--cr-color-active', '--cr-color-on-active', '--cr-color-active-border',
   '--cr-color-subtle', '--cr-color-text', '--cr-duration-fast', '--cr-font-sans',
   '--cr-radius-md', '--cr-shadow-sm', '--cr-space-1', '--cr-space-4',
 ];
@@ -28,7 +28,7 @@ export const tableTokenDocs: ComponentTokenDoc[] = [
     component: 'Table',
     componentTokens: [],
     globalTokens: [...new Set([
-      '--cr-color-border', '--cr-color-canvas', '--cr-color-focus', '--cr-color-muted',
+      '--cr-color-border', '--cr-color-canvas', '--cr-color-muted',
       '--cr-color-subtle', '--cr-color-surface', '--cr-color-text', '--cr-font-sans',
       '--cr-radius-lg', '--cr-space-2', '--cr-space-3', '--cr-space-4', '--cr-space-6',
       ...paginationGlobals,

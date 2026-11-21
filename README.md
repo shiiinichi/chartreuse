@@ -423,7 +423,7 @@ The default scheme follows the operating system. A host can choose a scheme with
 
 ## Accessibility and compatibility
 
-Controls use native elements, visible labels, error descriptions, focus outlines, and disabled states. Tabs provide automatic selection with Arrow keys, Home, and End, with RTL-aware direction. Dialog uses native `showModal()` for containment, Escape dismissal, and focus return. ToastProvider has a persistent polite status region. Motion respects `prefers-reduced-motion`, and controls have larger touch targets on coarse pointers.
+Controls use native elements, visible labels, error descriptions, and disabled states. Tabs provide automatic selection with Arrow keys, Home, and End, with RTL-aware direction. Dialog uses native `showModal()` for containment, Escape dismissal, and focus return. ToastProvider has a persistent polite status region. Motion respects `prefers-reduced-motion`, and controls have larger touch targets on coarse pointers.
 
 The target is current evergreen browsers with support for CSS cascade layers, `:has()`, `color-mix()`, `light-dark()`, and native dialog/popover. Reduced-motion and forced-colors adjustments are provided. The source values of pale divider tokens are for surface separation; form controls use a stronger semantic border token.
 

@@ -127,6 +127,6 @@ export const navbarReferences: ComponentReference[] = [{
   notes: [
     'Omit href to place controls or display content in the navbar. Interactive children use their own semantics and focus behavior.',
     'NavbarItem gets its minimum height from the surrounding Navbar size.',
-    'The current link uses a solid highlight and stronger text weight. Keyboard focus on links uses an outer outline.',
+    'The current link uses a solid highlight and stronger text weight.',
   ],
 }];

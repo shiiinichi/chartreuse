@@ -20,7 +20,6 @@
   .cr-slider-input::-moz-range-track { box-sizing: border-box; block-size: var(--cr-slider-track-size); border: 0; border-radius: var(--cr-radius-full); background: var(--cr-slider-track); box-shadow: inset 0 0 0 1px var(--cr-color-input-border); }
   .cr-slider-input::-moz-range-progress { block-size: var(--cr-slider-track-size); border-radius: var(--cr-radius-full); background: var(--cr-slider-fill); }
   .cr-slider-input::-moz-range-thumb { box-sizing: border-box; inline-size: var(--cr-slider-thumb-size); block-size: var(--cr-slider-thumb-size); border: 1px solid light-dark(var(--cr-slider-fill), var(--cr-color-active-border)); border-radius: 50%; background: var(--cr-slider-fill); }
-  .cr-slider-input:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
   .cr-slider-input[aria-invalid='true'] { --cr-slider-fill: var(--cr-color-danger); }
   .cr-slider:has(.cr-slider-input:disabled) { opacity: .5; }
   .cr-slider-input:disabled { cursor: not-allowed; }

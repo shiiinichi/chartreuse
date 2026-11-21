@@ -15,8 +15,6 @@
   .demo-board { display: grid; grid-template-columns: repeat(4, minmax(205px, 1fr)); gap: 12px; }
   .board-lane-empty-action { flex: 1 1 auto; flex-direction: column; align-self: stretch; gap: 12px; inline-size: 100%; min-block-size: 180px; padding: 20px; border: 0; font-size: 13px; }
   .board-lane-empty-action > svg { inline-size: 24px; block-size: 24px; }
-  .board-lane-empty-action:focus-visible { outline-offset: -4px; }
-  .board-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .board-task-stack { display: flex; flex-direction: column; gap: 18px; min-inline-size: 0; }
   .board-task-description, .board-task-branch { color: var(--cr-color-muted); }
   .board-task-branch { font-size: 11px; }

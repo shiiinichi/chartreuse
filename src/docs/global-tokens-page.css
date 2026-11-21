@@ -9,7 +9,6 @@
   .global-token-filters > .cr-field:first-child { flex: 1 1 280px; }
   .global-token-filters > .cr-field:last-child { flex: 0 1 220px; }
   .global-token-export-scroll { min-inline-size: 0; max-inline-size: 100%; max-block-size: 480px; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); }
-  .global-token-export-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
   .global-token-export-scroll table { inline-size: 100%; min-inline-size: 760px; border-collapse: collapse; text-align: start; font-size: 13px; line-height: 1.85; }
   .global-token-export-scroll :is(th, td) { padding: 14px 16px; border-block-end: 1px solid var(--cr-color-border); vertical-align: top; }
   .global-token-export-scroll thead th { background: var(--cr-color-subtle); font-weight: 550; }

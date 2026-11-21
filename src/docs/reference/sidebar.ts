@@ -66,7 +66,7 @@ export function WorkspaceExample({ children }: { children: ReactNode }) {
   ],
   notes: [
     'Allocate a definite height in the parent to get an independently scrolling body. Without a bounded host, content can determine the surface height normally.',
-    'Header and footer remain outside the scroll region. The body has min-block-size: 0, a stable scrollbar gutter, and keyboard focus styling.',
+    'Header and footer remain outside the scroll region. The body has min-block-size: 0 and a stable scrollbar gutter.',
     'Width is capped by the preferred width, optional maxWidth, and available parent width. Invalid or nonpositive width values fall back to 280px; an invalid maxWidth is ignored.',
     'Use NavbarItem inside a nav for routes. Use Button with aria-pressed when selecting an item for an adjacent inspector.',
     'A ghost Button in the body uses an evergreen highlight when aria-pressed is true.',

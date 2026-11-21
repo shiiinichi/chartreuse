@@ -125,8 +125,6 @@
     box-shadow: none;
   }
 
-  .cr-navbar-item:where(a):focus-visible,
-  .cr-navbar :where(a):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
 
   .cr-navbar-workspace {
     box-sizing: border-box;
@@ -157,7 +155,6 @@
     overscroll-behavior: contain;
   }
 
-  .cr-navbar-workspace-main:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -4px; }
 
   .cr-navbar-workspace > .cr-sidebar {
     flex: none;

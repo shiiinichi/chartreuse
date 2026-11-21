@@ -6,7 +6,6 @@
   .cr-agent-activity :where(summary)::-webkit-details-marker { display: none; }
   .cr-agent-activity:where([data-header-highlight='hover']) > :where(summary):hover,
   .cr-agent-activity :where(.cr-agent-activity-event > summary, .cr-agent-activity-earlier > summary):hover { background: var(--cr-color-subtle); }
-  .cr-agent-activity :where(summary, button.cr-agent-activity-summary, .cr-agent-activity-list-footer a, pre):focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
   .cr-agent-activity-summary { flex-wrap: wrap; padding: var(--cr-space-2); }
   .cr-agent-activity-summary:where(button) { inline-size: 100%; border: 0; background: transparent; color: inherit; font: inherit; text-align: start; }
   .cr-agent-activity-list-footer {
@@ -84,5 +83,5 @@
     .cr-agent-activity-summary:where(summary, button), .cr-agent-activity-event > summary, .cr-agent-activity-earlier > summary, .cr-agent-activity-list-footer a { min-block-size: 44px; }
   }
   @media (prefers-reduced-motion: reduce) { .cr-agent-activity-spin { animation: none; } .cr-agent-activity :where(svg) { transition: none; } }
-  @media (forced-colors: active) { .cr-agent-activity-content, .cr-agent-activity-detail { border-color: CanvasText; } .cr-agent-activity :where(summary, button.cr-agent-activity-summary, .cr-agent-activity-list-footer a, pre):focus-visible { outline-color: Highlight; } }
+  @media (forced-colors: active) { .cr-agent-activity-content, .cr-agent-activity-detail { border-color: CanvasText; } }
 }

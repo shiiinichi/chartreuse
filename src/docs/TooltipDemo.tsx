@@ -12,10 +12,8 @@ const stackCss = `.tooltip-demo-stack { display: flex; flex-direction: column; g
 .tooltip-demo-note { margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
 .tooltip-demo-link { color: var(--cr-color-success); text-underline-offset: 3px; }`;
 const scrollCss = `.tooltip-demo-scroll { box-sizing: border-box; max-height: 168px; overflow: auto; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
-.tooltip-demo-scroll-content { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; min-height: 320px; padding: 16px; }
-.tooltip-demo-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }`;
+.tooltip-demo-scroll-content { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; min-height: 320px; padding: 16px; }`;
 const disabledCss = `.tooltip-demo-disabled-target { display: inline-flex; max-width: 100%; border-radius: var(--cr-radius-md); }
-.tooltip-demo-disabled-target:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: 3px; }
 .tooltip-demo-disabled-target > :disabled { pointer-events: none; }`;
 const source = (components: string, body: string, react = '', extra = '', css = stackCss) => [
   react ? `import { ${react} } from 'react';` : null,

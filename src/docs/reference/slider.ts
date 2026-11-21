@@ -41,7 +41,7 @@ export const sliderReferences: ComponentReference[] = [{
     'The native input preserves arrow-key, Home/End, pointer, touch, and form behavior. The control adds no custom drag handlers or extra tab stops.',
     'Provide a meaningful formatValue when units matter. The same text is exposed as aria-valuetext, while the visual output is hidden from assistive technology to avoid duplicate live announcements.',
     'Use value with onValueChange for application state, or defaultValue for native uncontrolled state. Uncontrolled form reset restores the input, output, and fill together; controlled forms reset their state in the owning application.',
-    'The field has a 40px interaction area, increasing to 44px for coarse pointers. Track, thumb, and keyboard focus use semantic colors in both themes.',
+    'The field has a 40px interaction area, increasing to 44px for coarse pointers. The track and thumb use semantic colors in both themes.',
     'Hints and errors are associated with the range input through aria-describedby. Error text comes from application validation.',
   ],
 }];

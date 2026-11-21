@@ -16,7 +16,6 @@
   .layout-preview-controls { margin-block-end: 24px; }
   .layout-preview-figure { margin: 0; min-inline-size: 0; }
   .layout-preview-scroll { max-inline-size: 100%; padding: 24px; overflow-x: auto; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-canvas); scrollbar-width: thin; }
-  .layout-preview-scroll:focus-visible { outline: 2px solid var(--cr-color-focus); outline-offset: -4px; }
   .layout-preview-viewport { display: grid; grid-template-columns: 123px minmax(0, 1fr); inline-size: 960px; min-block-size: 270px; border: 1px solid var(--cr-color-border); border-radius: 8px; background: var(--cr-color-canvas); }
   .layout-preview-viewport[data-area='constrained'] { inline-size: 520px; }
   .layout-preview-sidebar { display: flex; flex-direction: column; gap: 14px; padding: 20px; border-inline-end: 1px solid var(--cr-color-border); background: var(--cr-color-surface); border-radius: 7px 0 0 7px; }
