@@ -27,7 +27,7 @@ export function ViewSelect() {
     { name: 'emptyMessage', type: 'string', defaultValue: "'No options available.'", description: 'Message shown when the built-in picker has no options.' },
     { name: 'children', type: 'ReactNode', description: 'Custom trigger content. The built-in picker uses the selected label or placeholder by default.' },
     { name: 'content', type: 'ReactNode | ((controls: ButtonSelectControls) => ReactNode)', description: 'Replaces the built-in options with custom popover content. The render function receives close().' },
-    { name: 'matchTriggerWidth', type: 'boolean', defaultValue: 'true for options, false for custom content', description: 'Matches the popover to the rendered trigger width, subject to the available viewport width.' },
+    { name: 'matchTriggerWidth', type: 'boolean', defaultValue: 'false', description: 'Keeps the popover at the rendered button width, within the viewport.' },
     { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger'", defaultValue: "'primary'", description: 'Uses the corresponding Button variant and tokens.' },
     { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Uses the corresponding Button size.' },
     { name: 'icon', type: 'IconSource', description: 'Leading icon passed to Button.' },
@@ -38,6 +38,7 @@ export function ViewSelect() {
     { name: 'ref', type: 'Ref<HTMLButtonElement>', description: 'Native ref to the trigger.' },
   ],
   notes: [
+    'Built-in options use fixed-height, single-line rows. The popup starts at the button width and grows within the viewport to fit longer options. With matchTriggerWidth, overflowing text is truncated with an ellipsis.',
     'The built-in picker shares Autocomplete’s panel and option styles. Use Arrow keys to move through enabled choices, Home or End to jump to either end, or type to match the start of a label. Enter or Space selects the highlighted option. Escape closes the popup.',
     'Custom content sizes to its contents by default. Give width-filling content such as Flex or Grid a definite width on the content or panel, or use matchTriggerWidth.',
     'Use native controls within custom content and call close() when the user finishes. Escape and outside clicks dismiss the popover.',

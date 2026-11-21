@@ -15,6 +15,7 @@ export const extendedReferences: ComponentReference[] = [
       { name: 'value', type: 'string', description: 'Selected option value for a controlled combobox.' },
       { name: 'defaultValue', type: 'string', defaultValue: '""', description: 'Initial selected option value when uncontrolled.' },
       { name: 'checkmark', type: 'boolean | IconSource', defaultValue: 'false', description: 'Shows a selection icon beside the selected option. Pass true for the standard checkmark or supply a custom icon.' },
+      { name: 'matchTriggerWidth', type: 'boolean', defaultValue: 'false', description: 'Keeps the popup at the rendered input width, within the viewport.' },
       { name: 'onValueChange', type: '(value: string) => void', description: 'Called when an option is selected or the selection is cleared.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the input control, associated with aria-describedby.' },
       { name: 'error', type: 'string', description: 'Validation message and invalid state; replaces the displayed hint.' },
@@ -31,6 +32,7 @@ export const extendedReferences: ComponentReference[] = [
     nativeProps: 'Inherits input props/ref except value, defaultValue, onChange, size, and type. Compatible attributes and ref target the visible input; name targets a hidden input and className targets the wrapper. The component manages combobox ARIA state. onFocus, onBlur, and onKeyDown callbacks are composed with its behavior.',
     notes: [
       'AutocompleteOption is { value: string; label: string; description?: string; disabled?: boolean }.',
+      'Options use fixed-height, single-line rows. The popup starts at the input width and grows within the viewport to fit longer options. With matchTriggerWidth, overflowing text is truncated with an ellipsis.',
       'The visible input shows an option label; the named hidden input submits its value.',
       'Arrow keys move through enabled options, Enter selects, and Escape closes the list.',
       'Clearing the selection emits an empty string. Search text is separate from the selected value.',

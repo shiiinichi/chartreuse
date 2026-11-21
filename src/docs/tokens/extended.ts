@@ -184,8 +184,7 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'Autocomplete', componentTokens: [],
     globalTokens: globals(fieldGlobals, names('color-subtle color-active color-on-active color-active-border radius-lg shadow-lg')),
-    runtimeVariables: ['left', 'top', 'bottom', 'width', 'max-height'].map(part => ({ name: `--cr-ac-${part}`, description: `Measured popup ${part}; recomputed for the current input, viewport, and available space.`, source: { file: systemFile('Autocomplete.tsx'), detail: 'The popup’s inline style serializes position; autocomplete.css .cr-autocomplete-popup consumes the same exact names.' }, notes: ['Positioning is owned by the combobox. Do not use its geometry variables as theme tokens.'] })),
-    notes: ['autocomplete.css positions the popup and styles the field actions. Autocomplete and ButtonSelect share the panel and option styles in option-list.css.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared large radius and shadow. The active option uses the solid evergreen highlight and its paired foreground.'],
+    notes: ['autocomplete.css styles the field actions. Autocomplete, ButtonSelect, and Select share the panel and option styles in option-list.css.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared large radius and shadow. The active option uses the solid evergreen highlight and its paired foreground.'],
   },
   {
     component: 'MessageComposer', componentTokens: [],

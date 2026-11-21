@@ -6,7 +6,7 @@ import type { ButtonProps } from './components';
 import type { IconSource } from './icons';
 import { findOptionByTyping, isOptionNavigationKey, nextOptionIndex, OptionList, revealActiveOption } from './OptionList';
 import type { OptionListItem } from './OptionList';
-import { optionListFlipThreshold, optionListMaxHeight, optionListViewport, trackOptionListAnchor } from './option-list-anchor';
+import { optionListViewport, trackOptionListAnchor } from './option-list-anchor';
 import './button-select.css';
 
 export interface ButtonSelectControls {
@@ -28,12 +28,12 @@ export interface ButtonSelectProps extends Omit<ButtonProps,
   onValueChange?: (value: string) => void;
   placeholder?: string;
   emptyMessage?: string;
-  /** Size the popover to the trigger's width. Defaults to true for the built-in picker. */
+  /** Keep the popover at the trigger's width, within the viewport. Defaults to false. */
   matchTriggerWidth?: boolean;
   panelClassName?: string;
 }
 
-function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: Window, matchTriggerWidth: boolean, builtIn: boolean) {
+function positionCustomPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: Window, matchTriggerWidth: boolean) {
   const { left, top, right, bottom } = optionListViewport(view, panel.ownerDocument);
   const inset = 8;
   const gap = 6;
@@ -46,13 +46,13 @@ function positionPanel(button: HTMLButtonElement, panel: HTMLDivElement, view: W
 
   panel.style.maxWidth = `${maxWidth}px`;
   panel.style.width = matchTriggerWidth ? `${anchor.width}px` : '';
-  const preferredHeight = builtIn ? optionListFlipThreshold : panel.scrollHeight + panel.offsetHeight - panel.clientHeight;
+  const preferredHeight = panel.scrollHeight + panel.offsetHeight - panel.clientHeight;
   const below = maxBottom - belowStart;
   const above = aboveEnd - minTop;
   const opensAbove = below < preferredHeight && above > below;
 
   const available = opensAbove ? above : below;
-  panel.style.maxHeight = `${builtIn ? Math.min(optionListMaxHeight, available) : available}px`;
+  panel.style.maxHeight = `${available}px`;
   const { width, height } = panel.getBoundingClientRect();
   const start = view.getComputedStyle(button).direction === 'rtl' ? anchor.right - width : anchor.left;
   panel.style.left = `${Math.max(left + inset, Math.min(start, right - inset - width))}px`;
@@ -64,7 +64,7 @@ const noOptions: readonly ButtonSelectOption[] = [];
 
 /** A Button that reveals a list of choices or caller-supplied content. */
 export function ButtonSelect({ children, content, options = noOptions, value, defaultValue, checkmark, onValueChange,
-  placeholder = 'Select an option', emptyMessage = 'No options available.', matchTriggerWidth, panelClassName,
+  placeholder = 'Select an option', emptyMessage = 'No options available.', matchTriggerWidth = false, panelClassName,
   className, iconRight = ChevronDown, disabled, loading, ref, onBlur, onKeyDown, ...props }: ButtonSelectProps) {
   const panelId = `${useId()}-button-select`;
   const button = useRef<HTMLButtonElement>(null);
@@ -74,7 +74,6 @@ export function ButtonSelect({ children, content, options = noOptions, value, de
   const [active, setActive] = useState(-1);
   const search = useRef({ query: '', at: 0 });
   const builtIn = content === undefined;
-  const matchWidth = matchTriggerWidth ?? builtIn;
   const labelId = builtIn && !(props['aria-label'] || props['aria-labelledby']) ? `${panelId}-label` : undefined;
   const selectedValue = value === undefined ? selection : String(value);
   const selectedIndex = builtIn ? options.findIndex(option => !option.disabled && option.value === selectedValue) : -1;
@@ -98,40 +97,38 @@ export function ButtonSelect({ children, content, options = noOptions, value, de
     const popup = panel.current;
     const view = popup?.ownerDocument.defaultView;
     if (!expanded || !trigger || !popup || !view || !popup.matches(':popover-open')) return;
+    if (builtIn) return trackOptionListAnchor(trigger, popup, view,
+      target => trigger.contains(target) || popup.contains(target), close, matchTriggerWidth);
 
+    popup.style.direction = '';
+    popup.style.minWidth = '';
+    popup.style.bottom = '';
     let frame = 0;
     const place = () => {
-      if (popup.matches(':popover-open')) positionPanel(trigger, popup, view, matchWidth, builtIn);
+      if (popup.matches(':popover-open')) positionCustomPanel(trigger, popup, view, matchTriggerWidth);
     };
     const schedule = () => {
       view.cancelAnimationFrame(frame);
       frame = view.requestAnimationFrame(place);
     };
-    const observer = new ResizeObserver(schedule);
+    const observer = new view.ResizeObserver(schedule);
     observer.observe(trigger);
     observer.observe(popup);
-    const stopTracking = builtIn ? trackOptionListAnchor(trigger, view,
-      target => trigger.contains(target) || popup.contains(target), place, close) : undefined;
-    if (!builtIn) {
-      view.addEventListener('scroll', schedule, true);
-      view.addEventListener('resize', schedule);
-      view.visualViewport?.addEventListener('resize', schedule);
-      view.visualViewport?.addEventListener('scroll', schedule);
-      place();
-    }
+    view.addEventListener('scroll', schedule, true);
+    view.addEventListener('resize', schedule);
+    view.visualViewport?.addEventListener('resize', schedule);
+    view.visualViewport?.addEventListener('scroll', schedule);
+    place();
     return () => {
       observer.disconnect();
       view.cancelAnimationFrame(frame);
-      stopTracking?.();
-      if (!builtIn) {
-        view.removeEventListener('scroll', schedule, true);
-        view.removeEventListener('resize', schedule);
-        view.visualViewport?.removeEventListener('resize', schedule);
-        view.visualViewport?.removeEventListener('scroll', schedule);
-      }
+      view.removeEventListener('scroll', schedule, true);
+      view.removeEventListener('resize', schedule);
+      view.visualViewport?.removeEventListener('resize', schedule);
+      view.visualViewport?.removeEventListener('scroll', schedule);
       delete popup.dataset.positioned;
     };
-  }, [expanded, matchWidth, builtIn, close]);
+  }, [expanded, matchTriggerWidth, builtIn, close]);
 
   useLayoutEffect(() => {
     if (builtIn && expanded && activeIndex >= 0) revealActiveOption(panel.current, `${panelId}-${activeIndex}`);

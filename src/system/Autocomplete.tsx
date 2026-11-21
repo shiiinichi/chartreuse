@@ -1,11 +1,11 @@
 import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
-import type { ComponentPropsWithRef, CSSProperties, KeyboardEvent } from 'react';
+import type { ComponentPropsWithRef, KeyboardEvent } from 'react';
 import { AlertCircle, ChevronDown, Search, X } from 'lucide-react';
 import type { ControlSize } from './control-size';
 import type { IconSource } from './icons';
 import { OptionList, revealActiveOption } from './OptionList';
 import type { OptionListItem } from './OptionList';
-import { matchOptionListAnchor, optionListMaxHeight, trackOptionListAnchor } from './option-list-anchor';
+import { trackOptionListAnchor } from './option-list-anchor';
 import { Text } from './Text';
 import './autocomplete.css';
 
@@ -19,13 +19,15 @@ export interface AutocompleteProps extends Omit<ComponentPropsWithRef<'input'>, 
   defaultValue?: string;
   /** Show the standard checkmark or a custom icon beside the selected option. Hidden by default. */
   checkmark?: boolean | IconSource;
+  /** Keep the popover at the input's width, within the viewport. Defaults to false. */
+  matchTriggerWidth?: boolean;
   onValueChange?: (value: string) => void;
   hint?: string;
   error?: string;
   emptyMessage?: string;
 }
 
-export function Autocomplete({ label, size = 'md', options, value, defaultValue = '', checkmark, onValueChange, hint, error, emptyMessage = 'No matching options. Change the search text.', name, id: suppliedId, className, disabled, required, placeholder = 'Search options', ref, onFocus, onBlur, onKeyDown, ...props }: AutocompleteProps) {
+export function Autocomplete({ label, size = 'md', options, value, defaultValue = '', checkmark, matchTriggerWidth = false, onValueChange, hint, error, emptyMessage = 'No matching options. Change the search text.', name, id: suppliedId, className, disabled, required, placeholder = 'Search options', ref, onFocus, onBlur, onKeyDown, ...props }: AutocompleteProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const listId = `${id}-options`;
@@ -37,7 +39,6 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
   const [searching, setSearching] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
-  const [position, setPosition] = useState({ left: 0, top: 0, bottom: 0, width: 0, maxHeight: optionListMaxHeight, above: false });
   const selectedValue = value ?? internalValue;
   const selected = options.find(option => option.value === selectedValue && !option.disabled);
   const filterText = searching ? query.trim().toLocaleLowerCase() : '';
@@ -106,8 +107,7 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
     if (!anchor || !host || !view) return;
     if ('showPopover' in panel && !panel.matches(':popover-open')) panel.showPopover();
 
-    const stopTracking = trackOptionListAnchor(anchor, view, target => host.contains(target),
-      (rect, viewport) => setPosition(matchOptionListAnchor(rect, viewport)), closeOptions);
+    const stopTracking = trackOptionListAnchor(anchor, panel, view, target => host.contains(target), closeOptions, matchTriggerWidth);
     const outside = (event: PointerEvent) => {
       if (!event.composedPath().includes(host)) closeOptions();
     };
@@ -116,7 +116,7 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
       stopTracking();
       doc.removeEventListener('pointerdown', outside, true);
     };
-  }, [expanded]);
+  }, [expanded, matchTriggerWidth]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -160,7 +160,7 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {name && <input type="hidden" name={name} value={selected?.value || ''} disabled={disabled} />}
     {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" />{error}</Text>}
-    <div ref={popup} id={listId} popover="manual" role="listbox" aria-label={`${label} options`} className="cr-autocomplete-popup cr-option-list-popup" data-open={expanded} hidden={!expanded} style={{ '--cr-ac-left': `${position.left}px`, '--cr-ac-top': position.above ? 'auto' : `${position.top}px`, '--cr-ac-bottom': position.above ? `${position.bottom}px` : 'auto', '--cr-ac-width': `${position.width}px`, '--cr-ac-max-height': `${position.maxHeight}px` } as CSSProperties}>
+    <div ref={popup} id={listId} popover="manual" role="listbox" aria-label={`${label} options`} className="cr-autocomplete-popup cr-option-list-popup" data-open={expanded} hidden={!expanded}>
       <OptionList id={listId} options={filtered} active={active} value={selected?.value} checkmark={checkmark} emptyMessage={emptyMessage}
         onActivate={setActive} onSelect={choose} optionClassName="cr-autocomplete-option" emptyClassName="cr-autocomplete-empty" />
     </div>

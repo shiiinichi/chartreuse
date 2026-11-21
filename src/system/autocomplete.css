@@ -6,7 +6,7 @@
   .cr-autocomplete-actions > button { display: grid; place-items: center; min-inline-size: 28px; min-block-size: 28px; padding: 4px; border: 0; border-radius: 4px; background: transparent; color: var(--cr-color-muted); cursor: pointer; }
   .cr-autocomplete-actions > button:hover:not(:disabled) { background: var(--cr-color-subtle); color: var(--cr-color-text); }
   .cr-autocomplete-actions > button:disabled { opacity: .5; cursor: not-allowed; }
-  .cr-autocomplete-popup { position: fixed; left: var(--cr-ac-left); right: auto; top: var(--cr-ac-top); bottom: var(--cr-ac-bottom); inline-size: var(--cr-ac-width); max-inline-size: calc(100vw - 16px); max-block-size: var(--cr-ac-max-height); z-index: 1000; }
+  .cr-autocomplete-popup { z-index: 1000; }
   .cr-autocomplete-popup[data-open='false'] { display: none; }
   .cr-autocomplete-popup[data-open='true'] { display: block; }
   @media (pointer: coarse) {

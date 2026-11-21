@@ -43,7 +43,10 @@ export function OptionList({ id, options, groups, active, value, checkmark, empt
     onPointerMove={() => { if (!option.disabled) onActivate(index); }}
     onPointerDown={event => event.preventDefault()} onMouseDown={event => event.preventDefault()}
     onClick={() => { if (!option.disabled) onSelect(option); }}>
-    <span><Text bold>{option.label}</Text>{option.description && <Text size="small">{option.description}</Text>}</span>
+    <span>
+      <Text bold>{option.label}</Text>
+      {option.description && <>{' '}<Text size="small">{option.description}</Text></>}
+    </span>
     {value === option.value && renderIcon(checkmarkIcon, { size: 14, className: 'cr-option-list-checkmark' })}
   </div>);
 
