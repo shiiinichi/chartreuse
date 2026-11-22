@@ -199,6 +199,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.12.0',
+    date: '2026-11-23',
+    title: 'Full-width controls, draggable tabs, and composer send sizes',
+    summary: 'Fields and buttons can fill flex rows, overflowing tabs scroll by dragging, and the composer send button comes in three sizes.',
+    changes: [
+      'Button, ButtonSelect, TextField, TextArea, Select, Autocomplete, NumberInput, and Slider add fullWidth. It stretches the control to its container, including inside flex rows.',
+      'When tabs overflow, hold down a tab and drag sideways to scroll the row. The tab scrollbar stays hidden until horizontal wheel or trackpad scrolling briefly reveals it.',
+      'MessageComposer adds sendSize: sm, md, or lg for a 32px, 36px, or 44px send button. The default md keeps the current 36px size, and coarse pointers always get a 44px target.',
+      'The chartreuse CLI adds setup, foundation, and choosing guides, more accurate search with name suggestions, and self-contained usage examples. JSON output stays at schemaVersion 1.',
+    ],
+  },
+  {
     version: '1.11.0',
     date: '2026-11-21',
     title: 'ButtonSelect and Autocomplete popup sizing',

@@ -211,7 +211,9 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures.
 
-`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for the `line`, `pill`, and `highlight` styles. The default size is `"md"`, and each size matches the corresponding `Button` height. Selected tabs use an Evergreen underline. The `pill` style adds a raised surface, and the `highlight` style adds a subtle fill with rounded top corners.
+`Tabs` supports `size="sm"`, `"md"`, and `"lg"` for the `line`, `pill`, and `highlight` styles. The default size is `"md"`, and each size matches the corresponding `Button` height. Selected tabs use an Evergreen underline. The `pill` style adds a raised surface, and the `highlight` style adds a subtle fill with rounded top corners. When tabs overflow, hold down a tab and drag sideways to scroll the row. The scrollbar stays hidden until horizontal wheel or trackpad scrolling briefly reveals it.
+
+`Button`, `ButtonSelect`, `TextField`, `TextArea`, `Select`, `Autocomplete`, `NumberInput`, and `Slider` accept `fullWidth`. It stretches the control to the full width of its container. In a flex row, a field is otherwise only as wide as its control, so set `fullWidth` to fill the remaining space.
 
 `Breadcrumbs` uses chevrons by default. Set `separator` to decorative text or JSX, or pass `null` to hide separators.
 
@@ -268,7 +270,7 @@ Built-in options use fixed-height, single-line rows. The popup starts at the tri
 
 `Autocomplete`, `ButtonSelect`, and single-choice `Select` hide the selection checkmark by default. Add `checkmark` for the standard icon or pass a custom icon, such as `checkmark={CircleCheck}`. The prop accepts Lucide icons, SVG components, and inline SVG elements.
 
-`MessageComposer` combines a labeled textarea, hint, and send action. The caller implements submission in the required `onSend(message)` callback, which can be synchronous or asynchronous. Submission displays a busy state; failures retain the draft, and successful sends clear the submitted text. Edits made while submission is pending are retained. Enter adds a new line; Command/Ctrl+Enter sends. The gallery simulates success, delay, and failure within the example.
+`MessageComposer` combines a labeled textarea, hint, and send action. The caller implements submission in the required `onSend(message)` callback, which can be synchronous or asynchronous. Submission displays a busy state; failures retain the draft, and successful sends clear the submitted text. Edits made while submission is pending are retained. Enter adds a new line; Command/Ctrl+Enter sends. Set `sendSize` to `"sm"`, `"md"`, or `"lg"` for a 32px, 36px, or 44px send button; the default is `"md"`, and coarse pointers always get a 44px target. The gallery simulates success, delay, and failure within the example.
 
 The [Drawers gallery](http://127.0.0.1:5173/#drawers) demonstrates a shared `Drawer` in `mode="docked"` or `mode="modal"`, with left/right placement and configurable `width` / `maxWidth`. Docked panels leave the workspace usable; modal drawers contain focus with native dialog behavior. The footer can hold a `MessageComposer`. Every conversation in the example stays local.
 
