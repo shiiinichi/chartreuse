@@ -181,11 +181,12 @@ export const coreReferences: ComponentReference[] = [
     nativeElement: 'input',
     nativeProps: "Extends ComponentPropsWithRef<'input'> except the native size attribute. Native values, constraints, events, style, and ref target the input; className targets the field wrapper. Caller aria-describedby IDs merge with the generated hint or error ID.",
     props: [
-      { name: 'label', type: 'string', required: true, description: 'The visible label associated with the input.' },
+      { name: 'label', type: 'string', required: true, description: 'The associated label, visible unless hideLabel is enabled.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The control size. Use the same size on a Button to match the input height.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the input control, linked with aria-describedby; hidden while an error is present.' },
       { name: 'error', type: 'string', description: 'An error message linked to the input; also sets aria-invalid.' },
       { name: 'icon', type: 'IconSource', description: 'A decorative leading IconSource: Lucide icon, custom SVG component, or inline SVG JSX element.' },
+      { name: 'hideLabel', type: 'boolean', defaultValue: 'false', description: 'Visually hides the label while preserving its accessible association.' },
       { name: 'id', type: 'string', defaultValue: 'Generated with useId()', description: 'The native input ID, also used for the label association and generated description IDs.' },
       { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the field to the full width of its container, including inside flex rows.' },
       { name: 'className', type: 'string', description: 'Additional classes on the outer field wrapper.' },
@@ -194,7 +195,8 @@ export const coreReferences: ComponentReference[] = [
     notes: [
       "Use Grid and GridItem for peer fields in either direction: columns={1} gap={4} for a vertical stack, or columns={{ base: 1, sm: 2 }} gap={4} for a responsive row. Put each whole labeled control in GridItem span={1}.",
       'The focus highlight fades outward from the fixed field border and appears instantly on focus.',
-      'Controlled value and uncontrolled defaultValue follow React’s native input API.', 'Use native required, type, minLength, pattern, and autoComplete where appropriate. Native constraints and application logic own validation; error displays application-supplied feedback.'],
+      'Controlled value and uncontrolled defaultValue follow React’s native input API.', 'Use native required, type, minLength, pattern, and autoComplete where appropriate. Native constraints and application logic own validation; error displays application-supplied feedback.',
+      'When using hideLabel, retain visible context that identifies the field’s purpose. A placeholder alone is not a label.'],
   },
   {
     name: 'TextArea',
@@ -206,9 +208,10 @@ export const coreReferences: ComponentReference[] = [
     nativeElement: 'textarea',
     nativeProps: "Extends ComponentPropsWithRef<'textarea'>. Native values, rows, constraints, events, style, and ref target the textarea; className targets the field wrapper. Caller aria-describedby IDs merge with the generated hint or error ID.",
     props: [
-      { name: 'label', type: 'string', required: true, description: 'The visible label associated with the textarea.' },
+      { name: 'label', type: 'string', required: true, description: 'The associated label, visible unless hideLabel is enabled.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the input control, linked with aria-describedby; hidden while an error is present.' },
       { name: 'error', type: 'string', description: 'An error description; sets aria-invalid while present.' },
+      { name: 'hideLabel', type: 'boolean', defaultValue: 'false', description: 'Visually hides the label while preserving its accessible association.' },
       { name: 'id', type: 'string', defaultValue: 'Generated with useId()', description: 'The native textarea ID, also used for the label association and generated description IDs.' },
       { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the field to the full width of its container, including inside flex rows.' },
       { name: 'className', type: 'string', description: 'Additional classes on the outer field wrapper.' },
@@ -216,7 +219,8 @@ export const coreReferences: ComponentReference[] = [
     ],
     notes: [
       "Use Grid and GridItem for peer fields in either direction: columns={1} gap={4} for a vertical stack, or columns={{ base: 1, sm: 2 }} gap={4} for a responsive row. Put each whole labeled control in GridItem span={1}.",
-      'The textarea can be resized vertically. Native value/defaultValue and required behavior are preserved.'],
+      'The textarea can be resized vertically. Native value/defaultValue and required behavior are preserved.',
+      'When using hideLabel, retain visible context that identifies the field’s purpose. A placeholder alone is not a label.'],
   },
   {
     name: 'Select',
@@ -300,7 +304,7 @@ export const coreReferences: ComponentReference[] = [
   {
     name: 'Avatar',
     slug: 'avatar',
-    summary: 'A circular initials avatar with an accessible name and optional visible name text.',
+    summary: 'A circular initials or icon avatar with an accessible name and optional visible name text.',
     importCode: "import { Avatar } from '@chartreuse/ui';",
     usageCode: `<Avatar name="Alex Morgan" showName />`,
     nativeElement: 'span[role="img"], or a span containing a decorative avatar and visible name',
@@ -310,25 +314,29 @@ export const coreReferences: ComponentReference[] = [
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The avatar size: 26px, 32px, or 44px.' },
       { name: 'color', type: "'green' | 'peach' | 'blue' | 'purple'", defaultValue: "'green'", description: 'The initials surface and text palette.' },
       { name: 'showName', type: 'boolean', defaultValue: 'false', description: 'Displays the full name beside a decorative initials glyph, using a built-in aligned wrapper.' },
+      { name: 'icon', type: 'IconSource', description: 'A decorative IconSource shown instead of the initials: Lucide icon, custom SVG component, or inline SVG JSX element. It is sized for the avatar (14px, 16px, or 22px) and hidden from assistive technology; name still provides the accessible name.' },
       { name: 'className', type: 'string', description: 'Additional classes on the standalone avatar span, or on the outer wrapper when showName is enabled.' },
     ],
     notes: [
-      'Initials use the first characters of the first two nonempty space-separated name parts.', 'Use showName to render the initials and full name together. The initials glyph is hidden from assistive technology; the visible name identifies the person.', 'Named avatars keep the same glyph size/color props. The visible name inherits its context color and wraps within the available width.', 'Use a meaningful name; the component does not load remote profile images.'],
+      'Initials use the first characters of the first two nonempty space-separated name parts.', 'Use showName to render the initials and full name together. The initials glyph is hidden from assistive technology; the visible name identifies the person.', 'Named avatars keep the same glyph size/color props. The visible name inherits its context color and wraps within the available width.', 'Set icon for a non-person identity such as an agent, bot, or team. The icon replaces the initials; an icon source that cannot render falls back to initials.', 'Use a meaningful name; the component does not load remote profile images.'],
   },
   {
     name: 'AvatarGroup',
     slug: 'avatar-group',
-    summary: 'A compact, overlapping row of initials avatars with an overflow count.',
+    summary: 'A compact, overlapping row of initials or icon avatars with an overflow count.',
     importCode: "import { AvatarGroup } from '@chartreuse/ui';",
     usageCode: `<AvatarGroup names={['Alex Morgan', 'Sam Lee', 'Jamie Park', 'Taylor Reed']}
   max={3} />`,
     nativeElement: 'span',
     nativeProps: 'Only the listed props are accepted. Additional native attributes, className, and ref are not part of this component’s API.',
     props: [
-      { name: 'names', type: 'string[]', required: true, description: 'Names for the avatars, in display order.' },
+      { name: 'names', type: 'string[]', description: 'Names for initials avatars, in display order. Pass names or items, not both; one of them is required.' },
+      { name: 'items', type: 'AvatarGroupItem[]', description: 'Avatar entries in display order, used instead of names when an entry needs an icon.' },
+      { name: 'items[].name', type: 'string', required: true, description: 'The accessible name of the avatar and the source of its initials.' },
+      { name: 'items[].icon', type: 'IconSource', description: 'A decorative IconSource shown instead of the initials. The name remains the accessible name.' },
       { name: 'max', type: 'number', defaultValue: '3', description: 'How many names are shown before a +N overflow avatar. Use a nonnegative integer.' },
     ],
-    notes: ['Displayed avatars use the small size and cycle through the built-in color palette.', 'Each avatar retains its accessible name, and the overflow indicator announces how many people remain.'],
+    notes: ['Displayed avatars use the small size and cycle through the built-in color palette.', 'Each avatar retains its accessible name, and the overflow indicator announces how many people remain. Icons in items are decorative; the +N overflow count is unchanged.'],
   },
   {
     name: 'Progress',

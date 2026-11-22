@@ -22,6 +22,7 @@ export const componentSidebarIcons: Record<string, LucideIcon> = {
   Avatar: componentIcon('Avatar', <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="9" r="3" /><path d="M5.5 18a7 7 0 0 1 13 0" /></>),
   AvatarGroup: componentIcon('AvatarGroup', <><circle cx="12" cy="12" r="4" /><path d="M7 8a4 4 0 1 0 0 8M17 8a4 4 0 1 1 0 8" /></>),
   Badge: componentIcon('Badge', <><path d="M3 7h12l6 5-6 5H3Z" /><circle cx="6.5" cy="12" r=".8" fill="currentColor" stroke="none" /><path d="M10 12h5" /></>),
+  List: componentIcon('List', <><circle cx="4.5" cy="6" r="1" /><circle cx="4.5" cy="12" r="1" /><circle cx="4.5" cy="18" r="1" /><path d="M9 6h12M9 12h12M9 18h12" /></>),
   Blockquote: componentIcon('Blockquote', <><path d="M3 3v18M8 17h13M9 6H7v5h4V7H8m10-1h-2v5h4V7h-3" /></>),
   BrandMark: componentIcon('BrandMark', <path d="M12 12H3V3h3a6 6 0 0 1 6 6Zm0 0V3h9v3a6 6 0 0 1-6 6Zm0 0h9v9h-3a6 6 0 0 1-6-6Zm0 0v9H3v-3a6 6 0 0 1 6-6Z" fill="currentColor" stroke="none" />),
   Breadcrumbs: componentIcon('Breadcrumbs', <><rect x="2" y="10" width="4" height="4" rx="1" /><path d="m9 10 2 2-2 2m6-4 2 2-2 2" /><path d="M20 10h2v4h-2" /></>),

@@ -1,0 +1,28 @@
+@layer docs-ui {
+  .list-demo { display: flex; flex-direction: column; gap: 28px; min-inline-size: 0; }
+  .list-demo-intro { max-inline-size: 75ch; margin: 0; color: var(--cr-color-muted); font-size: 13px; line-height: 1.8; }
+  .list-demo-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--cr-space-4); margin-block-end: var(--cr-space-4); }
+  .list-demo-nav { display: flex; flex-direction: column; gap: var(--cr-space-5); max-inline-size: 240px; }
+  .list-demo-nav .cr-text[data-size='label'] { margin-block-end: var(--cr-space-2); padding-inline: 10px; color: var(--cr-color-muted); text-transform: uppercase; }
+  .list-demo-nav .cr-list-item { position: relative; align-items: center; padding: 6px 10px; border: 1px solid transparent; border-radius: var(--cr-radius-md); color: var(--cr-color-muted); }
+  .list-demo-nav .cr-list-item + .cr-list-item { margin-block-start: 2px; }
+  .list-demo-nav .cr-list-item > .cr-list-marker { color: inherit; }
+  .list-demo-nav .cr-list-item:hover { background: var(--cr-color-subtle); color: var(--cr-color-text); }
+  .list-demo-nav .cr-list-item:has(a[aria-current='page']) { border-color: var(--cr-color-active-border); background: var(--cr-color-active); color: var(--cr-color-on-active); font-weight: 550; }
+  .list-demo-nav .cr-list-item:has(a:focus-visible) { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
+  .list-demo-nav a { color: inherit; text-decoration: none; outline: none; }
+  /* Stretch each link over its row so the whole highlighted row is clickable. */
+  .list-demo-nav a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .list-demo-threads { max-inline-size: 360px; }
+  .list-demo-threads .cr-list-item { position: relative; align-items: center; padding: 8px 10px; border: 1px solid transparent; border-radius: var(--cr-radius-md); }
+  .list-demo-threads .cr-list-item + .cr-list-item { margin-block-start: 2px; }
+  .list-demo-threads .cr-list-item:hover { background: var(--cr-color-subtle); }
+  .list-demo-threads .cr-list-item:has(a[aria-current='page']) { border-color: var(--cr-color-active-border); background: var(--cr-color-active); color: var(--cr-color-on-active); }
+  .list-demo-threads .cr-list-item:has(a[aria-current='page']) :is(.cr-list-description, .cr-list-trailing) { color: inherit; opacity: .8; }
+  .list-demo-threads .cr-list-item:has(a:focus-visible) { outline: 2px solid var(--cr-color-focus); outline-offset: 2px; }
+  .list-demo-threads .cr-list-item:has(.cr-badge) .cr-list-title { font-weight: 600; }
+  .list-demo-threads .cr-list-description { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .list-demo-threads .cr-list-trailing { flex-direction: column; align-items: flex-end; gap: 2px; font-size: .75rem; }
+  .list-demo-threads a { color: inherit; text-decoration: none; outline: none; }
+  .list-demo-threads a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+}

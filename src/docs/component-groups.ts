@@ -17,7 +17,7 @@ export const componentGroups: readonly ComponentGroup[] = [
   { name: 'Feedback', components: ['Alert', 'CalloutBanner', 'Badge', 'Progress', 'Spinner', 'Skeleton', 'EmptyState', 'ToastProvider'] },
   {
     name: 'Content',
-    components: ['Text', 'Card', 'Divider', 'Avatar', 'AvatarGroup', 'BrandMark', 'Blockquote', 'MarkdownRenderer', 'Disclosure',
+    components: ['Text', 'Card', 'Divider', 'Avatar', 'AvatarGroup', 'BrandMark', 'Blockquote', 'MarkdownRenderer', 'Disclosure', 'List',
       'Stat', 'StatGroup', 'Table', 'Timeline', 'ActivityItem', 'Steps', 'Tree'],
   },
   { name: 'Navigation', components: ['Navbar', 'NavbarItem', 'Sidebar', 'Tabs', 'Breadcrumbs', 'Pagination'] },

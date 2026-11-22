@@ -250,6 +250,10 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component-owned custom properties are declared. content-blocks.css uses shared spacing for the left rule inset, paragraphs, attribution, and filled padding, with shared link colors.', 'Neutral filled quotes use --cr-color-subtle for the surface and --cr-color-success for the rule. The info, success, warning, and danger tones use their corresponding shared foreground and background tokens; these adapt to the active color scheme. Quoted text keeps --cr-color-text and attribution keeps --cr-color-muted.', 'The plain rule is a literal 2px; the filled rule is a literal 3px. Body/attribution sizes and link radius are also literals. ActivityItem-only spacing in the shared file is not attributed to Blockquote.'],
   },
   {
+    component: 'List', componentTokens: [], globalTokens: names('space-1 space-2 space-3 color-text font-sans color-border color-muted radius-full color-success').sort(),
+    notes: ['No component-owned custom properties are declared. list.css uses shared spacing for item gaps and divided padding, --cr-color-border for dividers, --cr-color-muted for markers and descriptions, and shared link colors.', 'Item tones color the bullet, number, or icon through the shared data-tone foreground colors (--cr-color-success, --cr-color-info, --cr-color-warning, --cr-color-danger). Text keeps --cr-color-text.', 'Type sizes, the 5px bullet, and marker widths are literal CSS. Trailing Badge or Button content keeps its own component token contract.'],
+  },
+  {
     component: 'ActivityItem', componentTokens: [], globalTokens: names('space-1 space-2 space-3 space-4 color-border color-text font-sans color-muted color-success').sort(),
     notes: ['No component-owned CSS variables are declared. The activity-specific and shared left-rule rules in content-blocks.css consume shared spacing, text/border colors, and link colors.', 'Identifier, title, metadata, and footer type sizes are literal CSS. Supplied metadata badges/actions retain their own component token contracts.'],
   },

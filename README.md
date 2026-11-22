@@ -191,15 +191,15 @@ GitHub manages the repository and npm package visibility separately. Review what
 
 ## Components
 
-The library exports 66 components. [Latest GitHub release](https://github.com/shiiinichi/chartreuse/releases/latest) · [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
+The library exports 67 components. [Latest GitHub release](https://github.com/shiiinichi/chartreuse/releases/latest) · [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
 
-ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, Pagination, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Table, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
+ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, List, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, Pagination, PathSelector, Progress, SegmentedControl, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, Switch, Table, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
 The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. The task board shares search, task creation, and status changes between the Board and paginated List views.
 
 Component galleries use Masonry to arrange previews of different heights in responsive columns, including in full content width mode. Compact examples use narrower columns; Grid, Timeline, and other spatial examples use wider columns. Workspace examples can span all columns. DOM order and mounted state remain stable as content, Preview/Code views, and available width change. Input groups use Grid.
 
-`Avatar` displays a name beside its initials when `showName` is set, as in `<Avatar name="Alex Morgan" showName />`. The component handles alignment and spacing and hides the decorative initials from assistive technology. Without `showName`, the avatar has an accessible image label containing the name.
+`Avatar` displays a name beside its initials when `showName` is set, as in `<Avatar name="Alex Morgan" showName />`. The component handles alignment and spacing and hides the decorative initials from assistive technology. Without `showName`, the avatar has an accessible image label containing the name. Set `icon` to show a decorative icon instead of initials, such as `<Avatar name="Review agent" icon={Bot} />` for an agent; the name stays the accessible label. `AvatarGroup` takes `items={[{ name, icon }]}` in place of `names` when an entry needs an icon.
 
 `Badge` defaults to `variant="soft"` for a tinted surface. Use `variant="ghost"` for a transparent surface with the same text color and optional status dot or icon, as in `<Badge variant="ghost" tone="info" dot>Running</Badge>`.
 
@@ -215,6 +215,8 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `Button`, `ButtonSelect`, `TextField`, `TextArea`, `Select`, `Autocomplete`, `NumberInput`, and `Slider` accept `fullWidth`. It stretches the control to the full width of its container. In a flex row, a field is otherwise only as wide as its control, so set `fullWidth` to fill the remaining space.
 
+`TextField`, `TextArea`, `Select`, `Slider`, and `SegmentedControl` accept `hideLabel`. It hides the label visually but keeps it as the control's accessible name. Keep nearby context, such as a heading, that shows what the field is for; a placeholder alone is not a label.
+
 `Breadcrumbs` uses chevrons by default. Set `separator` to decorative text or JSX, or pass `null` to hide separators.
 
 `Dialog` uses a 10px gutter with a centered grip when `resizableSplit` is set. Drag the divider or use the arrow keys while it has keyboard focus.
@@ -224,6 +226,8 @@ Component galleries use Masonry to arrange previews of different heights in resp
 `ButtonSelect` uses the same sizes and variants as `Button`. Pass `options` to use the built-in picker, which shares Autocomplete’s popup styles and matches the trigger width by default. Use `defaultValue` for an initial choice or `value` and `onValueChange` to control selection. Supply `content` for a custom picker with its own layout and controls. The custom panel sizes to its contents by default, supports `panelClassName` and `matchTriggerWidth`, and passes `close()` to content renderers. [ButtonSelect examples](https://shiiinichi.github.io/chartreuse/#components/button-select)
 
 `Blockquote` renders a quotation with optional source attribution outside the quoted text. The default `variant="plain"` displays a left rule; `variant="filled"` adds a padded background, with optional `tone="neutral"`, `"info"`, `"success"`, `"warning"`, or `"danger"` colors. Tone changes presentation while retaining quotation semantics. `ActivityItem` provides a left rule for task updates, with title, identifier, metadata, and footer slots.
+
+`List` renders a semantic bulleted `ul`, or a numbered `ol` with `ordered` and an optional `start`. Each item has a `title` and optional `description`, decorative `icon` or `leading` content such as an `Avatar`, `tone`, and `trailing` content such as a Badge or a small action. Set `size="sm"` for compact lists, `dividers` for rules between items, and `marker="none"` to hide bullets and numbers. Use `Table` for multi-column records and `Tree` for expandable hierarchies.
 
 `AgentActivity` displays a collapsible event group with details for each event. Set `variant="list"` to show all events beneath a group heading with a left connector. Lists with more than six events start open and can collapse from the heading or the footer below the last row. The footer also links back to the heading. In either variant, `titleLines="single"` truncates long titles with an ellipsis. Expand the row to read the full title. Command, input, and output text are available in the details, and failed, interrupted, running, and completed states are distinct. The caller supplies event data and handles execution.
 

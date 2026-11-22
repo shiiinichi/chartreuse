@@ -39,4 +39,5 @@ export * from './Masonry';
 export * from './Flex';
 export * from './Blockquote';
 export * from './ActivityItem';
+export * from './List';
 export * from './tokens';

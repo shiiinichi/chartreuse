@@ -275,6 +275,20 @@ function FullWidthTextField() {
   </FormScenario>;
 }
 
+function HiddenLabelTextField() {
+  const rowStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Hidden label" description="Set hideLabel when nearby content already shows what the field is for. The label stays as the input's accessible name."
+    code={formCode('Text, TextField', `const rowStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--cr-space-3)' };
+
+<div style={rowStyle}>
+  <Text size="heading-3">Tasks</Text>
+  <TextField label="Search tasks" hideLabel name="taskSearch" type="search"
+    size="sm" icon={Search} placeholder="Search tasks…" />
+</div>`, '', "import { Search } from 'lucide-react';")}>
+    <div style={rowStyle}><Text size="heading-3">Tasks</Text><TextField label="Search tasks" hideLabel name="taskSearch" type="search" size="sm" icon={Search} placeholder="Search tasks…" /></div>
+  </FormScenario>;
+}
+
 export function TextFieldScenarios() {
   return <ExampleGallery className="form-scenarios">
     <TextFieldSizes />
@@ -298,6 +312,7 @@ export function TextFieldScenarios() {
       <TextField label="Workspace identifier" name="workspaceId" defaultValue="TASK-024" readOnly hint="Select and copy the workspace identifier." />
     </FormScenario>
     <FullWidthTextField />
+    <HiddenLabelTextField />
     <PrefixForm />
     <PasswordVisibility />
     <ClearableQuery />
@@ -423,11 +438,28 @@ function FullWidthTextArea() {
   </FormScenario>;
 }
 
+function HiddenLabelTextArea() {
+  return <FormScenario title="Hidden label" description="Set hideLabel when a heading already names the field. The label stays as the textarea's accessible name."
+    code={formCode('Button, Flex, Text, TextArea', `<Flex direction="column" gap={3}>
+  <Text size="heading-3">Add a comment</Text>
+  <TextArea label="Comment" hideLabel name="comment" rows={3}
+    placeholder="Share an update with the team…" />
+  <Flex justify="end"><Button>Post comment</Button></Flex>
+</Flex>`)}>
+    <Flex direction="column" gap={3}>
+      <Text size="heading-3">Add a comment</Text>
+      <TextArea label="Comment" hideLabel name="comment" rows={3} placeholder="Share an update with the team…" />
+      <Flex justify="end"><Button>Post comment</Button></Flex>
+    </Flex>
+  </FormScenario>;
+}
+
 export function TextAreaScenarios() {
   return <ExampleGallery className="form-scenarios">
     <ControlledNotes />
     <SummaryValidation />
     <FullWidthTextArea />
+    <HiddenLabelTextArea />
     <FormScenario title="Read-only textarea" description="Allow text selection and native resizing while preventing edits."
       code={formCode('TextArea', `<TextArea label="Archived review notes" name="archivedNotes" rows={3}
   defaultValue="The decision is recorded with the task. Keep it for the next review."

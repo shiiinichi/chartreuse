@@ -34,6 +34,7 @@ const ConversationDemo = lazy(() => import('./ConversationDemo').then(module => 
 const PaginationDemo = lazy(() => import('./PaginationDemo').then(module => ({ default: module.PaginationDemo })));
 const TableDemo = lazy(() => import('./TableDemo').then(module => ({ default: module.TableDemo })));
 const TimelineDemo = lazy(() => import('./TimelineDemo').then(module => ({ default: module.TimelineDemo })));
+const ListDemo = lazy(() => import('./ListDemo').then(module => ({ default: module.ListDemo })));
 const StepsDemo = lazy(() => import('./StepsDemo').then(module => ({ default: module.StepsDemo })));
 
 const demosWithOwnShowcases = new Set([
@@ -42,7 +43,7 @@ const demosWithOwnShowcases = new Set([
   'CalloutBanner', 'Card', 'Checkbox', 'Conversation', 'Dialog', 'Disclosure',
   'Divider', 'Drawer', 'EmptyState', 'Fieldset', 'FilePicker', 'Flex', 'Form', 'FormLayout', 'Grid', 'GridItem', 'GridSpacer',
   'Masonry', 'MasonryItem', 'MasonrySpacer',
-  'IconButton', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel', 'Pagination',
+  'IconButton', 'List', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel', 'Pagination',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
   'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'Switch', 'Table', 'Tabs', 'TaskCard',
   'Steps', 'Text', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
@@ -108,6 +109,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Masonry': return <MasonryDemo />;
     case 'MasonryItem': return <MasonryItemDemo />;
     case 'MasonrySpacer': return <MasonrySpacerDemo />;
+    case 'List': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><ListDemo /></Suspense>;
     case 'MarkdownRenderer': return <Suspense fallback={<Text size="body" className="muted">Loading Markdown example…</Text>}><MarkdownPage /></Suspense>;
     case 'Navbar': return <NavbarDemo />;
     case 'NavbarItem': return <NavbarItemDemo />;

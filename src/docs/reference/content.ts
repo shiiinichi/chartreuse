@@ -77,4 +77,53 @@ export const contentReferences: ComponentReference[] = [
       'The component uses shared 13px body type and spacing tokens. Text, attribution, and long links wrap within the available component width.',
     ],
   },
+  {
+    name: 'List',
+    slug: 'list',
+    summary: 'A semantic bulleted or numbered list with optional icons, descriptions, trailing content, and dividers.',
+    importCode: "import { CheckCircle2, CircleAlert } from 'lucide-react';\nimport { Badge, List, type ListItem } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const checks: ListItem[] = [
+  { id: 'types', title: 'Type check', description: 'No errors in 214 files.',
+    icon: CheckCircle2, tone: 'success', trailing: <Badge tone="success">Passed</Badge> },
+  { id: 'tests', title: 'Unit tests', description: 'Two tests need updated snapshots.',
+    icon: CircleAlert, tone: 'warning', trailing: <Badge tone="warning">2 failing</Badge> },
+];
+
+<List aria-label="Release checks" items={checks} dividers />
+
+// Plain bullets, or numbers with ordered.
+<List items={[
+  { id: 'scope', title: 'Confirm the release scope' },
+  { id: 'notes', title: 'Draft the release notes' },
+]} ordered />`,
+    props: [
+      { name: 'items', type: 'readonly ListItem[]', required: true, description: 'Items in their rendered order.' },
+      { name: 'items[].id', type: 'string', required: true, description: 'Unique stable identity used as the item’s React key.' },
+      { name: 'items[].title', type: 'ReactNode', required: true, description: 'Primary item text or caller-owned content, such as a link.' },
+      { name: 'items[].description', type: 'ReactNode', description: 'Secondary muted text below the title. A nested List can go here.' },
+      { name: 'items[].icon', type: 'IconSource', description: 'Decorative leading icon that replaces the bullet or number for this item: Lucide, React SVG component, or SVG JSX.' },
+      { name: 'items[].leading', type: 'ReactNode', description: 'Decorative leading content, such as an Avatar. It replaces the icon and marker, is hidden from assistive technology, and keeps its own size.' },
+      { name: 'items[].tone', type: "'neutral' | 'success' | 'info' | 'warning' | 'danger'", defaultValue: "'neutral'", description: 'Colors the bullet, number, or icon from the shared semantic palette. Text keeps its own colors.' },
+      { name: 'items[].trailing', type: 'ReactNode', description: 'End-aligned content, such as a Badge, a count, a time, or a small action.' },
+      { name: 'ordered', type: 'boolean', defaultValue: 'false', description: 'Renders a numbered ol instead of a bulleted ul.' },
+      { name: 'marker', type: "'auto' | 'none'", defaultValue: "'auto'", description: 'Auto shows bullets for unordered lists and numbers for ordered lists. None hides them; item icons still render.' },
+      { name: 'start', type: 'number', description: 'First number of an ordered list, applied to the native start attribute and the visible numbers.' },
+      { name: 'size', type: "'sm' | 'md'", defaultValue: "'md'", description: 'Text size and spacing, matching the sm and md sizes of Button, TextField, Tabs, and SegmentedControl: 13px titles for md and 12px for sm. Descriptions are 12px in both sizes.' },
+      { name: 'dividers', type: 'boolean', defaultValue: 'false', description: 'Draws a rule between items and adds block padding to each item.' },
+      { name: 'aria-label', type: 'string', description: 'Optional accessible name, for a list without a visible heading.' },
+      { name: 'className', type: 'string', description: 'Additional classes on the list element.' },
+      { name: 'ref', type: 'Ref<HTMLUListElement | HTMLOListElement>', description: 'Native ref to the ul, or to the ol when ordered.' },
+    ],
+    nativeElement: 'ul, or ol when ordered, with li items',
+    nativeProps: 'Inherits global HTML attributes, events, style, and ref except children and role. Items own list content; role stays list because the custom markers remove the native list style.',
+    notes: [
+      'Use List for a short set of related items read in sequence: bullets, numbered instructions, a checklist summary, or a compact set of records with a status.',
+      'Use Table when items have several comparable columns, Tree for nested items people expand and select, and Timeline or Steps for events over time or a process.',
+      'Use ordered when the order matters. The numbers are drawn with CSS counters that follow start, while screen readers announce position from the native ol.',
+      'An item icon or leading content replaces that item’s bullet or number and is decorative. Put meaning, such as a person’s name, in the title or description, not only in the icon, avatar, or tone.',
+      'Display content only: the list has no selection or keyboard navigation. Put native links or buttons in title or trailing when an item needs an action.',
+      'MarkdownRenderer styles lists inside rendered Markdown. Use List for lists the application builds from data.',
+      'Titles and descriptions wrap within the available width; trailing content keeps its size and takes at most half the row.',
+    ],
+  },
 ];

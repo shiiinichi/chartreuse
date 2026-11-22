@@ -55,14 +55,16 @@ export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'si
   hint?: string;
   error?: string;
   icon?: IconSource;
+  /** Visually hide the label while keeping it as the input's accessible name. Defaults to false. */
+  hideLabel?: boolean;
   /** Stretch the field to the full width of its container. Defaults to false. */
   fullWidth?: boolean;
 }
-export function TextField({ label, size = 'md', hint, error, icon, fullWidth = false, className, id: suppliedId, required, ...props }: TextFieldProps) {
+export function TextField({ label, size = 'md', hint, error, icon, hideLabel = false, fullWidth = false, className, id: suppliedId, required, ...props }: TextFieldProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined}>
-    <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
+    <label htmlFor={id} className={hideLabel ? 'cr-sr-only' : undefined}>{label}{required && <span className="cr-required"> *</span>}</label>
     <div className="cr-input-wrap" data-cr-input-size={size}>{renderIcon(icon, { size: 16 })}<input {...props} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></Text>}
@@ -73,13 +75,15 @@ export interface TextAreaProps extends ComponentPropsWithRef<'textarea'> {
   label: string;
   hint?: string;
   error?: string;
+  /** Visually hide the label while keeping it as the textarea's accessible name. Defaults to false. */
+  hideLabel?: boolean;
   /** Stretch the field to the full width of its container. Defaults to false. */
   fullWidth?: boolean;
 }
-export function TextArea({ label, hint, error, fullWidth = false, id: suppliedId, className, ...props }: TextAreaProps) {
+export function TextArea({ label, hint, error, hideLabel = false, fullWidth = false, id: suppliedId, className, ...props }: TextAreaProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
-  return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined}><label htmlFor={id}>{label}{props.required && ' *'}</label>
+  return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined}><label htmlFor={id} className={hideLabel ? 'cr-sr-only' : undefined}>{label}{props.required && ' *'}</label>
     <textarea {...props} id={id} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} />
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {error && <Text size="small" id={`${id}-error`} className="cr-field-error">{error}</Text>}
@@ -99,18 +103,23 @@ export function Switch({ label, hint, className, id: suppliedId, ...props }: Che
   return <label htmlFor={id} className={cx('cr-switch', className)}><input {...props} id={id} type="checkbox" role="switch" aria-describedby={hint ? `${id}-hint` : undefined} /><span className="cr-switch-track" aria-hidden="true"><span /></span><span>{label}{hint && <Text size="small" id={`${id}-hint`}>{hint}</Text>}</span></label>;
 }
 
-export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> { name: string; size?: 'sm' | 'md' | 'lg'; color?: 'green' | 'peach' | 'blue' | 'purple'; showName?: boolean }
-export function Avatar({ name, size = 'md', color = 'green', showName = false, className, ...props }: AvatarProps) {
-  const initials = name.split(' ').filter(Boolean).slice(0, 2).map(part => part[0]).join('');
+export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> { name: string; size?: 'sm' | 'md' | 'lg'; color?: 'green' | 'peach' | 'blue' | 'purple'; showName?: boolean; icon?: IconSource }
+const avatarIconSizes = { sm: 14, md: 16, lg: 22 } as const;
+export function Avatar({ name, size = 'md', color = 'green', showName = false, icon, className, ...props }: AvatarProps) {
+  const glyph = renderIcon(icon, { size: avatarIconSizes[size] ?? avatarIconSizes.md }) ?? name.split(' ').filter(Boolean).slice(0, 2).map(part => part[0]).join('');
   if (showName) return <span {...props} className={cx('cr-avatar-person', className)}>
-    <span className="cr-avatar" data-size={size} data-color={color} aria-hidden="true">{initials}</span>
+    <span className="cr-avatar" data-size={size} data-color={color} aria-hidden="true">{glyph}</span>
     <span className="cr-avatar-name">{name}</span>
   </span>;
-  return <span {...props} role="img" aria-label={name} title={name} className={cx('cr-avatar', className)} data-size={size} data-color={color}>{initials}</span>;
+  return <span {...props} role="img" aria-label={name} title={name} className={cx('cr-avatar', className)} data-size={size} data-color={color}>{glyph}</span>;
 }
-export function AvatarGroup({ names, max = 3 }: { names: string[]; max?: number }) {
+/** One AvatarGroup entry: the person or entity name, plus an optional decorative icon shown instead of initials. */
+export interface AvatarGroupItem { name: string; icon?: IconSource }
+export type AvatarGroupProps = { max?: number } & ({ names: string[]; items?: never } | { items: AvatarGroupItem[]; names?: never });
+export function AvatarGroup({ names, items, max = 3 }: AvatarGroupProps) {
   const palette = ['green', 'peach', 'blue', 'purple'] as const;
-  return <span className="cr-avatar-group">{names.slice(0, max).map((name, i) => <Avatar key={name} name={name} color={palette[i % 4]} size="sm" />)}{names.length > max && <span className="cr-avatar cr-avatar-more" role="img" aria-label={`${names.length - max} more people`}>+{names.length - max}</span>}</span>;
+  const entries: AvatarGroupItem[] = items ?? (names ?? []).map(name => ({ name }));
+  return <span className="cr-avatar-group">{entries.slice(0, max).map((item, i) => <Avatar key={`${i}:${item.name}`} name={item.name} icon={item.icon} color={palette[i % 4]} size="sm" />)}{entries.length > max && <span className="cr-avatar cr-avatar-more" role="img" aria-label={`${entries.length - max} more people`}>+{entries.length - max}</span>}</span>;
 }
 
 export interface ProgressProps extends Omit<ComponentPropsWithRef<'progress'>, 'value' | 'max'> {

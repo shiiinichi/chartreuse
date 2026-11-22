@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { Check, Clock3, MessageSquare, X } from 'lucide-react';
+import { Bot, Check, Clock3, MessageSquare, Users, X } from 'lucide-react';
 import { Avatar, AvatarGroup, Badge, BrandMark, Button, Card, Divider, Select } from '../system/components';
 import { ExampleGallery, Showcase } from './shared';
 import { Text } from '../system';
@@ -89,6 +89,16 @@ export function AvatarScenarios() {
       '',
       '<Avatar name="Alex Morgan" showName />',
     )}><Avatar name="Alex Morgan" showName /></Showcase>
+    <Showcase title="Icon avatar" description="icon replaces the initials with a decorative icon for agents, bots, or teams. name remains the accessible label." code={snippet(
+      'import { Bot, Users } from "lucide-react";',
+      'import { Avatar } from "@chartreuse/ui";',
+      '',
+      '<div style={{ display: "flex", alignItems: "center", gap: 12 }}>',
+      '  <Avatar name="Review agent" icon={Bot} color="purple" />',
+      '  <Avatar name="Design team" icon={Users} color="blue" size="lg" />',
+      '  <Avatar name="Review agent" icon={Bot} color="purple" showName />',
+      '</div>',
+    )}><div className="core-example-row"><Avatar name="Review agent" icon={Bot} color="purple" /><Avatar name="Design team" icon={Users} color="blue" size="lg" /><Avatar name="Review agent" icon={Bot} color="purple" showName /></div></Showcase>
   </ExampleGallery>;
 }
 
@@ -124,6 +134,17 @@ export function AvatarGroupScenarios() {
       '  <AvatarGroup names={["Alex Morgan", "Sam Lee"]} max={3} />',
       '</div>',
     )}><div className="core-example-stack" role="group" aria-label="Assigned reviewers"><Text size="body" className="core-example-note">Assigned reviewers</Text><AvatarGroup names={['Alex Morgan', 'Sam Lee']} max={3} /></div></Showcase>
+    <Showcase title="Icon avatar" description="items accepts { name, icon } entries, so an agent or team can show an icon beside people's initials. The +N overflow count is unchanged." code={snippet(
+      'import { Bot, Users } from "lucide-react";',
+      'import { AvatarGroup } from "@chartreuse/ui";',
+      '',
+      '<AvatarGroup items={[',
+      '  { name: "Review agent", icon: Bot },',
+      '  { name: "Design team", icon: Users },',
+      '  { name: "Alex Morgan" },',
+      '  { name: "Sam Lee" },',
+      ']} max={3} />',
+    )}><AvatarGroup items={[{ name: 'Review agent', icon: Bot }, { name: 'Design team', icon: Users }, { name: 'Alex Morgan' }, { name: 'Sam Lee' }]} max={3} /></Showcase>
   </ExampleGallery>;
 }
 

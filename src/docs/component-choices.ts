@@ -140,6 +140,15 @@ export const componentChoices: readonly ComponentChoice[] = [
     ],
   },
   {
+    label: 'List vs Table vs Tree vs MarkdownRenderer',
+    options: [
+      { name: 'List', reason: 'Use List for a short bulleted or numbered set of items built from data, with optional icons, descriptions, trailing content, and dividers.' },
+      { name: 'Table', reason: 'Use Table when each item has several comparable values that read best in columns.' },
+      { name: 'Tree', reason: 'Use Tree for nested items that people expand, collapse, and select.' },
+      { name: 'MarkdownRenderer', reason: 'Use MarkdownRenderer when list content arrives as Markdown text, including agent responses.' },
+    ],
+  },
+  {
     label: 'Stat vs StatGroup',
     options: [
       { name: 'Stat', reason: 'Use Stat for one metric label and value with numeric formatting, supporting content, and a loading state.' },
