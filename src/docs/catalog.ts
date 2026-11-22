@@ -4,6 +4,8 @@ import { componentReferences, createComponentNavigation } from './reference';
 import type { ComponentReference } from './reference/types';
 import { componentSidebarIcons } from './sidebar-icons';
 import { samplePatternDefinitions } from './pattern-definitions';
+import { basicAppSnippet } from './setup-guide';
+import { componentPageAliases } from './component-aliases';
 import type { SamplePatternId } from './pattern-definitions';
 import { version as chartreuseVersion } from '../../package.json';
 
@@ -51,12 +53,7 @@ export const pages: Page[] = [
   { id: 'forms', label: 'Form controls gallery', group: 'Components', icon: TextCursorInput, hidden: true, description: 'Compatibility gallery for the original form-controls link.' },
 ];
 
-export const componentAliases: Record<string, ComponentPageId> = {
-  buttons: 'components/button', badges: 'components/badge', cards: 'components/card',
-  fieldsets: 'components/fieldset', markdown: 'components/markdown-renderer', disclosures: 'components/disclosure',
-  navigation: 'components/tabs', modals: 'components/dialog', drawers: 'components/drawer',
-  feedback: 'components/alert', 'page-panels': 'components/page-panel',
-};
+export const componentAliases: Readonly<Record<string, ComponentPageId>> = componentPageAliases;
 export function resolvePageId(value: string): PageId {
   const candidate = componentAliases[value] || value;
   return pages.some(page => page.id === candidate) ? candidate as PageId : 'overview';
@@ -68,7 +65,7 @@ export const iconList = { Activity, BookOpen, Box, Braces, CircleDot, ClipboardL
 export const snippets = {
   registry: `# .npmrc: replace OWNER with the lowercase GitHub repository owner\n@OWNER:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}`,
   install: `npm install @chartreuse/ui@npm:@OWNER/chartreuse@latest`,
-  basic: `import { Button, TextField, ToastProvider } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ToastProvider>\n      <TextField label="Task name" placeholder="Enter a task title" />\n      <Button>Create task</Button>\n    </ToastProvider>\n  );\n}`,
+  basic: basicAppSnippet,
   buttons: `<Button icon={Plus}>Create task</Button>\n<Button variant="secondary">View workspace</Button>\n<Button variant="accent" iconRight={ArrowRight}>Get started</Button>\n<Button variant="ghost">Cancel</Button>\n<Button variant="danger">Delete task</Button>`,
   forms: `<TextField\n  label="Task name"\n  name="title"\n  placeholder="Enter a task title"\n  required\n/>\n<Select label="Priority" name="priority">\n  <option>Medium</option>\n  <option>High</option>\n</Select>\n<Switch label="Live updates" defaultChecked />`,
   composer: `<MessageComposer\n  label="Message"\n  placeholder="Enter a message"\n  value={message}\n  onValueChange={setMessage}\n  onSend={sendMessage}\n  hint="Messages are submitted within this example."\n/>`,

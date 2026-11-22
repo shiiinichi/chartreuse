@@ -5,12 +5,11 @@ export const sliderReferences: ComponentReference[] = [{
   slug: 'slider',
   summary: 'A native range input with an associated label, optional value text, hint, and error feedback.',
   importCode: "import { useState } from 'react';\nimport { Slider } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-  usageCode: `export function StrokeControl() {
-  const [stroke, setStroke] = useState(1.5);
-  return <Slider label="Stroke" min={0.5} max={3} step={0.5}
-    value={stroke} onValueChange={setStroke}
-    formatValue={value => value + 'px'} />;
-}
+  usageCode: `const [stroke, setStroke] = useState(1.5);
+
+<Slider label="Stroke" min={0.5} max={3} step={0.5}
+  value={stroke} onValueChange={setStroke}
+  formatValue={value => value + 'px'} />
 
 // Native form submission and reset work with an uncontrolled value.
 <Slider label="Confidence" name="confidence" defaultValue={65}

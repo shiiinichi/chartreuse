@@ -5,8 +5,10 @@ export const segmentedControlReferences: ComponentReference[] = [
     name: 'SegmentedControl',
     slug: 'segmented-control',
     summary: 'A native radio group with segmented labels for selecting one option.',
-    importCode: "import { SegmentedControl } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<SegmentedControl
+    importCode: "import { useState } from 'react';\nimport { SegmentedControl } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [size, setSize] = useState('20');
+
+<SegmentedControl
   label="Size"
   name="icon-size"
   options={[

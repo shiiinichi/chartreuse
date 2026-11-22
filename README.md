@@ -76,7 +76,7 @@ export default function App() {
 }
 ```
 
-The documentation bundles Inter locally. Consumers can bundle `@fontsource-variable/inter`, supply Inter, or override `--cr-font-sans`; system font fallbacks are included. Buttons and native form controls accept React 19 ref props directly. Interactive components require a client boundary in React Server Component applications.
+The documentation bundles Inter locally. Consumers can bundle `@fontsource-variable/inter`, supply Inter, or override `--cr-font-sans`; system font fallbacks are included. Buttons and native form controls accept React 19 ref props directly. The package has no `'use client'` directive and uses client-only React APIs, so in React Server Component applications import `@chartreuse/ui` only from client components (`'use client'` files); `@chartreuse/ui/tokens` is safe on the server.
 
 ### Compose a workspace
 
@@ -136,14 +136,23 @@ npm exec --offline --no -- chartreuse info PathSelector --format json
 npm exec --offline --no -- chartreuse demo PathSelector
 npm exec --offline --no -- chartreuse token Grid --format json
 npm exec --offline --no -- chartreuse guide layout --format json
+npm exec --offline --no -- chartreuse guide choosing
 npm exec --offline --no -- chartreuse guide typography --format json
+npm exec --offline --no -- chartreuse guide settings-editor --code --format json
 ```
 
-`search` ranks names, summaries, and notes and returns up to ten matches. Use `info` for props, defaults, native attributes, and implementation notes. `demo` prints the documented TSX example. Run `token` for shared CSS variables or supply a component name to see its styling hooks. Run `guide` to list topics, including layout guidance and application patterns such as `settings-editor`.
+- `search` matches whole words, plurals, and common synonyms (such as modal, dropdown, or toast) across components, guides, and global CSS tokens, and returns up to ten matches. Each result has a `kind` of `component`, `guide`, or `token`; treat other kinds as possible additions. Token results also carry `value`, their default CSS value. Pass a token name after `--`, as in `chartreuse search --format json -- --cr-color-primary`.
+- `list` prints components under groups (Actions, Forms, Feedback, Content, Navigation, Overlays, Layout, and Agents). JSON results carry `group`, and `data.groups` lists each group's members.
+- `info` shows props, defaults, native attributes, and implementation notes. Its JSON also has `example` (the `demo` snippet as `{ language, code }`) and `seeAlso`, similar components each with a one-line reason.
+- `demo` prints the documented TSX example.
+- `token` shows shared CSS variables; `token <Component>` shows that component's styling hooks and their selectors. Both end with Customizing notes (JSON `customization`): props first, then semantic tokens on an app wrapper, then the documented hooks on their selectors, and only then unlayered CSS against `cr-` classes.
+- `guide` lists topics: setup, layout, typography, and `choosing`, the decision table that `seeAlso` is derived from; the foundations `color`, `spacing`, `shape`, `icons`, `accessibility`, and `writing`; and application patterns such as `settings-editor`. Pattern guides print notes and `hasCode: true` by default; `--code` adds the pattern component source, with `@chartreuse/ui` imports, and its CSS. Other guides reject `--code`; setup and accessibility always include their short snippets. A guide's `docsPath` is `null` when it has no documentation page.
 
-JSON responses carry `schemaVersion` and `chartreuseVersion`. Successful queries write `data` to stdout. Errors write a structured `error` to stderr and exit with status 1 for unavailable references or 2 for invalid usage.
+JSON responses carry `schemaVersion` and `chartreuseVersion`. Successful queries write `data` to stdout. Errors write a structured `error` to stderr and exit with status 1 for unavailable references or 2 for invalid usage. An unknown or ambiguous component or guide name adds `error.suggestions`, an array of close names. A lookup that resolved through an alias, such as `info modal`, adds `data.resolvedFrom`. Warnings, if any, appear as `warnings: [{ code, message }]`: in the error document on failure, or as a one-line JSON document on stderr after success, so stderr in JSON mode is always JSON. Text mode prints warnings as plain lines on stderr.
 
-To try the CLI from this repository, run `npm run build:lib` and then `npm run --silent query -- info Button --format json`.
+### Working on the CLI
+
+Run `npm run build:lib`, then `npm run --silent query -- info Button --format json`. When the CLI runs from a source checkout and `package.json` or any file under `src/cli` or `src/docs` is newer than the build, it adds a `STALE_BUILD` warning: "Warning: the CLI build is older than its sources; run npm run build:lib." The check only stats files, never changes stdout or `data`, and is skipped for an installed package or any path under `node_modules`.
 
 ### Chartreuse agent skill
 

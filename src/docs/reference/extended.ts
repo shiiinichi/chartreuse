@@ -6,8 +6,20 @@ export const extendedReferences: ComponentReference[] = [
     name: 'Autocomplete',
     slug: 'autocomplete',
     summary: 'Search a set of options and select one value with a labeled combobox.',
-    importCode: "import { Autocomplete } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<Autocomplete\n  label="Repository"\n  name="repository"\n  options={[\n    { value: 'sample-app', label: 'Sample app', description: 'Sample workspace' },\n    { value: 'component-library', label: 'Component library', description: 'Shared interface components' },\n  ]}\n  value={repository}\n  onValueChange={setRepository}\n  hint="Choose the workspace for this task."\n/>`,
+    importCode: "import { useState } from 'react';\nimport { Autocomplete } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [repository, setRepository] = useState('sample-app');
+
+<Autocomplete
+  label="Repository"
+  name="repository"
+  options={[
+    { value: 'sample-app', label: 'Sample app', description: 'Sample workspace' },
+    { value: 'component-library', label: 'Component library', description: 'Shared interface components' },
+  ]}
+  value={repository}
+  onValueChange={setRepository}
+  hint="Choose the workspace for this task."
+/>`,
     props: [
       { name: 'label', type: 'string', required: true, description: 'Visible label connected to the combobox input.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The control size. Use the same size on a Button to match the input height.' },
@@ -43,8 +55,23 @@ export const extendedReferences: ComponentReference[] = [
     name: 'MessageComposer',
     slug: 'message-composer',
     summary: 'A multiline textarea and submit action in a dedicated message form.',
-    importCode: "import { MessageComposer } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<MessageComposer\n  label="Message the orchestrator"\n  placeholder="Ask the orchestrator to work on this task…"\n  hint="Enter adds a new line. Command/Ctrl+Enter sends."\n  value={message}\n  onValueChange={setMessage}\n  onSend={sendMessage}\n/>`,
+    importCode: "import { useState } from 'react';\nimport { MessageComposer } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [message, setMessage] = useState('');
+const [sent, setSent] = useState<string[]>([]);
+
+// The composer clears after onSend resolves. Replace with your API call; throw to keep the draft.
+async function sendMessage(text: string) {
+  setSent(current => [...current, text]);
+}
+
+<MessageComposer
+  label="Message the orchestrator"
+  placeholder="Ask the orchestrator to work on this task…"
+  hint={sent.length ? sent.length + ' sent. Command/Ctrl+Enter sends.' : 'Enter adds a new line. Command/Ctrl+Enter sends.'}
+  value={message}
+  onValueChange={setMessage}
+  onSend={sendMessage}
+/>`,
     props: [
       { name: 'onSend', type: '(message: string) => void | Promise<void>', required: true, description: 'Receives trimmed, nonempty message text on submission.' },
       { name: 'label', type: 'string', defaultValue: '"Message"', description: 'Accessible label for the textarea and its composer form.' },
@@ -74,8 +101,29 @@ export const extendedReferences: ComponentReference[] = [
     name: 'Drawer',
     slug: 'drawer',
     summary: 'A docked workspace panel or a native modal drawer with a scrolling body.',
-    importCode: "import { Drawer } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<Drawer\n  open={drawerOpen}\n  onOpenChange={setDrawerOpen}\n  title="Orchestrator"\n  description="TASK-024 · Implement the workspace task board"\n  mode="docked"\n  side="right"\n  width={380}\n  maxWidth={520}\n  footer={<MessageComposer onSend={sendMessage} />}\n>\n  <Conversation />\n</Drawer>`,
+    importCode: "import { useState } from 'react';\nimport { Conversation, Drawer, MessageComposer } from '@chartreuse/ui';\nimport type { ConversationMessage } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [drawerOpen, setDrawerOpen] = useState(true);
+const [messages, setMessages] = useState<ConversationMessage[]>([
+  { id: 'welcome', role: 'agent', sender: 'Orchestrator', body: 'Ready to plan the task board.' },
+]);
+
+function sendMessage(body: string) {
+  setMessages(current => [...current, { id: \`m-\${current.length}\`, role: 'user', body }]);
+}
+
+<Drawer
+  open={drawerOpen}
+  onOpenChange={setDrawerOpen}
+  title="Orchestrator"
+  description="TASK-024 · Implement the workspace task board"
+  mode="docked"
+  side="right"
+  width={380}
+  maxWidth={520}
+  footer={<MessageComposer onSend={sendMessage} />}
+>
+  <Conversation messages={messages} label="Orchestrator conversation" />
+</Drawer>`,
     props: [
       { name: 'open', type: 'boolean', required: true, description: 'Controlled visibility of the drawer.' },
       { name: 'onOpenChange', type: '(open: boolean) => void', required: true, description: 'Receives close requests from the close action or Escape.' },
@@ -178,8 +226,25 @@ export const extendedReferences: ComponentReference[] = [
     name: 'FilePicker',
     slug: 'file-picker',
     summary: 'Choose local files or a folder using a labeled native file input.',
-    importCode: "import { FilePicker } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<FilePicker\n  label="Reports & files"\n  name="attachments"\n  multiple\n  accept=".md,.txt,.pdf"\n  hint="Choose files to attach to this task."\n  onFilesChange={setFiles}\n/>\n\n<FilePicker\n  label="Workspace folder"\n  mode="folder"\n  onFilesChange={setWorkspaceFiles}\n/>`,
+    importCode: "import { useState } from 'react';\nimport { FilePicker } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [files, setFiles] = useState<File[]>([]);
+const [workspaceFiles, setWorkspaceFiles] = useState<File[]>([]);
+
+<FilePicker
+  label="Reports & files"
+  name="attachments"
+  multiple
+  accept=".md,.txt,.pdf"
+  hint={files.length + ' files attached to this task.'}
+  onFilesChange={setFiles}
+/>
+
+<FilePicker
+  label="Workspace folder"
+  mode="folder"
+  hint={workspaceFiles.length + ' files in the folder.'}
+  onFilesChange={setWorkspaceFiles}
+/>`,
     props: [
       { name: 'label', type: 'string', required: true, description: 'Visible label connected to the file input.' },
       { name: 'mode', type: '"file" | "folder"', defaultValue: '"file"', description: 'Chooses regular file selection or directory selection where supported.' },
@@ -209,8 +274,19 @@ export const extendedReferences: ComponentReference[] = [
     name: 'PagePanel',
     slug: 'page-panel',
     summary: 'A full-height section with a persistent header, scrolling body, and optional footer.',
-    importCode: "import { PagePanel } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<PagePanel\n  title="Workspace settings"\n  description="Configure repository access and task defaults."\n  leading={<Settings size={20} aria-hidden="true" />}\n  headerActions={<Button variant="secondary">View workspace</Button>}\n  navigation={<SettingsNavigation />}\n  footer={<Button onClick={saveSettings}>Save changes</Button>}\n>\n  <SettingsForm />\n</PagePanel>`,
+    importCode: "import { Settings } from 'lucide-react';\nimport { Button, NavbarItem, PagePanel, TextField } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `<PagePanel
+  title="Workspace settings"
+  description="Configure repository access and task defaults."
+  leading={<Settings size={20} aria-hidden="true" />}
+  headerActions={<Button variant="secondary">View workspace</Button>}
+  navigation={<NavbarItem href="#general" aria-current="page">General</NavbarItem>}
+  footer={<Button type="submit" form="workspace-settings">Save changes</Button>}
+>
+  <form id="workspace-settings">
+    <TextField label="Workspace name" name="workspaceName" defaultValue="Sample app" />
+  </form>
+</PagePanel>`,
     props: [
       { name: 'title', type: 'string', required: true, description: 'Visible heading and default accessible name of the panel.' },
       { name: 'children', type: 'ReactNode', required: true, description: 'Content in the independently scrolling body.' },
@@ -236,8 +312,20 @@ export const extendedReferences: ComponentReference[] = [
     name: 'CalloutBanner',
     slug: 'callout-banner',
     summary: 'A section with a heading, supporting content, an action slot, and optional artwork.',
-    importCode: "import { CalloutBanner } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<CalloutBanner\n  eyebrow="WORKSPACE"\n  title="Review workspace activity"\n  description="Inspect task status, agent activity, and pending reviews."\n  action={\n    <Button variant="ghost" iconRight={ArrowRight} onClick={openWorkspace}>\n      Open workspace\n    </Button>\n  }\n/>`,
+    importCode: "import { useState } from 'react';\nimport { ArrowRight } from 'lucide-react';\nimport { Button, CalloutBanner } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [workspaceOpen, setWorkspaceOpen] = useState(false);
+const openWorkspace = () => setWorkspaceOpen(true);
+
+<CalloutBanner
+  eyebrow="WORKSPACE"
+  title="Review workspace activity"
+  description="Inspect task status, agent activity, and pending reviews."
+  action={
+    <Button variant="ghost" iconRight={ArrowRight} onClick={openWorkspace}>
+      {workspaceOpen ? 'Workspace open' : 'Open workspace'}
+    </Button>
+  }
+/>`,
     props: [
       { name: 'title', type: 'string', required: true, description: 'Visible h2 heading and default accessible name of the section.' },
       { name: 'eyebrow', type: 'string', description: 'Short introductory label above the heading.' },
@@ -260,8 +348,32 @@ export const extendedReferences: ComponentReference[] = [
     name: 'PathSelector',
     slug: 'path-selector',
     summary: 'Enter a file or folder path, with optional browsing supplied by the host.',
-    importCode: "import { PathSelector } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<PathSelector\n  label="Workspace folder"\n  name="workspace"\n  mode="folder"\n  value={workspacePath}\n  onValueChange={setWorkspacePath}\n  hint="Enter the repository folder path."\n/>\n\n<PathSelector\n  label="Report file"\n  mode="file"\n  value={reportPath}\n  onValueChange={setReportPath}\n  onBrowse={browsePathFromHost}\n/>`,
+    importCode: "import { useState } from 'react';\nimport { PathSelector } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [workspacePath, setWorkspacePath] = useState('');
+const [reportPath, setReportPath] = useState('');
+
+// Replace with the host's file dialog for the requested mode (for example an
+// Electron or Tauri bridge). Resolve null when the dialog is cancelled.
+async function browsePathFromHost(_mode: 'file' | 'folder'): Promise<string | null> {
+  return null;
+}
+
+<PathSelector
+  label="Workspace folder"
+  name="workspace"
+  mode="folder"
+  value={workspacePath}
+  onValueChange={setWorkspacePath}
+  hint="Enter the repository folder path."
+/>
+
+<PathSelector
+  label="Report file"
+  mode="file"
+  value={reportPath}
+  onValueChange={setReportPath}
+  onBrowse={browsePathFromHost}
+/>`,
     props: [
       { name: 'label', type: 'string', required: true, description: 'Visible label connected to the path input.' },
       { name: 'mode', type: '"file" | "folder"', defaultValue: '"folder"', description: 'Selects the path icon, default placeholder, and host browse mode.' },

@@ -3,8 +3,29 @@ import type { ComponentReference } from './types';
 export const swimlaneReferences: ComponentReference[] = [{
   name: 'Swimlane', slug: 'swimlane',
   summary: 'A status column with a labeled header, item count, optional action, and card content.',
-  importCode: "import { Swimlane, Button, IconButton, TaskCard } from '@chartreuse/ui';\nimport { Plus } from 'lucide-react';\nimport '@chartreuse/ui/styles.css';",
-  usageCode: `<Swimlane\n  title="In review"\n  count={reviewCards.length}\n  tone="warning"\n  description="Tasks awaiting review"\n  action={<IconButton icon={Plus} label="Add a review task"\n    onClick={addReviewTask} />}\n  emptyContent={<Button variant="ghost" onClick={addReviewTask}>\n    Add a task\n  </Button>}\n>\n  {reviewCards.map(card => <TaskCard key={card.taskId} {...card} />)}\n</Swimlane>`,
+  importCode: "import { useState } from 'react';\nimport { Swimlane, Button, IconButton, TaskCard } from '@chartreuse/ui';\nimport type { TaskCardProps } from '@chartreuse/ui';\nimport { Plus } from 'lucide-react';\nimport '@chartreuse/ui/styles.css';",
+  usageCode: `const [reviewCards, setReviewCards] = useState<TaskCardProps[]>([
+  { taskId: 'TASK-024', title: 'Implement the workspace task board', status: 'review', priority: 'high' },
+]);
+
+function addReviewTask() {
+  setReviewCards(cards => [...cards,
+    { taskId: 'TASK-' + (101 + cards.length), title: 'Review the task summary', status: 'review' }]);
+}
+
+<Swimlane
+  title="In review"
+  count={reviewCards.length}
+  tone="warning"
+  description="Tasks awaiting review"
+  action={<IconButton icon={Plus} label="Add a review task"
+    onClick={addReviewTask} />}
+  emptyContent={<Button variant="ghost" onClick={addReviewTask}>
+    Add a task
+  </Button>}
+>
+  {reviewCards.map(card => <TaskCard key={card.taskId} {...card} />)}
+</Swimlane>`,
   nativeElement: 'section with a labeled header and content body',
   nativeProps: 'Inherits native section attributes, events, style, className, and ref, except title and children. Native props/ref target the section; aria-label/aria-labelledby overrides are respected.',
   props: [

@@ -18,6 +18,8 @@ export interface TokenDefinition {
   themes?: { light: string; dark: string };
   responsive?: string;
   availability?: 'library-css' | 'docs-css';
+  /** Read with a var() fallback and never declared by the library CSS, so a wrapper override is inherited. */
+  fallback?: boolean;
   notes?: string[];
 }
 

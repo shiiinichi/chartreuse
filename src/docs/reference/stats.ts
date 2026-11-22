@@ -4,8 +4,18 @@ export const statsReferences: ComponentReference[] = [
   {
     name: 'Stat', slug: 'stat',
     summary: 'A metric label and value with numeric formatting, supporting content, and a loading state.',
-    importCode: "import { Stat, Button } from '@chartreuse/ui';\nimport { ArrowUp } from 'lucide-react';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `<>\n<Stat label="Run duration" value={42.125} precision={2}\n  suffix="s" description="The duration of this illustrative run." />\n\n<Stat label="Example change" value={11.28} precision={2}\n  suffix="%" icon={ArrowUp} tone="success"\n  description="An increase of 11.28% in this static example." />\n\n<Stat label="Items awaiting review" value={9} loading={loading}\n  action={<Button onClick={openReview}>Open review</Button>} />\n</>`,
+    importCode: "import { useState } from 'react';\nimport { Stat, Button } from '@chartreuse/ui';\nimport { ArrowUp } from 'lucide-react';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const [reviewOpen, setReviewOpen] = useState(false);
+
+<Stat label="Run duration" value={42.125} precision={2}
+  suffix="s" description="The duration of this illustrative run." />
+
+<Stat label="Example change" value={11.28} precision={2}
+  suffix="%" icon={ArrowUp} tone="success"
+  description="An increase of 11.28% in this static example." />
+
+<Stat label="Items awaiting review" value={9} loading={false}
+  action={<Button aria-expanded={reviewOpen} onClick={() => setReviewOpen(open => !open)}>Open review</Button>} />`,
     nativeElement: 'div containing one native dl/dt/dd label and value pair',
     nativeProps: 'Inherits native div attributes, events, style, className, and ref, except children and the RDFa prefix attribute. Native props/ref target the outer div; the description is associated with the native value through aria-describedby.',
     props: [

@@ -4,8 +4,12 @@ export const conversationReferences: ComponentReference[] = [{
   name: 'Conversation',
   slug: 'conversation',
   summary: 'A chronological transcript with sender and time labels, Markdown agent messages, and optional activity before the message body.',
-  importCode: "import { AgentActivity, Conversation, MessageComposer } from '@chartreuse/ui';\nimport type { ConversationMessage } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-  usageCode: `const messages: ConversationMessage[] = [
+  importCode: "import { useState } from 'react';\nimport { AgentActivity, Conversation, MessageComposer } from '@chartreuse/ui';\nimport type { AgentActivityEvent, ConversationMessage } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  usageCode: `const events: AgentActivityEvent[] = [
+  { id: 'review', kind: 'agent', title: 'Reviewed the workspace',
+    status: 'completed', durationMs: 17900 },
+];
+const [messages, setMessages] = useState<ConversationMessage[]>([
   { id: 'request', role: 'user', sender: 'You',
     body: 'Can you review the workspace?', timeLabel: '10:51 AM',
     dateTime: '2026-11-18T10:51:00+08:00' },
@@ -13,9 +17,16 @@ export const conversationReferences: ComponentReference[] = [{
     body: 'The **workspace review** is complete.\\n\\n- Record findings on the task.',
     activity: <AgentActivity events={events} />,
     timeLabel: '10:52 AM', dateTime: '2026-11-18T10:52:00+08:00' },
-];
+]);
+const [draft, setDraft] = useState('');
 
-<Conversation messages={messages} label="Task conversation" pending={pending} />
+function sendMessage(body: string) {
+  setMessages(current => [...current, { id: \`m-\${current.length}\`, role: 'user', body }]);
+}
+
+// The agent is working until its reply follows the latest user turn.
+<Conversation messages={messages} label="Task conversation"
+  pending={messages.at(-1)?.role === 'user'} />
 <MessageComposer value={draft} onValueChange={setDraft} onSend={sendMessage} />`,
   props: [
     { name: 'messages', type: 'readonly ConversationMessage[]', required: true, description: 'Chronological turns, oldest first. Each requires a unique stable id, role, and string body.' },

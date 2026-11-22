@@ -6,13 +6,13 @@ export const numberInputReferences: ComponentReference[] = [
     slug: 'number-input',
     summary: 'A native number input with step buttons revealed on focus and reserved space for those controls.',
     importCode: "import { useState } from 'react';\nimport { NumberInput } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
-    usageCode: `function RetrySettings() {
-  const [attempts, setAttempts] = useState<number | null>(3);
-  return <NumberInput label="Retry attempts" name="attempts"
-    value={attempts} onValueChange={setAttempts}
-    min={0} max={10} hint="Choose between 0 and 10 attempts." />;
-}
+    usageCode: `const [attempts, setAttempts] = useState<number | null>(3);
 
+<NumberInput label="Retry attempts" name="attempts"
+  value={attempts} onValueChange={setAttempts}
+  min={0} max={10} hint="Choose between 0 and 10 attempts." />
+
+// Uncontrolled inputs keep native form reset.
 <NumberInput label="Interval" name="interval"
   defaultValue={1.5} min={0} max={5} step={0.25} />`,
     props: [

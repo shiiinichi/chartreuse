@@ -60,8 +60,29 @@ export const gridReferences: ComponentReference[] = [
   {
     name: 'GridItem', slug: 'grid-item',
     summary: 'A grid-item wrapper with container-responsive spans and alignment.',
-    importCode: "import { Grid, GridItem, TextField } from '@chartreuse/ui';\nimport type { GridResponsive, GridSpan } from '@chartreuse/ui';",
-    usageCode: `<Grid>\n  <GridItem span={{ base: 'full', md: 8 }}>\n    <MainContent />\n  </GridItem>\n  <GridItem span={{ base: 'full', md: 4 }}>\n    <SideContent />\n  </GridItem>\n  <GridItem>\n    <TextField label="A full-width field" />\n  </GridItem>\n</Grid>\n\n// Nested GridItem recipes reset locally.\n<GridItem span="full">\n  <Grid columns={{ base: 1, sm: 2 }}>\n    <GridItem span={1}>First nested item</GridItem>\n    <GridItem span={1}>Second nested item</GridItem>\n  </Grid>\n</GridItem>`,
+    importCode: "import { Card, Grid, GridItem, TextField } from '@chartreuse/ui';\nimport type { GridResponsive, GridSpan } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    usageCode: `const mainSpan: GridResponsive<GridSpan> = { base: 'full', md: 8 };
+const sideSpan: GridResponsive<GridSpan> = { base: 'full', md: 4 };
+
+<Grid>
+  <GridItem span={mainSpan}>
+    <Card>Task details</Card>
+  </GridItem>
+  <GridItem span={sideSpan}>
+    <Card>Recent activity</Card>
+  </GridItem>
+  <GridItem>
+    <TextField label="A full-width field" />
+  </GridItem>
+</Grid>
+
+// Nested GridItem recipes reset locally.
+<GridItem span="full">
+  <Grid columns={{ base: 1, sm: 2 }}>
+    <GridItem span={1}>First nested item</GridItem>
+    <GridItem span={1}>Second nested item</GridItem>
+  </Grid>
+</GridItem>`,
     nativeElement: 'div grid item',
     nativeProps: 'Inherits native div attributes, events, style, className, and ref, except the legacy align attribute. The wrapper retains native content semantics; it does not add a role or interaction.',
     props: [

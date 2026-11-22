@@ -11,6 +11,7 @@ export const tableTokenDocs: ComponentTokenDoc[] = [
     component: 'Pagination',
     componentTokens: [{
       name: '--cr-pagination-gap',
+      fallback: true,
       description: 'Spacing between pagination controls.',
       type: 'length',
       defaultValue: 'var(--cr-space-1)',

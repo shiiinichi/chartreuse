@@ -4,7 +4,7 @@ export const treeReferences: ComponentReference[] = [{
   name: 'Tree',
   slug: 'tree',
   summary: 'An expandable single-selection hierarchy with branch connectors, custom node content, and keyboard navigation.',
-  importCode: "import { Tree } from '@chartreuse/ui';\nimport type { TreeNode } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  importCode: "import { useState } from 'react';\nimport { Tree } from '@chartreuse/ui';\nimport type { TreeNode } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `const nodes: TreeNode[] = [{
   id: 'coordinator', label: 'Coordinator',
   children: [
@@ -12,6 +12,11 @@ export const treeReferences: ComponentReference[] = [{
     { id: 'reviewer-2', label: 'Reviewer · Call 3' },
   ],
 }];
+const files: TreeNode[] = [{
+  id: 'src', label: 'src',
+  children: [{ id: 'app', label: 'App.tsx' }, { id: 'main', label: 'main.tsx' }],
+}];
+const [selectedCall, setSelectedCall] = useState<string | null>('reviewer-1');
 
 <Tree
   label="Call hierarchy"

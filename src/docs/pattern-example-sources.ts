@@ -1,22 +1,8 @@
-import patternPreviewSource from './PatternPreview.tsx?raw';
-import patternPreviewStyles from './pattern-preview.css?raw';
+import { withExampleStyles, withPatternPreview } from './pattern-preview-code';
 import taskBoardSource from './TaskBoard.tsx?raw';
 import taskBoardStyles from './task-board.css?raw';
 import boardTaskListSource from './BoardTaskList.tsx?raw';
 import boardTaskListStyles from './board-task-list.css?raw';
-
-const previewCode = patternPreviewSource
-  .replace("import './pattern-preview.css';\n", '')
-  .replace("from '../system'", "from '@chartreuse/ui'")
-  .trim();
-
-function withExampleStyles(code: string, styles: string) {
-  return `${code}\n\n/* Add these rules to your stylesheet.\n${styles.replaceAll('*/', '* /').trim()}\n*/`;
-}
-
-export function withPatternPreview(code: string, patternStyles = '') {
-  return withExampleStyles(`${code}\n\n${previewCode}`, [patternPreviewStyles, patternStyles].filter(Boolean).join('\n\n'));
-}
 
 function taskBoardModule() {
   const imports = new Map([['@chartreuse/ui', new Set(['ToastProvider'])]]);
