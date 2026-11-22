@@ -199,6 +199,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.13.0',
+    date: '2026-11-23',
+    title: 'List component, icon avatars, and hidden text field labels',
+    summary: 'A new List component renders semantic bulleted and numbered lists, avatars can show icons, and text fields can hide their labels.',
+    changes: [
+      'List renders a semantic ul, or a numbered ol with ordered and start. Items take a title, description, icon or leading content such as an Avatar, tone, and trailing content. Set size="sm", dividers, or marker="none" to adjust the layout.',
+      'Avatar adds icon to show a decorative icon instead of initials; the name stays the accessible label. AvatarGroup takes items with a name and optional icon in place of names.',
+      'TextField and TextArea add hideLabel, matching Select, Slider, and SegmentedControl. The label is hidden visually but remains the control’s accessible name.',
+      'The documentation sidebar now uses List for its navigation groups.',
+    ],
+  },
+  {
     version: '1.12.0',
     date: '2026-11-23',
     title: 'Full-width controls, draggable tabs, and composer send sizes',
