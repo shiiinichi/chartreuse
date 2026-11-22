@@ -111,10 +111,33 @@ export function RequiredProjectExample() {
   </FormScenario>;
 }
 
+function FullWidthAutocomplete() {
+  const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Full-width autocomplete" description="In a flex row, a field is only as wide as its control. Set fullWidth to fill the remaining space."
+    code={formCode('Autocomplete, Button', `${projectsCode}
+
+const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+
+<>
+  <div style={rowStyle}>
+    <Autocomplete label="Project (default width)" name="project" options={projects} />
+    <Button variant="secondary">Open</Button>
+  </div>
+  <div style={rowStyle}>
+    <Autocomplete label="Project (fullWidth)" name="project" options={projects} fullWidth />
+    <Button variant="secondary">Open</Button>
+  </div>
+</>`)}>
+    <div style={rowStyle}><Autocomplete label="Project (default width)" name="project" options={projects} /><Button variant="secondary">Open</Button></div>
+    <div style={rowStyle}><Autocomplete label="Project (fullWidth)" name="project" options={projects} fullWidth /><Button variant="secondary">Open</Button></div>
+  </FormScenario>;
+}
+
 export function AutocompleteScenarios() {
   return <ExampleGallery className="form-scenarios">
     <AutocompleteSizes />
     <ControlledProject />
+    <FullWidthAutocomplete />
     <FormScenario title="Option descriptions and disabled states" description="Filter by label or description. Keep disabled options visible and unselectable."
       code={formCode('Autocomplete', `${workspacesCode}
 

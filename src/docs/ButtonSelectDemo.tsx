@@ -79,6 +79,12 @@ export function ButtonSelectDemo() {
     <Showcase title="Pick visible columns" code={columnPickerCode}>
       <ColumnPicker />
     </Showcase>
+    <Showcase title="Full-width trigger" description="Set fullWidth to stretch the trigger. The label stays at the start and the chevron moves to the end. Add matchTriggerWidth to size the popover to match." code={"import { ButtonSelect } from '@chartreuse/ui';\n\nconst views = [\n  {\n    \"value\": \"grid\",\n    \"label\": \"Grid\"\n  },\n  {\n    \"value\": \"list\",\n    \"label\": \"List\"\n  },\n  {\n    \"value\": \"board\",\n    \"label\": \"Board\"\n  }\n];\n\n<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--cr-space-3)', inlineSize: 'min(100%, 20rem)' }}>\n  <ButtonSelect variant=\"secondary\" aria-label=\"View layout (default width)\"\n    options={views} defaultValue=\"grid\" />\n  <ButtonSelect variant=\"secondary\" aria-label=\"View layout (full width)\"\n    options={views} defaultValue=\"grid\" fullWidth matchTriggerWidth />\n</div>"}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--cr-space-3)', inlineSize: 'min(100%, 20rem)' }}>
+        <ButtonSelect variant="secondary" aria-label="View layout (default width)" options={views} defaultValue="grid" />
+        <ButtonSelect variant="secondary" aria-label="View layout (full width)" options={views} defaultValue="grid" fullWidth matchTriggerWidth />
+      </div>
+    </Showcase>
     <Showcase title="Button variants" description="Choose a style to change that button’s variant." span="full" code={variantsCode}>
       <ButtonSelectVariants />
     </Showcase>

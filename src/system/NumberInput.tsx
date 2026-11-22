@@ -13,6 +13,8 @@ export interface NumberInputProps extends Omit<ComponentPropsWithRef<'input'>, '
   onValueChange?: (value: number | null) => void;
   hint?: string;
   error?: string;
+  /** Stretch the field to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
 }
 
 function numeric(value: number | null | undefined): number | null {
@@ -30,7 +32,7 @@ function draftNumber(value: string): number | null {
 }
 
 /** Native number editing with steppers revealed only while the field is active. */
-export function NumberInput({ label, size = 'md', value, defaultValue = null, onValueChange, hint, error, className, id: suppliedId, ref, disabled, readOnly, required, step, ...props }: NumberInputProps) {
+export function NumberInput({ label, size = 'md', value, defaultValue = null, onValueChange, hint, error, fullWidth = false, className, id: suppliedId, ref, disabled, readOnly, required, step, ...props }: NumberInputProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const input = useRef<HTMLInputElement>(null);
@@ -84,7 +86,7 @@ export function NumberInput({ label, size = 'md', value, defaultValue = null, on
     }
   };
 
-  return <div className={['cr-field', 'cr-number-input', className].filter(Boolean).join(' ')}>
+  return <div className={['cr-field', 'cr-number-input', className].filter(Boolean).join(' ')} data-full-width={fullWidth || undefined}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
     <div className="cr-number-input-control" data-cr-input-size={size} data-steppers={hasSteppers || undefined}>
       <input {...props} ref={input} id={id} type="number" className="cr-input cr-number-input-native" value={inputText} step={step} disabled={disabled} readOnly={readOnly} required={required} data-cr-autofocus={props.autoFocus || undefined} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} onChange={event => report(event.currentTarget)} />

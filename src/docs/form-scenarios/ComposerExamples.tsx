@@ -125,6 +125,14 @@ export function MessageComposerScenarios() {
     <ControlledComposer />
     <PendingComposer />
     <RetryComposer />
+    <FormScenario title="Send button sizes" description="Set sendSize to sm, md, or lg to match the density of the surrounding layout." wide
+      code={formCode('MessageComposer', `<MessageComposer label="Small send button" sendLabel="Send small" sendSize="sm" rows={2} defaultValue="Compact layouts use the small send button." onSend={() => {}} />
+<MessageComposer label="Medium send button" sendLabel="Send medium" sendSize="md" rows={2} defaultValue="The medium send button is the default." onSend={() => {}} />
+<MessageComposer label="Large send button" sendLabel="Send large" sendSize="lg" rows={2} defaultValue="Spacious layouts use the large send button." onSend={() => {}} />`)}>
+      <MessageComposer label="Small send button" sendLabel="Send small" sendSize="sm" rows={2} defaultValue="Compact layouts use the small send button." onSend={() => {}} />
+      <MessageComposer label="Medium send button" sendLabel="Send medium" sendSize="md" rows={2} defaultValue="The medium send button is the default." onSend={() => {}} />
+      <MessageComposer label="Large send button" sendLabel="Send large" sendSize="lg" rows={2} defaultValue="Spacious layouts use the large send button." onSend={() => {}} />
+    </FormScenario>
     <FormScenario title="Disabled composer" description="Disable both the textarea and the submit button." wide
       code={formCode('MessageComposer', `<MessageComposer label="Managed conversation" sendLabel="Send managed message" rows={3} disabled
   defaultValue="This channel is managed by the workspace."

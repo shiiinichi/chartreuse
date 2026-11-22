@@ -185,12 +185,47 @@ const tabItemsCode = snippet(
   '  { value: "settings", label: "Settings", content: <Text size="body">Configure workspace access and notifications.</Text> },',
   '];',
 );
+const overflowingTabSections = [
+  ['overview', 'Overview', 'Review workspace status and upcoming milestones.'],
+  ['activity', 'Activity', 'See recent changes to workspace tasks.'],
+  ['projects', 'Projects', 'Track the work in each project.'],
+  ['members', 'Members', 'See who has access to the workspace.'],
+  ['permissions', 'Permissions', 'Review what each workspace role can access.'],
+  ['notifications', 'Notifications', 'Choose which workspace updates to receive.'],
+  ['audit-log', 'Audit log', 'Review administrative changes to the workspace.'],
+  ['integrations', 'Integrations', 'See which tools are connected to the workspace.'],
+];
+const overflowingTabItems = overflowingTabSections.map(([value, label, description]) => ({
+  value,
+  label,
+  content: <Text size="body" className="core-example-note">{description}</Text>,
+}));
 const tabSizes = ['sm', 'md', 'lg'] as const;
 
 export function TabsScenarios() {
   const [size, setSize] = useState<(typeof tabSizes)[number]>('md');
   const [active, setActive] = useState('activity');
   return <ExampleGallery className="core-scenarios">
+    <Showcase title="Overflowing tabs" description="Hold a tab and drag sideways. Horizontal scrolling with a wheel or trackpad briefly reveals the scrollbar." code={snippet(
+      'import { Tabs, Text } from "@chartreuse/ui";',
+      '',
+      'const sections = [',
+      ...overflowingTabSections.map(section => `  [${section.map(value => JSON.stringify(value)).join(', ')}],`),
+      '];',
+      'const items = sections.map(([value, label, description]) => ({',
+      '  value,',
+      '  label,',
+      '  content: <Text size="body">{description}</Text>,',
+      '}));',
+      '',
+      '<div style={{ inlineSize: "min(100%, 25rem)" }}>',
+      '  <Tabs label="Workspace sections" items={items} />',
+      '</div>',
+    )}>
+      <div style={{ inlineSize: 'min(100%, 25rem)' }}>
+        <Tabs label="Workspace sections" items={overflowingTabItems} />
+      </div>
+    </Showcase>
     <Showcase title="Tab variants and sizes" description="Each variant matches Button heights." code={snippet(
       'import { useState } from "react";',
       'import { Button, Tabs, Text } from "@chartreuse/ui";',

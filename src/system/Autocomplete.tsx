@@ -25,9 +25,11 @@ export interface AutocompleteProps extends Omit<ComponentPropsWithRef<'input'>, 
   hint?: string;
   error?: string;
   emptyMessage?: string;
+  /** Stretch the field to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
 }
 
-export function Autocomplete({ label, size = 'md', options, value, defaultValue = '', checkmark, matchTriggerWidth = false, onValueChange, hint, error, emptyMessage = 'No matching options. Change the search text.', name, id: suppliedId, className, disabled, required, placeholder = 'Search options', ref, onFocus, onBlur, onKeyDown, ...props }: AutocompleteProps) {
+export function Autocomplete({ label, size = 'md', options, value, defaultValue = '', checkmark, matchTriggerWidth = false, onValueChange, hint, error, fullWidth = false, emptyMessage = 'No matching options. Change the search text.', name, id: suppliedId, className, disabled, required, placeholder = 'Search options', ref, onFocus, onBlur, onKeyDown, ...props }: AutocompleteProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const listId = `${id}-options`;
@@ -147,7 +149,7 @@ export function Autocomplete({ label, size = 'md', options, value, defaultValue 
     } else if (event.key === 'Tab') closeOptions();
   }
 
-  return <div ref={root} className={['cr-field', 'cr-autocomplete', className].filter(Boolean).join(' ')}>
+  return <div ref={root} className={['cr-field', 'cr-autocomplete', className].filter(Boolean).join(' ')} data-full-width={fullWidth || undefined}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
     <div className="cr-autocomplete-control" data-cr-input-size={size}><Search size={16} aria-hidden="true" />
       <input {...props} ref={input} id={id} type="text" className="cr-input" role="combobox" aria-autocomplete="list" aria-expanded={expanded} aria-controls={listId} aria-activedescendant={expanded && activeOption && !activeOption.disabled ? `${listId}-${active}` : undefined} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} autoComplete="off" spellCheck={false} disabled={disabled} required={required} placeholder={placeholder} value={searching ? query : selected?.label || ''} onFocus={event => { onFocus?.(event); showOptions(); }} onClick={showOptions} onBlur={event => { onBlur?.(event); closeOptions(); }} onKeyDown={navigate} onChange={event => {

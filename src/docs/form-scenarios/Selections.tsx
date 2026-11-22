@@ -109,12 +109,33 @@ function ReviewerSelection() {
   </FormScenario>;
 }
 
+function FullWidthSelect() {
+  const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Full-width select" description="In a flex row, a field is only as wide as its control. Set fullWidth to fill the remaining space."
+    code={formCode('Button, Select', `const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+
+<>
+  <div style={rowStyle}>
+    <Select label="Reviewer (default width)" name="reviewer" defaultValue="ana"><option value="ana">Ana</option><option value="sam">Sam</option></Select>
+    <Button variant="secondary">Assign</Button>
+  </div>
+  <div style={rowStyle}>
+    <Select label="Reviewer (fullWidth)" name="reviewer" defaultValue="ana" fullWidth><option value="ana">Ana</option><option value="sam">Sam</option></Select>
+    <Button variant="secondary">Assign</Button>
+  </div>
+</>`)}>
+    <div style={rowStyle}><Select label="Reviewer (default width)" name="reviewer" defaultValue="ana"><option value="ana">Ana</option><option value="sam">Sam</option></Select><Button variant="secondary">Assign</Button></div>
+    <div style={rowStyle}><Select label="Reviewer (fullWidth)" name="reviewer" defaultValue="ana" fullWidth><option value="ana">Ana</option><option value="sam">Sam</option></Select><Button variant="secondary">Assign</Button></div>
+  </FormScenario>;
+}
+
 export function SelectScenarios() {
   return <ExampleGallery className="form-scenarios">
     <SelectSizes />
     <PrioritySelection />
     <DestinationSelection />
     <ReviewerSelection />
+    <FullWidthSelect />
     <FormScenario title="Disabled select" description="Display the selected option while preventing changes and form submission."
       code={formCode('Select', `<Select label="Deployment region" name="region" defaultValue="local" disabled
   hint="The workspace sets the deployment region.">

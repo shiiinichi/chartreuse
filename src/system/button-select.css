@@ -4,6 +4,8 @@
     max-inline-size: 100%;
   }
 
+  .cr-button-select-trigger[data-full-width] { inline-size: 100%; }
+
   .cr-button-select-label {
     flex: 1 1 auto;
     min-inline-size: 0;

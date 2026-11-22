@@ -28,6 +28,7 @@ export const sliderReferences: ComponentReference[] = [{
     { name: 'hideLabel', type: 'boolean', defaultValue: 'false', description: 'Visually hides the label while keeping its input association.' },
     { name: 'hint', type: 'string', description: 'Supporting text beneath the range control, associated through aria-describedby. Hidden while error is present.' },
     { name: 'error', type: 'string', description: 'An application-supplied error associated with the input, also setting aria-invalid.' },
+    { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the field to the full width of its container, including inside flex rows.' },
     { name: 'className', type: 'string', description: 'Additional classes on the outer field wrapper.' },
     { name: 'style', type: 'CSSProperties', description: 'Inline styles on the native range input. The component owns --cr-slider-progress to keep fill synchronized.' },
     { name: 'ref', type: 'Ref<HTMLInputElement>', description: 'Native ref to the range input for focus or inspection.' },

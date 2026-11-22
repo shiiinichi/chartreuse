@@ -17,6 +17,8 @@ export interface SliderProps extends Omit<ComponentPropsWithRef<'input'>, 'type'
   hideLabel?: boolean;
   hint?: string;
   error?: string;
+  /** Stretch the field to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
 }
 
 function rangeValue(value: number | undefined, min: number, max: number, step: number | 'any') {
@@ -28,7 +30,7 @@ function rangeValue(value: number | undefined, min: number, max: number, step: n
 }
 
 /** A native range input with a visible value and the shared field relationships. */
-export function Slider({ label, value, defaultValue, min = 0, max = 100, step = 1, onValueChange, formatValue, showValue = true, hideLabel = false, hint, error, id: suppliedId, className, style, ref, onChange, 'aria-describedby': describedBy, 'aria-valuetext': valueText, ...props }: SliderProps) {
+export function Slider({ label, value, defaultValue, min = 0, max = 100, step = 1, onValueChange, formatValue, showValue = true, hideLabel = false, hint, error, fullWidth = false, id: suppliedId, className, style, ref, onChange, 'aria-describedby': describedBy, 'aria-valuetext': valueText, ...props }: SliderProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const input = useRef<HTMLInputElement>(null);
@@ -63,7 +65,7 @@ export function Slider({ label, value, defaultValue, min = 0, max = 100, step = 
     return () => { active = false; form.removeEventListener('reset', onReset); };
   }, [controlled, props.form]);
 
-  return <div className={['cr-field', 'cr-slider', className].filter(Boolean).join(' ')} data-disabled={props.disabled || undefined}>
+  return <div className={['cr-field', 'cr-slider', className].filter(Boolean).join(' ')} data-full-width={fullWidth || undefined} data-disabled={props.disabled || undefined}>
     <div className="cr-slider-header"><label htmlFor={id} className={hideLabel ? 'cr-sr-only' : undefined}>{label}</label>{showValue && <output htmlFor={id} className="cr-slider-value" aria-hidden="true">{formatted}</output>}</div>
     <input {...props} ref={input} type="range" id={id} min={lower} max={upper} step={increment}
       value={controlled ? current : undefined} defaultValue={controlled ? undefined : initial}

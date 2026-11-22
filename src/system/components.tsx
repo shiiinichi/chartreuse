@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
-import type { ComponentPropsWithRef, CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode, WheelEvent as ReactWheelEvent } from 'react';
 import { AlertCircle, CheckCheck, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
 import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip as TaskAttachmentsIcon } from 'lucide-react';
 import type { ControlSize } from './control-size';
@@ -20,15 +20,17 @@ export interface ButtonProps extends ComponentPropsWithRef<'button'> {
   icon?: IconSource;
   iconRight?: IconSource;
   loading?: boolean;
+  /** Stretch the button to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
 }
-export function Button({ children, variant = 'primary', size = 'md', icon, iconRight, loading, disabled, className, type = 'button', ...props }: ButtonProps) {
-  return <button {...props} type={type} disabled={disabled || loading} aria-busy={loading || undefined} className={cx('cr-button', className)} data-variant={variant} data-size={size} data-cr-autofocus={props.autoFocus || undefined}>
+export function Button({ children, variant = 'primary', size = 'md', icon, iconRight, loading, fullWidth = false, disabled, className, type = 'button', ...props }: ButtonProps) {
+  return <button {...props} type={type} disabled={disabled || loading} aria-busy={loading || undefined} className={cx('cr-button', className)} data-variant={variant} data-size={size} data-full-width={fullWidth || undefined} data-cr-autofocus={props.autoFocus || undefined}>
     {loading ? <LoaderCircle className="cr-spin" size={16} aria-hidden="true" /> : renderIcon(icon, { size: 16 })}
     {children}{renderIcon(iconRight, { size: 16 })}
   </button>;
 }
 
-export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'icon'> { icon: IconSource; label: string }
+export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'icon' | 'fullWidth'> { icon: IconSource; label: string }
 export function IconButton({ icon, label, variant = 'ghost', className, title, ...props }: IconButtonProps) {
   return <Button {...props} variant={variant} className={cx('cr-icon-button', className)} aria-label={label} title={title ?? label}>{renderIcon(icon, { size: 17 })}</Button>;
 }
@@ -53,11 +55,13 @@ export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'si
   hint?: string;
   error?: string;
   icon?: IconSource;
+  /** Stretch the field to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
 }
-export function TextField({ label, size = 'md', hint, error, icon, className, id: suppliedId, required, ...props }: TextFieldProps) {
+export function TextField({ label, size = 'md', hint, error, icon, fullWidth = false, className, id: suppliedId, required, ...props }: TextFieldProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
-  return <div className={cx('cr-field', className)}>
+  return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined}>
     <label htmlFor={id}>{label}{required && <span className="cr-required"> *</span>}</label>
     <div className="cr-input-wrap" data-cr-input-size={size}>{renderIcon(icon, { size: 16 })}<input {...props} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
@@ -65,11 +69,17 @@ export function TextField({ label, size = 'md', hint, error, icon, className, id
   </div>;
 }
 
-export interface TextAreaProps extends ComponentPropsWithRef<'textarea'> { label: string; hint?: string; error?: string }
-export function TextArea({ label, hint, error, id: suppliedId, className, ...props }: TextAreaProps) {
+export interface TextAreaProps extends ComponentPropsWithRef<'textarea'> {
+  label: string;
+  hint?: string;
+  error?: string;
+  /** Stretch the field to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
+}
+export function TextArea({ label, hint, error, fullWidth = false, id: suppliedId, className, ...props }: TextAreaProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
-  return <div className={cx('cr-field', className)}><label htmlFor={id}>{label}{props.required && ' *'}</label>
+  return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined}><label htmlFor={id}>{label}{props.required && ' *'}</label>
     <textarea {...props} id={id} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (hint || error) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} />
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {error && <Text size="small" id={`${id}-error`} className="cr-field-error">{error}</Text>}
@@ -132,12 +142,116 @@ export interface TabsProps {
   size?: ControlSize;
   className?: string;
 }
+const TAB_DRAG_HOLD_MS = 180;
+const TAB_DRAG_THRESHOLD_PX = 4;
+const TAB_WHEEL_SCROLLBAR_MS = 600;
+
 export function Tabs({ items, label, defaultValue, value, onValueChange, variant = 'line', size = 'md', className }: TabsProps) {
   const id = useId();
   const [internal, setInternal] = useState(defaultValue || items[0]?.value);
+  const stopTabDrag = useRef<(() => void) | null>(null);
+  const suppressTabClick = useRef(false);
+  const wheelScrollbar = useRef<{ list: HTMLDivElement; timer: number } | null>(null);
   const selected = value ?? internal;
   const change = (next: string) => { if (value === undefined) setInternal(next); onValueChange?.(next); };
-  return <div className={cx('cr-tabs', className)} data-variant={variant} data-size={size}><div role="tablist" aria-label={label} className="cr-tab-list">
+
+  const hideWheelScrollbar = useCallback(() => {
+    const wheel = wheelScrollbar.current;
+    if (!wheel) return;
+    window.clearTimeout(wheel.timer);
+    delete wheel.list.dataset.wheelScroll;
+    wheelScrollbar.current = null;
+  }, []);
+
+  useEffect(() => () => {
+    stopTabDrag.current?.();
+    hideWheelScrollbar();
+  }, [hideWheelScrollbar]);
+
+  const showWheelScrollbar = (event: ReactWheelEvent<HTMLDivElement>) => {
+    const list = event.currentTarget;
+    const horizontal = event.deltaX !== 0 || (event.shiftKey && event.deltaY !== 0);
+    if (!horizontal || event.ctrlKey || list.dataset.dragScroll === 'active' || list.scrollWidth <= list.clientWidth) return;
+
+    if (wheelScrollbar.current) window.clearTimeout(wheelScrollbar.current.timer);
+    else list.dataset.wheelScroll = 'true';
+    wheelScrollbar.current = { list, timer: window.setTimeout(hideWheelScrollbar, TAB_WHEEL_SCROLLBAR_MS) };
+  };
+
+  const startTabPress = (event: ReactPointerEvent<HTMLDivElement>) => {
+    stopTabDrag.current?.();
+    suppressTabClick.current = false;
+    if (event.pointerType !== 'mouse' || event.button !== 0) return;
+
+    const list = event.currentTarget;
+    const tab = (event.target as Element).closest('button[role="tab"]');
+    if (tab?.parentElement !== list || list.scrollWidth <= list.clientWidth) return;
+
+    const { pointerId } = event;
+    let lastX = event.clientX;
+    let dragging = false;
+    const listeners = new AbortController();
+    const options = { capture: true, signal: listeners.signal };
+
+    const finish = () => {
+      window.clearTimeout(hold);
+      listeners.abort();
+      delete list.dataset.dragScroll;
+      if (list.hasPointerCapture(pointerId)) list.releasePointerCapture(pointerId);
+      stopTabDrag.current = null;
+    };
+    const start = () => {
+      window.clearTimeout(hold);
+      if (list.scrollWidth <= list.clientWidth) {
+        finish();
+        return;
+      }
+      list.setPointerCapture(pointerId);
+      if (!list.hasPointerCapture(pointerId)) {
+        finish();
+        return;
+      }
+      dragging = true;
+      suppressTabClick.current = true;
+      hideWheelScrollbar();
+      list.dataset.dragScroll = 'active';
+    };
+    const move = (pointer: PointerEvent) => {
+      if (pointer.pointerId !== pointerId) return;
+      if ((pointer.buttons & 1) === 0) {
+        finish();
+        return;
+      }
+      const delta = lastX - pointer.clientX;
+      if (!dragging) {
+        if (Math.abs(delta) < TAB_DRAG_THRESHOLD_PX) return;
+        start();
+        if (!dragging) return;
+      }
+      lastX = pointer.clientX;
+      list.scrollBy({ left: delta, behavior: 'instant' });
+    };
+    const endPointer = (pointer: PointerEvent) => {
+      if (pointer.pointerId === pointerId) finish();
+    };
+
+    const hold = window.setTimeout(start, TAB_DRAG_HOLD_MS);
+    stopTabDrag.current = finish;
+    list.dataset.dragScroll = 'pending';
+    window.addEventListener('pointermove', move, options);
+    window.addEventListener('pointerup', endPointer, options);
+    window.addEventListener('pointercancel', endPointer, options);
+    window.addEventListener('blur', finish, { signal: listeners.signal });
+    list.addEventListener('lostpointercapture', endPointer, options);
+  };
+
+  return <div className={cx('cr-tabs', className)} data-variant={variant} data-size={size}><div role="tablist" aria-label={label} className="cr-tab-list"
+    onWheel={showWheelScrollbar} onPointerDown={startTabPress} onClickCapture={event => {
+      if (!suppressTabClick.current || event.detail === 0) return;
+      suppressTabClick.current = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }}>
     {items.map(({ value: key, label: text, icon, count }, index) => <button key={key} type="button" role="tab" id={`${id}-tab-${key}`} aria-selected={selected === key} tabIndex={selected === key ? 0 : -1} onClick={() => change(key)} onKeyDown={event => {
       const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
       const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : event.key === 'ArrowRight' ? (index + (rtl ? -1 : 1) + items.length) % items.length : event.key === 'ArrowLeft' ? (index + (rtl ? 1 : -1) + items.length) % items.length : null;

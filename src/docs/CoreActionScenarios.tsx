@@ -39,6 +39,9 @@ export function ButtonScenarios() {
       '  <Button size="lg">Large</Button>',
       '</div>',
     )}><div className="core-example-row"><Button size="sm">Small</Button><Button>Default</Button><Button size="lg">Large</Button></div></Showcase>
+    <Showcase title="Full-width button" description="Set fullWidth to stretch the button across its container, such as a narrow panel or card footer." code={"import { Button } from '@chartreuse/ui';\n\n<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--cr-space-3)', inlineSize: 'min(100%, 20rem)' }}>\n  <Button variant=\"secondary\">Default width</Button>\n  <Button fullWidth>Full width</Button>\n</div>"}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--cr-space-3)', inlineSize: 'min(100%, 20rem)' }}><Button variant="secondary">Default width</Button><Button fullWidth>Full width</Button></div>
+    </Showcase>
     <Showcase title="Leading and trailing icons" description="Use icon and iconRight to place decorative icons beside the button label." code={snippet(
       'import { Plus, ArrowRight } from "lucide-react";',
       'import { Button } from "@chartreuse/ui";',

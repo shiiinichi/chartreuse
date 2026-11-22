@@ -255,6 +255,26 @@ function FocusActions() {
   </FormScenario>;
 }
 
+function FullWidthTextField() {
+  const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Full-width input" description="In a flex row, a field is only as wide as its control. Set fullWidth to fill the remaining space."
+    code={formCode('Button, TextField', `const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+
+<>
+  <div style={rowStyle}>
+    <TextField label="Email (default width)" name="email" type="email" />
+    <Button variant="secondary">Invite</Button>
+  </div>
+  <div style={rowStyle}>
+    <TextField label="Email (fullWidth)" name="email" type="email" fullWidth />
+    <Button variant="secondary">Invite</Button>
+  </div>
+</>`)}>
+    <div style={rowStyle}><TextField label="Email (default width)" name="email" type="email" /><Button variant="secondary">Invite</Button></div>
+    <div style={rowStyle}><TextField label="Email (fullWidth)" name="email" type="email" fullWidth /><Button variant="secondary">Invite</Button></div>
+  </FormScenario>;
+}
+
 export function TextFieldScenarios() {
   return <ExampleGallery className="form-scenarios">
     <TextFieldSizes />
@@ -277,6 +297,7 @@ export function TextFieldScenarios() {
   hint="Select and copy the workspace identifier." />`)}>
       <TextField label="Workspace identifier" name="workspaceId" defaultValue="TASK-024" readOnly hint="Select and copy the workspace identifier." />
     </FormScenario>
+    <FullWidthTextField />
     <PrefixForm />
     <PasswordVisibility />
     <ClearableQuery />
@@ -382,10 +403,31 @@ function LimitedNotes() {
   </FormScenario>;
 }
 
+function FullWidthTextArea() {
+  const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Full-width textarea" description="In a flex row, a field is only as wide as its control. Set fullWidth to fill the remaining space."
+    code={formCode('Button, TextArea', `const rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+
+<>
+  <div style={rowStyle}>
+    <TextArea label="Comment (default width)" name="comment" rows={2} />
+    <Button variant="secondary">Post</Button>
+  </div>
+  <div style={rowStyle}>
+    <TextArea label="Comment (fullWidth)" name="comment" rows={2} fullWidth />
+    <Button variant="secondary">Post</Button>
+  </div>
+</>`)}>
+    <div style={rowStyle}><TextArea label="Comment (default width)" name="comment" rows={2} /><Button variant="secondary">Post</Button></div>
+    <div style={rowStyle}><TextArea label="Comment (fullWidth)" name="comment" rows={2} fullWidth /><Button variant="secondary">Post</Button></div>
+  </FormScenario>;
+}
+
 export function TextAreaScenarios() {
   return <ExampleGallery className="form-scenarios">
     <ControlledNotes />
     <SummaryValidation />
+    <FullWidthTextArea />
     <FormScenario title="Read-only textarea" description="Allow text selection and native resizing while preventing edits."
       code={formCode('TextArea', `<TextArea label="Archived review notes" name="archivedNotes" rows={3}
   defaultValue="The decision is recorded with the task. Keep it for the next review."

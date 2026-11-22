@@ -26,6 +26,7 @@ export const numberInputReferences: ComponentReference[] = [
       { name: 'step', type: "number | string", defaultValue: 'Native default: 1', description: 'Native increment and validity interval. Use a positive step such as 0.25; step="any" allows arbitrary decimals and hides the step controls.' },
       { name: 'hint', type: 'string', description: 'Supporting text beneath the number control, connected to the input.' },
       { name: 'error', type: 'string', description: 'Visible validation feedback and aria-invalid state; replaces the hint.' },
+      { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the field to the full width of its container, including inside flex rows.' },
       { name: 'name', type: 'string', description: 'Native form key for the input’s current value.' },
       { name: 'form', type: 'string', description: 'Native form association for fields outside the form’s DOM subtree.' },
       { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Native disabled state; omits the form value and removes the custom step controls.' },

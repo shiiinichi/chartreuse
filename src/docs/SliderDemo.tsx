@@ -6,6 +6,8 @@ import { ExampleGallery, Showcase } from './shared';
 import { Text } from '../system';
 import './slider-demo.css';
 
+const fullWidthRow = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };
+
 export function SliderDemo() {
   const [stroke, setStroke] = useState(1.5);
   const [duration, setDuration] = useState(15);
@@ -18,5 +20,9 @@ export function SliderDemo() {
       <Text size="body" className="slider-demo-saved" role="status">{saved ? `Saved confidence: ${saved}.` : 'Save a preference to see its submitted value.'}</Text>
     </form></Showcase>
     <Showcase title="Value formatting, validation, and disabled state" description="Format value text, display an application validation message, and disable a managed preference." code={`import { useState } from 'react';\nimport { Slider } from '@chartreuse/ui';\n\nfunction StateExamples() {\n  const [duration, setDuration] = useState(${duration});\n  return <>\n    <Slider label="Session length" min={5} max={60} step={5}\n      value={duration} onValueChange={setDuration}\n      formatValue={value => value + ' minutes'}\n      error={duration < 20 ? 'Choose at least 20 minutes for this example.' : undefined} />\n    <Slider label="Managed preference" defaultValue={40} disabled\n      formatValue={value => value + '%'} />\n  </>;\n}`}><div className="slider-demo-states"><Slider label="Session length" min={5} max={60} step={5} value={duration} onValueChange={setDuration} formatValue={value => `${value} minutes`} error={duration < 20 ? 'Choose at least 20 minutes for this example.' : undefined} hint="Validation requires a session of at least 20 minutes." /><Slider label="Managed preference" defaultValue={40} formatValue={value => `${value}%`} disabled hint="This setting is managed by the workspace." /></div></Showcase>
+    <Showcase title="Full-width slider" description="In a flex row, a field is only as wide as its control. Set fullWidth to fill the remaining space." code={"import { Button, Slider } from '@chartreuse/ui';\n\nconst rowStyle = { display: 'flex', alignItems: 'end', gap: 'var(--cr-space-3)' };\n\n<>\n  <div style={rowStyle}>\n    <Slider label=\"Volume (default width)\" name=\"volume\" defaultValue={40} />\n    <Button variant=\"secondary\">Mute</Button>\n  </div>\n  <div style={rowStyle}>\n    <Slider label=\"Volume (fullWidth)\" name=\"volume\" defaultValue={40} fullWidth />\n    <Button variant=\"secondary\">Mute</Button>\n  </div>\n</>"}>
+      <div style={fullWidthRow}><Slider label="Volume (default width)" name="volume" defaultValue={40} /><Button variant="secondary">Mute</Button></div>
+      <div style={fullWidthRow}><Slider label="Volume (fullWidth)" name="volume" defaultValue={40} fullWidth /><Button variant="secondary">Mute</Button></div>
+    </Showcase>
   </ExampleGallery>;
 }

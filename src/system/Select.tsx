@@ -16,6 +16,8 @@ export interface SelectProps extends Omit<ComponentPropsWithRef<'select'>, 'size
   hint?: string;
   error?: string;
   hideLabel?: boolean;
+  /** Stretch the field to the full width of its container. Defaults to false. */
+  fullWidth?: boolean;
 }
 
 function readOptions(select: HTMLSelectElement) {
@@ -40,7 +42,7 @@ function currentOption(list: ReturnType<typeof readOptions>) {
   return selected >= 0 ? selected : nextOptionIndex(list.options, -1, 'Home');
 }
 
-export function Select({ label, size = 'md', checkmark, hint, error, hideLabel = false, id: suppliedId, className, children,
+export function Select({ label, size = 'md', checkmark, hint, error, hideLabel = false, fullWidth = false, id: suppliedId, className, children,
   ref, onBlur, onClick, onMouseDown, onKeyDown, ...props }: SelectProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
@@ -180,7 +182,7 @@ export function Select({ label, size = 'md', checkmark, hint, error, hideLabel =
     }
   }
 
-  return <div className={['cr-field', className].filter(Boolean).join(' ')}>
+  return <div className={['cr-field', className].filter(Boolean).join(' ')} data-full-width={fullWidth || undefined}>
     <label htmlFor={id} id={isListbox ? undefined : labelId} className={hideLabel ? 'cr-sr-only' : undefined}>{label}{props.required && ' *'}</label>
     <div className="cr-select-wrap" data-cr-input-size={isListbox ? undefined : controlSize}>
       <select {...props} ref={select} size={nativeSize} className="cr-input cr-select" id={id}
