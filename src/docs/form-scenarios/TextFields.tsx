@@ -289,6 +289,21 @@ function HiddenLabelTextField() {
   </FormScenario>;
 }
 
+function CollapsibleSearch() {
+  const rowStyle = { display: 'flex', alignItems: 'center', gap: 'var(--cr-space-3)' };
+  return <FormScenario title="Collapsible search" description="Set collapsible to show an empty field as a square icon control. It expands to the available width on focus and collapses again on blur or Escape while empty."
+    code={formCode('Button, Text, TextField', `const rowStyle = { display: 'flex', alignItems: 'center', gap: 'var(--cr-space-3)' };
+
+<div style={rowStyle}>
+  <Text size="heading-3" style={{ marginInlineEnd: 'auto' }}>Tasks</Text>
+  <TextField label="Search tasks" collapsible name="taskSearch" type="search"
+    size="sm" icon={Search} placeholder="Search tasks…" />
+  <Button size="sm" variant="secondary">New task</Button>
+</div>`, '', "import { Search } from 'lucide-react';")}>
+    <div style={rowStyle}><Text size="heading-3" style={{ marginInlineEnd: 'auto' }}>Tasks</Text><TextField label="Search tasks" collapsible name="taskSearch" type="search" size="sm" icon={Search} placeholder="Search tasks…" /><Button size="sm" variant="secondary">New task</Button></div>
+  </FormScenario>;
+}
+
 export function TextFieldScenarios() {
   return <ExampleGallery className="form-scenarios">
     <TextFieldSizes />
@@ -313,6 +328,7 @@ export function TextFieldScenarios() {
     </FormScenario>
     <FullWidthTextField />
     <HiddenLabelTextField />
+    <CollapsibleSearch />
     <PrefixForm />
     <PasswordVisibility />
     <ClearableQuery />

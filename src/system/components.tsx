@@ -63,13 +63,20 @@ export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'si
   hideLabel?: boolean;
   /** Stretch the field to the full width of its container. Defaults to false. */
   fullWidth?: boolean;
+  /** Show the field as a square icon control while it is empty and unfocused, then expand it to the available width on focus. Hides the label visually. Use it with an icon. Defaults to false. */
+  collapsible?: boolean;
 }
-export function TextField({ label, size = 'md', hint, error, icon, hideLabel = false, fullWidth = false, className, id: suppliedId, required, ...props }: TextFieldProps) {
+export function TextField({ label, size = 'md', hint, error, icon, hideLabel = false, fullWidth = false, collapsible = false, className, id: suppliedId, required, placeholder, onKeyDown, ...props }: TextFieldProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
-  return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined}>
-    <label htmlFor={id} className={hideLabel ? 'cr-sr-only' : undefined}>{label}{required && <span className="cr-required"> *</span>}</label>
-    <div className="cr-input-wrap" data-cr-input-size={size}>{renderIcon(icon, { size: 16 })}<input {...props} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
+  // Escape on an empty collapsible field blurs it so it collapses again.
+  const handleKeyDown = collapsible ? (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    onKeyDown?.(event);
+    if (!event.defaultPrevented && event.key === 'Escape' && !event.currentTarget.value) event.currentTarget.blur();
+  } : onKeyDown;
+  return <div className={cx('cr-field', className)} data-full-width={fullWidth || undefined} data-collapsible={collapsible || undefined}>
+    <label htmlFor={id} className={hideLabel || collapsible ? 'cr-sr-only' : undefined}>{label}{required && <span className="cr-required"> *</span>}</label>
+    <div className="cr-input-wrap" data-cr-input-size={size}>{renderIcon(icon, { size: 16 })}{/* Collapsible fields detect an empty value with :placeholder-shown, so they always carry a placeholder. */}<input {...props} placeholder={collapsible ? placeholder || ' ' : placeholder} onKeyDown={handleKeyDown} id={id} required={required} data-cr-autofocus={props.autoFocus || undefined} className="cr-input" aria-invalid={error ? true : props['aria-invalid']} aria-describedby={[props['aria-describedby'], (error || hint) && `${id}-${error ? 'error' : 'hint'}`].filter(Boolean).join(' ') || undefined} /></div>
     {hint && !error && <Text size="small" id={`${id}-hint`}>{hint}</Text>}
     {error && <Text size="small" className="cr-field-error" id={`${id}-error`}><AlertCircle size={12} aria-hidden="true" /><span>{error}</span></Text>}
   </div>;

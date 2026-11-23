@@ -106,7 +106,7 @@ export function ProjectWorkspace() {
 }
 ```
 
-Use `Navbar variant="workspace"` with `workspaceContent` and either or both of `leftSidebar` and `rightSidebar`. The sidebars span the workspace from top to bottom, alongside the Navbar and central content. Each sidebar accepts a custom `toggleIcon`, with an optional `openToggleIcon` for its open state. It stays open until its toggle closes it, and can remember its open state with `storageKey`. Use `surface="white"` or `surface="evergreen"` to choose the Navbar color. [Navbar examples](https://shiiinichi.github.io/chartreuse/#components/navbar)
+Use `Navbar variant="workspace"` with `workspaceContent` and either or both of `leftSidebar` and `rightSidebar`. The sidebars span the workspace from top to bottom, alongside the Navbar and central content. The left toggle shows a hamburger `Menu` icon by default and the right toggle a `PanelRight` sidebar icon; each sidebar accepts a custom `toggleIcon`, with an optional `openToggleIcon` for its open state. Toggles look the same open or closed (`aria-expanded` reports the state) and sit as far from their side edge as from the top and bottom of the Navbar. It stays open until its toggle closes it, and can remember its open state with `storageKey`. Use `surface="white"` or `surface="evergreen"` to choose the Navbar color. [Navbar examples](https://shiiinichi.github.io/chartreuse/#components/navbar)
 
 ### GitHub Actions installation
 
@@ -221,6 +221,8 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `TextField`, `TextArea`, `Select`, `Slider`, and `SegmentedControl` accept `hideLabel`. It hides the label visually but keeps it as the control's accessible name. Keep nearby context, such as a heading, that shows what the field is for; a placeholder alone is not a label.
 
+Set `collapsible` on a `TextField` with an `icon`, such as a toolbar search, to show it as a square icon control while it is empty and unfocused. It expands to the free space in a flex row, or the full width of a block container, on focus; it stays open while it has a value and collapses on blur or on Escape while empty. The label is always visually hidden. [TextField examples](https://shiiinichi.github.io/chartreuse/#components/text-field)
+
 `Breadcrumbs` uses chevrons by default. Set `separator` to decorative text or JSX, or pass `null` to hide separators.
 
 `Dialog` uses a 10px gutter with a centered grip when `resizableSplit` is set. Drag the divider or use the arrow keys while it has keyboard focus.
@@ -278,7 +280,7 @@ Built-in options use fixed-height, single-line rows. The popup starts at the tri
 
 `Autocomplete`, `ButtonSelect`, and single-choice `Select` hide the selection checkmark by default. Add `checkmark` for the standard icon or pass a custom icon, such as `checkmark={CircleCheck}`. The prop accepts Lucide icons, SVG components, and inline SVG elements.
 
-`MessageComposer` combines a labeled textarea, hint, and send action. The caller implements submission in the required `onSend(message)` callback, which can be synchronous or asynchronous. Submission displays a busy state; failures retain the draft, and successful sends clear the submitted text. Edits made while submission is pending are retained. Enter adds a new line; Command/Ctrl+Enter sends. Set `sendSize` to `"sm"`, `"md"`, or `"lg"` for a 32px, 36px, or 44px send button; the default is `"md"`, and coarse pointers always get a 44px target. The gallery simulates success, delay, and failure within the example.
+`MessageComposer` combines a labeled textarea, hint, and send action. The caller implements submission in the required `onSend(message)` callback, which can be synchronous or asynchronous. Submission displays a busy state; failures retain the draft, and successful sends clear the submitted text. Edits made while submission is pending are retained. Enter adds a new line; Command/Ctrl+Enter sends. Set `sendSize` to `"sm"`, `"md"`, or `"lg"` for a 32px, 36px, or 44px send button; the default is `"md"`, and coarse pointers always get a 44px target. Pass `controls`, such as a `ButtonSelect` for a model or mode, to place them at the start of the footer, apart from the hint. The gallery simulates success, delay, and failure within the example.
 
 The [Drawers gallery](http://127.0.0.1:5173/#drawers) demonstrates a shared `Drawer` in `mode="docked"` or `mode="modal"`, with left/right placement and configurable `width` / `maxWidth`. Docked panels leave the workspace usable; modal drawers contain focus with native dialog behavior. The footer can hold a `MessageComposer`. Every conversation in the example stays local.
 

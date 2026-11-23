@@ -187,6 +187,19 @@
   }
   .cr-input:disabled { opacity: .5; cursor: not-allowed; }
   textarea.cr-input { min-block-size: 100px; resize: vertical; }
+  /* Collapsible field: a square icon control while empty and unfocused; it grows to the available
+     width on focus: flex-grow fills the free space in a flex row without squeezing siblings, and
+     inline-size fills block and grid containers. */
+  .cr-field[data-collapsible] { --cr-collapsed-size: 40px; box-sizing: border-box; flex: 1 1 var(--cr-collapsed-size); inline-size: 100%; max-block-size: max-content; transition: flex-grow var(--cr-duration-fast) ease-out, inline-size var(--cr-duration-fast) ease-out; }
+  .cr-field[data-collapsible]:has(> [data-cr-input-size='sm']) { --cr-collapsed-size: 32px; }
+  .cr-field[data-collapsible]:has(> [data-cr-input-size='lg']) { --cr-collapsed-size: 46px; }
+  .cr-field[data-collapsible] > .cr-input-wrap > svg { transition: inset-inline-start var(--cr-duration-fast) ease-out; }
+  .cr-field[data-collapsible]:not(:focus-within):has(> .cr-input-wrap > .cr-input:placeholder-shown:enabled) { flex-grow: 0; flex-shrink: 0; inline-size: var(--cr-collapsed-size); }
+  .cr-field[data-collapsible]:not(:focus-within) > .cr-input-wrap:has(> .cr-input:placeholder-shown:enabled) > svg { inset-inline-start: calc((var(--cr-collapsed-size) - 16px) / 2); color: var(--cr-color-text); }
+  .cr-field[data-collapsible]:not(:focus-within) > .cr-input-wrap > .cr-input:placeholder-shown:enabled { padding-inline: 0; color: transparent; cursor: pointer; }
+  .cr-field[data-collapsible]:not(:focus-within) > .cr-input-wrap > .cr-input:placeholder-shown:enabled::placeholder { color: transparent; }
+  .cr-field[data-collapsible]:not(:focus-within) > .cr-input-wrap > .cr-input:placeholder-shown:enabled:hover { background: var(--cr-color-subtle); }
+  @media (prefers-reduced-motion: reduce) { .cr-field[data-collapsible], .cr-field[data-collapsible] > .cr-input-wrap > svg { transition: none; } }
   .cr-select-wrap { position: relative; }
   .cr-select { appearance: none; padding-inline-end: 2.75rem; }
   .cr-select-wrap[data-cr-input-size] > .cr-select { display: block; }

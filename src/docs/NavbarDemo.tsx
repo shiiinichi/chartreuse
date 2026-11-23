@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { GitPullRequest, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Tag } from 'lucide-react';
+import { GitPullRequest, Tag } from 'lucide-react';
 import { Avatar, Badge, BrandMark, Button, Checkbox, Progress } from '../system/components';
 import { Flex } from '../system/Flex';
 import { Navbar, NavbarItem } from '../system/Navbar';
@@ -122,8 +122,6 @@ function WorkspaceNavbarDemo() {
           label: 'Releases',
           contentLabel: 'Release list',
           width: 206,
-          toggleIcon: <PanelLeftOpen strokeWidth={1.65} />,
-          openToggleIcon: <PanelLeftClose strokeWidth={1.65} />,
           defaultOpen: true,
           storageKey: 'chartreuse-docs:navbar-demo:releases',
           children: <ul className="navbar-release-list" role="list">
@@ -142,8 +140,6 @@ function WorkspaceNavbarDemo() {
           label: 'Activity',
           contentLabel: 'Release activity',
           width: 224,
-          toggleIcon: <PanelRightOpen strokeWidth={1.65} />,
-          openToggleIcon: <PanelRightClose strokeWidth={1.65} />,
           defaultOpen: true,
           children: <ol className="navbar-release-activity" role="list">
             {release.activity.map(event => (

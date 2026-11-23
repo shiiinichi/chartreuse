@@ -47,6 +47,13 @@
     gap: var(--cr-space-2);
   }
 
+  /* A sidebar toggle at either end sits as far from the side edge as from the top and bottom
+     edges, so its icon has the same inset on all three sides. */
+  .cr-navbar[data-variant='workspace'] > .cr-navbar-inner:has(> .cr-navbar-sidebar-toggle:first-child) { padding-inline-start: var(--cr-space-2); }
+  .cr-navbar[data-variant='workspace'] > .cr-navbar-inner:has(> .cr-navbar-sidebar-toggle:last-child) { padding-inline-end: var(--cr-space-2); }
+  .cr-navbar[data-variant='workspace'][data-size='lg'] > .cr-navbar-inner:has(> .cr-navbar-sidebar-toggle:first-child) { padding-inline-start: var(--cr-space-3); }
+  .cr-navbar[data-variant='workspace'][data-size='lg'] > .cr-navbar-inner:has(> .cr-navbar-sidebar-toggle:last-child) { padding-inline-end: var(--cr-space-3); }
+
   .cr-navbar-content {
     display: flex;
     flex: 1 1 0%;
@@ -228,34 +235,6 @@
     background: color-mix(in srgb, currentColor 12%, transparent);
   }
 
-  .cr-navbar-sidebar-toggle.cr-button[aria-expanded='true'][data-variant='ghost'] {
-    --button-bg: transparent;
-    border-color: transparent;
-    color: var(--cr-color-on-active);
-  }
-
-  .cr-navbar-sidebar-toggle[aria-expanded='true']::before {
-    background: var(--cr-color-active);
-    box-shadow: inset 0 0 0 1px var(--cr-color-active-border);
-  }
-
-  :where(.cr-navbar[data-surface='evergreen'] > .cr-navbar-inner) > .cr-navbar-sidebar-toggle[aria-expanded='true']::before {
-    background: var(--cr-evergreen-light);
-    box-shadow: none;
-  }
-
-  .cr-navbar-sidebar-toggle[aria-expanded='true']::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    inset-block-start: calc(50% + .625rem);
-    inline-size: .5rem;
-    margin-inline: auto;
-    border-block-start: 2px solid currentColor;
-    border-radius: var(--cr-radius-full);
-    pointer-events: none;
-  }
-
   @container cr-navbar-workspace-center (inline-size < 15rem) {
     .cr-navbar[data-variant='workspace'] > .cr-navbar-inner {
       gap: min(var(--cr-space-1), 3%);
@@ -265,7 +244,5 @@
 
   @media (forced-colors: active) {
     :is(.cr-navbar-item:where(a), .cr-navbar-links > :where(a))[aria-current='page'] { border: 1px solid LinkText; }
-    .cr-navbar-sidebar-toggle[aria-expanded='true']::before { background: var(--cr-color-active); }
-    .cr-navbar-sidebar-toggle[aria-expanded='true']::after { border-color: ButtonText; }
   }
 }

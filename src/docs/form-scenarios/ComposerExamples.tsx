@@ -3,7 +3,7 @@ import { Button, Switch } from '../../system/components';
 import { MessageComposer } from '../../system/MessageComposer';
 import { Grid, GridItem } from '../../system/Grid';
 import { ExampleGallery, FormScenario, formCode } from './shared';
-import { Text } from '../../system';
+import { ButtonSelect, Text } from '../../system';
 
 function SimpleComposer() {
   const [sent, setSent] = useState('');
@@ -88,6 +88,43 @@ function PendingComposer() {
   </FormScenario>;
 }
 
+const models = [
+  { value: 'fast', label: 'Fast' },
+  { value: 'balanced', label: 'Balanced' },
+  { value: 'thorough', label: 'Thorough' },
+];
+
+function ButtonSelectFooterComposer() {
+  const [model, setModel] = useState('balanced');
+  const [sent, setSent] = useState('');
+  const label = models.find(option => option.value === model)?.label;
+  return <FormScenario title="Button select footer" description="Pass a ButtonSelect to controls to choose an option at the start of the footer, beside the send action." wide
+    code={formCode("MessageComposer, ButtonSelect, Text", `const models = [
+  { value: 'fast', label: 'Fast' },
+  { value: 'balanced', label: 'Balanced' },
+  { value: 'thorough', label: 'Thorough' },
+];
+
+export function ButtonSelectFooterExample() {
+  const [model, setModel] = useState('balanced');
+  const [sent, setSent] = useState('');
+  const label = models.find(option => option.value === model)?.label;
+  return <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <MessageComposer label="Message with a model choice" sendLabel="Send with selected model" rows={3}
+      hint={null}
+      controls={<ButtonSelect size="sm" variant="primary" aria-label="Model" options={models} value={model} onValueChange={setModel} />}
+      onSend={message => setSent(label + ': ' + message)} />
+    <Text size="body" style={{ margin: 0 }}>{sent ? 'Last submitted message: ' + sent : 'No message submitted.'}</Text>
+  </div>;
+}`, 'useState')}>
+    <MessageComposer label="Message with a model choice" sendLabel="Send with selected model" rows={3}
+      hint={null}
+      controls={<ButtonSelect size="sm" variant="primary" aria-label="Model" options={models} value={model} onValueChange={setModel} />}
+      onSend={message => setSent(label + ': ' + message)} />
+    <Text size="body" className="form-scenario-feedback">{sent ? 'Last submitted message: ' + sent : 'No message submitted.'}</Text>
+  </FormScenario>;
+}
+
 function RetryComposer() {
   const [fail, setFail] = useState(true);
   const [sent, setSent] = useState('');
@@ -125,6 +162,7 @@ export function MessageComposerScenarios() {
     <ControlledComposer />
     <PendingComposer />
     <RetryComposer />
+    <ButtonSelectFooterComposer />
     <FormScenario title="Send button sizes" description="Set sendSize to sm, md, or lg to match the density of the surrounding layout." wide
       code={formCode('MessageComposer', `<MessageComposer label="Small send button" sendLabel="Send small" sendSize="sm" rows={2} defaultValue="Compact layouts use the small send button." onSend={() => {}} />
 <MessageComposer label="Medium send button" sendLabel="Send medium" sendSize="md" rows={2} defaultValue="The medium send button is the default." onSend={() => {}} />

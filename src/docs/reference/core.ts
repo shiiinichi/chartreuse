@@ -190,6 +190,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'hideLabel', type: 'boolean', defaultValue: 'false', description: 'Visually hides the label while preserving its accessible association.' },
       { name: 'id', type: 'string', defaultValue: 'Generated with useId()', description: 'The native input ID, also used for the label association and generated description IDs.' },
       { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the field to the full width of its container, including inside flex rows.' },
+      { name: 'collapsible', type: 'boolean', defaultValue: 'false', description: 'Shows the field as a square icon control, matching the size preset, while it is empty and unfocused. It expands to the available width on focus, stays expanded while it has a value, and collapses on blur or on Escape while empty. Visually hides the label.' },
       { name: 'className', type: 'string', description: 'Additional classes on the outer field wrapper.' },
       { name: 'onChange', type: '(event: ChangeEvent<HTMLInputElement>) => void', description: 'The native input change callback. Use event.currentTarget.value for the text.' },
     ],
@@ -197,7 +198,8 @@ export const coreReferences: ComponentReference[] = [
       "Use Grid and GridItem for peer fields in either direction: columns={1} gap={4} for a vertical stack, or columns={{ base: 1, sm: 2 }} gap={4} for a responsive row. Put each whole labeled control in GridItem span={1}.",
       'The focus highlight fades outward from the fixed field border and appears instantly on focus.',
       'Controlled value and uncontrolled defaultValue follow React’s native input API.', 'Use native required, type, minLength, pattern, and autoComplete where appropriate. Native constraints and application logic own validation; error displays application-supplied feedback.',
-      'When using hideLabel, retain visible context that identifies the field’s purpose. A placeholder alone is not a label.'],
+      'When using hideLabel, retain visible context that identifies the field’s purpose. A placeholder alone is not a label.',
+      'Use collapsible with an icon, such as a search icon in a toolbar row. When expanded it fills the free space in a flex row, or the full width of a block or grid container. Collapsible fields always set a placeholder (a space when none is given) because the empty state is detected with :placeholder-shown.'],
   },
   {
     name: 'TextArea',

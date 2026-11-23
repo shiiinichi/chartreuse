@@ -24,7 +24,7 @@ export const siteNavbarExample = {
 };
 
 export const workspaceNavbarExample = {
-  importCode: "import { useState } from 'react';\nimport { PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen } from 'lucide-react';\nimport { Badge, Checkbox, Flex, Navbar, NavbarItem, Progress, Text, WorkspaceContent } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  importCode: "import { useState } from 'react';\nimport { Badge, Checkbox, Flex, Navbar, NavbarItem, Progress, Text, WorkspaceContent } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `export function ReleaseWorkspace() {
   const [verified, setVerified] = useState(false);
 
@@ -38,8 +38,6 @@ export const workspaceNavbarExample = {
       leftSidebar={{
         label: 'Releases',
         width: 206,
-        toggleIcon: <PanelLeftOpen strokeWidth={1.65} />,
-        openToggleIcon: <PanelLeftClose strokeWidth={1.65} />,
         defaultOpen: true,
         storageKey: 'release-workspace:releases',
         children: <nav aria-label="Release versions">
@@ -52,8 +50,6 @@ export const workspaceNavbarExample = {
       rightSidebar={{
         label: 'Activity',
         width: 224,
-        toggleIcon: <PanelRightOpen strokeWidth={1.65} />,
-        openToggleIcon: <PanelRightClose strokeWidth={1.65} />,
         defaultOpen: true,
         children: <ul><li>Maya approved the keyboard flow.</li><li>Tomas checked the mobile layout.</li></ul>,
       }}
@@ -74,7 +70,7 @@ export const workspaceNavbarExample = {
 export const navbarReferences: ComponentReference[] = [{
   name: 'Navbar', slug: 'navbar',
   summary: 'A responsive navigation bar with selectable surfaces and a workspace variant with full-height collapsible sidebars.',
-  importCode: "import { useState } from 'react';\nimport { PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen } from 'lucide-react';\nimport { Badge, BrandMark, Checkbox, Flex, Navbar, NavbarItem, Progress, Text, WorkspaceContent } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  importCode: "import { useState } from 'react';\nimport { Badge, BrandMark, Checkbox, Flex, Navbar, NavbarItem, Progress, Text, WorkspaceContent } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `${siteNavbarExample.usageCode}\n\n${workspaceNavbarExample.usageCode}`,
   nativeElement: 'nav',
   nativeProps: 'Native attributes, events, className, style, and the React 19 ref target the nav element.',
@@ -90,8 +86,8 @@ export const navbarReferences: ComponentReference[] = [{
     { name: 'rightSidebar', type: 'NavbarSidebarProps', description: 'Workspace sidebar and toggle at the end of the layout. Accepts the same fields as leftSidebar, listed below.' },
     { name: 'leftSidebar.label', type: 'string', required: true, description: 'Accessible name for the sidebar and its toggle, and the default header text.' },
     { name: 'leftSidebar.children', type: 'ReactNode', required: true, description: 'Sidebar body content.' },
-    { name: 'leftSidebar.toggleIcon', type: 'IconSource', defaultValue: 'PanelLeft or PanelRight', description: 'Toggle icon in the Navbar. Accepts a Lucide icon, a custom React SVG component, or an inline SVG element. Shown in both states unless openToggleIcon is set.' },
-    { name: 'leftSidebar.openToggleIcon', type: 'IconSource', defaultValue: 'toggleIcon', description: 'Toggle icon while the sidebar is open, such as PanelLeftClose.' },
+    { name: 'leftSidebar.toggleIcon', type: 'IconSource', defaultValue: "Menu (left), PanelRight (right)", description: 'Toggle icon in the Navbar: a hamburger menu icon by default for the left sidebar and a PanelRight sidebar icon for the right sidebar. Accepts a Lucide icon, a custom React SVG component, or an inline SVG element. Shown in both states unless openToggleIcon is set.' },
+    { name: 'leftSidebar.openToggleIcon', type: 'IconSource', defaultValue: 'toggleIcon', description: 'Toggle icon while the sidebar is open, such as X or PanelLeftClose.' },
     { name: 'leftSidebar.defaultOpen', type: 'boolean', defaultValue: 'false', description: 'Initial open state when uncontrolled.' },
     { name: 'leftSidebar.open', type: 'boolean', description: 'Controlled open state. Use with onOpenChange.' },
     { name: 'leftSidebar.onOpenChange', type: '(open: boolean) => void', description: 'Called when the toggle opens or closes the sidebar.' },
@@ -109,13 +105,13 @@ export const navbarReferences: ComponentReference[] = [{
   notes: [
     'Large can be combined with every variant. The workspace bar fills the center column.',
     'The bar surface spans the parent. The width setting applies to the inner row of links, branding, and actions.',
-    'Current links use a solid evergreen highlight by default. The evergreen surface uses Light Evergreen for current links and open sidebar toggles. Use native style to supply a custom background and colorScheme.',
+    'Current links use a solid evergreen highlight by default. The evergreen surface uses Light Evergreen for current links. Use native style to supply a custom background and colorScheme.',
     'The deprecated dark-green variant is an alias for the default layout with the evergreen surface. Existing callers can migrate to surface="evergreen".',
     'NavbarItem links retain their styles inside Flex. Direct native anchors and router links also receive the navbar link styles. Mark the current route with aria-current="page".',
     'Content wraps in reading order when space is limited. Give each navigation landmark a distinct name when a page contains multiple navigations.',
     'The workspace shell fills the viewport height by default. Each open sidebar spans the shell from top to bottom alongside both the bar and content. Its body scrolls between its header and footer. Each sidebar header is at least as tall as the Navbar and grows when its content needs more space.',
     'Each sidebar starts closed. Use defaultOpen to set its initial state, or open with onOpenChange to control it. Set storageKey to remember the uncontrolled open state in localStorage across visits. Server rendering uses defaultOpen and the stored state applies after hydration.',
-    'Provide a distinctive label for each sidebar. Use toggleIcon to replace the default panel icon with a Lucide icon, a custom React SVG component, or an inline SVG element. Add openToggleIcon to show a different icon while the sidebar is open.',
+    'Provide a distinctive label for each sidebar. Each toggle is a ghost icon button that looks the same open or closed; aria-expanded reports its state. Each toggle sits as far from its side edge as from the top and bottom of the Navbar, so its icon has an even inset. Use toggleIcon to replace the default icon (Menu on the left, PanelRight on the right) with a Lucide icon, a custom React SVG component, or an inline SVG element. Add openToggleIcon to show a different icon while the sidebar is open.',
     'A sidebar stays open while you work in the center. Only its Navbar toggle closes and reopens it. When a sidebar closes with focus inside it, focus returns to its toggle.',
   ],
 }, {

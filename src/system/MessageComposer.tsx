@@ -9,6 +9,8 @@ import './message-composer.css';
 export interface MessageComposerProps extends Omit<ComponentPropsWithRef<'textarea'>, 'children' | 'value' | 'defaultValue' | 'onSubmit'> {
   label?: string;
   hint?: ReactNode;
+  /** Controls at the start of the footer, such as a ButtonSelect. Kept apart from the hint so they are not read as its description. */
+  controls?: ReactNode;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -22,6 +24,7 @@ export interface MessageComposerProps extends Omit<ComponentPropsWithRef<'textar
 export function MessageComposer({
   label = 'Message',
   hint = 'Enter adds a new line. Command/Ctrl+Enter sends.',
+  controls,
   placeholder = 'Enter a message',
   value,
   defaultValue = '',
@@ -117,7 +120,7 @@ export function MessageComposer({
           if (!disabled && !sendingRef.current && event.currentTarget.value.trim()) event.currentTarget.form?.requestSubmit();
         }
       }} />
-    <div className="cr-message-composer-footer"><div className="cr-message-composer-hint" id={hasHint ? `${id}-hint` : undefined}>{pending ? 'Sending message…' : hint}</div><div className="cr-message-composer-actions"><div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <Text size="body" className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></Text>}</div><Button type="submit" size={sendSize} icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} /></div></div>
+    <div className="cr-message-composer-footer">{controls !== undefined && controls !== null && controls !== false && <div className="cr-message-composer-controls">{controls}</div>}<div className="cr-message-composer-hint" id={hasHint ? `${id}-hint` : undefined}>{pending ? 'Sending message…' : hint}</div><div className="cr-message-composer-actions"><div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <Text size="body" className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></Text>}</div><Button type="submit" size={sendSize} icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} /></div></div>
     <span className="cr-sr-only" role="status" aria-atomic="true">{announcement}</span>
   </form>;
 }

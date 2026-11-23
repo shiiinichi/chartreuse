@@ -1,6 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
-import { PanelLeft, PanelRight } from 'lucide-react';
+import { Menu, PanelRight } from 'lucide-react';
 import { IconButton } from './components';
 import type { IconSource } from './icons';
 import { Sidebar } from './Sidebar';
@@ -9,7 +9,7 @@ import './navbar.css';
 
 export interface NavbarSidebarProps extends Omit<SidebarProps, 'aria-label' | 'hidden' | 'dangerouslySetInnerHTML'> {
   label: string;
-  /** Toggle icon. Shown in both states unless openToggleIcon is set. */
+  /** Toggle icon. Defaults to Menu for the left sidebar and PanelRight for the right sidebar. Shown in both states unless openToggleIcon is set. */
   toggleIcon?: IconSource;
   /** Toggle icon while the sidebar is open. */
   openToggleIcon?: IconSource;
@@ -67,7 +67,7 @@ function NavbarBar({
 }
 
 function WorkspaceNavbar({ workspaceContent, workspaceProps, leftSidebar, rightSidebar, ...props }: NavbarProps) {
-  const left = useNavbarSidebar(leftSidebar, PanelLeft, props.size, 'left');
+  const left = useNavbarSidebar(leftSidebar, Menu, props.size, 'left');
   const right = useNavbarSidebar(rightSidebar, PanelRight, props.size, 'right');
   const center = useRef<HTMLDivElement>(null);
   const [barSize, setBarSize] = useState<number>();

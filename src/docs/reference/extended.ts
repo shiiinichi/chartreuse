@@ -77,6 +77,7 @@ async function sendMessage(text: string) {
       { name: 'onSend', type: '(message: string) => void | Promise<void>', required: true, description: 'Receives trimmed, nonempty message text on submission.' },
       { name: 'label', type: 'string', defaultValue: '"Message"', description: 'Accessible label for the textarea and its composer form.' },
       { name: 'hint', type: 'ReactNode', defaultValue: '"Enter adds a new line. Command/Ctrl+Enter sends."', description: 'Supporting content beside the send action; null or false hides it.' },
+      { name: 'controls', type: 'ReactNode', description: 'Controls at the start of the footer, such as a ButtonSelect for the model or mode. They stay outside the hint, which describes the textarea.' },
       { name: 'placeholder', type: 'string', defaultValue: '"Enter a message"', description: 'Text displayed in the empty textarea.' },
       { name: 'value', type: 'string', description: 'Draft text for a controlled composer.' },
       { name: 'defaultValue', type: 'string', defaultValue: '""', description: 'Initial draft text when uncontrolled.' },
