@@ -200,6 +200,22 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.17.0',
+    date: '2026-11-24',
+    title: 'Segmented navbar links, one corner radius, and popup fixes',
+    summary: 'Adds NavbarItemGroup and NavbarItem icons. Every corner now reads --cr-radius-md, which changes default corner sizes. Popups keep the page palette, and option descriptions move to a second line.',
+    changes: [
+      'NavbarItemGroup groups NavbarItem links. variant="segmented" draws a page switcher whose aria-current="page" link is filled, on both Navbar surfaces. iconOnly keeps each label as the accessible name and title. Restyle it with the --cr-navbar-segment-* hooks.',
+      'NavbarItem adds an icon prop shown before its label.',
+      'Every corner in the library now reads --cr-radius-md (7px), so one override reshapes the whole interface. Cards, toasts, popups and panels were 10px, dialogs and page panels 14px, and badges and some highlights 4px. Containers around inset highlights add their inset: option popups use --cr-radius-md + 6px, and segmented tracks, pill tab lists and segmented navbar groups use + 4px. --cr-radius-sm, -lg and -xl remain for application CSS.',
+      'Select, Autocomplete and ButtonSelect popups restore the root --cr-color-* tokens and color scheme. A trigger in an evergreen Navbar or a recolored wrapper keeps a default popup. Recolor a popup on :root or on the popup itself.',
+      'Option descriptions in Select, Autocomplete and ButtonSelect render on a second line under the label in smaller muted text, with the checkmark centered. Option text truncates with an ellipsis past 30rem.',
+      'Segmented NavbarItemGroup links draw a focus ring, and grow to 44px on coarse pointers.',
+      'A collapsible md TextField stays square at 44px on coarse pointers.',
+      'The Design tokens and Radius & elevation pages explain how to customize tokens: :root for app-wide changes, a wrapper for one feature, and why unlayered CSS wins.',
+    ],
+  },
+  {
     version: '1.16.4',
     date: '2026-11-23',
     title: 'Aligned collapsed lane dots',

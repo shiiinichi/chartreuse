@@ -1,6 +1,6 @@
 {
   "name": "@chartreuse/ui",
-  "version": "1.16.4",
+  "version": "1.17.0",
   "private": true,
   "type": "module",
   "description": "A React 19 component library and design system.",
