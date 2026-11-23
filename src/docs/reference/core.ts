@@ -18,7 +18,7 @@ export function ViewSelect() {
   nativeElement: 'button and div[popover]',
   nativeProps: 'Button props, native events, className, style, and ref target the trigger. ButtonSelect manages its button type, popover target, and expanded state. The onClick handler can prevent the native toggle with preventDefault().',
   props: [
-    { name: 'options', type: 'readonly ButtonSelectOption[]', description: 'Choices for the built-in picker. Each option has a unique string value and label, with optional description and disabled fields.' },
+    { name: 'options', type: 'readonly ButtonSelectOption[]', description: 'Choices for the built-in picker. Each option has a unique string value and label, with optional description and disabled fields. A description renders on a second line under the label in smaller muted text; long labels and descriptions truncate with an ellipsis.' },
     { name: 'value', type: "ButtonProps['value']", description: 'Controlled option ID in the built-in picker. Custom content mode forwards value to Button.' },
     { name: 'defaultValue', type: "ButtonProps['defaultValue']", description: 'Initial option ID for an uncontrolled picker. Custom content mode forwards defaultValue to Button.' },
     { name: 'checkmark', type: 'boolean | IconSource', defaultValue: 'false', description: 'Shows a selection icon in the built-in picker. Pass true for the standard checkmark or supply a custom icon.' },
@@ -39,7 +39,8 @@ export function ViewSelect() {
     { name: 'ref', type: 'Ref<HTMLButtonElement>', description: 'Native ref to the trigger.' },
   ],
   notes: [
-    'Built-in options use fixed-height, single-line rows. The popup starts at the button width and grows within the viewport to fit longer options. With matchTriggerWidth, overflowing text is truncated with an ellipsis.',
+    'Built-in options use single-line rows; an option with a description grows to two lines, the description under the label, with the checkmark centered across both. The popup starts at the button width and grows within the viewport to fit longer options, up to 30rem of text. Longer text, or text past the trigger width with matchTriggerWidth, is truncated with an ellipsis.',
+    'The popup restores the page’s root --cr-color-* tokens and color scheme, so a ButtonSelect in an evergreen Navbar or inside a wrapper that overrides colors keeps a default popup while its trigger follows the surrounding surface. Recolor the popup with panelClassName or on :root.',
     'The built-in picker shares Autocomplete’s panel and option styles. Use Arrow keys to move through enabled choices, Home or End to jump to either end, or type to match the start of a label. Enter or Space selects the highlighted option. Escape closes the popup.',
     'Custom content sizes to its contents by default. Give width-filling content such as Flex or Grid a definite width on the content or panel, or use matchTriggerWidth.',
     'Use native controls within custom content and call close() when the user finishes. Escape and outside clicks dismiss the popover.',
@@ -190,7 +191,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'hideLabel', type: 'boolean', defaultValue: 'false', description: 'Visually hides the label while preserving its accessible association.' },
       { name: 'id', type: 'string', defaultValue: 'Generated with useId()', description: 'The native input ID, also used for the label association and generated description IDs.' },
       { name: 'fullWidth', type: 'boolean', defaultValue: 'false', description: 'Stretches the field to the full width of its container, including inside flex rows.' },
-      { name: 'collapsible', type: 'boolean', defaultValue: 'false', description: 'Shows the field as a square icon control, matching the size preset, while it is empty and unfocused. It expands to the available width on focus, stays expanded while it has a value, and collapses on blur or on Escape while empty. Visually hides the label.' },
+      { name: 'collapsible', type: 'boolean', defaultValue: 'false', description: 'Shows the field as a square icon control, matching the size preset (44px for md on coarse pointers, matching its touch height), while it is empty and unfocused. It expands to the available width on focus, stays expanded while it has a value, and collapses on blur or on Escape while empty. Visually hides the label.' },
       { name: 'className', type: 'string', description: 'Additional classes on the outer field wrapper.' },
       { name: 'onChange', type: '(event: ChangeEvent<HTMLInputElement>) => void', description: 'The native input change callback. Use event.currentTarget.value for the text.' },
     ],

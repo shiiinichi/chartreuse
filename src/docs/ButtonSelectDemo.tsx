@@ -3,10 +3,13 @@ import { Columns3 } from 'lucide-react';
 import { Button, ButtonSelect, Checkbox, Flex, Grid } from '../system';
 import { ButtonSelectVariants } from './ButtonSelectVariants';
 import variantsSource from './ButtonSelectVariants.tsx?raw';
+import { BoardSwitcher } from './ButtonSelectNavbarExample';
+import boardSwitcherSource from './ButtonSelectNavbarExample.tsx?raw';
 import { buttonSelectReference } from './reference/core';
 import { ExampleGallery, Showcase } from './shared';
 
 const variantsCode = variantsSource.replace("from '../system'", "from '@chartreuse/ui'").trim();
+const boardSwitcherCode = boardSwitcherSource.replace("from '../system'", "from '@chartreuse/ui'").trim();
 
 const views = [
   { value: 'grid', label: 'Grid' },
@@ -87,6 +90,9 @@ export function ButtonSelectDemo() {
     </Showcase>
     <Showcase title="Button variants" description="Choose a style to change that button’s variant." span="full" code={variantsCode}>
       <ButtonSelectVariants />
+    </Showcase>
+    <Showcase title="Descriptions in a recolored Navbar" description="Each option shows its description on a second line, and long labels truncate. The trigger follows the evergreen bar and its token overrides; the popup opens on the page's default surface." span="full" code={boardSwitcherCode}>
+      <BoardSwitcher />
     </Showcase>
   </ExampleGallery>;
 }

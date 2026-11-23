@@ -20,7 +20,7 @@
   .component-reference-playground .showcase-code .code-block pre { font-size: 13px; line-height: 1.8; }
   .component-reference-section > .code-block { margin-block: 16px; }
   .component-reference-section > .code-block pre { font-size: 13px; line-height: 1.8; }
-  .component-api-scroll { max-inline-size: 100%; max-block-size: min(680px, 75dvh); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); scrollbar-width: thin; }
+  .component-api-scroll { max-inline-size: 100%; max-block-size: min(680px, 75dvh); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); scrollbar-width: thin; }
   .component-api-table { inline-size: 100%; min-inline-size: 760px; border-collapse: separate; border-spacing: 0; text-align: start; font-size: 13px; line-height: 1.75; }
   .component-api-table thead { position: sticky; inset-block-start: 0; z-index: 2; }
   .component-api-table th, .component-api-table td { padding: 14px 16px; vertical-align: top; border-block-end: 1px solid var(--cr-color-border); }
@@ -35,7 +35,7 @@
   .component-api-table tbody tr:last-child > :is(th, td) { border-block-end: 0; }
   .component-api-table tbody tr:hover > :is(th, td) { background: var(--cr-color-canvas); }
   .component-api-required { display: block; color: var(--cr-color-danger); font-size: 12px; margin-block-start: 5px; }
-  .component-native-contract { padding: 22px 24px; margin-block-start: 22px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); font-size: 13px; line-height: 1.8; }
+  .component-native-contract { padding: 22px 24px; margin-block-start: 22px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); font-size: 13px; line-height: 1.8; }
   .component-native-contract h3 { margin: 0 0 12px; font-size: 15px; font-weight: 550; }
   .component-native-contract p { margin: 0; color: var(--cr-color-muted); }
   .component-native-contract p + p { margin-block-start: 12px; }
@@ -57,7 +57,7 @@
   .reference-brand-marks { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 40px; }
   .reference-brand-marks > .reference-brand-small { inline-size: 20px; block-size: 20px; }
   .reference-brand-marks > .reference-brand-large { inline-size: 64px; block-size: 64px; }
-  .reference-skeleton-example { display: flex; flex-direction: column; gap: 16px; min-block-size: 100px; padding: 20px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-canvas); }
+  .reference-skeleton-example { display: flex; flex-direction: column; gap: 16px; min-block-size: 100px; padding: 20px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
   .reference-skeleton-example > .cr-skeleton:last-child { inline-size: 60%; }
   .reference-skeleton-example > h3 { font-size: 15px; font-weight: 550; }
   .reference-skeleton-example > p { margin: 0; font-size: 13px; color: var(--cr-color-muted); }

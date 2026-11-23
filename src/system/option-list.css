@@ -8,7 +8,8 @@
     margin: 0;
     padding: 5px;
     border: 1px solid var(--cr-color-input-border);
-    border-radius: var(--cr-radius-lg);
+    /* Wraps its inset highlights, so it adds the 6px inset to keep the curves parallel. */
+    border-radius: calc(var(--cr-radius-md) + 6px);
     background: var(--cr-color-surface);
     color: var(--cr-color-text);
     box-shadow: var(--cr-shadow-lg);
@@ -17,13 +18,17 @@
     overscroll-behavior: contain;
     scrollbar-width: thin;
   }
-  .cr-option-list-option { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; block-size: var(--_cr-option-list-row-height); padding-inline: 10px; border: 1px solid transparent; border-radius: 5px; cursor: pointer; }
-  .cr-option-list-option > span { min-inline-size: 0; }
-  .cr-option-list-option > span, .cr-option-list-empty { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cr-option-list-option { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; block-size: var(--_cr-option-list-row-height); padding-inline: 10px; border: 1px solid transparent; border-radius: var(--cr-radius-md); cursor: pointer; }
+  .cr-option-list-option > span { min-inline-size: 0; max-inline-size: 30rem; }
+  .cr-option-list-option > span, .cr-option-list-text > *, .cr-option-list-empty { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cr-option-list-option strong { font-size: 12px; line-height: 1.5; font-weight: 500; }
+  /* A description sits on its own line under the label; the checkmark stays centred across both. */
+  .cr-option-list-option[data-description] { block-size: auto; min-block-size: var(--_cr-option-list-row-height); padding-block: 5px; }
+  .cr-option-list-option[data-description] > .cr-option-list-text { display: flex; flex-direction: column; }
+  .cr-option-list-text > * { display: block; }
   .cr-select-popup .cr-option-list-option { min-inline-size: max-content; }
   .cr-option-list-checkmark { flex-shrink: 0; }
-  .cr-option-list-option small { color: var(--cr-color-muted); font-size: 10px; line-height: 1.6; margin-inline-start: var(--cr-space-1); }
+  .cr-option-list-option small { color: var(--cr-color-muted); font-size: 11px; line-height: 1.45; }
   .cr-option-list-option[aria-selected='true'] { background: var(--cr-color-active); color: var(--cr-color-on-active); border-color: var(--cr-color-active-border); }
   .cr-option-list-option[aria-selected='true'] small { color: inherit; }
   .cr-option-list-option[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }

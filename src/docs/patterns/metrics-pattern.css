@@ -142,14 +142,14 @@
     inline-size: 100%;
     max-inline-size: 2.75rem;
     block-size: 8rem;
-    border-radius: var(--cr-radius-sm);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-subtle);
   }
 
   .metrics-pattern-bar-track > span {
     display: block;
     inline-size: 100%;
-    border-radius: var(--cr-radius-sm);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-primary);
   }
 

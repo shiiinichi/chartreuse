@@ -1,7 +1,7 @@
 @layer cr-components {
   .cr-agent-activity { box-sizing: border-box; min-inline-size: 0; max-inline-size: 100%; container: cr-agent-activity / inline-size; color: var(--cr-color-text); font: 400 .8125rem/1.6 var(--cr-font-sans); }
   .cr-agent-activity-summary, .cr-agent-activity-row, .cr-agent-activity-earlier > summary { display: flex; align-items: center; gap: var(--cr-space-2); box-sizing: border-box; min-block-size: 40px; list-style: none; }
-  .cr-agent-activity-summary:where(summary, button), .cr-agent-activity-event > summary, .cr-agent-activity-earlier > summary { cursor: pointer; border-radius: var(--cr-radius-sm); -webkit-tap-highlight-color: transparent; }
+  .cr-agent-activity-summary:where(summary, button), .cr-agent-activity-event > summary, .cr-agent-activity-earlier > summary { cursor: pointer; border-radius: var(--cr-radius-md); -webkit-tap-highlight-color: transparent; }
   .cr-agent-activity :where(summary)::marker { content: ''; }
   .cr-agent-activity :where(summary)::-webkit-details-marker { display: none; }
   .cr-agent-activity:where([data-header-highlight='hover']) > :where(summary):hover,
@@ -23,7 +23,7 @@
     gap: var(--cr-space-2);
     min-block-size: 40px;
     min-inline-size: 0;
-    border-radius: var(--cr-radius-sm);
+    border-radius: var(--cr-radius-md);
     color: inherit;
     text-decoration: none;
     overflow-wrap: anywhere;

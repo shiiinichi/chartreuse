@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -8,7 +9,7 @@ import * as system from '@chartreuse/ui';
 import { colors, tokens, spacing } from '@chartreuse/ui/tokens';
 
 test('the built package exposes the documented public components and notification hook', () => {
-  const expected = ['Button', 'ButtonSelect', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'List', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'SwimlaneGroup', 'ToggleChip', 'ChipGroup', 'SegmentedProgress', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps', 'Table', 'Pagination'];
+  const expected = ['Button', 'ButtonSelect', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'List', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'NavbarItemGroup', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'SwimlaneGroup', 'ToggleChip', 'ChipGroup', 'SegmentedProgress', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps', 'Table', 'Pagination'];
   // BrandMark and ToastProvider are counted as reusable components, alongside the
   // component-specific APIs. Validate the public boundary, not private helpers.
   for (const name of expected) assert.equal(typeof system[name], 'function', `${name} is importable`);
@@ -487,4 +488,19 @@ test('large icon buttons stay square instead of taking the text button padding',
   assert.match(markup, /class="cr-button cr-icon-button[^"]*"[^>]*data-size="lg"|data-size="lg"[^>]*class="cr-button cr-icon-button/);
   const css = await readFile(new URL('../dist/lib/chartreuse.css', import.meta.url), 'utf8');
   assert.match(css, /\.cr-icon-button\[data-size=['"]?lg['"]?\]\{min-inline-size:46px;padding:\.75rem\}/);
+});
+
+test('option descriptions render on their own line under the label', () => {
+  const h = React.createElement;
+  const markup = renderToStaticMarkup(h(system.ButtonSelect, {
+    'aria-label': 'Task group', checkmark: true, value: 'dev-001',
+    options: [{ value: 'dev-001', label: 'DEV-001 · Audit', description: '1 task board · 6 of 14 complete' }, { value: 'dev-002', label: 'DEV-002' }],
+  }));
+  const options = [...markup.matchAll(/<div\b[^>]*role="option"[^>]*>.*?<\/div>/g)].map(([option]) => option);
+  assert.equal(options.length, 2);
+  assert.match(options[0], /^<div\b(?=[^>]* data-description="")[^>]*><span class="cr-option-list-text"><strong[^>]*>DEV-001 · Audit<\/strong><small[^>]*>1 task board · 6 of 14 complete<\/small><\/span><svg\b/);
+  assert.doesNotMatch(options[1], /data-description/);
+  const css = readFileSync(new URL('../src/system/option-list.css', import.meta.url), 'utf8');
+  assert.match(css, /\.cr-option-list-option\[data-description\] > \.cr-option-list-text \{ display: flex; flex-direction: column; \}/);
+  assert.match(css, /\.cr-option-list-option > span, \.cr-option-list-text > \*, \.cr-option-list-empty \{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; \}/);
 });

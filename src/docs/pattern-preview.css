@@ -2,14 +2,14 @@
   .pattern-preview {
     min-inline-size: 0;
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-lg);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-surface);
   }
 
   .pattern-preview > .cr-navbar {
     --cr-layout-gutter: var(--cr-space-3);
-    border-start-start-radius: calc(var(--cr-radius-lg) - 1px);
-    border-start-end-radius: calc(var(--cr-radius-lg) - 1px);
+    border-start-start-radius: calc(var(--cr-radius-md) - 1px);
+    border-start-end-radius: calc(var(--cr-radius-md) - 1px);
   }
 
   .pattern-preview > .cr-workspace-layout {

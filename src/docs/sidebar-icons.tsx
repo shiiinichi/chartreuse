@@ -57,6 +57,7 @@ export const componentSidebarIcons: Record<string, LucideIcon> = {
   MessageComposer: componentIcon('MessageComposer', <><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M6 7h10M6 11h6M2 15h20m-7 4 2-2 2 2m-2-2v4" /></>),
   Navbar: componentIcon('Navbar', <><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h3v4H6Zm6 2h2m3 0h1" /></>),
   NavbarItem: componentIcon('NavbarItem', <><rect x="4" y="7" width="16" height="10" rx="3" /><path d="M8 12h8" /></>),
+  NavbarItemGroup: componentIcon('NavbarItemGroup', <><rect x="2" y="7" width="20" height="10" rx="3" /><rect x="4" y="9" width="7" height="6" rx="1.5" /><path d="M14 12h2m2 0h1" /></>),
   NumberInput: componentIcon('NumberInput', <><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M16 6v12M8 9l-2 2h2v4m-2 0h4m8-5 1-1 1 1m-2 4 1 1 1-1" /></>),
   PagePanel: componentIcon('PagePanel', <><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M2 8h20M2 17h20M6 12h5m3 0h4" /></>),
   Pagination: componentIcon('Pagination', <><path d="m5 9-3 3 3 3m14-6 3 3-3 3" /><rect x="8" y="8" width="8" height="8" rx="1.5" /><path d="M11 12h2" /></>),

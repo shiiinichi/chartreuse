@@ -104,7 +104,9 @@ export const globalTokens: TokenDefinition[] = [
   },
   ...([['sm', '4px'], ['md', '7px'], ['lg', '10px'], ['xl', '14px'], ['full', '999px']] as const).map(([size, defaultValue]) => ({
     name: `--cr-radius-${size}`, type: 'length', defaultValue,
-    description: size === 'full' ? 'Corner radius for pill and circular shapes where explicitly referenced.' : `Shared ${size} corner radius.`,
+    description: size === 'full' ? 'Corner radius for pill and circular shapes where explicitly referenced.'
+      : size === 'md' ? 'The corner radius of every Chartreuse component. Override it to reshape the whole interface.'
+      : `Spare ${size} corner radius for application CSS. No library component reads it.`,
     source: root, availability: 'library-css' as const,
     sources: [{ file: 'src/system/tokens.ts', detail: `radii.${size} is the independent numeric JS descriptor.` }],
   })),

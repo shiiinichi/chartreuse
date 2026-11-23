@@ -4,7 +4,7 @@
     min-inline-size: 0;
     max-inline-size: 100%;
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-lg);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-surface);
   }
 
@@ -69,7 +69,7 @@
 
   /* Grouped headings with count, dot, action, and an optional collapse chevron. */
   .cr-table-group-heading { display: flex; align-items: center; gap: 8px; min-inline-size: 0; }
-  .cr-table-group-toggle { display: inline-grid; place-items: center; flex: 0 0 auto; box-sizing: border-box; inline-size: 28px; block-size: 28px; margin-block: -2px; padding: 0; border: 0; border-radius: var(--cr-radius-sm); background: transparent; color: var(--cr-color-muted); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .cr-table-group-toggle { display: inline-grid; place-items: center; flex: 0 0 auto; box-sizing: border-box; inline-size: 28px; block-size: 28px; margin-block: -2px; padding: 0; border: 0; border-radius: var(--cr-radius-md); background: transparent; color: var(--cr-color-muted); cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .cr-table-group-toggle:hover { background: var(--cr-color-subtle); color: var(--cr-color-text); }
   .cr-table-group-toggle > svg { transition: rotate 150ms ease; }
   .cr-table-group-toggle[aria-expanded='true'] > svg { rotate: 90deg; }

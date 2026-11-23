@@ -1,12 +1,12 @@
 import { useId, useState } from 'react';
-import { GitPullRequest, Tag } from 'lucide-react';
+import { Bot, GitPullRequest, LayoutDashboard, Settings, Tag } from 'lucide-react';
 import { Avatar, Badge, BrandMark, Button, Checkbox, Progress } from '../system/components';
 import { Flex } from '../system/Flex';
-import { Navbar, NavbarItem } from '../system/Navbar';
+import { Navbar, NavbarItem, NavbarItemGroup } from '../system/Navbar';
 import type { NavbarProps } from '../system/Navbar';
 import { SegmentedControl } from '../system/SegmentedControl';
 import { WorkspaceContent } from '../system/WorkspaceContent';
-import { siteNavbarExample, workspaceNavbarExample } from './reference/navbar';
+import { navbarItemGroupExample, siteNavbarExample, workspaceNavbarExample } from './reference/navbar';
 import { Showcase } from './shared';
 import { Text } from '../system';
 import './navbar-demo.css';
@@ -210,5 +210,46 @@ export function NavbarItemDemo() {
         <NavbarItem><Badge tone="info">Read only</Badge></NavbarItem>
       </Flex>
     </Navbar>
+  );
+}
+
+const groupPages = [
+  { id: 'board', label: 'Board', icon: LayoutDashboard, href: '#task-board' },
+  { id: 'agents', label: 'Agents', icon: Bot, href: '#agent-monitor' },
+  { id: 'settings', label: 'Settings', icon: Settings, href: '#workspace' },
+] as const;
+const labelOptions = [{ value: 'labels', label: 'Icons and labels' }, { value: 'icons', label: 'Icons only' }];
+
+export function NavbarItemGroupDemo() {
+  const id = useId();
+  const [page, setPage] = useState('board');
+  const [size, setSize] = useState<NonNullable<NavbarProps['size']>>('md');
+  const [iconOnly, setIconOnly] = useState(false);
+  const { importCode, usageCode } = navbarItemGroupExample;
+  const group = (surface: string) => <NavbarItemGroup variant="segmented" iconOnly={iconOnly} aria-label={`Pages, ${surface} example`}>
+    {groupPages.map(item => <NavbarItem key={item.id} href={item.href} icon={item.icon}
+      aria-current={page === item.id ? 'page' : undefined}
+      onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && event.button === 0) { event.preventDefault(); setPage(item.id); } }}>{item.label}</NavbarItem>)}
+  </NavbarItemGroup>;
+
+  return (
+    <Showcase title="Segmented page switcher" description="Select a page in either Navbar. Each item is a link, so it opens in a new tab and follows the normal Tab order." code={`${importCode}\n\n${usageCode}`}>
+      <div className="navbar-demo">
+        <Flex align="end" wrap gap={4}>
+          <SegmentedControl label="Size" name={`navbar-group-size-${id}`} size="sm" options={sizeOptions} value={size}
+            onValueChange={value => setSize(value === 'lg' ? 'lg' : 'md')} />
+          <SegmentedControl label="Labels" name={`navbar-group-labels-${id}`} size="sm" options={labelOptions} value={iconOnly ? 'icons' : 'labels'}
+            onValueChange={value => setIconOnly(value === 'icons')} />
+        </Flex>
+        <Navbar size={size} width="full" surface="evergreen" className="navbar-demo-bar" aria-label="Evergreen example"
+          brand={<span className="navbar-workspace-demo-brand"><BrandMark /><Text bold>Orchestrator</Text></span>}>
+          {group('evergreen')}
+        </Navbar>
+        <Navbar size={size} width="full" surface="white" className="navbar-demo-bar" aria-label="White example"
+          brand={<span className="navbar-workspace-demo-brand"><BrandMark /><Text bold>Orchestrator</Text></span>}>
+          {group('white')}
+        </Navbar>
+      </div>
+    </Showcase>
   );
 }

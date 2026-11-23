@@ -20,7 +20,7 @@ export const componentGroups: readonly ComponentGroup[] = [
     components: ['Text', 'Card', 'Divider', 'Avatar', 'AvatarGroup', 'BrandMark', 'Blockquote', 'MarkdownRenderer', 'Disclosure', 'List',
       'Stat', 'StatGroup', 'Table', 'Timeline', 'ActivityItem', 'Steps', 'Tree'],
   },
-  { name: 'Navigation', components: ['Navbar', 'NavbarItem', 'Sidebar', 'Tabs', 'Breadcrumbs', 'Pagination'] },
+  { name: 'Navigation', components: ['Navbar', 'NavbarItem', 'NavbarItemGroup', 'Sidebar', 'Tabs', 'Breadcrumbs', 'Pagination'] },
   // Tooltip floats above the page and renders into document.body or the enclosing dialog, like the other overlays.
   { name: 'Overlays', components: ['Dialog', 'Drawer', 'Tooltip'] },
   {

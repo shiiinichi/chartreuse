@@ -28,4 +28,4 @@ export function relevantGlobalTokens(documentation: ComponentTokenDoc) {
     unresolved: names.filter(name => !globalsByName.has(name)),
   };
 }
-export { appearanceProps, customizationNotes } from './customization';
+export { appearanceProps, customizationNotes, tokenOverrideScope } from './customization';

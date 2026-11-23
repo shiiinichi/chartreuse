@@ -193,7 +193,7 @@ GitHub manages the repository and npm package visibility separately. Review what
 
 The library exports 71 components. [Latest GitHub release](https://github.com/shiiinichi/chartreuse/releases/latest) · [Release history](https://shiiinichi.github.io/chartreuse/#changelog)
 
-ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, ChipGroup, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, List, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NumberInput, PagePanel, Pagination, PathSelector, Progress, SegmentedControl, SegmentedProgress, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, SwimlaneGroup, Switch, Table, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, ToggleChip, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
+ActivityItem, AgentActivity, AgentCard, Alert, Autocomplete, Avatar, AvatarGroup, Badge, Blockquote, BrandMark, Breadcrumbs, Button, ButtonSelect, CalloutBanner, Card, Checkbox, ChipGroup, Conversation, Dialog, Disclosure, Divider, Drawer, EmptyState, Fieldset, FilePicker, Flex, Form, FormLayout, Grid, GridItem, GridSpacer, IconButton, List, MarkdownRenderer, Masonry, MasonryItem, MasonrySpacer, MessageComposer, Navbar, NavbarItem, NavbarItemGroup, NumberInput, PagePanel, Pagination, PathSelector, Progress, SegmentedControl, SegmentedProgress, Select, Sidebar, Skeleton, Slider, Spinner, Stat, StatGroup, Steps, Swimlane, SwimlaneGroup, Switch, Table, Tabs, TaskCard, Text, TextArea, TextField, Timeline, ToastProvider, ToggleChip, Tooltip, Tree, WorkspaceContent, and WorkspaceLayout. `useToast` is the notification hook.
 
 The gallery groups related components and includes workspace, task-board, and agent-monitor examples. Task and agent data is local to the documentation. The task board shares search, task creation, and status changes between the Board and paginated List views.
 
@@ -239,7 +239,19 @@ Set `collapsible` on a `TextField` with an `icon`, such as a toolbar search, to 
 
 `Tree` supports hierarchy cards or compact rows, branch connectors, expansion, selection, custom SVG icons, and keyboard navigation. Focus moves independently of selection. Place actions or an inspector beside the tree and keep node content informational.
 
-`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Choose `surface="white"` or `surface="evergreen"` independently of layout and width. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. The evergreen surface uses Light Evergreen for that highlight. Omit `href` to include a control, status badge, or other React content.
+`Navbar` provides a navigation landmark with optional `brand` and `actions` slots. It defaults to `size="md"`. Use `size="lg"` for taller link targets, more vertical padding, and larger text. Comfortable width centers the links, brand, and actions within the shared cap. Set `width="full"` to use the entire available width with the same responsive gutters. Choose `surface="white"` or `surface="evergreen"` independently of layout and width. Group items with `Flex` to control alignment, gaps, and wrapping. Give `NavbarItem` an `href` for a native link and set `aria-current="page"` for its solid highlight. The evergreen surface uses Light Evergreen for that highlight. Omit `href` to include a control, status badge, or other React content. Give `NavbarItem` an `icon` to show it before the label.
+
+`NavbarItemGroup` groups related `NavbarItem` links. With `variant="segmented"` it draws them as a page switcher: a rounded track (`--cr-radius-md`) where the link marked `aria-current="page"` is filled and the others are muted until hovered. The items stay native links, so they open in a new tab and follow the normal Tab order; use `SegmentedControl` instead to pick a form value. Set `iconOnly` on narrow navbars to hide the labels visually while keeping them as each link's accessible name and title. On the evergreen surface the current link uses Light Evergreen with paper text; on the white surface it sits on the surface color with `--cr-shadow-sm`. Restyle it with the `--cr-navbar-segment-*` hooks that `chartreuse token NavbarItemGroup` lists.
+
+```tsx
+<Navbar surface="evergreen" aria-label="Dashboard">
+  <NavbarItemGroup variant="segmented" aria-label="Pages">
+    <NavbarItem href="/board" icon={LayoutDashboard} aria-current="page">Board</NavbarItem>
+    <NavbarItem href="/agents" icon={Bot}>Agents</NavbarItem>
+    <NavbarItem href="/settings" icon={Settings}>Settings</NavbarItem>
+  </NavbarItemGroup>
+</Navbar>
+```
 
 `Sidebar` provides floating and flush surfaces with header, body, and footer content. Give the sidebar a bounded height so its body scrolls independently while the header and footer stay visible. Use `NavbarItem` for navigation. For inspector selection, use `Button` with `variant="ghost"` and set `aria-pressed` to highlight the selected item in the scrolling body. The gallery includes a searchable run history and a task sidebar with project filters and editable checklists.
 
@@ -435,7 +447,7 @@ Active highlights use `--cr-color-active` (Evergreen) and `--cr-color-on-active`
   color: var(--cr-color-text);
   background: var(--cr-color-canvas);
   border: 1px solid var(--cr-color-border);
-  border-radius: var(--cr-radius-xl);
+  border-radius: var(--cr-radius-md);
   padding: var(--cr-space-6);
 }
 ```

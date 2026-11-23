@@ -8,10 +8,10 @@ import { ExampleGallery, Showcase } from './shared';
 import { Text } from '../system';
 import './grid-spacer-demo.css';
 
-const outline: CSSProperties = { outline: '1px dashed var(--cr-color-input-border)', background: 'var(--cr-color-subtle)', borderRadius: 7 };
+const outline: CSSProperties = { outline: '1px dashed var(--cr-color-input-border)', background: 'var(--cr-color-subtle)', borderRadius: 'var(--cr-radius-md)' };
 const outlineSource = `const outline = {
   outline: '1px dashed var(--cr-color-input-border)',
-  background: 'var(--cr-color-subtle)', borderRadius: 7,
+  background: 'var(--cr-color-subtle)', borderRadius: 'var(--cr-radius-md)',
 };`;
 const illustrationCaption = 'Dashed outline and tint identify the spacer in this example. GridSpacer is invisible by default and still reserves space.';
 

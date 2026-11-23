@@ -7,6 +7,7 @@ import type { IconSource } from './icons';
 import { findOptionByTyping, isOptionNavigationKey, nextOptionIndex, OptionList, revealActiveOption } from './OptionList';
 import type { OptionListItem } from './OptionList';
 import { optionListViewport, trackOptionListAnchor } from './option-list-anchor';
+import './floating-surface.css';
 import './button-select.css';
 
 export interface ButtonSelectControls {

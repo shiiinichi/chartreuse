@@ -18,7 +18,7 @@
     box-sizing: border-box;
     padding: 2px var(--cr-space-1);
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-sm);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-surface);
     color: var(--cr-color-muted);
     font-size: .6875rem;

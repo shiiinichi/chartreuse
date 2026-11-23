@@ -67,6 +67,22 @@ export const workspaceNavbarExample = {
 }`,
 };
 
+export const navbarItemGroupExample = {
+  importCode: "import { Bot, LayoutDashboard, Settings } from 'lucide-react';\nimport { Navbar, NavbarItem, NavbarItemGroup } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  usageCode: `export function PageSwitcher({ page, compact }: { page: string; compact: boolean }) {
+  const current = (id: string) => (page === id ? 'page' : undefined);
+  return (
+    <Navbar surface="evergreen" aria-label="Dashboard">
+      <NavbarItemGroup variant="segmented" iconOnly={compact} aria-label="Pages">
+        <NavbarItem href="/board" icon={LayoutDashboard} aria-current={current('board')}>Board</NavbarItem>
+        <NavbarItem href="/agents" icon={Bot} aria-current={current('agents')}>Agents</NavbarItem>
+        <NavbarItem href="/settings" icon={Settings} aria-current={current('settings')}>Settings</NavbarItem>
+      </NavbarItemGroup>
+    </Navbar>
+  );
+}`,
+};
+
 export const navbarReferences: ComponentReference[] = [{
   name: 'Navbar', slug: 'navbar',
   summary: 'A responsive navigation bar with selectable surfaces and a workspace variant with full-height collapsible sidebars.',
@@ -135,10 +151,32 @@ export const navbarReferences: ComponentReference[] = [{
     { name: 'href', type: 'string', description: 'Destination URL. Set this to render a native link.' },
     { name: 'children', type: 'ReactNode', description: 'A link label, control, status badge, or other React content.' },
     { name: 'aria-current', type: "AriaAttributes['aria-current']", description: 'Mark a link to the current destination with "page".' },
+    { name: 'icon', type: 'IconSource', description: 'Decorative icon before the label: a Lucide icon, a custom React SVG component, or an inline SVG element. Inside an iconOnly NavbarItemGroup the label is visually hidden and stays the accessible name.' },
   ],
   notes: [
     'Omit href to place controls or display content in the navbar. Interactive children use their own semantics and focus behavior.',
+    'Group related page links in NavbarItemGroup. Its segmented variant draws them as a page switcher.',
     'NavbarItem gets its minimum height from the surrounding Navbar size.',
     'The current link uses a solid highlight and stronger text weight.',
+  ],
+}, {
+  name: 'NavbarItemGroup', slug: 'navbar-item-group',
+  summary: 'A row of related NavbarItem links, optionally drawn as a segmented page switcher with the current page filled.',
+  importCode: navbarItemGroupExample.importCode,
+  usageCode: navbarItemGroupExample.usageCode,
+  nativeElement: 'div',
+  nativeProps: 'Native div attributes, className, style, and the React 19 ref target the group. With aria-label or aria-labelledby the group gets role="group" unless you pass another role.',
+  props: [
+    { name: 'variant', type: "'default' | 'segmented'", defaultValue: "'default'", description: 'Default lays the items out in a wrapping row. Segmented draws a rounded track; the link marked aria-current="page" is filled and the others are muted until hovered.' },
+    { name: 'iconOnly', type: 'boolean', defaultValue: 'false', description: 'Visually hides the labels of items that have an icon, for narrow navbars. Each label stays the link\u2019s accessible name, and a string label also becomes its title tooltip.' },
+    { name: 'children', type: 'ReactNode', required: true, description: 'NavbarItem links. Direct native anchors and router links also receive the segmented styles.' },
+    { name: 'aria-label', type: 'string', description: 'Names the group, such as "Pages". Optional inside a named Navbar.' },
+  ],
+  notes: [
+    'Items stay native links: they open in a new tab, follow the normal Tab order, and keep their own click handlers. Mark the current page with aria-current="page". This is not a radio group; use SegmentedControl to choose a value in a form.',
+    'The segmented track is as tall as a Navbar item: 40px in a md Navbar and 48px in a lg Navbar, with links 32px and 40px tall. On coarse pointers links grow to 44px.',
+    'On the evergreen surface the track is translucent paper, the current link uses Light Evergreen with paper text, and the others use muted paper text. On the white and theme surfaces the track is subtle and the current link sits on the surface color with a small shadow.',
+    'Each link uses --cr-radius-md, like every Chartreuse corner, and the track adds its 4px inset so the curves stay parallel. Override --cr-navbar-segment-* on the group to restyle it; chartreuse token NavbarItemGroup lists them.',
+    'Segmented links draw a focus ring on :focus-visible. The segmented track does not wrap; set iconOnly when the Navbar is narrow.',
   ],
 }];

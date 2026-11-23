@@ -13,7 +13,7 @@
     box-sizing: border-box;
     padding: 0;
     border: 1px solid transparent;
-    border-radius: var(--cr-radius-lg);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-evergreen);
     color: var(--cr-paper);
     font: 400 .8125rem/1.8 var(--cr-font-sans);

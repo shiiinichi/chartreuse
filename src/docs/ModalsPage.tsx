@@ -42,7 +42,7 @@ export function WelcomeDialogExample() {
         alignItems: 'center', textAlign: 'center', gap: 17,
         padding: '26px 10px 16px' }}>
         <span style={{ display: 'grid', placeItems: 'center',
-          width: 82, height: 82, borderRadius: 23,
+          width: 82, height: 82, borderRadius: 'var(--cr-radius-md)',
           border: '1px solid var(--cr-color-border)',
           background: 'var(--cr-color-success-bg)' }}>
           <BrandMark style={{ width: 53, height: 53 }} />

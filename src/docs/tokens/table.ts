@@ -38,11 +38,11 @@ export const tableTokenDocs: ComponentTokenDoc[] = [
     globalTokens: [...new Set([
       '--cr-color-border', '--cr-color-canvas', '--cr-color-muted',
       '--cr-color-subtle', '--cr-color-surface', '--cr-color-text', '--cr-font-sans',
-      '--cr-radius-lg', '--cr-space-2', '--cr-space-3', '--cr-space-4', '--cr-space-6',
+      '--cr-radius-md', '--cr-space-2', '--cr-space-3', '--cr-space-4', '--cr-space-6',
       ...paginationGlobals,
     ])],
     notes: [
-      'The table frame uses the shared surface and large radius. Column headers use the subtle surface, and row-group headers use the canvas surface.',
+      'The table frame uses the shared surface and shared radius. Column headers use the subtle surface, and row-group headers use the canvas surface.',
       'Shared spacing tokens set cell insets, empty-state padding, and the pager inset.',
       'The optional pager uses Pagination’s styling hook and shared tokens. Apply pager overrides to the navigation element or an ancestor that contains it.',
     ],

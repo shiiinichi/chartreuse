@@ -4,7 +4,8 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Navbar, NavbarItem } from '@chartreuse/ui';
+import { readFileSync } from 'node:fs';
+import { Navbar, NavbarItem, NavbarItemGroup } from '@chartreuse/ui';
 
 const h = React.createElement;
 
@@ -109,4 +110,58 @@ test('the CLI describes the workspace Navbar variant and its layout props', () =
   for (const name of ['workspaceProps', 'workspaceContent', 'leftSidebar', 'rightSidebar']) {
     assert.ok(props.has(name), `Navbar documents ${name}`);
   }
+});
+
+test('NavbarItemGroup keeps segmented page switcher items as native links with the current page marked', () => {
+  const icon = props => h('svg', { ...props, 'data-icon': 'board' });
+  const markup = renderToStaticMarkup(h(Navbar, { surface: 'evergreen', 'aria-label': 'Dashboard' },
+    h(NavbarItemGroup, { variant: 'segmented', 'aria-label': 'Pages', className: 'pages' },
+      h(NavbarItem, { href: '/board', icon, 'aria-current': 'page' }, 'Board'),
+      h(NavbarItem, { href: '/agents', icon, target: '_blank' }, 'Agents'))));
+  const group = markup.match(/<div\b[^>]*class="cr-navbar-item-group pages"[^>]*>/)?.[0];
+  assert.ok(group);
+  assert.match(group, /^<div\b(?=[^>]* role="group")(?=[^>]* aria-label="Pages")(?=[^>]* data-variant="segmented")(?![^>]* data-icon-only)/);
+  const links = [...markup.matchAll(/<a\b[^>]*>.*?<\/a>/g)].map(([link]) => link);
+  assert.equal(links.length, 2);
+  assert.match(links[0], /^<a\b(?=[^>]* href="\/board")(?=[^>]* aria-current="page")(?=[^>]* class="cr-navbar-item")(?=[^>]* data-icon="")(?![^>]* title=)/);
+  assert.match(links[0], /<svg\b(?=[^>]* aria-hidden="true")[^>]*><\/svg><span class="cr-navbar-item-label">Board<\/span><\/a>$/);
+  assert.match(links[1], /^<a\b(?=[^>]* target="_blank")(?![^>]* aria-current)/);
+  assert.doesNotMatch(markup, /type="radio"|role="radio"|tabindex/, 'items are links in normal tab order, not a radio group');
+});
+
+test('iconOnly NavbarItemGroup keeps each label as the accessible name and title', () => {
+  const icon = props => h('svg', props);
+  const markup = renderToStaticMarkup(h(NavbarItemGroup, { variant: 'segmented', iconOnly: true },
+    h(NavbarItem, { href: '/board', icon }, 'Board'),
+    h(NavbarItem, { href: '/agents', icon, title: 'Agent runs' }, 'Agents'),
+    h(NavbarItem, { href: '/help' }, 'Help')));
+  assert.match(markup, /^<div\b(?=[^>]* data-icon-only="true")(?![^>]* role=)/, 'an unnamed group needs no role');
+  assert.match(markup, /<a\b(?=[^>]* href="\/board")(?=[^>]* title="Board")[^>]*><svg\b[^>]*><\/svg><span class="cr-navbar-item-label">Board<\/span>/);
+  assert.match(markup, /<a\b(?=[^>]* href="\/agents")(?=[^>]* title="Agent runs")/, 'a supplied title wins');
+  assert.match(markup, /<a\b(?=[^>]* href="\/help")(?![^>]* title=)(?![^>]* data-icon)[^>]*>Help<\/a>/, 'an item without an icon keeps its visible label');
+});
+
+test('NavbarItem without an icon renders the same markup as before', () => {
+  assert.equal(renderToStaticMarkup(h(NavbarItem, { href: '/work', 'aria-current': 'page' }, 'Work')), '<a href="/work" aria-current="page" class="cr-navbar-item">Work</a>');
+  assert.equal(renderToStaticMarkup(h(NavbarItem, null, 'Status')), '<div class="cr-navbar-item">Status</div>');
+});
+
+test('segmented NavbarItemGroup CSS nests its radii, styles both surfaces, and shows focus', () => {
+  const css = readFileSync(new URL('../src/system/navbar.css', import.meta.url), 'utf8');
+  const block = selector => {
+    const start = css.indexOf(`${selector} {`);
+    assert.ok(start >= 0, selector);
+    return css.slice(start, css.indexOf('}', start));
+  };
+  const group = ".cr-navbar-item-group[data-variant='segmented']";
+  const item = `${group} > :is(.cr-navbar-item:where(a), :where(a))`;
+  assert.match(block(group), /--cr-navbar-segment-radius: calc\(var\(--cr-radius-md\) \+ 4px\);[^}]*--cr-navbar-segment-current-shadow: var\(--cr-shadow-sm\);[^}]*border-radius: var\(--cr-navbar-segment-radius\);/s);
+  assert.match(block(item), /border-radius: var\(--cr-radius-md\);/);
+  assert.match(block(item), /min-block-size: calc\(var\(--_cr-navbar-item-height, 2\.5rem\) - 2 \* var\(--_cr-navbar-segment-inset\)\);/);
+  const evergreen = block(`:where(.cr-navbar:is([data-surface='evergreen'], [data-variant='dark-green']:not([data-surface]))) ${group}`);
+  assert.match(evergreen, /--cr-navbar-segment-track-bg: color-mix\(in srgb, var\(--cr-paper\) 8%, transparent\);/);
+  assert.match(evergreen, /--cr-navbar-segment-current-bg: var\(--cr-evergreen-light\);/);
+  assert.match(evergreen, /--cr-navbar-segment-current-fg: var\(--cr-paper\);/);
+  assert.match(block(`${item}[aria-current='page']`), /background: var\(--cr-navbar-segment-current-bg\);/);
+  assert.match(block(`${item}:focus-visible`), /outline: 2px solid var\(--cr-color-focus\);/);
 });

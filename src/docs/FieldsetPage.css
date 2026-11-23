@@ -12,7 +12,7 @@
   .fieldset-demo-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
   .fieldset-example-status { color: var(--cr-color-muted); font-size: 12px; line-height: 1.8; }
   .fieldset-example-status:not(:empty) { margin-block-start: 22px; }
-  .fieldset-empty { border: 1px dashed var(--cr-color-border); border-radius: var(--cr-radius-lg); }
+  .fieldset-empty { border: 1px dashed var(--cr-color-border); border-radius: var(--cr-radius-md); }
   @media (max-width: 600px) {
     .fieldset-demo-toolbar { align-items: flex-start; }
   }

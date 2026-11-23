@@ -12,7 +12,7 @@ const buttonGlobals = globals('font-sans', 'color-text', 'color-primary', 'color
 const ghostButtonGlobals = globals('font-sans', 'color-text', 'radius-md', 'duration-fast', 'color-subtle');
 const fieldGlobals = globals('font-sans', 'color-text', 'color-muted', 'color-surface', 'color-input-border',
   'radius-md', 'color-focus', 'color-danger');
-const badgeGlobals = globals('font-sans', 'radius-sm', 'color-muted', 'color-subtle', ...toneGlobals());
+const badgeGlobals = globals('font-sans', 'radius-md', 'color-muted', 'color-subtle', ...toneGlobals());
 const avatarGlobals = globals('font-sans', 'color-surface');
 
 function buttonAliases(ghostDefault = false): TokenDefinition[] {
@@ -110,7 +110,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'ButtonSelect', componentTokens: buttonAliases(),
-    globalTokens: [...buttonGlobals, ...globals('color-border', 'color-muted', 'radius-lg', 'shadow-lg', 'space-2')],
+    globalTokens: [...buttonGlobals, ...globals('color-border', 'color-muted', 'shadow-lg', 'space-2')],
     notes: ['The trigger renders Button, so it shares its sizes, variants, and local color aliases. The built-in option list shares Autocomplete’s popover and active option colors. The custom panel uses shared surface, text, border, radius, shadow, and spacing tokens.'],
   },
   {
@@ -134,7 +134,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['Consumption: styles.css .cr-field/.cr-input, textarea.cr-input, placeholder/error rules, and shared input typography. It uses the same global field palette as TextField.', 'The minimum textarea height, padding, type sizes, and vertical-resize behavior are literal CSS. No local textarea variables exist.'],
   },
   {
-    component: 'Select', componentTokens: [], globalTokens: globals(...fieldGlobals, 'color-active', 'color-on-active', 'color-active-border', 'radius-lg', 'shadow-lg'),
+    component: 'Select', componentTokens: [], globalTokens: globals(...fieldGlobals, 'color-active', 'color-on-active', 'color-active-border', 'radius-md', 'shadow-lg'),
     notes: ['The trigger uses shared field styles and a chevron in --cr-color-muted. The single-choice popup shares the panel and option styles in option-list.css.', 'Dropdown size presets share Button minimum heights. Native listboxes keep their row-based height and use active colors for checked options where the browser allows styling.'],
   },
   {
@@ -162,7 +162,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['Selected tabs use --cr-color-active for the underline and --cr-color-text for the foreground. Pill tabs use --cr-color-surface and --cr-shadow-sm for the selected tab. Highlight tabs use --cr-color-subtle for the selected fill, --cr-radius-md for the top corners, and --cr-space-1 and --cr-space-3 for the gap and button padding.', 'Tab buttons share Button minimum heights and font sizes.'],
   },
   {
-    component: 'Card', componentTokens: [], globalTokens: globals('color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-text', 'space-4'),
+    component: 'Card', componentTokens: [], globalTokens: globals('color-border', 'radius-md', 'color-surface', 'shadow-sm', 'color-text', 'space-4'),
     notes: ['Header, footer, and divided sections use --cr-space-4 for padding. An undivided body uses the same padding when header or footer is supplied.', 'Dividers use --cr-color-border. Card content inherits typography from its surroundings.'],
   },
   {
@@ -184,13 +184,13 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Dialog', componentTokens: [],
-    globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'border', 'radius-xl', 'color-surface', 'shadow-lg', 'color-muted', 'color-subtle', 'space-6', 'radius-full', 'radius-md', 'duration-fast', 'color-active', 'color-on-active', 'color-active-border'),
+    globalTokens: globals('font-sans', 'color-text', 'color-focus', 'color-border', 'border', 'radius-md', 'color-surface', 'shadow-lg', 'color-muted', 'color-subtle', 'space-6', 'radius-full', 'radius-md', 'duration-fast', 'color-active', 'color-on-active', 'color-active-border'),
     runtimeVariables: dialogRuntime,
     notes: ['Consumption: styles.css .cr-dialog/header/body/footer, optional split pane/switcher/separator rules, and its owned ghost close IconButton. User-supplied content/footer components are not assumed to be part of this token set.', 'Dialog exposes size, maxWidth, freezeHeight, and split-width props. Their internal custom properties are listed separately because JavaScript/size selectors own them.', 'The 24px footer/pane padding consumes --cr-space-6; similar header padding is literal CSS. The backdrop color/blur, viewport margins, and responsive thresholds are literal rules, not tokens.', 'The close IconButton uses Button’s local aliases on its child button; use its documented global inputs rather than a Dialog-root alias.'],
   },
   {
     component: 'ToastProvider', componentTokens: toneAliases('success', false),
-    globalTokens: globals('font-sans', 'color-text', 'color-surface', 'color-input-border', 'radius-lg', 'shadow-lg', 'color-success', 'color-info', 'color-warning', 'color-danger', ...ghostButtonGlobals),
+    globalTokens: globals('font-sans', 'color-text', 'color-surface', 'color-input-border', 'radius-md', 'shadow-lg', 'color-success', 'color-info', 'color-warning', 'color-danger', ...ghostButtonGlobals),
     notes: ['Consumption: styles.css .cr-toast and its leading SVG, generic [data-tone] foreground aliases, plus the owned ghost dismissal IconButton.', 'Only the leading notification icon consumes --tone-fg (with --cr-color-success fallback). The toast surface stays --cr-color-surface; the generic --tone-bg assignment is not consumed by the toast and is not offered as a background hook.', 'A neutral toast assigns no local --tone-fg. It can inherit that alias from an ancestor; the success fallback is used only when the alias is unset.', 'Position offsets, maximum width, padding, and the 5-second lifetime are literal values or JavaScript behavior. Button aliases apply only on the child dismiss button.'],
   },
   {
@@ -199,16 +199,16 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'TaskCard', componentTokens: [],
-    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-border', 'radius-lg', 'color-surface', 'shadow-sm', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
+    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-border', 'radius-md', 'color-surface', 'shadow-sm', 'color-subtle', 'color-muted', 'radius-md', ...toneGlobals(['success', 'info', 'warning'])),
     notes: ['Consumption: styles.css task button/identifier/metadata/footer rules plus owned Card, Badge, and AvatarGroup helpers. Task status selects neutral/info/warning/success Badge palettes; priority can select warning. Danger is not a TaskCard status.', 'Badge tone aliases are assigned on the nested Badge elements and are documented on Badge, not as TaskCard-root styling hooks.', 'Metadata/type sizes, card/footer padding, gaps, and avatar palettes remain literal CSS. Counts and progress ratios are content props; no task-specific custom properties are defined.', 'With hideMetadataLabels, Tooltip supplies the floating labels.'],
   },
   {
     component: 'AgentCard', componentTokens: [],
-    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-surface', 'color-border', 'radius-lg', 'color-active', 'color-on-active', 'color-active-border', 'color-subtle', 'color-muted', 'radius-sm', ...toneGlobals(['success', 'info', 'warning'])),
+    globalTokens: globals('font-sans', 'font-mono', 'color-text', 'color-surface', 'color-border', 'radius-md', 'color-active', 'color-on-active', 'color-active-border', 'color-subtle', 'color-muted', 'radius-md', ...toneGlobals(['success', 'info', 'warning'])),
     notes: ['The pressed card uses the solid active fill and its paired foreground. The status badge uses its own info, success, warning, or neutral tone.', 'Badge tone aliases belong to the nested Badge. The card has no local CSS variables.', 'Card padding, icon surface size/7px radius, type sizes, and runtime data spacing are literal rules. elapsed and tokens are display props.'],
   },
   {
-    component: 'EmptyState', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-success-bg', 'color-muted', 'color-border', 'radius-lg', 'space-3', 'space-5', 'space-6'),
-    notes: ['The default variant uses --cr-color-success-bg for the icon surface. The description and the dashed variant’s icon use --cr-color-muted.', 'The dashed panel uses --cr-color-border and --cr-radius-lg for its outline, --cr-space-3 for the content gap, and --cr-space-5 and --cr-space-6 for padding.'],
+    component: 'EmptyState', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-success-bg', 'color-muted', 'color-border', 'radius-md', 'space-3', 'space-5', 'space-6'),
+    notes: ['The default variant uses --cr-color-success-bg for the icon surface. The description and the dashed variant’s icon use --cr-color-muted.', 'The dashed panel uses --cr-color-border and --cr-radius-md for its outline, --cr-space-3 for the content gap, and --cr-space-5 and --cr-space-6 for padding.'],
   },
 ];

@@ -1,7 +1,8 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { createContext, useContext, useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 import { Menu, PanelRight } from 'lucide-react';
 import { IconButton } from './components';
+import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 import { Sidebar } from './Sidebar';
 import type { SidebarProps } from './Sidebar';
@@ -182,13 +183,43 @@ function useNavbarSidebar(sidebar: NavbarSidebarProps | undefined, defaultIcon: 
   return { toggle, panel };
 }
 
+type NavbarItemOwnProps = {
+  /** Icon before the label. Inside an iconOnly NavbarItemGroup the label is visually hidden and stays the accessible name. */
+  icon?: IconSource;
+};
+
 export type NavbarItemProps =
-  | (ComponentPropsWithRef<'a'> & { href: string })
-  | (ComponentPropsWithRef<'div'> & { href?: undefined });
+  | (ComponentPropsWithRef<'a'> & NavbarItemOwnProps & { href: string })
+  | (ComponentPropsWithRef<'div'> & NavbarItemOwnProps & { href?: undefined });
+
+export interface NavbarItemGroupProps extends ComponentPropsWithRef<'div'> {
+  /** Segmented draws a rounded track with the current link filled. Default lays the items out in a row. */
+  variant?: 'default' | 'segmented';
+  /** Visually hides the labels of items that have an icon. Each label stays the link's accessible name and becomes its title. */
+  iconOnly?: boolean;
+}
+
+const defaultContext = { iconOnly: false };
+const iconOnlyContext = { iconOnly: true };
+const NavbarItemGroupContext = createContext(defaultContext);
+
+/** A row of related NavbarItem links, optionally drawn as a segmented page switcher. */
+export function NavbarItemGroup({ variant = 'default', iconOnly = false, className, role, ...props }: NavbarItemGroupProps) {
+  const labelled = props['aria-label'] !== undefined || props['aria-labelledby'] !== undefined;
+  return <NavbarItemGroupContext.Provider value={iconOnly ? iconOnlyContext : defaultContext}>
+    <div {...props} role={role ?? (labelled ? 'group' : undefined)} className={['cr-navbar-item-group', className].filter(Boolean).join(' ')}
+      data-variant={variant} data-icon-only={iconOnly || undefined} />
+  </NavbarItemGroupContext.Provider>;
+}
 
 /** A native link when given a destination, or a container for custom navbar content. */
-export function NavbarItem(props: NavbarItemProps) {
+export function NavbarItem({ icon, ...props }: NavbarItemProps) {
+  const { iconOnly } = useContext(NavbarItemGroupContext);
   const className = ['cr-navbar-item', props.className].filter(Boolean).join(' ');
-  if (props.href !== undefined) return <a {...props} className={className} />;
-  return <div {...props} className={className} />;
+  const iconNode = renderIcon(icon, { size: 16 });
+  const children = iconNode ? <>{iconNode}<span className="cr-navbar-item-label">{props.children}</span></> : props.children;
+  const title = props.title ?? (iconOnly && iconNode && typeof props.children === 'string' ? props.children : undefined);
+  const shared = { className, title, 'data-icon': iconNode ? '' : undefined, children };
+  if (props.href !== undefined) return <a {...props} {...shared} />;
+  return <div {...props} {...shared} />;
 }

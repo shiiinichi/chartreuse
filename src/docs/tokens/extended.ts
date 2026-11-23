@@ -2,13 +2,13 @@ import type { ComponentTokenDoc, RuntimeVariableDefinition, TokenDefinition } fr
 
 const systemFile = (name: string) => `src/system/${name}`;
 const globals = (...groups: readonly string[][]) => [...new Set(groups.flat())].sort();
-const names = (value: string) => value.trim().split(/\s+/).map(name => `--cr-${name}`);
+const names = (value: string) => [...new Set(value.trim().split(/\s+/).map(name => `--cr-${name}`))];
 const fieldGlobals = names('font-sans color-text color-muted color-danger color-surface color-input-border color-focus radius-md');
 // IconButton defaults to Button's ghost variant. Primary/accent/danger button
 // palettes and the primary-button hover shadow are not active for that variant.
 const ghostButtonGlobals = names('font-sans color-text color-subtle radius-md duration-fast');
 const primaryButtonGlobals = names('font-sans color-text radius-md duration-fast color-primary color-on-primary shadow-sm');
-const markdownGlobals = globals(names('color-text color-muted color-success color-success-bg color-border color-subtle color-canvas color-active font-sans font-mono radius-sm radius-md'), ghostButtonGlobals);
+const markdownGlobals = globals(names('color-text color-muted color-success color-success-bg color-border color-subtle color-canvas color-active font-sans font-mono radius-md radius-md'), ghostButtonGlobals);
 const gridGapGlobals = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map(step => `--cr-space-${step}`);
 const tiers = ['base', 'sm', 'md', 'lg', 'xl'] as const;
 
@@ -111,6 +111,27 @@ function toneAccentAliases(file: string, selector: string): TokenDefinition[] {
   }));
 }
 
+const segmentSelector = ".cr-navbar-item-group[data-variant='segmented']";
+const evergreenSegmentSelector = ":where(.cr-navbar:is([data-surface='evergreen'], [data-variant='dark-green']:not([data-surface]))) .cr-navbar-item-group[data-variant='segmented']";
+const segmentHook = (name: string, type: string, defaultValue: string, evergreen: string, description: string, references: string[], notes: string[] = []): TokenDefinition => ({
+  name: `--cr-navbar-segment-${name}`, type, defaultValue, description,
+  source: { file: systemFile('navbar.css'), selector: segmentSelector },
+  sources: [{ file: systemFile('navbar.css'), selector: evergreenSegmentSelector, detail: `Evergreen Navbar: ${evergreen}.` }],
+  references,
+  notes: ['Declared on the segmented group, so set it on .cr-navbar-item-group[data-variant=\'segmented\'] or a class you add to the group, not on a wrapper or :root.', ...notes],
+});
+const navbarSegmentHooks: TokenDefinition[] = [
+  segmentHook('radius', 'length', 'calc(var(--cr-radius-md) + 4px)', 'unchanged', 'Track corner radius: --cr-radius-md plus the 4px inset, so it stays parallel to the links, which use --cr-radius-md.', ['--cr-radius-md'], ['Overriding --cr-radius-md app-wide also rounds the track and its links.']),
+  segmentHook('track-bg', 'color', 'var(--cr-color-subtle)', 'paper mixed at 8% with transparent', 'Track background.', ['--cr-color-subtle']),
+  segmentHook('track-border', 'color', 'var(--cr-color-border)', 'transparent', 'Track border color.', ['--cr-color-border']),
+  segmentHook('fg', 'color', 'var(--cr-color-muted)', 'paper mixed at 72% with transparent', 'Text and icon color of links that are not current.', ['--cr-color-muted']),
+  segmentHook('hover-bg', 'color', 'var(--cr-color-surface)', 'paper mixed at 10% with transparent', 'Background of a hovered link that is not current.', ['--cr-color-surface']),
+  segmentHook('hover-fg', 'color', 'var(--cr-color-text)', 'var(--cr-paper)', 'Text and icon color of a hovered link that is not current.', ['--cr-color-text']),
+  segmentHook('current-bg', 'color', 'var(--cr-color-surface)', 'var(--cr-evergreen-light)', 'Fill of the link marked aria-current="page".', ['--cr-color-surface']),
+  segmentHook('current-fg', 'color', 'var(--cr-color-text)', 'var(--cr-paper)', 'Text and icon color of the current link.', ['--cr-color-text']),
+  segmentHook('current-shadow', 'box-shadow', 'var(--cr-shadow-sm)', 'none', 'Shadow under the current link.', ['--cr-shadow-sm']),
+];
+
 const swimlaneHooks: TokenDefinition[] = [
   {
     name: '--cr-swimlane-accent', description: 'Top border color for the lane.', type: 'color', defaultValue: 'var(--cr-color-muted)',
@@ -210,12 +231,12 @@ function sequenceRuntime(component: 'Timeline' | 'Steps'): RuntimeVariableDefini
 export const extendedTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'Autocomplete', componentTokens: [],
-    globalTokens: globals(fieldGlobals, names('color-subtle color-active color-on-active color-active-border radius-lg shadow-lg')),
-    notes: ['autocomplete.css styles the field actions. Autocomplete, ButtonSelect, and Select share the panel and option styles in option-list.css.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared large radius and shadow. The active option uses the solid evergreen highlight and its paired foreground.'],
+    globalTokens: globals(fieldGlobals, names('color-subtle color-active color-on-active color-active-border radius-md radius-md shadow-lg')),
+    notes: ['autocomplete.css styles the field actions. Autocomplete, ButtonSelect, and Select share the panel and option styles in option-list.css.', 'Input size presets share Button minimum heights. The clear and dropdown actions fit inside the field at each size.', 'The popup uses the shared radius and large shadow. The active option uses the solid evergreen highlight and its paired foreground.'],
   },
   {
     component: 'MessageComposer', componentTokens: [],
-    globalTokens: globals(primaryButtonGlobals, names('color-input-border radius-lg color-surface color-danger color-muted color-focus')),
+    globalTokens: globals(primaryButtonGlobals, names('color-input-border radius-md color-surface color-danger color-muted color-focus')),
     notes: ['No component-owned CSS variables are declared. message-composer.css consumes shared colors, radii, font, and fast motion; the built-in primary Button adds its primary/on-primary palette and hover shadow.', 'The textarea’s 13px size, coarse-pointer 16px size, padding, and send/error gap are literal CSS. Reduced-motion removes the wrapper transition.'],
   },
   {
@@ -234,11 +255,11 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Disclosure', componentTokens: [],
-    globalTokens: names('color-border radius-lg color-surface color-text font-sans space-3 space-4 space-5 color-subtle color-muted duration-fast space-2 color-primary radius-sm font-mono').sort(),
+    globalTokens: names('color-border radius-md color-surface color-text font-sans space-3 space-4 space-5 color-subtle color-muted duration-fast space-2 color-primary radius-md font-mono').sort(),
     notes: ['No component-local CSS variables are declared. disclosure.css consumes the shared 8/12/16/20px spacing steps for the summary, body indentation, paragraph spacing, and lists. The same stylesheet’s optional .cr-disclosure-group framing uses these same globals.', 'headerHighlight reuses --cr-color-subtle for the summary on hover, while open, or in both states. The disclosure body retains its normal --cr-color-surface background.', 'The 56px trigger height, 72ch reading measure, type sizes, and link/code padding are literal CSS. Reduced-motion removes chevron/hover transitions; forced-colors mode substitutes system colors.'],
   },
   {
-    component: 'Fieldset', componentTokens: [], globalTokens: names('space-6 color-border radius-lg color-surface color-text font-sans color-muted color-canvas').sort(),
+    component: 'Fieldset', componentTokens: [], globalTokens: names('space-6 color-border radius-md color-surface color-text font-sans color-muted color-canvas').sort(),
     notes: ['No component-owned CSS variables are declared. fieldset.css consumes --cr-space-6 for the group’s inline/bottom padding and uses canvas for disabled groups.', 'The top padding, legend sizing, header gaps, and hint spacing are literals. Actions and child fields are supplied content and retain their own component token contracts.'],
   },
   {
@@ -247,12 +268,12 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component-owned styling variables are declared. file-picker.css styles the native selector button, selection summary, and errors; the optional clear IconButton contributes ghost Button states. Shared .cr-required in styles.css supplies required-marker danger color.', 'File path text consumes --cr-font-mono. Selection text sizes and picker dimensions are literal CSS, including the coarse-pointer adjustments.'],
   },
   {
-    component: 'PagePanel', componentTokens: [], globalTokens: names('color-border radius-xl color-surface color-text font-sans space-4 space-6 color-muted space-2 space-3 color-subtle').sort(),
+    component: 'PagePanel', componentTokens: [], globalTokens: names('color-border radius-md color-surface color-text font-sans space-4 space-6 color-muted space-2 space-3 color-subtle').sort(),
     notes: ['No component-owned CSS variables are declared. page-panel.css consumes shared spacing for header/body/footer and the large panel radius; its footer uses the subtle surface.', 'The heading size and description spacing are literals. Navigation, leading content, header actions, and footer actions are slots; their child components have separate token contracts.'],
   },
   {
     component: 'CalloutBanner', componentTokens: calloutPalette,
-    globalTokens: names('paper evergreen chartreuse font-sans radius-lg color-muted').sort(),
+    globalTokens: names('paper evergreen chartreuse font-sans radius-md color-muted').sort(),
     notes: ['callout-banner.css intentionally creates a local evergreen palette with the same semantic names used globally. These assignments shadow inherited root values in both light and dark themes; override the banner/action scope or a consumed primitive when changing it.', 'The banner background/title use the evergreen/paper primitives directly, and artwork/actions use chartreuse. Only --cr-color-muted is consumed directly by banner copy; the other local semantic aliases prepare optional supplied child controls.', 'The eyebrow alpha color, 32px/40px padding, 28px/25px heading sizes, artwork sizes, and the 600px container threshold are literal CSS. The built-in BrandMark consumes currentColor, not additional global tokens.'],
   },
   {
@@ -285,16 +306,16 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['No component-owned CSS variables are declared. The activity-specific and shared left-rule rules in content-blocks.css consume shared spacing, text/border colors, and link colors.', 'Identifier, title, metadata, and footer type sizes are literal CSS. Supplied metadata badges/actions retain their own component token contracts.'],
   },
   {
-    component: 'Tree', componentTokens: [], globalTokens: names('color-text font-sans color-border radius-md color-surface color-subtle color-active color-on-active color-active-border color-muted color-input-border').sort(),
+    component: 'Tree', componentTokens: [], globalTokens: names('color-text font-sans color-border radius-md radius-md color-surface color-subtle color-active color-on-active color-active-border color-muted color-input-border').sort(),
     runtimeVariables: [{ name: '--cr-tree-closed-rotation', description: 'Chevron angle for a closed branch in the current text direction.', source: { file: systemFile('tree.css'), selector: '.cr-tree:dir(rtl)', detail: 'RTL assigns 90deg; .cr-tree-toggle > svg consumes a -90deg fallback. Expanded branches use a direct 0deg rule.' }, notes: ['Internal direction state. Set dir/use inherited document direction rather than overriding the angle.'] }],
     notes: ['No component styling hooks are declared for Tree. tree.css uses shared neutral/selected colors and the input-border color for branch connectors.', 'Node gaps/padding, line widths, indentation, type size, 400px container adjustment, and coarse-pointer sizes are literal CSS, not shared spacing tokens. Custom node content retains its own tokens.'],
   },
   {
-    component: 'AgentActivity', componentTokens: [], globalTokens: names('color-text font-sans space-2 radius-sm color-subtle color-muted color-info color-danger duration-fast space-3 color-border space-1 color-success radius-md font-mono').sort(),
+    component: 'AgentActivity', componentTokens: [], globalTokens: names('color-text font-sans space-2 radius-md color-subtle color-muted color-info color-danger duration-fast space-3 color-border space-1 color-success radius-md font-mono').sort(),
     notes: ['No component-owned CSS variables are declared. agent-activity.css consumes shared status colors and 4/8/12px spacing steps, with monospace output and fast chevron transitions.', 'The 1s running spin, 440px container breakpoint, row heights, output height, and margins expressed in pixels are literal CSS. Coarse-pointer and reduced-motion rules adjust those styles without additional tokens.'],
   },
   {
-    component: 'SegmentedControl', componentTokens: [], globalTokens: names('color-text font-sans space-2 space-1 color-border color-subtle radius-md space-3 radius-sm color-muted color-surface color-active color-on-active color-active-border shadow-sm color-danger').sort(),
+    component: 'SegmentedControl', componentTokens: [], globalTokens: names('color-text font-sans space-2 space-1 color-border color-subtle radius-md space-3 radius-md color-muted color-surface color-active color-on-active color-active-border shadow-sm color-danger').sort(),
     notes: ['The selected segment uses the raised surface with an evergreen outline in the outline variant. The solid variant uses an evergreen fill with its paired foreground. The required marker uses the danger color.', 'The segment sizes, track inset, optical error-icon adjustment, and coarse-pointer height are literal CSS. Selection uses native radio state.'],
   },
   {
@@ -320,12 +341,20 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['NavbarItem links use the shared subtle fill on hover. The current page uses Evergreen by default and Light Evergreen on an evergreen Navbar. Content items use the shared spacing token to separate their children.'],
   },
   {
-    component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-lg shadow-sm space-4 color-input-border color-active color-on-active color-active-border').sort(),
+    component: 'NavbarItemGroup', componentTokens: navbarSegmentHooks,
+    globalTokens: names('color-subtle color-border color-muted color-surface color-text color-focus shadow-sm radius-md paper evergreen-light space-1 space-2 space-3').sort(),
+    runtimeVariables: [
+      { name: '--_cr-navbar-segment-inset', description: 'Space between the segmented track edge and its links: 3px padding plus the 1px border.', source: { file: systemFile('navbar.css'), selector: segmentSelector } },
+    ],
+    notes: ['The default variant is a wrapping row of items with --cr-space-1 between them. The segmented track is as tall as a Navbar item (40px at md, 48px at lg) and its links are 8px shorter (32px and 40px), growing to 44px on coarse pointers.', 'Segmented links draw a 2px --cr-color-focus outline on :focus-visible.'],
+  },
+  {
+    component: 'Sidebar', componentTokens: [], globalTokens: names('color-border color-surface color-text font-sans radius-md shadow-sm space-4 color-input-border color-active color-on-active color-active-border').sort(),
     runtimeVariables: [
       { name: '--cr-sidebar-width', description: 'Positive width prop serialized as pixels on the sidebar root.', source: { file: systemFile('Sidebar.tsx'), detail: 'sizing assigns the width recipe inline, with 280px fallback in sidebar.css.' }, notes: ['Use width. The native style prop is merged after the sizing recipe, but the variable remains part of layout implementation rather than a palette/spacing token.'] },
       { name: '--cr-sidebar-max-width', description: 'Positive maxWidth prop in pixels, otherwise 100%.', source: { file: systemFile('Sidebar.tsx'), detail: 'sizing assigns the cap inline; sidebar.css also constrains it to available width.' }, notes: ['Use maxWidth for the supported sizing contract.'] },
     ],
-    notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and large-radius/small-shadow globals in floating mode.', 'The body scrollbar uses --cr-color-input-border. Pressed ghost buttons use the shared active palette, and nested badge colors resolve in the dark scheme on that fill.', 'Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
+    notes: ['No component styling hooks are declared. sidebar.css consumes shared colors/font, --cr-space-4 for header/footer padding, and --cr-radius-md/small-shadow globals in floating mode.', 'The body scrollbar uses --cr-color-input-border. Pressed ghost buttons use the shared active palette, and nested badge colors resolve in the dark scheme on that fill.', 'Root width/max-width are controlled by props; body content and supplied header/footer components retain their own tokens.'],
   },
   {
     component: 'WorkspaceContent', componentTokens: [],
@@ -337,17 +366,17 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['workspace-layout.css uses flex wrapping and a preferred 24rem basis for WorkspaceContent. Set a gap or height through the native style prop or a class.'],
   },
   {
-    component: 'Conversation', componentTokens: [], globalTokens: globals(markdownGlobals, names('space-8 space-6 space-4 space-2 space-3 radius-lg')),
-    notes: ['The user message card uses the shared subtle background, border, large radius, and spacing tokens. conversation.css also consumes shared text, muted, font, and radius tokens.', 'MarkdownRenderer renders Markdown messages (agent messages by default), so its code/link/table/checkbox/copy-action globals are included transitively. Conversation overrides the Markdown root font to inherit its own 13px style; code still uses the mono token.', 'The activity slot is supplied content, not an automatically instantiated AgentActivity. Its arbitrary child tokens are not included here. Pending-spin duration and role-specific type sizes remain literal CSS.'],
+    component: 'Conversation', componentTokens: [], globalTokens: globals(markdownGlobals, names('space-8 space-6 space-4 space-2 space-3 radius-md')),
+    notes: ['The user message card uses the shared subtle background, border, shared radius, and spacing tokens. conversation.css also consumes shared text, muted, font, and radius tokens.', 'MarkdownRenderer renders Markdown messages (agent messages by default), so its code/link/table/checkbox/copy-action globals are included transitively. Conversation overrides the Markdown root font to inherit its own 13px style; code still uses the mono token.', 'The activity slot is supplied content, not an automatically instantiated AgentActivity. Its arbitrary child tokens are not included here. Pending-spin duration and role-specific type sizes remain literal CSS.'],
   },
   {
     component: 'Swimlane', componentTokens: swimlaneHooks,
-    globalTokens: names('color-muted color-subtle color-border radius-lg color-canvas color-text font-sans color-info color-info-bg color-warning color-warning-bg color-success color-success-bg color-danger color-danger-bg radius-sm color-surface color-input-border radius-md').sort(),
-    notes: ['swimlane.css declares two lane-scoped tone aliases; use tone or accent rather than overriding them. Its instantiated Badge adds the shared small-radius/font/status palette.', 'Lane minimum heights, header/card gaps, count size, top-border width, and padding are literal CSS. Supplied cards/actions/empty content have independent component token contracts.'],
+    globalTokens: names('color-muted color-subtle color-border radius-md color-canvas color-text font-sans color-info color-info-bg color-warning color-warning-bg color-success color-success-bg color-danger color-danger-bg radius-md color-surface color-input-border radius-md').sort(),
+    notes: ['swimlane.css declares two lane-scoped tone aliases; use tone or accent rather than overriding them. Its instantiated Badge adds the shared shared radius/font/status palette.', 'Lane minimum heights, header/card gaps, count size, top-border width, and padding are literal CSS. Supplied cards/actions/empty content have independent component token contracts.'],
   },
   {
     component: 'SwimlaneGroup', componentTokens: [],
-    globalTokens: names('color-border color-surface color-subtle radius-lg').sort(),
+    globalTokens: names('color-border color-surface color-subtle radius-md').sort(),
     notes: ['The surface variant joins lanes on one bordered surface with 1px dividers and subtle headers; the separate variant spaces card lanes 12px apart.', 'Expanded lanes use flex: 1 0 168px and collapsed lanes take --cr-swimlane-collapsed-size. The row scrolls inside its own box when lanes do not fit.'],
   },
   {

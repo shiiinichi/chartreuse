@@ -18,7 +18,7 @@
     max-inline-size: min(100%, 64ch);
     padding: var(--cr-space-3) var(--cr-space-4);
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-lg);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-subtle);
   }
   .cr-conversation-message[data-role='system'] { padding-inline-start: var(--cr-space-3); border-inline-start: 2px solid var(--cr-color-border); }

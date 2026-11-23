@@ -6,7 +6,7 @@
   .markdown-page-intro > div { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
   .markdown-page-intro .cr-badge { font-size: 9px; }
   .markdown-playground { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; gap: 22px; }
-  .markdown-source-panel, .markdown-preview-panel { min-inline-size: 0; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); }
+  .markdown-source-panel, .markdown-preview-panel { min-inline-size: 0; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); }
   .markdown-source-panel { position: sticky; inset-block-start: 86px; }
   .markdown-source-panel > header, .markdown-preview-panel > header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; min-block-size: 60px; padding: 12px 17px; border-block-end: 1px solid var(--cr-color-border); }
   .markdown-playground h2 { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 550; letter-spacing: -.2px; }

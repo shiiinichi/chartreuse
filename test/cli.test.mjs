@@ -296,14 +296,16 @@ test('foundation guide claims match the library CSS', () => {
   const notes = id => query('guide', id).guide.notes.join(' ');
 
   // Focus: outlines are removed with no :focus-visible replacement, except on the link Button
-  // variant, which has no background or border to show focus. When the library adds another,
+  // variant, which has no background or border to show focus, and on segmented NavbarItemGroup
+  // links, whose muted resting state would otherwise hide focus. When the library adds another,
   // this fails so the accessibility guide and its workaround are revised.
   assert.match(styles, /\[class\^='cr-'\], \[class\*=' cr-'\][^{]*\):focus \{ outline: none; \}/);
   const focusVisible = css.match(/[^{}]*:focus-visible[^{}]*\{/g) ?? [];
   assert.ok(focusVisible.length > 0);
-  for (const rule of focusVisible) assert.match(rule.trim(), /^\.cr-button\[data-variant='link'\]:focus-visible \{$/);
+  const ownFocus = [/^\.cr-button\[data-variant='link'\]:focus-visible \{$/, /^\.cr-navbar-item-group\[data-variant='segmented'\] > :is\(\.cr-navbar-item:where\(a\), :where\(a\)\):focus-visible \{$/];
+  for (const rule of focusVisible) assert.ok(ownFocus.some(pattern => pattern.test(rule.trim())), rule.trim());
   const accessibility = query('guide', 'accessibility').guide;
-  assert.match(accessibility.notes.join(' '), /no :focus-visible rule except on Button variant="link"/);
+  assert.match(accessibility.notes.join(' '), /no :focus-visible rule except on Button variant="link" and segmented NavbarItemGroup links/);
   assert.equal(accessibility.language, 'css');
   for (const selector of ['.cr-switch-track', '.cr-segmented-input', '.cr-segmented-label', '.cr-tab-list', '.cr-tree-item', '.cr-tree-row', '.cr-message-composer-input', '.cr-breadcrumbs']) {
     assert.ok(accessibility.code.includes(selector) && css.includes(selector), selector);
@@ -326,10 +328,11 @@ test('foundation guide claims match the library CSS', () => {
   for (const id of ['spacing', 'accessibility']) assert.match(notes(id), /stay at 32px/, id);
 
   // Radius and shadow notes name components whose rules use that token.
-  const uses = { 'radius-sm': ['.cr-badge', '.cr-segmented-label'], 'radius-md': ['.cr-button', '.cr-input', '.cr-alert'],
-    'radius-lg': ['.cr-card', '.cr-toast', '.cr-fieldset', '.cr-disclosure'], 'radius-xl': ['.cr-dialog', '.cr-page-panel'],
+  const uses = { 'radius-md': ['.cr-button', '.cr-input', '.cr-alert', '.cr-segmented-label', '.cr-option-list-option', '.cr-badge', '.cr-card', '.cr-toast', '.cr-fieldset', '.cr-disclosure', '.cr-dialog', '.cr-page-panel'],
     'radius-full': ['.cr-switch-track', '.cr-progress'], 'shadow-sm': ['.cr-card'], 'shadow-md': ['.cr-tooltip'],
     'shadow-lg': ['.cr-dialog', '.cr-toast', ".cr-drawer[data-mode='modal']"] };
+  // One radius everywhere: no library rule reads the other radius steps.
+  assert.doesNotMatch(css, /var\(--cr-radius-(sm|lg|xl)\)/);
   for (const [token, selectors] of Object.entries(uses)) {
     assert.ok(notes('shape').includes(`--cr-${token}`), token);
     for (const selector of selectors) assert.match(css, new RegExp(`(^|\\n)\\s*${escape(selector)} \\{[^}]*var\\(--cr-${token}\\)`), `${selector} uses ${token}`);
@@ -515,9 +518,12 @@ test('token output ranks props, tokens, hooks, then classes for customization', 
   assert.match(tooltip[0], /Tooltip has no appearance props/);
   assert.match(tooltip[2], /Tooltip has no component styling hooks/);
   // Floating-content scope notes appear only for the components that render it.
-  const scoped = { Tooltip: /Tooltip renders into/, TaskCard: /Tooltip renders into/, ToastProvider: /Toasts render where ToastProvider sits/ };
+  const popup = /popups restore the root --cr-color-\* tokens and color scheme/;
+  const scoped = { Tooltip: /Tooltip renders into/, TaskCard: /Tooltip renders into/, ToastProvider: /Toasts render where ToastProvider sits/, Select: popup, Autocomplete: popup, ButtonSelect: popup };
   for (const [name, pattern] of Object.entries(scoped)) assert.match(notes(name).join(' '), pattern, name);
-  for (const name of ['Button', 'Dialog', 'Stat']) assert.doesNotMatch(notes(name).join(' '), /Tooltip renders|Toasts render/, name);
+  for (const name of ['Button', 'Dialog', 'Stat', 'Tooltip']) assert.doesNotMatch(notes(name).join(' '), /Toasts render|popups restore/, name);
+  for (const name of ['Button', 'Dialog', 'Stat', 'ButtonSelect']) assert.doesNotMatch(notes(name).join(' '), /Tooltip renders/, name);
+  assert.match(joined, popup);
   assert.match(notes('Button').join(' '), /brand primitives/);
   assert.doesNotMatch(notes('Stat').join(' '), /brand primitives/);
 });
@@ -639,5 +645,26 @@ test('a source checkout warns on stderr when the CLI build is older than its sou
     assert.equal(installed.exec('info', 'Unknown', '--format=json').stderr.includes('warnings'), false);
   } finally {
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('floating popups restore every root semantic color and the root color scheme', () => {
+  const styles = readFileSync(new URL('../src/system/styles.css', import.meta.url), 'utf8');
+  const floating = readFileSync(new URL('../src/system/floating-surface.css', import.meta.url), 'utf8');
+  const root = styles.slice(styles.indexOf(':root {'), styles.indexOf('}', styles.indexOf(':root {')));
+  const colors = [...root.matchAll(/(--cr-color-[a-z0-9-]+):/g)].map(([, name]) => name);
+  assert.ok(colors.length > 30);
+  const snapshot = floating.match(/:where\(:root\) \{([^}]+)\}/)[1];
+  const reset = floating.match(/:where\(\.cr-option-list-popup, \.cr-button-select-panel\) \{([^}]+)\}/)[1];
+  assert.match(snapshot, /--_cr-root-color-scheme: light dark;/);
+  assert.match(reset, /color-scheme: var\(--_cr-root-color-scheme\);/);
+  for (const name of colors) {
+    const alias = `--_cr-root-${name.slice(5)}`;
+    assert.ok(snapshot.includes(`${alias}: var(${name});`), `${name} is snapshotted on the root`);
+    assert.ok(reset.includes(`${name}: var(${alias});`), `${name} is restored on popups`);
+  }
+  for (const scheme of ['light', 'dark']) assert.ok(floating.includes(`meta[name='color-scheme'][content='${scheme}'])) { --_cr-root-color-scheme: ${scheme}; }`), scheme);
+  for (const component of ['OptionList', 'ButtonSelect']) {
+    assert.match(readFileSync(new URL(`../src/system/${component}.tsx`, import.meta.url), 'utf8'), /import '\.\/floating-surface\.css';/, component);
   }
 });

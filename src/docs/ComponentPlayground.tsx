@@ -11,7 +11,7 @@ import { FlexDemo } from './FlexDemo';
 import { FormDemo, FormLayoutDemo } from './FormDemo';
 import { TooltipDemo } from './TooltipDemo';
 import { ModalsPage } from './ModalsPage';
-import { NavbarDemo, NavbarItemDemo } from './NavbarDemo';
+import { NavbarDemo, NavbarItemDemo, NavbarItemGroupDemo } from './NavbarDemo';
 import { NumberInputDemo } from './NumberInputDemo';
 import { PathSelectorDemo } from './PathSelectorDemo';
 import { SegmentedControlDemo } from './SegmentedControlDemo';
@@ -114,6 +114,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'MarkdownRenderer': return <Suspense fallback={<Text size="body" className="muted">Loading Markdown example…</Text>}><MarkdownPage /></Suspense>;
     case 'Navbar': return <NavbarDemo />;
     case 'NavbarItem': return <NavbarItemDemo />;
+    case 'NavbarItemGroup': return <NavbarItemGroupDemo />;
     case 'NumberInput': return <NumberInputDemo />;
     case 'Pagination': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><PaginationDemo /></Suspense>;
     case 'PathSelector': return <PathSelectorDemo />;

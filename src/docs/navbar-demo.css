@@ -4,7 +4,7 @@
     --cr-layout-content-max: 36rem;
     --cr-layout-gutter: var(--cr-space-5);
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-lg);
+    border-radius: var(--cr-radius-md);
   }
   .navbar-demo-bar .cr-brand-mark { inline-size: 24px; block-size: 24px; }
   .navbar-demo-bar[data-size='lg'] .cr-brand-mark { inline-size: 32px; block-size: 32px; }
@@ -23,7 +23,7 @@
     box-sizing: border-box;
     block-size: clamp(29rem, 50cqi, 34rem);
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-xl);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-canvas);
     box-shadow: var(--cr-shadow-md);
     overflow: clip;
@@ -128,7 +128,7 @@
 
   .navbar-release-checks {
     border: 1px solid var(--cr-color-border);
-    border-radius: var(--cr-radius-lg);
+    border-radius: var(--cr-radius-md);
     background: var(--cr-color-surface);
   }
 

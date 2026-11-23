@@ -98,10 +98,11 @@ export const componentChoices: readonly ComponentChoice[] = [
     ],
   },
   {
-    label: 'Navbar vs NavbarItem vs Breadcrumbs vs Pagination vs Tabs',
+    label: 'Navbar vs NavbarItem vs NavbarItemGroup vs Breadcrumbs vs Pagination vs Tabs',
     options: [
       { name: 'Navbar', reason: 'Use Navbar for the application-wide bar with branding, top-level links, and actions.' },
       { name: 'NavbarItem', reason: 'Use NavbarItem for each link, control, or display item in a Navbar or a Sidebar nav; mark the current route with aria-current="page".' },
+      { name: 'NavbarItemGroup', reason: 'Use NavbarItemGroup to group related NavbarItem page links; variant="segmented" draws them as a page switcher with the current page filled. The items stay links, unlike SegmentedControl, which is a radio group for form values.' },
       { name: 'Breadcrumbs', reason: 'Use Breadcrumbs for a native trail of links to the current page; the last item is always plain text with aria-current="page", even with an href.' },
       { name: 'Pagination', reason: 'Use Pagination to move between pages of a collection with controlled page and pageCount; for a Table, pass the same props to its pagination property instead.' },
       { name: 'Tabs', reason: 'Use Tabs to switch views within one page, not to navigate between pages.' },

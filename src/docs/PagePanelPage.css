@@ -18,7 +18,7 @@
   .page-panel-save-status { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 180px; min-inline-size: 0; color: var(--cr-color-muted); font-size: 12px; line-height: 1.7; }
   .page-panel-save-status > .cr-status-dot { color: var(--cr-color-warning); }
   .page-panel-save-status > svg { color: var(--cr-color-success); }
-  .page-panel-explanation { display: flex; align-items: flex-start; gap: 12px; padding: 20px 22px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); }
+  .page-panel-explanation { display: flex; align-items: flex-start; gap: 12px; padding: 20px 22px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); }
   .page-panel-explanation > svg { margin-block-start: 3px; color: var(--cr-color-muted); }
   .page-panel-explanation > p { margin: 0; font-size: 13px; line-height: 1.8; color: var(--cr-color-muted); }
   @media (max-width: 600px) {

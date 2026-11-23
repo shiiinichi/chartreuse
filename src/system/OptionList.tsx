@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 import { Text } from './Text';
+import './floating-surface.css';
 import './option-list.css';
 
 export interface OptionListItem {
@@ -39,13 +40,13 @@ export function OptionList({ id, options, groups, active, value, checkmark, empt
   const className = ['cr-option-list-option', optionClassName].filter(Boolean).join(' ');
   const checkmarkIcon = checkmark === true ? Check : checkmark || undefined;
   const rows = options.map((option, index) => <div key={option.value} id={`${id}-${index}`} role="option"
-    aria-selected={active === index} aria-disabled={option.disabled || undefined} className={className}
+    aria-selected={active === index} aria-disabled={option.disabled || undefined} className={className} data-description={option.description ? '' : undefined}
     onPointerMove={() => { if (!option.disabled) onActivate(index); }}
     onPointerDown={event => event.preventDefault()} onMouseDown={event => event.preventDefault()}
     onClick={() => { if (!option.disabled) onSelect(option); }}>
-    <span>
+    <span className="cr-option-list-text">
       <Text bold>{option.label}</Text>
-      {option.description && <>{' '}<Text size="small">{option.description}</Text></>}
+      {option.description && <Text size="small">{option.description}</Text>}
     </span>
     {value === option.value && renderIcon(checkmarkIcon, { size: 14, className: 'cr-option-list-checkmark' })}
   </div>);

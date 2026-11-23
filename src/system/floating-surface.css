@@ -1,0 +1,93 @@
+@layer cr-base, cr-tokens, cr-components;
+
+/* Floating surfaces (option-list popups and ButtonSelect panels) render in the top layer but still
+   inherit custom properties and color-scheme from their DOM parent. A trigger inside a recolored
+   region, such as an evergreen Navbar or an app wrapper that overrides --cr-color-*, would otherwise
+   pass that palette to its popup. The root snapshots its semantic colors and scheme here, after any
+   application :root overrides, and each floating surface restores them. Target the popup itself to
+   recolor it. */
+@layer cr-tokens {
+  :where(:root) {
+    --_cr-root-color-scheme: light dark;
+    --_cr-root-color-text: var(--cr-color-text);
+    --_cr-root-color-muted: var(--cr-color-muted);
+    --_cr-root-color-canvas: var(--cr-color-canvas);
+    --_cr-root-color-surface: var(--cr-color-surface);
+    --_cr-root-color-subtle: var(--cr-color-subtle);
+    --_cr-root-color-border: var(--cr-color-border);
+    --_cr-root-color-input-border: var(--cr-color-input-border);
+    --_cr-root-color-primary: var(--cr-color-primary);
+    --_cr-root-color-on-primary: var(--cr-color-on-primary);
+    --_cr-root-color-active: var(--cr-color-active);
+    --_cr-root-color-on-active: var(--cr-color-on-active);
+    --_cr-root-color-active-border: var(--cr-color-active-border);
+    --_cr-root-color-focus: var(--cr-color-focus);
+    --_cr-root-color-success: var(--cr-color-success);
+    --_cr-root-color-success-bg: var(--cr-color-success-bg);
+    --_cr-root-color-info: var(--cr-color-info);
+    --_cr-root-color-info-bg: var(--cr-color-info-bg);
+    --_cr-root-color-warning: var(--cr-color-warning);
+    --_cr-root-color-warning-bg: var(--cr-color-warning-bg);
+    --_cr-root-color-danger: var(--cr-color-danger);
+    --_cr-root-color-danger-bg: var(--cr-color-danger-bg);
+    --_cr-root-color-cat-1: var(--cr-color-cat-1);
+    --_cr-root-color-cat-1-bg: var(--cr-color-cat-1-bg);
+    --_cr-root-color-cat-2: var(--cr-color-cat-2);
+    --_cr-root-color-cat-2-bg: var(--cr-color-cat-2-bg);
+    --_cr-root-color-cat-3: var(--cr-color-cat-3);
+    --_cr-root-color-cat-3-bg: var(--cr-color-cat-3-bg);
+    --_cr-root-color-cat-4: var(--cr-color-cat-4);
+    --_cr-root-color-cat-4-bg: var(--cr-color-cat-4-bg);
+    --_cr-root-color-cat-5: var(--cr-color-cat-5);
+    --_cr-root-color-cat-5-bg: var(--cr-color-cat-5-bg);
+    --_cr-root-color-cat-6: var(--cr-color-cat-6);
+    --_cr-root-color-cat-6-bg: var(--cr-color-cat-6-bg);
+    --_cr-root-color-cat-7: var(--cr-color-cat-7);
+    --_cr-root-color-cat-7-bg: var(--cr-color-cat-7-bg);
+    --_cr-root-color-cat-8: var(--cr-color-cat-8);
+    --_cr-root-color-cat-8-bg: var(--cr-color-cat-8-bg);
+  }
+  :where(:root:has(> head > meta[name='color-scheme'][content='light'])) { --_cr-root-color-scheme: light; }
+  :where(:root:has(> head > meta[name='color-scheme'][content='dark'])) { --_cr-root-color-scheme: dark; }
+
+  :where(.cr-option-list-popup, .cr-button-select-panel) {
+    color-scheme: var(--_cr-root-color-scheme);
+    --cr-color-text: var(--_cr-root-color-text);
+    --cr-color-muted: var(--_cr-root-color-muted);
+    --cr-color-canvas: var(--_cr-root-color-canvas);
+    --cr-color-surface: var(--_cr-root-color-surface);
+    --cr-color-subtle: var(--_cr-root-color-subtle);
+    --cr-color-border: var(--_cr-root-color-border);
+    --cr-color-input-border: var(--_cr-root-color-input-border);
+    --cr-color-primary: var(--_cr-root-color-primary);
+    --cr-color-on-primary: var(--_cr-root-color-on-primary);
+    --cr-color-active: var(--_cr-root-color-active);
+    --cr-color-on-active: var(--_cr-root-color-on-active);
+    --cr-color-active-border: var(--_cr-root-color-active-border);
+    --cr-color-focus: var(--_cr-root-color-focus);
+    --cr-color-success: var(--_cr-root-color-success);
+    --cr-color-success-bg: var(--_cr-root-color-success-bg);
+    --cr-color-info: var(--_cr-root-color-info);
+    --cr-color-info-bg: var(--_cr-root-color-info-bg);
+    --cr-color-warning: var(--_cr-root-color-warning);
+    --cr-color-warning-bg: var(--_cr-root-color-warning-bg);
+    --cr-color-danger: var(--_cr-root-color-danger);
+    --cr-color-danger-bg: var(--_cr-root-color-danger-bg);
+    --cr-color-cat-1: var(--_cr-root-color-cat-1);
+    --cr-color-cat-1-bg: var(--_cr-root-color-cat-1-bg);
+    --cr-color-cat-2: var(--_cr-root-color-cat-2);
+    --cr-color-cat-2-bg: var(--_cr-root-color-cat-2-bg);
+    --cr-color-cat-3: var(--_cr-root-color-cat-3);
+    --cr-color-cat-3-bg: var(--_cr-root-color-cat-3-bg);
+    --cr-color-cat-4: var(--_cr-root-color-cat-4);
+    --cr-color-cat-4-bg: var(--_cr-root-color-cat-4-bg);
+    --cr-color-cat-5: var(--_cr-root-color-cat-5);
+    --cr-color-cat-5-bg: var(--_cr-root-color-cat-5-bg);
+    --cr-color-cat-6: var(--_cr-root-color-cat-6);
+    --cr-color-cat-6-bg: var(--_cr-root-color-cat-6-bg);
+    --cr-color-cat-7: var(--_cr-root-color-cat-7);
+    --cr-color-cat-7-bg: var(--_cr-root-color-cat-7-bg);
+    --cr-color-cat-8: var(--_cr-root-color-cat-8);
+    --cr-color-cat-8-bg: var(--_cr-root-color-cat-8-bg);
+  }
+}

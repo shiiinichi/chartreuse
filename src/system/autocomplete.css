@@ -3,7 +3,7 @@
   .cr-autocomplete-control > svg { position: absolute; inset-inline-start: 12px; color: var(--cr-color-muted); pointer-events: none; }
   .cr-autocomplete-control > .cr-input { padding-inline: 36px 70px; }
   .cr-autocomplete-actions { position: absolute; inset-inline-end: 5px; display: inline-flex; align-items: center; gap: 0; }
-  .cr-autocomplete-actions > button { display: grid; place-items: center; min-inline-size: 28px; min-block-size: 28px; padding: 4px; border: 0; border-radius: 4px; background: transparent; color: var(--cr-color-muted); cursor: pointer; }
+  .cr-autocomplete-actions > button { display: grid; place-items: center; min-inline-size: 28px; min-block-size: 28px; padding: 4px; border: 0; border-radius: var(--cr-radius-md); background: transparent; color: var(--cr-color-muted); cursor: pointer; }
   .cr-autocomplete-actions > button:hover:not(:disabled) { background: var(--cr-color-subtle); color: var(--cr-color-text); }
   .cr-autocomplete-actions > button:disabled { opacity: .5; cursor: not-allowed; }
   .cr-autocomplete-popup { z-index: 1000; }

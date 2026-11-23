@@ -1,7 +1,7 @@
 @layer docs-content {
   .flex-demo-stack { display: flex; flex-direction: column; gap: var(--cr-space-6); min-inline-size: 0; }
   .flex-demo-frame { box-sizing: border-box; min-inline-size: 0; max-inline-size: 100%; padding: var(--cr-space-4); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); }
-  .flex-demo-cell { display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-block-size: 48px; padding: var(--cr-space-3); border-radius: var(--cr-radius-sm); color: var(--cr-color-text); background: var(--cr-color-success-bg); font-size: 13px; text-align: center; overflow-wrap: anywhere; }
+  .flex-demo-cell { display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-block-size: 48px; padding: var(--cr-space-3); border-radius: var(--cr-radius-md); color: var(--cr-color-text); background: var(--cr-color-success-bg); font-size: 13px; text-align: center; overflow-wrap: anywhere; }
   .flex-demo-direction > .cr-flex-layout > * { flex: 1; }
   .flex-demo-alignment { min-block-size: 160px; }
   .flex-demo-alignment .flex-demo-cell { flex: 0 1 76px; }

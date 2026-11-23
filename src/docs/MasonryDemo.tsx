@@ -39,10 +39,10 @@ const sampleStyles = `/* Example styles:
 function exampleCode(components: string, example: string, react = false) {
   return `${react ? "import { useState } from 'react';\n" : ''}import { ${components}, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\n${noteSource}\n\n${example}\n\n${sampleStyles}`;
 }
-const illustration: CSSProperties = { outline: '1px dashed var(--cr-color-input-border)', background: 'var(--cr-color-subtle)', borderRadius: 7 };
+const illustration: CSSProperties = { outline: '1px dashed var(--cr-color-input-border)', background: 'var(--cr-color-subtle)', borderRadius: 'var(--cr-radius-md)' };
 const illustrationSource = `const illustration = {
   outline: '1px dashed var(--cr-color-input-border)',
-  background: 'var(--cr-color-subtle)', borderRadius: 7,
+  background: 'var(--cr-color-subtle)', borderRadius: 'var(--cr-radius-md)',
 };`;
 const spacerCaption = 'Outline and tint are illustration styling only. MasonrySpacer is invisible by default and still reserves space.';
 

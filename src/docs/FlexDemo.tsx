@@ -10,7 +10,7 @@ import { Text } from '../system';
 import './flex-demo.css';
 
 const cellStyles = `.flex-demo-frame { box-sizing: border-box; padding: 16px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-canvas); min-width: 0; max-width: 100%; }
-.flex-demo-cell { display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 48px; padding: 12px; border-radius: var(--cr-radius-sm); color: var(--cr-color-text); background: var(--cr-color-success-bg); font-size: 13px; text-align: center; overflow-wrap: anywhere; }`;
+.flex-demo-cell { display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 48px; padding: 12px; border-radius: var(--cr-radius-md); color: var(--cr-color-text); background: var(--cr-color-success-bg); font-size: 13px; text-align: center; overflow-wrap: anywhere; }`;
 const source = (imports: string, body: string, react = '', css = '') => `${react ? `import { ${react} } from 'react';\n` : ''}import { ${imports} } from '@chartreuse/ui';\n\n${body}${css ? `\n\n/* Example layout:\n${css}\n*/` : ''}`;
 
 function DirectionExample() {

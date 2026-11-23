@@ -10,8 +10,8 @@
   .cr-path-selector-input::placeholder { color: var(--cr-color-muted); opacity: 1; }
   .cr-path-selector-input:disabled { cursor: not-allowed; }
   .cr-path-selector-control > .cr-path-selector-clear { min-inline-size: 32px; min-block-size: 32px; padding: 6px; margin-inline-end: 3px; }
-  .cr-path-selector-control > .cr-path-selector-browse { min-block-size: 38px; padding: 8px 12px; border: 0; border-inline-start: 1px solid var(--cr-color-border); border-radius: 0 6px 6px 0; background: var(--cr-color-subtle); box-shadow: none; font-size: .8125rem; flex-shrink: 0; }
-  .cr-path-selector:dir(rtl) .cr-path-selector-browse { border-radius: 6px 0 0 6px; }
+  .cr-path-selector-control > .cr-path-selector-browse { min-block-size: 38px; padding: 8px 12px; border: 0; border-inline-start: 1px solid var(--cr-color-border); border-radius: 0 var(--cr-radius-md) var(--cr-radius-md) 0; background: var(--cr-color-subtle); box-shadow: none; font-size: .8125rem; flex-shrink: 0; }
+  .cr-path-selector:dir(rtl) .cr-path-selector-browse { border-radius: var(--cr-radius-md) 0 0 var(--cr-radius-md); }
   .cr-path-selector[data-disabled='true'] { opacity: .5; }
   .cr-path-selector-error { display: flex; align-items: center; gap: 6px; color: var(--cr-color-danger); font-size: .6875rem; }
   @media (pointer: coarse) {
