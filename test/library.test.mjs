@@ -504,3 +504,11 @@ test('option descriptions render on their own line under the label', () => {
   assert.match(css, /\.cr-option-list-option\[data-description\] > \.cr-option-list-text \{ display: flex; flex-direction: column; \}/);
   assert.match(css, /\.cr-option-list-option > span, \.cr-option-list-text > \*, \.cr-option-list-empty \{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; \}/);
 });
+
+test('a hidden tab scrollbar takes no layout space, so classic scrollbars leave no band under the tabs', () => {
+  const css = readFileSync(new URL('../src/system/styles.css', import.meta.url), 'utf8');
+  assert.match(css, /\.cr-tab-list:not\(\[data-wheel-scroll\]\) \{ scrollbar-width: none; \}/);
+  assert.doesNotMatch(css, /\.cr-tab-list[^{]*\{[^}]*scrollbar-color: transparent transparent/);
+  const tabs = readFileSync(new URL('../src/system/components.tsx', import.meta.url), 'utf8');
+  assert.match(tabs, /list\.dataset\.classicScrollbar = ''/);
+});

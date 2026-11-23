@@ -1,7 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Plus } from 'lucide-react';
-import { Button, ChipGroup, IconButton, List, SegmentedProgress, Swimlane, SwimlaneGroup, Table, TaskCard, ToggleChip } from '../../src/system';
+import { Button, ChipGroup, IconButton, List, SegmentedProgress, Swimlane, SwimlaneGroup, Table, Tabs, TaskCard, ToggleChip } from '../../src/system';
 import { KanbanBoardRecipe } from '../../src/docs/board-recipes/KanbanBoardRecipe';
 import { CompactBoardRecipe } from '../../src/docs/board-recipes/CompactBoardRecipe';
 import { GroupedTableRecipe } from '../../src/docs/board-recipes/GroupedTableRecipe';
@@ -89,6 +89,12 @@ function Fixture() {
           ]} />
       </div>
       <div data-testid="controls"><Controls /></div>
+      <div data-testid="tabs-overflow" style={{ maxInlineSize: 320 }}>
+        <Tabs label="Overflowing tabs" size="sm" defaultValue="history" items={[
+          { value: 'details', label: 'Details', count: 3 }, { value: 'activity', label: 'Activity', count: 12 },
+          { value: 'files', label: 'Files', count: 4 }, { value: 'history', label: 'History', count: 9 }, { value: 'links', label: 'Links', count: 2 },
+        ].map(item => ({ ...item, content: item.label }))} />
+      </div>
     </main>
   );
 }

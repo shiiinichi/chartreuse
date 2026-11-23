@@ -404,7 +404,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'Each tab button uses the same minimum height as a Button of the corresponding size.' },
       { name: 'className', type: 'string', description: 'Additional classes on the root div.' },
     ],
-    notes: ['When tabs overflow, hold down a tab and drag sideways to scroll the row. Horizontal scrolling with a wheel or trackpad briefly reveals the scrollbar.', 'Arrow keys, Home, and End move focus and selection. Horizontal direction respects RTL.', 'Inactive panels remain mounted and are hidden with the native hidden attribute.', 'Use tabs for views within a page; use links for page navigation.'],
+    notes: ['When tabs overflow, hold down a tab and drag sideways to scroll the row. The scrollbar is hidden and takes no space. Horizontal scrolling with a wheel or trackpad briefly reveals it where scrollbars overlay the content (macOS defaults). Classic scrollbars (Windows, or "always show scrollbars") stay hidden so the row never grows or leaves a band under the tabs.', 'Arrow keys, Home, and End move focus and selection. Horizontal direction respects RTL.', 'Inactive panels remain mounted and are hidden with the native hidden attribute.', 'Use tabs for views within a page; use links for page navigation.'],
   },
   {
     name: 'Card',

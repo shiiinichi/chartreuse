@@ -248,19 +248,17 @@
   .cr-progress-description > :last-child { margin-block-end: 0; }
   .cr-tabs { min-inline-size: 0; }
   .cr-tab-list { display: flex; align-items: center; gap: 1.25rem; border-block-end: 1px solid var(--cr-color-border); overflow-x: auto; scrollbar-width: thin; padding: 3px; }
-  /* Keep the scrollbar's space while it is hidden. */
-  .cr-tab-list:not([data-wheel-scroll]) { scrollbar-color: transparent transparent; }
+  /* The scrollbar is hidden and takes no space. A horizontal wheel scroll reveals it only where scrollbars overlay
+     the content; classic scrollbars (Windows, or "always show scrollbars") would push the row taller, so they stay hidden. */
+  .cr-tab-list:not([data-wheel-scroll]) { scrollbar-width: none; }
+  .cr-tab-list[data-wheel-scroll] { scrollbar-color: var(--cr-color-input-border) transparent; }
   .cr-tab-list[data-drag-scroll] { -webkit-user-select: none; user-select: none; }
   .cr-tab-list[data-drag-scroll='active'] { cursor: grabbing; }
   .cr-tab-list[data-drag-scroll='active'] > button { cursor: inherit; }
-  @supports not (scrollbar-color: transparent transparent) {
-    .cr-tab-list { scrollbar-width: auto; }
+  @supports not (scrollbar-width: none) {
+    .cr-tab-list:not([data-wheel-scroll])::-webkit-scrollbar { display: none; }
     .cr-tab-list::-webkit-scrollbar { height: 6px; background: transparent; }
-    .cr-tab-list::-webkit-scrollbar-thumb { border-radius: var(--cr-radius-full); background: transparent; }
-    .cr-tab-list[data-wheel-scroll]::-webkit-scrollbar-thumb { background: var(--cr-color-input-border); }
-  }
-  @media (forced-colors: active) {
-    .cr-tab-list:not([data-wheel-scroll]) { scrollbar-width: none; }
+    .cr-tab-list::-webkit-scrollbar-thumb { border-radius: var(--cr-radius-full); background: var(--cr-color-input-border); }
   }
   .cr-tab-list > button { display: inline-flex; position: relative; flex: 0 0 auto; align-items: center; justify-content: center; gap: .5rem; border: 0; padding: .25rem .125rem; background: transparent; color: var(--cr-color-muted); font-weight: 500; }
   .cr-tab-list > button[aria-selected='true'] { color: var(--cr-color-text); }

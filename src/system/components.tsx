@@ -198,7 +198,17 @@ export function Tabs({ items, label, defaultValue, value, onValueChange, variant
     if (!horizontal || event.ctrlKey || list.dataset.dragScroll === 'active' || list.scrollWidth <= list.clientWidth) return;
 
     if (wheelScrollbar.current) window.clearTimeout(wheelScrollbar.current.timer);
-    else list.dataset.wheelScroll = 'true';
+    else {
+      if (list.dataset.classicScrollbar !== undefined) return;
+      // Classic scrollbars take layout space. If revealing one makes the row taller, keep it hidden.
+      const height = list.offsetHeight;
+      list.dataset.wheelScroll = 'true';
+      if (list.offsetHeight !== height) {
+        delete list.dataset.wheelScroll;
+        list.dataset.classicScrollbar = '';
+        return;
+      }
+    }
     wheelScrollbar.current = { list, timer: window.setTimeout(hideWheelScrollbar, TAB_WHEEL_SCROLLBAR_MS) };
   };
 
