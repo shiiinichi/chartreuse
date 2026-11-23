@@ -7,14 +7,14 @@ export interface ComponentGroup {
 }
 
 export const componentGroups: readonly ComponentGroup[] = [
-  { name: 'Actions', components: ['Button', 'IconButton', 'ButtonSelect'] },
+  { name: 'Actions', components: ['Button', 'IconButton', 'ButtonSelect', 'ToggleChip', 'ChipGroup'] },
   {
     name: 'Forms',
     // SegmentedControl is a native radio group with a label, hint, error, and form submission, so it sits with the inputs.
     components: ['TextField', 'TextArea', 'Select', 'Autocomplete', 'SegmentedControl', 'Checkbox', 'Switch', 'NumberInput', 'Slider',
       'PathSelector', 'FilePicker', 'Form', 'FormLayout', 'Fieldset', 'MessageComposer'],
   },
-  { name: 'Feedback', components: ['Alert', 'CalloutBanner', 'Badge', 'Progress', 'Spinner', 'Skeleton', 'EmptyState', 'ToastProvider'] },
+  { name: 'Feedback', components: ['Alert', 'CalloutBanner', 'Badge', 'Progress', 'SegmentedProgress', 'Spinner', 'Skeleton', 'EmptyState', 'ToastProvider'] },
   {
     name: 'Content',
     components: ['Text', 'Card', 'Divider', 'Avatar', 'AvatarGroup', 'BrandMark', 'Blockquote', 'MarkdownRenderer', 'Disclosure', 'List',
@@ -27,7 +27,7 @@ export const componentGroups: readonly ComponentGroup[] = [
     name: 'Layout',
     // PagePanel is a full-height section with a persistent header and scrolling body, not a navigation control.
     components: ['Grid', 'GridItem', 'GridSpacer', 'Flex', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'WorkspaceLayout',
-      'WorkspaceContent', 'PagePanel', 'Swimlane'],
+      'WorkspaceContent', 'PagePanel', 'Swimlane', 'SwimlaneGroup'],
   },
   { name: 'Agents', components: ['AgentActivity', 'AgentCard', 'Conversation', 'TaskCard'] },
 ];

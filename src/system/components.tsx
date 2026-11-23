@@ -5,6 +5,7 @@ import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip 
 import type { ControlSize } from './control-size';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
+import type { CategoryColor } from './tokens';
 import { Tooltip } from './Tooltip';
 import { Text } from './Text';
 
@@ -15,8 +16,8 @@ export type Tone = 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 const cx = (...names: (string | undefined | false)[]) => names.filter(Boolean).join(' ');
 
 export interface ButtonProps extends ComponentPropsWithRef<'button'> {
-  /** Visual emphasis. 'link' renders the button as inline link text with no padding or background. */
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'link';
+  /** Visual emphasis. 'link' renders the button as inline link text with no padding or background. 'dashed' draws a muted dashed outline for add or placeholder actions. */
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'link' | 'dashed';
   size?: ControlSize;
   icon?: IconSource;
   iconRight?: IconSource;
@@ -45,9 +46,11 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: 'soft' | 'ghost';
   dot?: boolean;
   icon?: IconSource;
+  /** Categorical color for the text, dot, and soft background. Overrides tone for color only. */
+  accent?: CategoryColor;
 }
-export function Badge({ children, tone = 'neutral', variant = 'soft', dot, icon, className, ...props }: BadgeProps) {
-  return <span {...props} className={cx('cr-badge', className)} data-tone={tone} data-variant={variant}>{icon ? renderIcon(icon, { size: 12 }) : dot && <span className="cr-status-dot" aria-hidden="true" />}{children}</span>;
+export function Badge({ children, tone = 'neutral', variant = 'soft', dot, icon, accent, className, ...props }: BadgeProps) {
+  return <span {...props} className={cx('cr-badge', className)} data-tone={tone} data-variant={variant} data-accent={accent}>{icon ? renderIcon(icon, { size: 12 }) : dot && <span className="cr-status-dot" aria-hidden="true" />}{children}</span>;
 }
 
 export interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'size'> {
@@ -123,20 +126,24 @@ export function AvatarGroup({ names, items, max = 3 }: AvatarGroupProps) {
   return <span className="cr-avatar-group">{entries.slice(0, max).map((item, i) => <Avatar key={`${i}:${item.name}`} name={item.name} icon={item.icon} color={palette[i % 4]} size="sm" />)}{entries.length > max && <span className="cr-avatar cr-avatar-more" role="img" aria-label={`${entries.length - max} more people`}>+{entries.length - max}</span>}</span>;
 }
 
+/** Track height shared by Progress and SegmentedProgress: sm 4px, md 6px, lg 8px. */
+export type ProgressSize = 'sm' | 'md' | 'lg';
 export interface ProgressProps extends Omit<ComponentPropsWithRef<'progress'>, 'value' | 'max'> {
   value: number;
   label: string;
   max?: number;
+  /** Track height: sm 4px, md 6px, lg 8px. Defaults to 'sm'. */
+  size?: ProgressSize;
   showLabel?: boolean;
   valueText?: string;
   description?: ReactNode;
 }
-export function Progress({ value, label, max = 100, showLabel = false, valueText, description, className, id: suppliedId, 'aria-describedby': describedBy, 'aria-valuetext': accessibleValueText, ...props }: ProgressProps) {
+export function Progress({ value, label, max = 100, size = 'sm', showLabel = false, valueText, description, className, id: suppliedId, 'aria-describedby': describedBy, 'aria-valuetext': accessibleValueText, ...props }: ProgressProps) {
   const generatedId = useId();
   const id = suppliedId || generatedId;
   const hasValueText = valueText !== undefined && valueText !== '';
   const hasDescription = description !== undefined && description !== null && description !== false && description !== '';
-  const bar = <progress {...props} id={id} className={cx('cr-progress', className)} value={value} max={max} aria-label={props['aria-label'] ?? label} aria-valuetext={accessibleValueText ?? (hasValueText ? valueText : undefined)} aria-describedby={[describedBy, hasDescription && `${generatedId}-description`].filter(Boolean).join(' ') || undefined} />;
+  const bar = <progress {...props} id={id} className={cx('cr-progress', className)} data-size={size === 'sm' ? undefined : size} value={value} max={max} aria-label={props['aria-label'] ?? label} aria-valuetext={accessibleValueText ?? (hasValueText ? valueText : undefined)} aria-describedby={[describedBy, hasDescription && `${generatedId}-description`].filter(Boolean).join(' ') || undefined} />;
   if (!showLabel && !hasValueText && !hasDescription) return bar;
   return <div className="cr-progress-group">{(showLabel || hasValueText) && <div className="cr-progress-heading">{showLabel && <label className="cr-progress-label" htmlFor={id}>{label}</label>}{hasValueText && <span className="cr-progress-value">{valueText}</span>}</div>}{bar}{hasDescription && <div className="cr-progress-description" id={`${generatedId}-description`}>{description}</div>}</div>;
 }
@@ -506,45 +513,80 @@ export function Breadcrumbs({
 }
 
 export interface TaskCardDependencies { completed: number; total: number }
-export interface TaskCardProps {
+/** The built-in TaskCard statuses with their own labels and tones. */
+export type TaskCardStatus = 'todo' | 'in-progress' | 'review' | 'done';
+type LegacyTaskStatus = TaskCardStatus;
+export interface TaskCardProps extends Omit<HTMLAttributes<HTMLElement>, 'title' | 'onClick' | 'children'> {
   taskId: string;
   title: string;
   description?: string;
-  status?: 'todo' | 'in-progress' | 'review' | 'done';
+  /** Status key. The four legacy keys keep their labels and tones; any other string is shown as its own label with a neutral tone. */
+  status?: LegacyTaskStatus | (string & {});
+  /** Visible status text. Defaults to the legacy label, or to status itself. */
+  statusLabel?: string;
+  /** Status badge tone. Defaults to the legacy tone, or neutral. */
+  statusTone?: Tone;
+  /** Categorical color for the status badge. Overrides tone for color only. */
+  statusAccent?: CategoryColor;
+  /** Hide the status badge, for example when the surrounding lane already names the status. Defaults to false. */
+  hideStatus?: boolean;
   priority?: 'low' | 'medium' | 'high';
   branch?: string;
   completed?: number;
   total?: number;
+  /** Show checklist progress as text or as a 5px bar (4px in compact). Defaults to 'text', or 'bar' when density is compact. */
+  progressDisplay?: 'text' | 'bar';
   dependencies?: TaskCardDependencies;
   relatedCount?: number;
   commentCount?: number;
   attachmentCount?: number;
   hideMetadataLabels?: boolean;
   assignees?: string[];
+  /** Clamp the description to this many lines. Unset leaves it unclamped. */
+  descriptionLines?: number;
+  /** Mark the task as finished: a check icon and muted title, with "Completed" for assistive technology. Defaults to false. */
+  completedState?: boolean;
+  /** Render the main action as a link to this URL. */
+  href?: string;
+  /** Mark the card as the current selection with aria-current and an active border. Defaults to false. */
+  selected?: boolean;
+  /** 'compact' is a dense board card: no description, high priority only, icon-only metadata. Defaults to 'default'. */
+  density?: 'default' | 'compact';
   onClick?: () => void;
 }
-export function TaskCard({ taskId, title, description, status = 'todo', priority = 'medium', branch, completed = 0, total = 0, dependencies, relatedCount, commentCount, attachmentCount, hideMetadataLabels = false, assignees = [], onClick }: TaskCardProps) {
+export function TaskCard({
+  taskId, title, description, status = 'todo', statusLabel, statusTone, statusAccent, hideStatus = false, priority = 'medium', branch, completed = 0, total = 0,
+  progressDisplay, dependencies, relatedCount, commentCount, attachmentCount, hideMetadataLabels = false, assignees = [], descriptionLines, completedState = false,
+  href, selected = false, density = 'default', onClick, className, ...rest
+}: TaskCardProps) {
   const metadataId = useId();
-  const actionButton = useRef<HTMLButtonElement>(null);
-  const tone: Tone = status === 'done' ? 'success' : status === 'review' ? 'warning' : status === 'in-progress' ? 'info' : 'neutral';
-  const labels = { todo: 'To do', 'in-progress': 'In progress', review: 'In review', done: 'Done' };
+  const actionButton = useRef<HTMLButtonElement & HTMLAnchorElement>(null);
+  const compact = density === 'compact';
+  const legacyTones: Record<LegacyTaskStatus, Tone> = { todo: 'neutral', 'in-progress': 'info', review: 'warning', done: 'success' };
+  const labels: Record<LegacyTaskStatus, string> = { todo: 'To do', 'in-progress': 'In progress', review: 'In review', done: 'Done' };
+  const isLegacy = (value: string): value is LegacyTaskStatus => Object.prototype.hasOwnProperty.call(labels, value);
+  const tone: Tone = statusTone ?? (isLegacy(status) ? legacyTones[status] : 'neutral');
+  const label = statusLabel ?? (isLegacy(status) ? labels[status] : status);
   const count = (value: number) => Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
   const checklistTotal = count(total);
   const checklistCompleted = Math.min(count(completed), checklistTotal);
-  const metadata: { key: string; icon: ReactNode; value: number | string; label: string; description: string }[] = [];
+  const showBar = (progressDisplay ?? (compact ? 'bar' : 'text')) === 'bar';
+  const iconSize = compact ? 11 : undefined;
+  const metadata: { key: string; icon: ReactNode; value: number | string; label: string; description: string; bar?: number }[] = [];
   if (checklistTotal > 0) metadata.push({
     key: 'checklist',
-    icon: <CheckCheck size={14} aria-hidden="true" />,
+    icon: <CheckCheck size={iconSize ?? 14} aria-hidden="true" />,
     value: `${checklistCompleted}/${checklistTotal}`,
     label: 'checklist',
     description: `${checklistCompleted} of ${checklistTotal} checklist ${checklistTotal === 1 ? 'item' : 'items'} complete.`,
+    bar: showBar ? checklistCompleted / checklistTotal : undefined,
   });
   if (dependencies) {
     const dependencyTotal = count(dependencies.total);
     const dependencyCompleted = Math.min(count(dependencies.completed), dependencyTotal);
     metadata.push({
       key: 'dependencies',
-      icon: <Network size={13} aria-hidden="true" />,
+      icon: <Network size={iconSize ?? 13} aria-hidden="true" />,
       value: dependencyTotal ? `${dependencyCompleted}/${dependencyTotal}` : 0,
       label: 'deps',
       description: dependencyTotal ? `${dependencyCompleted} of ${dependencyTotal} ${dependencyTotal === 1 ? 'dependency' : 'dependencies'} complete.` : '0 dependencies.',
@@ -552,43 +594,75 @@ export function TaskCard({ taskId, title, description, status = 'todo', priority
   }
   if (relatedCount !== undefined) {
     const related = count(relatedCount);
-    metadata.push({ key: 'related', icon: <TaskRelatedIcon size={13} aria-hidden="true" />, value: related, label: 'related', description: `${related} related ${related === 1 ? 'card' : 'cards'}.` });
+    metadata.push({ key: 'related', icon: <TaskRelatedIcon size={iconSize ?? 13} aria-hidden="true" />, value: related, label: 'related', description: `${related} related ${related === 1 ? 'card' : 'cards'}.` });
   }
   if (commentCount !== undefined) {
     const comments = count(commentCount);
     const label = comments === 1 ? 'comment' : 'comments';
-    metadata.push({ key: 'comments', icon: <TaskCommentsIcon size={13} aria-hidden="true" />, value: comments, label, description: `${comments} ${label}.` });
+    metadata.push({ key: 'comments', icon: <TaskCommentsIcon size={iconSize ?? 13} aria-hidden="true" />, value: comments, label, description: `${comments} ${label}.` });
   }
   if (attachmentCount !== undefined) {
     const attachments = count(attachmentCount);
     const label = attachments === 1 ? 'file' : 'files';
-    metadata.push({ key: 'attachments', icon: <TaskAttachmentsIcon size={13} aria-hidden="true" />, value: attachments, label, description: `${attachments} attached ${label}.` });
+    metadata.push({ key: 'attachments', icon: <TaskAttachmentsIcon size={iconSize ?? 13} aria-hidden="true" />, value: attachments, label, description: `${attachments} attached ${label}.` });
   }
-  return <Card className="cr-task-card" data-has-metadata={metadata.length > 0 || undefined} onClick={onClick && (event => {
-    const target = event.target as Node;
-    const button = actionButton.current;
-    // Clicks from portaled tooltip bubbles also reach this React handler.
-    if (event.defaultPrevented || !button?.matches(':enabled') || !event.currentTarget.contains(target) || button.contains(target)) return;
-    button.focus({ preventScroll: true });
-    onClick();
-  })}>
-    <button ref={actionButton} type="button" className="cr-task-button" onClick={onClick} disabled={!onClick} aria-describedby={metadata.length ? metadataId : undefined}>
-      <span className="cr-task-meta"><span className="cr-mono">{taskId}</span><Badge tone={priority === 'high' ? 'warning' : 'neutral'}>{priority === 'high' && <TriangleAlert size={11} aria-hidden="true" />}{priority.charAt(0).toUpperCase() + priority.slice(1)}</Badge></span>
-      <Text size="heading-3">{title}</Text>{description && <Text size="body">{description}</Text>}{branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
-    </button>
+  const interactive = Boolean(onClick || href);
+  const priorityLabel = priority.charAt(0).toUpperCase() + priority.slice(1);
+  const priorityContent = compact
+    ? priority === 'high' && <span className="cr-task-priority" data-tone="warning"><TriangleAlert size={11} aria-hidden="true" />{priorityLabel}<span className="cr-sr-only"> priority</span></span>
+    : <Badge tone={priority === 'high' ? 'warning' : 'neutral'}>{priority === 'high' && <TriangleAlert size={11} aria-hidden="true" />}{priorityLabel}</Badge>;
+  const actionContent = <>
+    <span className="cr-task-meta">{completedState && <CircleCheck className="cr-task-completed-icon" size={compact ? 12 : 13} aria-hidden="true" />}<span className="cr-mono">{taskId}</span>{completedState && <span className="cr-sr-only">Completed. </span>}{priorityContent}</span>
+    <Text size="heading-3">{title}</Text>
+    {!compact && description && <Text size="body" style={descriptionLines ? { WebkitLineClamp: descriptionLines } : undefined} data-clamp={descriptionLines ? 'true' : undefined}>{description}</Text>}
+    {branch && <span className="cr-task-branch"><GitBranch size={13} aria-hidden="true" />{branch}</span>}
+  </>;
+  const actionProps = {
+    className: 'cr-task-button',
+    onClick,
+    'aria-describedby': metadata.length ? metadataId : undefined,
+    'aria-current': selected ? 'true' as const : undefined,
+  };
+  const showFooter = !hideStatus || assignees.length > 0;
+  const iconOnly = compact || hideMetadataLabels;
+  return <Card
+    {...rest}
+    className={cx('cr-task-card', className)}
+    data-has-metadata={metadata.length > 0 || undefined}
+    data-density={compact ? 'compact' : undefined}
+    data-selected={selected || undefined}
+    data-completed={completedState || undefined}
+    data-href={href ? 'true' : undefined}
+    onClick={interactive ? (event => {
+      const target = event.target as Node;
+      const action = actionButton.current;
+      // Clicks from portaled tooltip bubbles also reach this React handler.
+      if (event.defaultPrevented || !action || (action instanceof HTMLButtonElement && action.disabled) || !event.currentTarget.contains(target) || action.contains(target)) return;
+      action.focus({ preventScroll: true });
+      if (href) action.click(); else onClick?.();
+    }) : undefined}
+  >
+    {href
+      ? <a ref={actionButton} href={href} {...actionProps}>{actionContent}</a>
+      : <button ref={actionButton} type="button" {...actionProps} disabled={!onClick}>{actionContent}</button>}
     {metadata.length > 0 && <ul className="cr-task-metadata" id={metadataId}>
       {metadata.map(item => {
-        const label = `${item.value} ${item.label}`;
-        const content = <>{item.icon}<span aria-hidden="true">{hideMetadataLabels ? item.value : label}</span></>;
-        return <li key={item.key} data-info={item.key} title={hideMetadataLabels ? undefined : item.description}>
-          {hideMetadataLabels ? <Tooltip content={label} aria-label={item.description}>
+        const itemLabel = `${item.value} ${item.label}`;
+        if (item.bar !== undefined) return <li key={item.key} data-info={item.key} data-display="bar" title={item.description}>
+          <span className="cr-task-progress" aria-hidden="true"><span className="cr-task-progress-value" style={{ inlineSize: `${Math.round(item.bar * 100)}%` }} /></span>
+          <span aria-hidden="true">{item.value}</span>
+          <span className="cr-sr-only">{item.description}</span>
+        </li>;
+        const content = <>{item.icon}<span aria-hidden="true">{iconOnly ? item.value : itemLabel}</span></>;
+        return <li key={item.key} data-info={item.key} title={compact ? item.description : undefined}>
+          {hideMetadataLabels && !compact ? <Tooltip content={itemLabel} aria-label={item.description}>
             <span className="cr-task-metadata-trigger" tabIndex={0}>{content}</span>
           </Tooltip> : content}
           <span className="cr-sr-only">{item.description}</span>
         </li>;
       })}
     </ul>}
-    <div className="cr-task-footer"><Badge tone={tone} dot>{labels[status]}</Badge>{assignees.length > 0 && <AvatarGroup names={assignees} />}</div>
+    {showFooter && <div className="cr-task-footer">{hideStatus ? <span /> : <Badge tone={tone} accent={statusAccent} dot>{label}</Badge>}{assignees.length > 0 && <AvatarGroup names={assignees} />}</div>}
   </Card>;
 }
 

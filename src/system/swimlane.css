@@ -1,13 +1,15 @@
 @layer cr-components {
-  .cr-swimlane { --cr-swimlane-accent: var(--cr-color-muted); --cr-swimlane-tint: var(--cr-color-subtle); display: flex; flex-direction: column; box-sizing: border-box; min-inline-size: 0; min-block-size: 360px; border: 1px solid var(--cr-color-border); border-block-start: 3px solid var(--cr-swimlane-accent); border-radius: var(--cr-radius-lg); background: color-mix(in srgb, var(--cr-swimlane-tint) 60%, var(--cr-color-canvas)); color: var(--cr-color-text); font: 400 .8125rem/1.7 var(--cr-font-sans); }
+  .cr-swimlane { --cr-swimlane-accent: var(--cr-color-muted); --cr-swimlane-tint: var(--cr-color-subtle); --cr-swimlane-header-padding-block-start: 12px; --cr-swimlane-collapsed-size: 48px; display: flex; flex-direction: column; box-sizing: border-box; min-inline-size: 0; min-block-size: 360px; border: 1px solid var(--cr-color-border); border-block-start: 3px solid var(--cr-swimlane-accent); border-radius: var(--cr-radius-lg); background: color-mix(in srgb, var(--cr-swimlane-tint) 60%, var(--cr-color-canvas)); color: var(--cr-color-text); font: 400 .8125rem/1.7 var(--cr-font-sans); }
   .cr-swimlane[data-tone='info'] { --cr-swimlane-accent: var(--cr-color-info); --cr-swimlane-tint: var(--cr-color-info-bg); }
   .cr-swimlane[data-tone='warning'] { --cr-swimlane-accent: var(--cr-color-warning); --cr-swimlane-tint: var(--cr-color-warning-bg); }
   .cr-swimlane[data-tone='success'] { --cr-swimlane-accent: var(--cr-color-success); --cr-swimlane-tint: var(--cr-color-success-bg); }
   .cr-swimlane[data-tone='danger'] { --cr-swimlane-accent: var(--cr-color-danger); --cr-swimlane-tint: var(--cr-color-danger-bg); }
-  .cr-swimlane-header { display: flex; align-items: center; flex-wrap: wrap; flex: 0 0 auto; gap: 8px 12px; min-inline-size: 0; padding: 12px 12px 10px; }
-  .cr-swimlane-heading { display: inline-flex; align-items: center; flex: 1 1 auto; gap: 8px; min-inline-size: 0; }
+  .cr-swimlane-header { display: flex; align-items: center; flex-wrap: wrap; flex: 0 0 auto; gap: 8px 12px; min-inline-size: 0; padding: var(--cr-swimlane-header-padding-block-start) 12px 10px; }
+  /* A zero flex basis keeps the action on the first row: the heading takes the remaining width and its title truncates instead. */
+  .cr-swimlane-heading { display: inline-flex; align-items: center; flex: 1 1 0; gap: 8px; min-inline-size: 0; }
   .cr-swimlane-heading > h3 { flex: 0 1 auto; min-inline-size: 0; margin: 0; font-size: inherit; font-weight: 550; line-height: 1.5; }
-  .cr-swimlane-tag { min-inline-size: 0; max-inline-size: 100%; white-space: normal; overflow-wrap: anywhere; line-height: 1.5; }
+  .cr-swimlane-tag { min-inline-size: 0; max-inline-size: 100%; line-height: 1.5; }
+  .cr-swimlane-title { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cr-swimlane-count { display: inline-grid; place-items: center; box-sizing: border-box; flex: 0 0 auto; min-inline-size: 24px; min-block-size: 24px; padding: 2px 6px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-sm); background: var(--cr-color-surface); color: var(--cr-color-muted); font-size: .6875rem; font-variant-numeric: tabular-nums; line-height: 1.5; }
   .cr-swimlane-action { display: flex; align-items: center; flex: 0 0 auto; gap: 8px; margin-inline-start: auto; }
   .cr-swimlane-description { flex: 1 0 100%; min-inline-size: 0; color: var(--cr-color-muted); font-size: 12px; line-height: 1.7; }
@@ -16,5 +18,66 @@
   .cr-swimlane-body > * { min-inline-size: 0; }
   .cr-swimlane-empty { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; min-block-size: 180px; border: 1px dashed var(--cr-color-input-border); border-radius: var(--cr-radius-md); background: color-mix(in srgb, var(--cr-color-surface) 55%, transparent); color: var(--cr-color-muted); }
   .cr-swimlane-empty > p { margin: 0; padding: 20px; text-align: center; font-size: inherit; line-height: 1.8; }
-  @media (forced-colors: active) { .cr-swimlane, .cr-swimlane-count, .cr-swimlane-empty { border-color: CanvasText; } }
+  .cr-swimlane-body[hidden] { display: none; }
+
+  /* Accent: a categorical color overrides the tone for color only. */
+  .cr-swimlane[data-accent] { --cr-swimlane-accent: var(--tone-fg); --cr-swimlane-tint: var(--tone-bg); }
+
+  /* Dot header style. */
+  .cr-swimlane-dot { flex: 0 0 auto; inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--cr-swimlane-accent); }
+  .cr-swimlane[data-header-style='dot'] .cr-swimlane-heading > h3 { font-size: .875rem; font-weight: 650; line-height: 1.5; }
+  .cr-swimlane[data-header-style='dot'] .cr-swimlane-count { border-radius: var(--cr-radius-full); }
+
+  /* Collapsible lanes: the header action aligns to the top padding so it matches the collapsed rail. */
+  .cr-swimlane[data-collapsible] { transition: flex-basis 150ms ease, inline-size 150ms ease, min-inline-size 150ms ease; }
+  .cr-swimlane[data-collapsible] > .cr-swimlane-header { align-items: flex-start; }
+  .cr-swimlane[data-collapsible] > .cr-swimlane-header > .cr-swimlane-heading { min-block-size: 32px; }
+  .cr-swimlane[data-collapsible] > .cr-swimlane-header > .cr-swimlane-action { min-block-size: 32px; }
+  .cr-swimlane[data-collapsed='true'] { flex: 0 0 var(--cr-swimlane-collapsed-size); inline-size: var(--cr-swimlane-collapsed-size); min-inline-size: var(--cr-swimlane-collapsed-size); max-inline-size: var(--cr-swimlane-collapsed-size); border: 1px dashed var(--cr-color-input-border); background: transparent; }
+  .cr-swimlane-rail { display: flex; flex-direction: column; align-items: center; flex: 1 1 auto; gap: 8px; min-block-size: 0; box-sizing: border-box; /* The expanded card has a 3px top border, the rail 1px: add the 2px difference so the action tops match. */ padding: calc(var(--cr-swimlane-header-padding-block-start) + 2px) 0 12px; }
+  .cr-swimlane-rail > .cr-swimlane-action { flex-direction: column; margin: 0; }
+  .cr-swimlane-toggle { position: relative; display: flex; align-items: center; gap: 8px; box-sizing: border-box; min-inline-size: 32px; padding: 10px 4px; border: 0; border-radius: var(--cr-radius-md); background: transparent; color: var(--cr-color-text); font: 600 .8125rem/1.3 var(--cr-font-sans); writing-mode: vertical-rl; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .cr-swimlane-toggle:hover { background: var(--cr-color-subtle); }
+  .cr-swimlane-toggle-title { overflow-wrap: anywhere; }
+  .cr-swimlane-toggle > .cr-swimlane-count { writing-mode: horizontal-tb; border-radius: var(--cr-radius-full); }
+  .cr-swimlane[data-collapsed='true'][data-drop-target='true'] { border-color: var(--cr-swimlane-accent); background: color-mix(in srgb, var(--cr-swimlane-tint) 80%, transparent); }
+
+  /* Flush variant: no own surface, for use inside a SwimlaneGroup or another surface. */
+  .cr-swimlane[data-variant='flush'] { min-block-size: 0; border: 0; border-radius: 0; background: transparent; }
+  .cr-swimlane[data-variant='flush'] .cr-swimlane-rail { padding-block-start: var(--cr-swimlane-header-padding-block-start); }
+
+  /* Compact density. */
+  .cr-swimlane[data-density='compact'] > .cr-swimlane-header { padding: var(--cr-swimlane-header-padding-block-start) 10px 10px 14px; }
+  .cr-swimlane[data-density='compact'] > .cr-swimlane-body { gap: 6px; padding: 0 8px 8px; }
+
+  /* SwimlaneGroup. */
+  .cr-swimlane-group { box-sizing: border-box; min-inline-size: 0; }
+  /* position: relative makes the scroller the containing block of absolutely positioned descendants (such as visually hidden text), so they are clipped with it and cannot widen the page. */
+  .cr-swimlane-group-scroll { position: relative; display: flex; align-items: stretch; min-inline-size: 0; overflow-x: auto; overscroll-behavior-inline: contain; }
+  .cr-swimlane-group-scroll > .cr-swimlane { flex: 1 0 168px; }
+  .cr-swimlane-group-scroll > .cr-swimlane[data-collapsed='true'] { flex: 0 0 var(--cr-swimlane-collapsed-size); }
+  .cr-swimlane-group[data-lane-width='fixed'] > .cr-swimlane-group-scroll > .cr-swimlane:not([data-collapsed='true']) { flex: 0 0 var(--cr-swimlane-lane-width); inline-size: var(--cr-swimlane-lane-width); }
+  .cr-swimlane-group[data-variant='separate'] > .cr-swimlane-group-scroll { gap: 12px; }
+  .cr-swimlane-group[data-variant='surface'] { border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); background: var(--cr-color-surface); overflow: hidden; }
+  .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > .cr-swimlane { min-block-size: 0; border: 0; border-radius: 0; background: transparent; }
+  .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > * + * { border-inline-start: 1px solid var(--cr-color-border); }
+  .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > .cr-swimlane > .cr-swimlane-header { border-block-end: 1px solid var(--cr-color-border); background: var(--cr-color-subtle); }
+  .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > .cr-swimlane > .cr-swimlane-body { padding-block-start: 8px; }
+  .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > .cr-swimlane[data-density='compact'] > .cr-swimlane-body { padding: 8px; }
+  .cr-swimlane-group[data-variant='surface'] .cr-swimlane-rail { padding-block-start: var(--cr-swimlane-header-padding-block-start); }
+  .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > .cr-swimlane[data-drop-target='true'] { background: color-mix(in srgb, var(--cr-swimlane-tint) 80%, transparent); box-shadow: inset 0 0 0 1px var(--cr-swimlane-accent); }
+
+  @media (pointer: coarse) {
+    .cr-swimlane-toggle { min-inline-size: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cr-swimlane[data-collapsible] { transition: none; }
+  }
+  @media (forced-colors: active) {
+    .cr-swimlane, .cr-swimlane-count, .cr-swimlane-empty { border-color: CanvasText; }
+    .cr-swimlane-group[data-variant='surface'], .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > * + *, .cr-swimlane-group[data-variant='surface'] > .cr-swimlane-group-scroll > .cr-swimlane > .cr-swimlane-header { border-color: CanvasText; }
+    .cr-swimlane-dot { background: CanvasText; }
+    .cr-swimlane-toggle { color: ButtonText; }
+    .cr-swimlane[data-drop-target='true'] { border-color: Highlight; border-style: solid; }
+  }
 }

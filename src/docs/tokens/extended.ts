@@ -98,20 +98,47 @@ const sliderHooks: TokenDefinition[] = [
   },
 ];
 
+function toneAccentAliases(file: string, selector: string): TokenDefinition[] {
+  const cats = Array.from({ length: 8 }, (_, index) => `cat-${index + 1}`);
+  return (['fg', 'bg'] as const).map(part => ({
+    name: `--tone-${part}`, type: 'color',
+    defaultValue: part === 'fg' ? 'var(--cr-color-muted)' : 'Not assigned for neutral tone',
+    description: `Local ${part === 'fg' ? 'dot and fill' : 'tinted surface'} color selected by tone or accent.`,
+    source: part === 'fg' ? { file: systemFile(file), selector: `:where(${selector})` } : { file: systemFile('styles.css'), selector: "[data-accent='cat-1']" },
+    sources: cats.map(cat => ({ file: systemFile('styles.css'), selector: `[data-accent='${cat}']`, detail: `var(--cr-color-${cat}${part === 'bg' ? '-bg' : ''})` })),
+    references: part === 'fg' ? ['--cr-color-muted'] : cats.map(cat => `--cr-color-${cat}-bg`),
+    notes: ['Use tone or accent. accent overrides tone for color only.'],
+  }));
+}
+
 const swimlaneHooks: TokenDefinition[] = [
   {
     name: '--cr-swimlane-accent', description: 'Top border color for the lane.', type: 'color', defaultValue: 'var(--cr-color-muted)',
     source: { file: systemFile('swimlane.css'), selector: '.cr-swimlane' },
     sources: ['info', 'warning', 'success', 'danger'].map(tone => ({ file: systemFile('swimlane.css'), selector: `.cr-swimlane[data-tone='${tone}']`, detail: `Assigns var(--cr-color-${tone}).` })),
     references: names('color-muted color-info color-warning color-success color-danger'),
-    notes: ['A local tone alias; use tone for the built-in palette, or override the same lane element for a custom accent. The header Badge has its own tone aliases.'],
+    notes: ['A local tone alias; use tone for the built-in palette, or accent for a categorical color (.cr-swimlane[data-accent] assigns var(--tone-fg)). Prefer accent over overriding this variable. The header Badge has its own tone aliases.'],
   },
   {
     name: '--cr-swimlane-tint', description: 'Tint mixed at 60% with the shared canvas color for the lane background.', type: 'color', defaultValue: 'var(--cr-color-subtle)',
     source: { file: systemFile('swimlane.css'), selector: '.cr-swimlane' },
     sources: ['info', 'warning', 'success', 'danger'].map(tone => ({ file: systemFile('swimlane.css'), selector: `.cr-swimlane[data-tone='${tone}']`, detail: `Assigns var(--cr-color-${tone}-bg).` })),
     references: names('color-subtle color-info-bg color-warning-bg color-success-bg color-danger-bg'),
-    notes: ['The 60% mix and 3px top-border width are literal CSS, not additional design-token hooks.'],
+    notes: ['accent assigns var(--tone-bg), the categorical -bg token, through .cr-swimlane[data-accent].', 'The 60% mix and 3px top-border width are literal CSS, not additional design-token hooks.'],
+  },
+  {
+    name: '--cr-swimlane-header-padding-block-start', description: 'Top padding shared by the expanded header and the collapsed rail, so header actions line up across expanded and collapsed lanes.', type: 'length', defaultValue: '12px',
+    source: { file: systemFile('swimlane.css'), selector: '.cr-swimlane' },
+    sources: [
+      { file: systemFile('swimlane.css'), selector: '.cr-swimlane-header', detail: 'Header top padding.' },
+      { file: systemFile('swimlane.css'), selector: '.cr-swimlane-rail', detail: 'Rail top padding, plus 2px for the card variant so the 3px expanded and 1px collapsed top borders align.' },
+    ],
+    notes: ['Override on the lane, or on each lane in a group, to keep actions aligned.'],
+  },
+  {
+    name: '--cr-swimlane-collapsed-size', description: 'Inline size of a collapsed lane rail.', type: 'length', defaultValue: '48px',
+    source: { file: systemFile('swimlane.css'), selector: '.cr-swimlane' },
+    sources: [{ file: systemFile('swimlane.css'), selector: ".cr-swimlane[data-collapsed='true']", detail: 'Fixes flex-basis and inline size while collapsed.' }],
   },
 ];
 
@@ -316,7 +343,26 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
   {
     component: 'Swimlane', componentTokens: swimlaneHooks,
     globalTokens: names('color-muted color-subtle color-border radius-lg color-canvas color-text font-sans color-info color-info-bg color-warning color-warning-bg color-success color-success-bg color-danger color-danger-bg radius-sm color-surface color-input-border radius-md').sort(),
-    notes: ['swimlane.css declares two lane-scoped tone aliases; override the same element for a custom palette or use tone for the built-in mappings. Its instantiated Badge adds the shared small-radius/font/status palette.', 'Lane minimum heights, header/card gaps, count size, top-border width, and padding are literal CSS. Supplied cards/actions/empty content have independent component token contracts.'],
+    notes: ['swimlane.css declares two lane-scoped tone aliases; use tone or accent rather than overriding them. Its instantiated Badge adds the shared small-radius/font/status palette.', 'Lane minimum heights, header/card gaps, count size, top-border width, and padding are literal CSS. Supplied cards/actions/empty content have independent component token contracts.'],
+  },
+  {
+    component: 'SwimlaneGroup', componentTokens: [],
+    globalTokens: names('color-border color-surface color-subtle radius-lg').sort(),
+    notes: ['The surface variant joins lanes on one bordered surface with 1px dividers and subtle headers; the separate variant spaces card lanes 12px apart.', 'Expanded lanes use flex: 1 0 168px and collapsed lanes take --cr-swimlane-collapsed-size. The row scrolls inside its own box when lanes do not fit.'],
+  },
+  {
+    component: 'ToggleChip', componentTokens: toneAccentAliases('toggle-chip.css', '.cr-toggle-chip'),
+    globalTokens: names('color-muted color-text color-subtle color-surface color-border color-input-border color-active-border radius-full font-sans color-cat-1 color-cat-1-bg color-cat-2 color-cat-2-bg color-cat-3 color-cat-3-bg color-cat-4 color-cat-4-bg color-cat-5 color-cat-5-bg color-cat-6 color-cat-6-bg color-cat-7 color-cat-7-bg color-cat-8 color-cat-8-bg').sort(),
+    notes: ['Dot color comes from tone or accent. Neutral chips use the muted color.', 'Sizes are 32px (md) and 30px (sm), growing to 44px on coarse pointers. Pressed chips add an active border and inset ring, never color alone.'],
+  },
+  {
+    component: 'ChipGroup', componentTokens: [], globalTokens: [],
+    notes: ['A role=group wrapper with 4px row and 6px column gaps. Chip styling comes from ToggleChip.'],
+  },
+  {
+    component: 'SegmentedProgress', componentTokens: toneAccentAliases('segmented-progress.css', '.cr-segmented-progress-segment'),
+    globalTokens: names('color-subtle color-muted radius-full font-sans color-cat-1 color-cat-1-bg color-cat-2 color-cat-2-bg color-cat-3 color-cat-3-bg color-cat-4 color-cat-4-bg color-cat-5 color-cat-5-bg color-cat-6 color-cat-6-bg color-cat-7 color-cat-7-bg color-cat-8 color-cat-8-bg').sort(),
+    notes: ['The track is 8px (md) or 6px (sm) with 2px gaps. Zero-value segments render no width but keep their legend chip.', 'The legend reuses ToggleChip styling.'],
   },
   {
     component: 'NumberInput', componentTokens: [], globalTokens: globals(fieldGlobals, names('color-border color-subtle duration-fast')),

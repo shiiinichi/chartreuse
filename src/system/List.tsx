@@ -16,8 +16,12 @@ export interface ListItem {
   leading?: ReactNode;
   /** Colors the marker or icon. */
   tone?: Tone;
-  /** End-aligned content, such as a Badge, a count, or a small action. */
+  /** End-aligned content, such as a Badge, a count, or a small action. Keep it non-interactive when href or onClick is set. */
   trailing?: ReactNode;
+  /** Make the whole item a link: the title becomes the link and the item is the hit area. */
+  href?: string;
+  /** Make the whole item a button: the title becomes the button and the item is the hit area. */
+  onClick?: () => void;
 }
 
 export interface ListProps extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'role'> {
@@ -57,10 +61,14 @@ export function List({ items, ordered = false, marker = 'auto', start, size = 'm
       const leading = hasNode(item.leading) ? item.leading : null;
       const icon = leading ? null : renderIcon(item.icon, { size: size === 'sm' ? 14 : 16 });
       const media = leading ? 'leading' : icon ? 'icon' : undefined;
-      return <li key={item.id} className="cr-list-item" data-tone={item.tone ?? 'neutral'} data-media={media}>
+      const title = item.href !== undefined
+        ? <a className="cr-list-link" href={item.href} onClick={item.onClick}>{item.title}</a>
+        : item.onClick ? <button type="button" className="cr-list-link" onClick={item.onClick}>{item.title}</button> : item.title;
+      const interactive = item.href !== undefined || Boolean(item.onClick);
+      return <li key={item.id} className="cr-list-item" data-tone={item.tone ?? 'neutral'} data-media={media} data-interactive={interactive || undefined}>
         {(media || marker !== 'none') && <span className={leading ? 'cr-list-marker cr-list-leading' : 'cr-list-marker'} aria-hidden="true">{leading ?? icon}</span>}
         <div className="cr-list-content">
-          <div className="cr-list-title">{item.title}</div>
+          <div className="cr-list-title">{title}</div>
           {hasNode(item.description) && <div className="cr-list-description">{item.description}</div>}
         </div>
         {hasNode(item.trailing) && <div className="cr-list-trailing">{item.trailing}</div>}

@@ -59,6 +59,22 @@
     --cr-color-warning-bg: light-dark(#f8edcf, #493f27);
     --cr-color-danger: light-dark(#992b3d, #f1adba);
     --cr-color-danger-bg: light-dark(#f9e9ea, #492d35);
+    --cr-color-cat-1: light-dark(#603394, #e4d6fe);
+    --cr-color-cat-1-bg: light-dark(#f3edff, #392950);
+    --cr-color-cat-2: light-dark(#a53377, #f89ccc);
+    --cr-color-cat-2-bg: light-dark(#ffe9f3, #4d213a);
+    --cr-color-cat-3: light-dark(#015b60, #b0eaee);
+    --cr-color-cat-3-bg: light-dark(#e4f4f5, #1b383a);
+    --cr-color-cat-4: light-dark(#a04911, #f3aa86);
+    --cr-color-cat-4-bg: light-dark(#feece3, #4b2916);
+    --cr-color-cat-5: light-dark(#415165, #d1e0f1);
+    --cr-color-cat-5-bg: light-dark(#ecf1f6, #2d333c);
+    --cr-color-cat-6: light-dark(#3163b5, #97bfff);
+    --cr-color-cat-6-bg: light-dark(#e8f1ff, #1f3353);
+    --cr-color-cat-7: light-dark(#305d0d, #c5ecb1);
+    --cr-color-cat-7-bg: light-dark(#e9f4e3, #27391d);
+    --cr-color-cat-8: light-dark(#835f0b, #d6ba85);
+    --cr-color-cat-8-bg: light-dark(#f8efe0, #3e3116);
   }
   :root:has(> head > meta[name='color-scheme'][content='light']) { color-scheme: light; }
   :root:has(> head > meta[name='color-scheme'][content='dark']) { color-scheme: dark; }
@@ -94,6 +110,8 @@
   .cr-button[data-variant='danger'] { --button-bg: var(--cr-color-danger); --button-fg: var(--cr-color-surface); }
   .cr-button:hover:not(:disabled) { background: color-mix(in srgb, var(--button-bg) 88%, var(--button-fg)); box-shadow: var(--cr-shadow-sm); }
   .cr-button[data-variant='ghost']:hover:not(:disabled) { background: var(--cr-color-subtle); box-shadow: none; }
+  .cr-button[data-variant='dashed'] { --button-bg: transparent; --button-fg: var(--cr-color-muted); border: 1px dashed var(--cr-color-input-border); }
+  .cr-button[data-variant='dashed']:hover:not(:disabled) { background: var(--cr-color-subtle); color: var(--cr-color-text); box-shadow: none; }
   .cr-button:is([aria-pressed='true'], [aria-current='page'], [aria-current='true']) {
     --button-bg: var(--cr-color-active);
     --button-fg: var(--cr-color-on-active);
@@ -135,6 +153,16 @@
   [data-tone='warning'] { --tone-fg: var(--cr-color-warning); --tone-bg: var(--cr-color-warning-bg); }
   [data-tone='danger'] { --tone-fg: var(--cr-color-danger); --tone-bg: var(--cr-color-danger-bg); }
   :where(.cr-badge, .cr-alert)[data-tone]:not([data-tone='neutral']) { color: var(--tone-fg); background: var(--tone-bg); }
+  [data-accent='cat-1'] { --tone-fg: var(--cr-color-cat-1); --tone-bg: var(--cr-color-cat-1-bg); }
+  [data-accent='cat-2'] { --tone-fg: var(--cr-color-cat-2); --tone-bg: var(--cr-color-cat-2-bg); }
+  [data-accent='cat-3'] { --tone-fg: var(--cr-color-cat-3); --tone-bg: var(--cr-color-cat-3-bg); }
+  [data-accent='cat-4'] { --tone-fg: var(--cr-color-cat-4); --tone-bg: var(--cr-color-cat-4-bg); }
+  [data-accent='cat-5'] { --tone-fg: var(--cr-color-cat-5); --tone-bg: var(--cr-color-cat-5-bg); }
+  [data-accent='cat-6'] { --tone-fg: var(--cr-color-cat-6); --tone-bg: var(--cr-color-cat-6-bg); }
+  [data-accent='cat-7'] { --tone-fg: var(--cr-color-cat-7); --tone-bg: var(--cr-color-cat-7-bg); }
+  [data-accent='cat-8'] { --tone-fg: var(--cr-color-cat-8); --tone-bg: var(--cr-color-cat-8-bg); }
+  /* accent overrides tone for color only: it comes after the tone rules and sets the same aliases. */
+  .cr-badge[data-accent] { color: var(--tone-fg); background: var(--tone-bg); }
   .cr-badge[data-variant='ghost'] { background: transparent; }
   .cr-status-dot { display: inline-block; inline-size: 5px; block-size: 5px; background: currentColor; border: 1px solid currentColor; border-radius: 50%; flex-shrink: 0; }
   .cr-field { display: flex; flex-direction: column; gap: .5rem; min-inline-size: 0; font: 450 .75rem/1.5 var(--cr-font-sans); color: var(--cr-color-text); }
@@ -194,6 +222,8 @@
   .cr-progress::-webkit-progress-bar { border-radius: var(--cr-radius-full); background: var(--cr-color-border); }
   .cr-progress::-webkit-progress-value { border-radius: var(--cr-radius-full); background: var(--cr-color-success); }
   .cr-progress::-moz-progress-bar { border-radius: var(--cr-radius-full); background: var(--cr-color-success); }
+  .cr-progress[data-size='md'] { block-size: 6px; }
+  .cr-progress[data-size='lg'] { block-size: 8px; }
   .cr-progress-group { display: flex; flex-direction: column; gap: var(--cr-space-2); min-inline-size: 0; inline-size: 100%; color: var(--cr-color-text); font: 400 .8125rem/1.6 var(--cr-font-sans); }
   .cr-progress-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; min-inline-size: 0; }
   .cr-progress-label { min-inline-size: 0; max-inline-size: 100%; font-weight: 500; overflow-wrap: anywhere; }
@@ -375,6 +405,29 @@
   .cr-task-metadata-trigger { justify-content: center; min-inline-size: 24px; min-block-size: 24px; border-radius: var(--cr-radius-sm); cursor: help; }
   .cr-task-card:has(> .cr-task-button:enabled) .cr-task-metadata-trigger { cursor: inherit; }
   .cr-task-footer { display: flex; justify-content: space-between; align-items: center; padding: .625rem .875rem; border-block-start: 1px solid var(--cr-color-border); min-block-size: 26px; }
+  .cr-task-card:has(> a.cr-task-button) { cursor: pointer; }
+  .cr-task-card:hover:has(> a.cr-task-button) { background: var(--cr-color-subtle); }
+  a.cr-task-button { color: inherit; text-decoration: none; box-sizing: border-box; }
+  .cr-task-card:has(> a.cr-task-button) .cr-task-metadata-trigger { cursor: inherit; }
+  .cr-task-card[data-selected='true'] { border-color: var(--cr-color-active-border); box-shadow: inset 0 0 0 1px var(--cr-color-active-border); }
+  .cr-task-card[data-completed='true'] .cr-task-button h3 { color: var(--cr-color-muted); }
+  .cr-task-completed-icon { flex-shrink: 0; color: var(--cr-color-success); }
+  .cr-task-meta:has(> .cr-task-completed-icon) { justify-content: flex-start; }
+  .cr-task-meta:has(> .cr-task-completed-icon) > :is(.cr-badge, .cr-task-priority) { margin-inline-start: auto; }
+  .cr-task-button p[data-clamp='true'] { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+  .cr-task-metadata > li[data-display='bar'] { flex: 1 1 100%; gap: 8px; font-variant-numeric: tabular-nums; }
+  .cr-task-progress { display: block; flex: 1 1 auto; block-size: 5px; border-radius: var(--cr-radius-full); background: var(--cr-color-border); overflow: hidden; }
+  .cr-task-progress-value { display: block; block-size: 100%; border-radius: inherit; background: var(--cr-color-success); }
+  .cr-task-priority { display: inline-flex; align-items: center; gap: 4px; color: var(--tone-fg); font: 600 .6875rem/1.2 var(--cr-font-sans); white-space: nowrap; }
+  .cr-task-card[data-density='compact'] { border-radius: var(--cr-radius-md); }
+  .cr-task-card[data-density='compact'] > .cr-task-button { padding: 9px 10px; border-radius: var(--cr-radius-md) var(--cr-radius-md) 0 0; }
+  .cr-task-card[data-density='compact'][data-has-metadata='true'] > .cr-task-button { padding-block-end: 6px; }
+  .cr-task-card[data-density='compact'] .cr-task-meta { font-size: .6875rem; }
+  .cr-task-card[data-density='compact'] .cr-task-button h3 { font-size: .8125rem; font-weight: 550; line-height: 1.45; margin: 4px 0 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; text-wrap: pretty; }
+  .cr-task-card[data-density='compact'] .cr-task-branch { margin-block-start: 6px; }
+  .cr-task-card[data-density='compact'] .cr-task-metadata { gap: 6px 10px; padding: 0 10px 9px; font-size: .6875rem; }
+  .cr-task-card[data-density='compact'] .cr-task-progress { block-size: 4px; }
+  .cr-task-card[data-density='compact'] .cr-task-footer { padding: 6px 10px; min-block-size: 24px; }
   .cr-agent-card { inline-size: 100%; display: flex; flex-direction: column; gap: 1rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-lg); padding: 1rem; text-align: start; line-height: 1.5; }
   .cr-agent-card:disabled { cursor: default; }
   .cr-agent-card:hover:not(:disabled, [aria-pressed='true']) { border-color: transparent; background: var(--cr-color-subtle); }
@@ -427,5 +480,9 @@
     .cr-badge, .cr-avatar, .cr-switch-track { border: 1px solid CanvasText; }
     .cr-switch input:checked + .cr-switch-track { background: Highlight; }
     .cr-status-dot { background: CanvasText; }
+    .cr-task-progress { border: 1px solid CanvasText; background: Canvas; }
+    .cr-task-progress-value { background: CanvasText; }
+    .cr-task-completed-icon, .cr-task-priority { color: CanvasText; }
+    .cr-task-card[data-selected='true'] { border-color: Highlight; box-shadow: inset 0 0 0 1px Highlight; }
   }
 }

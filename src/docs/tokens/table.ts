@@ -27,7 +27,14 @@ export const tableTokenDocs: ComponentTokenDoc[] = [
   },
   {
     component: 'Table',
-    componentTokens: [],
+    componentTokens: [{
+      name: '--cr-table-leading-inset',
+      description: 'Extra start padding for the first column when groups have collapse chevrons, so its content lines up with the group dot.',
+      type: 'length',
+      defaultValue: '0px',
+      source: { file: 'src/system/table.css', selector: '.cr-table' },
+      sources: [{ file: 'src/system/table.css', selector: '.cr-table[data-group-toggles]', detail: 'calc(28px + 8px): the chevron width plus the heading gap.' }],
+    }],
     globalTokens: [...new Set([
       '--cr-color-border', '--cr-color-canvas', '--cr-color-muted',
       '--cr-color-subtle', '--cr-color-surface', '--cr-color-text', '--cr-font-sans',

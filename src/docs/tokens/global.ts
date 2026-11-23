@@ -38,6 +38,22 @@ const semanticColors = [
   ['warning-bg', '#f8edcf', '#493f27', 'Warning-tinted surface.'],
   ['danger', '#992b3d', '#f1adba', 'Error and destructive-action foreground.'],
   ['danger-bg', '#f9e9ea', '#492d35', 'Error-tinted surface.'],
+  ['cat-1', '#603394', '#e4d6fe', 'Category 1 (Purple) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-1-bg', '#f3edff', '#392950', 'Category 1 (Purple) tinted surface for accent tags and lanes.'],
+  ['cat-2', '#a53377', '#f89ccc', 'Category 2 (Magenta) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-2-bg', '#ffe9f3', '#4d213a', 'Category 2 (Magenta) tinted surface for accent tags and lanes.'],
+  ['cat-3', '#015b60', '#b0eaee', 'Category 3 (Teal) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-3-bg', '#e4f4f5', '#1b383a', 'Category 3 (Teal) tinted surface for accent tags and lanes.'],
+  ['cat-4', '#a04911', '#f3aa86', 'Category 4 (Orange) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-4-bg', '#feece3', '#4b2916', 'Category 4 (Orange) tinted surface for accent tags and lanes.'],
+  ['cat-5', '#415165', '#d1e0f1', 'Category 5 (Slate) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-5-bg', '#ecf1f6', '#2d333c', 'Category 5 (Slate) tinted surface for accent tags and lanes.'],
+  ['cat-6', '#3163b5', '#97bfff', 'Category 6 (Blue) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-6-bg', '#e8f1ff', '#1f3353', 'Category 6 (Blue) tinted surface for accent tags and lanes.'],
+  ['cat-7', '#305d0d', '#c5ecb1', 'Category 7 (Green) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-7-bg', '#e9f4e3', '#27391d', 'Category 7 (Green) tinted surface for accent tags and lanes.'],
+  ['cat-8', '#835f0b', '#d6ba85', 'Category 8 (Amber) foreground for accent dots, tags, and segments. Passes 4.5:1 on its -bg and on surface.'],
+  ['cat-8-bg', '#f8efe0', '#3e3116', 'Category 8 (Amber) tinted surface for accent tags and lanes.'],
 ] as const;
 
 /** Exact published :root CSS variables, rather than inferred typography/size tokens. */

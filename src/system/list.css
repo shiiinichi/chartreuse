@@ -23,7 +23,15 @@
   .cr-list :where(.cr-list-title, .cr-list-description) a { color: var(--cr-color-success); text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .cr-list :where(.cr-list-title, .cr-list-description) a:hover { text-decoration-thickness: 2px; }
   :where(.cr-list-title, .cr-list-description) > .cr-list { margin-block-start: var(--cr-space-1); }
+  /* Interactive items: one link or button per item, stretched across the item. */
+  .cr-list-item[data-interactive] { position: relative; margin-inline: calc(-1 * var(--cr-space-2)); padding-inline: var(--cr-space-2); border-radius: var(--cr-radius-md); }
+  .cr-list-item[data-interactive]:hover { background: var(--cr-color-subtle); }
+  .cr-list .cr-list-link { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 500; text-align: inherit; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .cr-list .cr-list-link:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .cr-list-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
   @media (forced-colors: active) {
+    .cr-list .cr-list-link { color: LinkText; }
+    .cr-list-item[data-interactive]:hover { background: Canvas; outline: 1px solid CanvasText; }
     .cr-list-marker { color: CanvasText; }
     .cr-list[data-dividers] > .cr-list-item + .cr-list-item { border-block-start-color: CanvasText; }
   }

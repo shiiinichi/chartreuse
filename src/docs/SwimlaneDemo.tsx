@@ -8,7 +8,7 @@ import './swimlane-demo.css';
 
 const statusLanes = [
   { title: 'In progress', tone: 'info', description: 'Implementation in progress', items: ['Inspect the public props', 'Build the component preview'] },
-  { title: 'Awaiting implementation review', tone: 'warning', description: 'The count remains adjacent when the title wraps.', items: ['Compare the preview with its source'] },
+  { title: 'Awaiting implementation review', tone: 'warning', description: 'A title too long for the lane truncates with an ellipsis; the count stays beside it.', items: ['Compare the preview with its source'] },
 ] as const;
 
 export function SwimlaneDemo() {

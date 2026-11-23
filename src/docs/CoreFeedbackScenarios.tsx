@@ -25,6 +25,13 @@ export function ProgressScenarios() {
       '  valueText="5 / 8 files" aria-valuetext="5 of 8 files reviewed"',
       '  description="Three files remain for review." />',
     )}><div className="core-example-field"><Progress value={5} max={8} label="Files reviewed" showLabel valueText="5 / 8 files" aria-valuetext="5 of 8 files reviewed" description="Three files remain for review." /></div></Showcase>
+    <Showcase title="Sizes" description="size sets the bar height: sm 4px (default), md 6px, lg 8px. SegmentedProgress takes the same sizes." code={snippet(
+      'import { Progress } from "@chartreuse/ui";',
+      '',
+      '<Progress value={40} label="Small progress" />',
+      '<Progress value={60} label="Medium progress" size="md" />',
+      '<Progress value={80} label="Large progress" size="lg" />',
+    )}><div className="core-example-field" style={{ display: 'grid', gap: 16 }}><Progress value={40} label="Small progress" /><Progress value={60} label="Medium progress" size="md" /><Progress value={80} label="Large progress" size="lg" /></div></Showcase>
     <ProgressDemo />
   </ExampleGallery>;
 }

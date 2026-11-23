@@ -36,7 +36,8 @@
     "query": "node dist/lib/chartreuse-cli.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "test": "npm run build:lib && node --test test/*.test.mjs",
-    "release:prepare": "node scripts/prepare-release.mjs"
+    "release:prepare": "node scripts/prepare-release.mjs",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
@@ -45,6 +46,8 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "react": "^19.0.0",

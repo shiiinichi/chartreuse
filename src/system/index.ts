@@ -27,6 +27,8 @@ export * from './WorkspaceContent';
 export * from './WorkspaceLayout';
 export * from './Conversation';
 export * from './Swimlane';
+export * from './ToggleChip';
+export * from './SegmentedProgress';
 export * from './Table';
 export * from './Pagination';
 export * from './NumberInput';

@@ -61,7 +61,7 @@ export function TaskBoard({ workspace = false }: { workspace?: boolean }) {
     const search = query.toLowerCase();
     for (const task of tasks) {
       if (`${task.title} ${task.taskId}`.toLowerCase().includes(search)) {
-        groupsByStatus.get(task.status ?? 'todo')?.tasks.push(task);
+        groupsByStatus.get((task.status ?? 'todo') as WorkspaceTaskStatus)?.tasks.push(task);
       }
     }
     return statusGroups;

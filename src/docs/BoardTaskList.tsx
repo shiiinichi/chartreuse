@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Plus, TriangleAlert } from 'lucide-react';
 import { AvatarGroup, Badge, Button, IconButton, Table } from '../system';
-import type { TableColumn, TaskCardProps, Tone } from '../system';
+import type { TableColumn, TaskCardProps, TaskCardStatus, Tone } from '../system';
 import './board-task-list.css';
 
-type BoardStatus = NonNullable<TaskCardProps['status']>;
+type BoardStatus = TaskCardStatus;
 
 interface BoardTaskListProps {
   groups: readonly {

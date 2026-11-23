@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Badge, Table } from '../system';
 import type { TableColumn } from '../system';
 import { ExampleGallery, Showcase } from './shared';
+import { recipeCode } from './BoardRecipesDemo';
+import { GroupedTableRecipe } from './board-recipes/GroupedTableRecipe';
+import groupedTableRecipeSource from './board-recipes/GroupedTableRecipe.tsx?raw';
 import { ArtifactTable } from './table-examples/ArtifactTable';
 import { BuildTimingTable } from './table-examples/BuildTimingTable';
 import { CapacityTable } from './table-examples/CapacityTable';
@@ -136,6 +139,10 @@ export function TableDemo() {
       <Showcase title="Checks grouped by target" description="Group runs under shared headings and show a message for empty targets." code={groupedCode}>
         <Table label="Checks by validation target" columns={columns} groups={groups}
           getRowKey={run => run.id} />
+      </Showcase>
+      <Showcase span="full" title="Tasks grouped by stage" description="A list view of a board: category-colored group headings with counts, add actions, and chevrons that collapse a stage to a one-line summary. Rows link to their task pages, long titles truncate, and comfortable density gives 48px rows."
+        code={recipeCode(groupedTableRecipeSource)}>
+        <GroupedTableRecipe />
       </Showcase>
       <Showcase title="Search and filter issues" description="Filter by title, ID, area, or status. A new filter starts at the first page."
         code={exampleCode(issuesSource)}>

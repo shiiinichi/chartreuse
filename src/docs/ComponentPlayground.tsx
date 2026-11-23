@@ -19,6 +19,7 @@ import { SidebarDemo } from './SidebarDemo';
 import { SliderDemo } from './SliderDemo';
 import { StatDemo, StatGroupDemo } from './StatDemo';
 import { SwimlaneDemo } from './SwimlaneDemo';
+import { ChipGroupDemo, SegmentedProgressDemo, SwimlaneGroupDemo, ToggleChipDemo } from './BoardRecipesDemo';
 import { TextDemo } from './TextDemo';
 import { TreeDemo } from './TreeDemo';
 import { WorkspaceContentDemo } from './WorkspaceContentDemo';
@@ -45,7 +46,7 @@ const demosWithOwnShowcases = new Set([
   'Masonry', 'MasonryItem', 'MasonrySpacer',
   'IconButton', 'List', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel', 'Pagination',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
-  'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'Switch', 'Table', 'Tabs', 'TaskCard',
+  'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'SwimlaneGroup', 'Switch', 'Table', 'Tabs', 'TaskCard',
   'Steps', 'Text', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
 ]);
 
@@ -123,6 +124,10 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'StatGroup': return <StatGroupDemo />;
     case 'Steps': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><StepsDemo /></Suspense>;
     case 'Swimlane': return <SwimlaneDemo />;
+    case 'SwimlaneGroup': return <SwimlaneGroupDemo />;
+    case 'ToggleChip': return <ToggleChipDemo />;
+    case 'ChipGroup': return <ChipGroupDemo />;
+    case 'SegmentedProgress': return <SegmentedProgressDemo />;
     case 'Table': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><TableDemo /></Suspense>;
     case 'Text': return <TextDemo />;
     case 'Timeline': return <Suspense fallback={<Text size="body" className="muted">Loading examples…</Text>}><TimelineDemo /></Suspense>;

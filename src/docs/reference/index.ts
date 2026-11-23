@@ -21,7 +21,8 @@ import { formReferences } from './form';
 import { tooltipReferences } from './tooltip';
 import { tableReferences } from './table';
 import { paginationReferences } from './pagination';
+import { chipReferences } from './chips';
 
-export const componentReferences = [...coreReferences, ...extendedReferences, ...gridReferences, ...masonryReferences, ...flexReferences, ...formReferences, ...tooltipReferences, ...contentReferences, ...treeReferences, ...agentActivityReferences, ...segmentedControlReferences, ...sliderReferences, ...navbarReferences, ...sidebarReferences, ...workspaceContentReferences, ...conversationReferences, ...swimlaneReferences, ...numberInputReferences, ...statsReferences, ...timelineReferences, ...stepsReferences, ...tableReferences, ...paginationReferences].sort((a, b) => a.name.localeCompare(b.name));
+export const componentReferences = [...coreReferences, ...extendedReferences, ...gridReferences, ...masonryReferences, ...flexReferences, ...formReferences, ...tooltipReferences, ...contentReferences, ...treeReferences, ...agentActivityReferences, ...segmentedControlReferences, ...sliderReferences, ...navbarReferences, ...sidebarReferences, ...workspaceContentReferences, ...conversationReferences, ...swimlaneReferences, ...numberInputReferences, ...statsReferences, ...timelineReferences, ...stepsReferences, ...tableReferences, ...paginationReferences, ...chipReferences].sort((a, b) => a.name.localeCompare(b.name));
 export { createComponentNavigation } from './navigation';
 export type { ComponentReference, PropDefinition } from './types';

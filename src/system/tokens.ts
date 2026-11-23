@@ -13,6 +13,26 @@ export const colors = {
   danger: { value: '#992B3D', token: '--cr-danger', role: 'Errors and destructive actions' },
 } as const;
 
+/**
+ * Categorical accent palette for grouping that is not a status (workflow stages, labels, owners).
+ * Each foreground meets 4.5:1 on its own background and on --cr-color-surface in both schemes, and
+ * neighbouring hues alternate between darker and lighter so adjacent categories differ in lightness.
+ * Color is never the only signal: pair an accent with a visible label.
+ */
+export const categoryColors = [
+  { id: 'cat-1', name: 'Purple', token: '--cr-color-cat-1', backgroundToken: '--cr-color-cat-1-bg', light: { value: '#603394', background: '#f3edff' }, dark: { value: '#e4d6fe', background: '#392950' } },
+  { id: 'cat-2', name: 'Magenta', token: '--cr-color-cat-2', backgroundToken: '--cr-color-cat-2-bg', light: { value: '#a53377', background: '#ffe9f3' }, dark: { value: '#f89ccc', background: '#4d213a' } },
+  { id: 'cat-3', name: 'Teal', token: '--cr-color-cat-3', backgroundToken: '--cr-color-cat-3-bg', light: { value: '#015b60', background: '#e4f4f5' }, dark: { value: '#b0eaee', background: '#1b383a' } },
+  { id: 'cat-4', name: 'Orange', token: '--cr-color-cat-4', backgroundToken: '--cr-color-cat-4-bg', light: { value: '#a04911', background: '#feece3' }, dark: { value: '#f3aa86', background: '#4b2916' } },
+  { id: 'cat-5', name: 'Slate', token: '--cr-color-cat-5', backgroundToken: '--cr-color-cat-5-bg', light: { value: '#415165', background: '#ecf1f6' }, dark: { value: '#d1e0f1', background: '#2d333c' } },
+  { id: 'cat-6', name: 'Blue', token: '--cr-color-cat-6', backgroundToken: '--cr-color-cat-6-bg', light: { value: '#3163b5', background: '#e8f1ff' }, dark: { value: '#97bfff', background: '#1f3353' } },
+  { id: 'cat-7', name: 'Green', token: '--cr-color-cat-7', backgroundToken: '--cr-color-cat-7-bg', light: { value: '#305d0d', background: '#e9f4e3' }, dark: { value: '#c5ecb1', background: '#27391d' } },
+  { id: 'cat-8', name: 'Amber', token: '--cr-color-cat-8', backgroundToken: '--cr-color-cat-8-bg', light: { value: '#835f0b', background: '#f8efe0' }, dark: { value: '#d6ba85', background: '#3e3116' } },
+] as const;
+
+/** A categorical accent: `'cat-1'` through `'cat-8'`. */
+export type CategoryColor = typeof categoryColors[number]['id'];
+
 export const spacing = [
   { name: '1', value: 4 }, { name: '2', value: 8 }, { name: '3', value: 12 },
   { name: '4', value: 16 }, { name: '5', value: 20 }, { name: '6', value: 24 },
