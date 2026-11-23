@@ -199,6 +199,27 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.15.0',
+    date: '2026-11-23',
+    title: 'Collapsible lanes, category colors, chips, and grouped tables',
+    summary: 'Swimlanes can collapse and sit in a shared SwimlaneGroup, a categorical palette and accent prop color lanes and badges, and new ToggleChip, ChipGroup, and SegmentedProgress components support kanban, compact, and grouped-table boards. Every addition is opt-in. Existing Swimlane titles now stay on one line and truncate in narrow lanes; otherwise existing markup is unchanged.',
+    changes: [
+      'Tokens add an eight-color categorical palette, --cr-color-cat-1 to --cr-color-cat-8, with light and dark values. Badge, Swimlane, TaskCard, ToggleChip, SegmentedProgress, and Table groups take accent="cat-N" to use them.',
+      'Swimlane adds collapsible, collapsed, defaultCollapsed, and onCollapsedChange. A collapsed lane becomes a 48px rail with its action, a vertical title, and its count; its expand button is named "Expand {title}, {count} items", and itemLabel changes the noun. Focus moves between the collapse and expand buttons.',
+      'Swimlane adds headerStyle="dot", variant="flush", and density="compact". The new SwimlaneGroup lays lanes side by side as a labelled region, either on one bordered surface or as separate cards, and scrolls horizontally when they do not fit. Set laneWidth to give every expanded lane a fixed width.',
+      'Swimlane titles stay on one line and truncate with an ellipsis when a lane is too narrow, so the action and collapse button always stay on the first header row and every header in a row has the same height. The title text is wrapped in span.cr-swimlane-title (h3.cr-swimlane-title for headerStyle="dot"). Set SwimlaneGroup laneWidth to keep titles whole on boards with many stages.',
+      'SwimlaneGroup clips visually hidden text of lanes scrolled out of view, so a collapsed lane past the edge no longer widens the page.',
+      'ToggleChip is a compact native button with an optional dot, label, and count; pressed sets aria-pressed for filters, and variant="dashed" with addIcon suits add actions. ChipGroup groups chips with role="group".',
+      'SegmentedProgress shows a stacked bar of categories with an accessible name that lists every segment, plus an optional static or interactive legend.',
+      'Progress adds size="sm" | "md" | "lg" for 4px, 6px, and 8px bars, the same sizes SegmentedProgress takes. Progress defaults to sm with unchanged markup; SegmentedProgress defaults to lg.',
+      'Table group headings add count, tone, accent, action, and collapsible groups with collapsedSummary. Columns add width, truncate, and getTitle; rows add getRowHref and onRowClick; and density="comfortable" sets 48px rows.',
+      'TaskCard accepts any status string with statusLabel, statusTone, and statusAccent, and adds hideStatus, progressDisplay, descriptionLines, completedState, href, selected, and density="compact".',
+      'List items add href and onClick to make the whole item a link or button.',
+      'Button adds variant="dashed" for add actions such as an empty lane.',
+      'The Swimlane and Table pages add kanban board, compact board, fixed-lane-width, and grouped table recipes built only from library components.',
+    ],
+  },
+  {
     version: '1.14.0',
     date: '2026-11-23',
     title: 'Persistent workspace sidebars and link buttons',
