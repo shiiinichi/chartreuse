@@ -295,12 +295,15 @@ test('foundation guide claims match the library CSS', () => {
   const css = systemCss();
   const notes = id => query('guide', id).guide.notes.join(' ');
 
-  // Focus: outlines are removed with no :focus-visible replacement. When the library adds one,
+  // Focus: outlines are removed with no :focus-visible replacement, except on the link Button
+  // variant, which has no background or border to show focus. When the library adds another,
   // this fails so the accessibility guide and its workaround are revised.
   assert.match(styles, /\[class\^='cr-'\], \[class\*=' cr-'\][^{]*\):focus \{ outline: none; \}/);
-  assert.doesNotMatch(css, /:focus-visible/);
+  const focusVisible = css.match(/[^{}]*:focus-visible[^{}]*\{/g) ?? [];
+  assert.ok(focusVisible.length > 0);
+  for (const rule of focusVisible) assert.match(rule.trim(), /^\.cr-button\[data-variant='link'\]:focus-visible \{$/);
   const accessibility = query('guide', 'accessibility').guide;
-  assert.match(accessibility.notes.join(' '), /no :focus-visible rule/);
+  assert.match(accessibility.notes.join(' '), /no :focus-visible rule except on Button variant="link"/);
   assert.equal(accessibility.language, 'css');
   for (const selector of ['.cr-switch-track', '.cr-segmented-input', '.cr-segmented-label', '.cr-tab-list', '.cr-tree-item', '.cr-tree-row', '.cr-message-composer-input', '.cr-breadcrumbs']) {
     assert.ok(accessibility.code.includes(selector) && css.includes(selector), selector);

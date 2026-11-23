@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { GitPullRequest, PanelLeftOpen, PanelRightOpen, Tag } from 'lucide-react';
+import { GitPullRequest, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Tag } from 'lucide-react';
 import { Avatar, Badge, BrandMark, Button, Checkbox, Progress } from '../system/components';
 import { Flex } from '../system/Flex';
 import { Navbar, NavbarItem } from '../system/Navbar';
@@ -111,7 +111,7 @@ function WorkspaceNavbarDemo() {
 
   return (
     <Showcase title="Release review workspace"
-      description="Toggle either full-height panel from the Navbar, or pin it to keep it open during review."
+      description="Toggle either full-height panel from the Navbar. The release list remembers whether it was open."
       code={`${importCode}\n\n${usageCode}`} className="navbar-workspace-showcase">
       <SegmentedControl className="navbar-workspace-surface" label="Navbar surface" name={`${headingId}-surface`} size="sm"
         options={surfaceOptions} value={surface} onValueChange={value => setSurface(value === 'white' ? 'white' : 'evergreen')} />
@@ -123,8 +123,9 @@ function WorkspaceNavbarDemo() {
           contentLabel: 'Release list',
           width: 206,
           toggleIcon: <PanelLeftOpen strokeWidth={1.65} />,
+          openToggleIcon: <PanelLeftClose strokeWidth={1.65} />,
           defaultOpen: true,
-          defaultPinned: true,
+          storageKey: 'chartreuse-docs:navbar-demo:releases',
           children: <ul className="navbar-release-list" role="list">
             {releases.map((item, index) => (
               <li key={item.version}>
@@ -142,6 +143,7 @@ function WorkspaceNavbarDemo() {
           contentLabel: 'Release activity',
           width: 224,
           toggleIcon: <PanelRightOpen strokeWidth={1.65} />,
+          openToggleIcon: <PanelRightClose strokeWidth={1.65} />,
           defaultOpen: true,
           children: <ol className="navbar-release-activity" role="list">
             {release.activity.map(event => (

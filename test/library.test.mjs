@@ -34,6 +34,25 @@ test('Button icon slots render decorative SVGs without a tabindex', () => {
   }
 });
 
+test('Button link variant stays a native button and its CSS removes control spacing', async () => {
+  const h = React.createElement;
+  const markup = renderToStaticMarkup(h(system.Button, { variant: 'link', icon: props => h('svg', props), 'aria-pressed': true }, 'Undo'));
+  assert.match(markup, /^<button aria-pressed="true" type="button" class="cr-button" data-variant="link" data-size="md">/);
+  assert.match(markup, /<svg[^>]*aria-hidden="true"[^>]*><\/svg>Undo<\/button>$/);
+  assert.match(renderToStaticMarkup(h(system.Button, { variant: 'link', type: 'submit', disabled: true }, 'Send')), /<button type="submit" disabled="" class="cr-button" data-variant="link"/);
+
+  const css = await readFile(new URL('../src/system/styles.css', import.meta.url), 'utf8');
+  const rule = selector => css.match(new RegExp(`^\\s*${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`, 'm'))?.[1] ?? '';
+  const base = rule(".cr-button[data-variant='link']");
+  for (const declaration of ['padding: 0', 'min-block-size: 0', 'min-inline-size: 0', 'border: 0', 'font: inherit', '--button-bg: transparent', '--button-fg: var(--cr-color-success)', 'text-decoration: none'])
+    assert.ok(base.includes(declaration), declaration);
+  assert.match(rule(".cr-button[data-variant='link']:hover:not(:disabled)"), /^ background: transparent; box-shadow: none; $/);
+  assert.match(rule(".cr-button[data-variant='link']:focus-visible"), /outline: 2px solid var\(--cr-color-focus\)/);
+  // The link rules must follow the size rules, which set padding and height at equal specificity.
+  assert.ok(css.indexOf(".cr-button[data-variant='link'] {") > css.indexOf(".cr-button[data-size='lg'] {"));
+  assert.match(css, /@media \(forced-colors: active\) \{\s*\.cr-button\[data-variant='link'\] \{ color: LinkText; \}/);
+});
+
 test('ButtonSelect preserves Button styling and connects the trigger to arbitrary controls', () => {
   const h = React.createElement;
   const buttonProps = { variant: 'accent', size: 'lg', className: 'column-toggle', style: { '--button-bg': 'rebeccapurple' }, iconRight: h('svg'), name: 'intent', value: 'columns' };

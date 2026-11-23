@@ -15,7 +15,8 @@ export type Tone = 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 const cx = (...names: (string | undefined | false)[]) => names.filter(Boolean).join(' ');
 
 export interface ButtonProps extends ComponentPropsWithRef<'button'> {
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'danger';
+  /** Visual emphasis. 'link' renders the button as inline link text with no padding or background. */
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'link';
   size?: ControlSize;
   icon?: IconSource;
   iconRight?: IconSource;

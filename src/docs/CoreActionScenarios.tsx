@@ -10,6 +10,8 @@ export function ButtonScenarios() {
   const [chosen, setChosen] = useState('');
   const [loading, setLoading] = useState(false);
   const [formResult, setFormResult] = useState('No action recorded.');
+  const [linkArchived, setLinkArchived] = useState(true);
+  const notify = useToast();
   const variants = ['primary', 'secondary', 'accent', 'ghost', 'danger'] as const;
   return <ExampleGallery className="core-scenarios">
     <Showcase title="Button variants" description="Set variant to control action emphasis. Clicking a variant records it in local state." code={snippet(
@@ -30,6 +32,24 @@ export function ButtonScenarios() {
       '  </>;',
       '}',
     )}><div className="core-example-stack"><div className="core-example-row">{variants.map(variant => <Button key={variant} variant={variant} onClick={() => setChosen(variant)}>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Button>)}</div><Text size="body" className="core-example-result" role="status">{chosen ? 'Selected variant: ' + chosen : 'Select a variant.'}</Text></div></Showcase>
+    <Showcase title="Link buttons" description="Set variant to link for an action that reads as link text. It inherits the surrounding font size and line height, adds no padding or hover background, and stays a native button. Use a real link for navigation." code={snippet(
+      'import { useState } from "react";',
+      'import { RotateCcw } from "lucide-react";',
+      'import { Button, Text } from "@chartreuse/ui";',
+      '',
+      'function LinkButtons() {',
+      '  const [archived, setArchived] = useState(true);',
+      '  return <>',
+      '    <Text size="body" role="status">',
+      '      {archived ? "Task archived. " : "Task restored. "}',
+      '      <Button variant="link" onClick={() => setArchived(!archived)}>',
+      '        {archived ? "Undo" : "Archive again"}',
+      '      </Button>',
+      '    </Text>',
+      '    <Button variant="link" icon={RotateCcw}>Retry the last run</Button>',
+      '  </>;',
+      '}',
+    )}><div className="core-example-stack"><Text size="body" role="status">{linkArchived ? 'Task archived. ' : 'Task restored. '}<Button variant="link" onClick={() => setLinkArchived(!linkArchived)}>{linkArchived ? 'Undo' : 'Archive again'}</Button></Text><div><Button variant="link" icon={RotateCcw} onClick={() => notify('Retry requested', 'info')}>Retry the last run</Button></div></div></Showcase>
     <Showcase title="Button sizes" description="Set size to sm, md (default), or lg." code={snippet(
       'import { Button } from "@chartreuse/ui";',
       '',

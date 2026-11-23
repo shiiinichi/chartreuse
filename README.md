@@ -106,7 +106,7 @@ export function ProjectWorkspace() {
 }
 ```
 
-Use `Navbar variant="workspace"` with `workspaceContent` and either or both of `leftSidebar` and `rightSidebar`. The sidebars span the workspace from top to bottom, alongside the Navbar and central content. Each sidebar accepts a custom `toggleIcon` and can be pinned to stay open while you work in the center. Use `surface="white"` or `surface="evergreen"` to choose the Navbar color. [Navbar examples](https://shiiinichi.github.io/chartreuse/#components/navbar)
+Use `Navbar variant="workspace"` with `workspaceContent` and either or both of `leftSidebar` and `rightSidebar`. The sidebars span the workspace from top to bottom, alongside the Navbar and central content. Each sidebar accepts a custom `toggleIcon`, with an optional `openToggleIcon` for its open state. It stays open until its toggle closes it, and can remember its open state with `storageKey`. Use `surface="white"` or `surface="evergreen"` to choose the Navbar color. [Navbar examples](https://shiiinichi.github.io/chartreuse/#components/navbar)
 
 ### GitHub Actions installation
 
@@ -212,6 +212,8 @@ Component galleries use Masonry to arrange previews of different heights in resp
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures.
 
 `Tabs` supports `size="sm"`, `"md"`, and `"lg"` for the `line`, `pill`, and `highlight` styles. The default size is `"md"`, and each size matches the corresponding `Button` height. Selected tabs use an Evergreen underline. The `pill` style adds a raised surface, and the `highlight` style adds a subtle fill with rounded top corners. When tabs overflow, hold down a tab and drag sideways to scroll the row. The scrollbar stays hidden until horizontal wheel or trackpad scrolling briefly reveals it.
+
+`Button` variants are `primary` (the default), `secondary`, `accent`, `ghost`, `danger`, and `link`. A `variant="link"` button looks like link text: it uses the link color with no underline, inherits the surrounding font size and line height, and has no padding, border, or hover background, so it can sit inside a sentence, as in `Task archived. <Button variant="link" onClick={undo}>Undo</Button>`. It is still a native button, so use it for actions and a real `<a href>` for navigation. [Button examples](https://shiiinichi.github.io/chartreuse/#components/button)
 
 `Button`, `ButtonSelect`, `TextField`, `TextArea`, `Select`, `Autocomplete`, `NumberInput`, and `Slider` accept `fullWidth`. It stretches the control to the full width of its container. In a flex row, a field is otherwise only as wide as its control, so set `fullWidth` to fill the remaining space.
 

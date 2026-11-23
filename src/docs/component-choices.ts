@@ -20,7 +20,7 @@ export const componentChoices: readonly ComponentChoice[] = [
       { name: 'Dialog', reason: 'Use Dialog for a focused modal task or confirmation: native showModal keeps focus inside and Escape closes it. Focus returns to the opener when open turns false on a mounted Dialog, so keep it mounted rather than writing {open && <Dialog open />}.' },
       { name: 'Drawer', reason: 'Use Drawer for a side panel whose visibility you control, docked in the host layout or opened as a native modal with mode.' },
       { name: 'Sidebar', reason: 'Use Sidebar for a persistent aside in WorkspaceLayout; it does not fix itself to the viewport, collapse automatically, or open modally.' },
-      { name: 'Navbar', reason: 'Use Navbar variant="workspace" with leftSidebar or rightSidebar for full-height collapsible sidebars that span the shell beside the bar and content, optionally pinned open.' },
+      { name: 'Navbar', reason: 'Use Navbar variant="workspace" with leftSidebar or rightSidebar for full-height collapsible sidebars that span the shell beside the bar and content and stay open until toggled.' },
     ],
   },
   {

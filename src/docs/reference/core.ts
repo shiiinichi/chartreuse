@@ -92,8 +92,8 @@ export const coreReferences: ComponentReference[] = [
     nativeProps: "Extends ComponentPropsWithRef<'button'>. Native attributes, events, form association, and ref are forwarded to the button; className is merged with the component class.",
     props: [
       { name: 'children', type: 'ReactNode', description: 'The visible button label or content.' },
-      { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger'", defaultValue: "'primary'", description: 'The action’s visual emphasis.' },
-      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The button’s control size.' },
+      { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'link'", defaultValue: "'primary'", description: 'The action’s visual emphasis. link renders inline link-colored text with no padding, border, text decoration, or hover background.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The button’s control size. The link variant ignores size and inherits the surrounding font size and line height.' },
       { name: 'icon', type: 'IconSource', description: 'A leading Lucide icon, custom React SVG component, or inline SVG JSX element. Loading replaces it with a spinner.' },
       { name: 'iconRight', type: 'IconSource', description: 'A trailing Lucide icon, custom SVG component, or inline SVG JSX element.' },
       { name: 'loading', type: 'boolean', description: 'Shows a spinner, sets aria-busy, and disables interaction while true.' },
@@ -103,7 +103,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'onClick', type: '(event: MouseEvent<HTMLButtonElement>) => void', description: 'Handles the native click event when enabled.' },
     ],
     notes: [
-      'Provide a visible label that names the action. Use IconButton when the action has only an icon. Custom icons receive control sizing and decorative SVG attributes.', 'Set aria-pressed for a toggle button. Pressed buttons use the evergreen active highlight.', 'Native form attributes such as form and name are supported.'],
+      'Provide a visible label that names the action. Use IconButton when the action has only an icon. Custom icons receive control sizing and decorative SVG attributes.', 'Set aria-pressed for a toggle button. Pressed buttons use the evergreen active highlight.', 'Native form attributes such as form and name are supported.', 'Use variant="link" for an action that should read as link text, such as Undo or Show details inside a sentence. It stays a native button with type="button", so it activates with Enter and Space and is announced as a button. For navigation to another page or URL, use a real <a href> instead.'],
   },
   buttonSelectReference,
   {
@@ -121,7 +121,7 @@ export const coreReferences: ComponentReference[] = [
     props: [
       { name: 'icon', type: 'IconSource', required: true, description: 'A Lucide icon, custom React SVG component, or inline SVG JSX element for the action.' },
       { name: 'label', type: 'string', required: true, description: 'The accessible action name and fallback native title.' },
-      { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger'", defaultValue: "'ghost'", description: 'The action’s visual emphasis.' },
+      { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'link'", defaultValue: "'ghost'", description: 'The action’s visual emphasis. link removes the padding and background so the icon sits inline with text.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The inherited Button size.' },
       { name: 'loading', type: 'boolean', description: 'Forwards Button’s loading indicator and disabled behavior.' },
       { name: 'disabled', type: 'boolean', description: 'Disables interaction.' },

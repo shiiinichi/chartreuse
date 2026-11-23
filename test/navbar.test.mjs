@@ -19,11 +19,12 @@ test('workspace Navbar flanks its navigation and content with independently cont
     brand: h('a', { href: '/' }, 'Studio'),
     actions: h('a', { href: '/account' }, 'Account'),
     leftSidebar: {
-      label: 'Projects', id: 'project-directory', defaultOpen: true, defaultPinned: true,
+      label: 'Projects', id: 'project-directory', defaultOpen: true, storageKey: 'test:projects',
       toggleIcon: h('svg', { 'data-custom-toggle': 'projects', tabIndex: 0 }),
+      openToggleIcon: h('svg', { 'data-custom-toggle': 'projects-open', tabIndex: 0 }),
       header: h('h2', null, 'Project directory'), children: 'Project links', footer: 'Add a project',
     },
-    rightSidebar: { label: 'Activity', children: 'Recent updates' },
+    rightSidebar: { label: 'Activity', children: 'Recent updates', toggleIcon: h('svg', { 'data-custom-toggle': 'activity' }), openToggleIcon: h('svg', { 'data-custom-toggle': 'activity-open' }) },
   }, h(NavbarItem, { href: '/overview', 'aria-current': 'page' }, 'Overview')));
 
   assert.match(markup, /^<div\b(?=[^>]* id="project-workspace")(?=[^>]* style="block-size:480px")/);
@@ -37,10 +38,11 @@ test('workspace Navbar flanks its navigation and content with independently cont
   assert.match(toggles[0], /^<button\b(?=[^>]* type="button")(?=[^>]* aria-controls="project-directory")(?=[^>]* aria-expanded="true")/);
   const customIcon = toggles[0].match(/<svg\b[^>]*>/)?.[0];
   assert.ok(customIcon);
-  assert.match(customIcon, /data-custom-toggle="projects"/);
+  assert.match(customIcon, /data-custom-toggle="projects-open"/, 'an open sidebar shows its open toggle icon');
   assert.match(customIcon, /aria-hidden="true"/);
   assert.doesNotMatch(customIcon, /tabindex=/i);
   assert.match(toggles[1], /aria-expanded="false"/);
+  assert.match(toggles[1], /data-custom-toggle="activity"/, 'a closed sidebar shows toggleIcon');
   const activityId = toggles[1].match(/aria-controls="([^"]+)"/)?.[1];
   assert.ok(activityId);
   assert.notEqual(activityId, 'project-directory');
@@ -50,7 +52,7 @@ test('workspace Navbar flanks its navigation and content with independently cont
   assert.doesNotMatch(asides.join(''), /data-surface=/);
   assert.match(asides[0], /^<aside\b(?=[^>]* id="project-directory")(?=[^>]* aria-label="Projects")(?![^>]* hidden(?:[\s=>]))/);
   assert.match(asides[0], /<header\b.*>Project directory<.*Project links.*<footer\b[^>]*>Add a project<\/footer>/);
-  assert.match(asides[0], /<button\b(?=[^>]* aria-label="Pin Projects")(?=[^>]* aria-pressed="true")/);
+  assert.doesNotMatch(markup, /aria-pressed=|"Pin /, 'sidebars have no pin control');
   assert.match(asides[1], /^<aside\b(?=[^>]* aria-label="Activity")(?=[^>]* hidden="")/);
   assert.ok(asides[1].includes(` id="${activityId}"`));
   assert.match(asides[1], /Recent updates/);
@@ -62,8 +64,7 @@ test('workspace Navbar supports one sidebar with controlled state and distinct g
     variant: 'workspace',
     rightSidebar: {
       label: 'Inspector', children: 'Details',
-      open: true, defaultOpen: false, pinned: false, defaultPinned: true,
-      onOpenChange: () => {}, onPinnedChange: () => {},
+      open: true, defaultOpen: false, onOpenChange: () => {},
     },
   });
   const markup = renderToStaticMarkup(h(React.Fragment, null, workspace, workspace));
@@ -82,8 +83,6 @@ test('workspace Navbar supports one sidebar with controlled state and distinct g
     assert.ok(panel.includes(` id="${ids[index]}"`));
     assert.doesNotMatch(panel, / hidden(?:[\s=>])/);
   }
-  const pinButtons = markup.match(/<button\b(?=[^>]* aria-label="Pin Inspector")(?=[^>]* aria-pressed="false")[^>]*>/g);
-  assert.equal(pinButtons?.length, 2);
 });
 
 test('workspace-only props stay out of the existing Navbar variants', () => {
