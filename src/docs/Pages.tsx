@@ -199,6 +199,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.16.1',
+    date: '2026-11-23',
+    title: 'Square large icon buttons',
+    summary: 'A fix for large icon buttons, which took the text button padding and rendered as wide rectangles. Nothing else changes.',
+    changes: [
+      'IconButton with size="lg" is now a 46px square, matching the 32px sm and 40px md squares. It previously inherited the text button\'s 1.25rem side padding, so large Navbar sidebar toggles were about 59px wide and sat further from the side edge than from the top and bottom.',
+      'The Navbar workspace example adds a Size control to show the large toggles.',
+    ],
+  },
+  {
     version: '1.16.0',
     date: '2026-11-23',
     title: 'Collapsible text fields, composer controls, and even sidebar toggles',
