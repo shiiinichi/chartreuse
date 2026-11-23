@@ -176,3 +176,17 @@ test('lines up lane header content with the lane body in every density', async (
   expect(offsets.some((o) => o.density === 'compact')).toBe(true);
   for (const o of offsets) expect([o.start, o.end]).toEqual([0, 0]);
 });
+
+test('lines up a collapsed rail dot with the expanded lane dots beside it', async ({ page }) => {
+  await open(page);
+  const gaps = await page.locator('.cr-swimlane-group').evaluateAll((groups) => groups.flatMap((group) => {
+    const lanes = [...group.querySelectorAll(':scope > .cr-swimlane-group-scroll > .cr-swimlane')];
+    const expanded = lanes.find((lane) => !lane.hasAttribute('data-collapsed') && lane.querySelector('.cr-swimlane-dot'));
+    if (!expanded) return [];
+    const centre = (el: Element) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; };
+    return lanes.filter((lane) => lane.querySelector('.cr-swimlane-rail')?.firstElementChild?.classList.contains('cr-swimlane-toggle'))
+      .map((lane) => centre(lane.querySelector('.cr-swimlane-dot')!) - centre(expanded.querySelector('.cr-swimlane-dot')!));
+  }));
+  expect(gaps.length).toBeGreaterThan(0);
+  for (const gap of gaps) expect(Math.abs(gap)).toBeLessThanOrEqual(0.5);
+});
