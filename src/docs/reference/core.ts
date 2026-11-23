@@ -122,7 +122,7 @@ export const coreReferences: ComponentReference[] = [
       { name: 'icon', type: 'IconSource', required: true, description: 'A Lucide icon, custom React SVG component, or inline SVG JSX element for the action.' },
       { name: 'label', type: 'string', required: true, description: 'The accessible action name and fallback native title.' },
       { name: 'variant', type: "'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'link'", defaultValue: "'ghost'", description: 'The action’s visual emphasis. link removes the padding and background so the icon sits inline with text.' },
-      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The inherited Button size.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: 'The inherited Button size. Icon buttons stay square: 32px, 40px, and 46px.' },
       { name: 'loading', type: 'boolean', description: 'Forwards Button’s loading indicator and disabled behavior.' },
       { name: 'disabled', type: 'boolean', description: 'Disables interaction.' },
       { name: 'iconRight', type: 'IconSource', description: 'An optional trailing IconSource inherited from Button.' },

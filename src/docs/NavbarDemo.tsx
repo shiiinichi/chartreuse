@@ -102,6 +102,7 @@ const releases = [
 function WorkspaceNavbarDemo() {
   const headingId = useId();
   const [surface, setSurface] = useState<NonNullable<NavbarProps['surface']>>('evergreen');
+  const [size, setSize] = useState<NonNullable<NavbarProps['size']>>('md');
   const [selectedRelease, setSelectedRelease] = useState(0);
   const [checkOverrides, setCheckOverrides] = useState<Record<string, Record<string, boolean>>>({});
   const release = releases[selectedRelease];
@@ -111,11 +112,15 @@ function WorkspaceNavbarDemo() {
 
   return (
     <Showcase title="Release review workspace"
-      description="Toggle either full-height panel from the Navbar. The release list remembers whether it was open."
+      description="Toggle either full-height panel from the Navbar. The release list remembers whether it was open. At either size, each sidebar toggle is a square icon button inset as far from the side edge as from the top and bottom."
       code={`${importCode}\n\n${usageCode}`} className="navbar-workspace-showcase">
-      <SegmentedControl className="navbar-workspace-surface" label="Navbar surface" name={`${headingId}-surface`} size="sm"
-        options={surfaceOptions} value={surface} onValueChange={value => setSurface(value === 'white' ? 'white' : 'evergreen')} />
-      <Navbar variant="workspace" surface={surface} aria-label="Release workspace"
+      <Flex className="navbar-workspace-surface" align="end" wrap gap={4}>
+        <SegmentedControl label="Size" name={`${headingId}-size`} size="sm" options={sizeOptions} value={size}
+          onValueChange={value => setSize(value === 'lg' ? 'lg' : 'md')} />
+        <SegmentedControl label="Navbar surface" name={`${headingId}-surface`} size="sm"
+          options={surfaceOptions} value={surface} onValueChange={value => setSurface(value === 'white' ? 'white' : 'evergreen')} />
+      </Flex>
+      <Navbar variant="workspace" size={size} surface={surface} aria-label="Release workspace"
         brand={<span className="navbar-workspace-demo-brand"><BrandMark /><Text bold>Chartreuse</Text></span>}
         workspaceProps={{ className: 'navbar-workspace-demo' }}
         leftSidebar={{

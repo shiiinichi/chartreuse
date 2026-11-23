@@ -132,6 +132,8 @@
   .cr-button[data-size='lg'] { padding: .75rem 1.25rem; }
   .cr-icon-button { padding: .5rem; flex-shrink: 0; }
   .cr-icon-button[data-size='sm'] { padding: .375rem; }
+  /* Without this, lg icon buttons inherit the text button's 1.25rem side padding and turn into wide rectangles. */
+  .cr-icon-button[data-size='lg'] { min-inline-size: 46px; padding: .75rem; }
   /* Link variant: a button that reads as inline link text. Placed after the size rules so it
      drops their padding, heights, and font size; hover and press change only the underline. */
   .cr-button[data-variant='link'] { --button-bg: transparent; --button-fg: var(--cr-color-success); gap: .25em; min-inline-size: 0; min-block-size: 0; padding: 0; border: 0; border-radius: 2px; font: inherit; vertical-align: baseline; text-decoration: none; }

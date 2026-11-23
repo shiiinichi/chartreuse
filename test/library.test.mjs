@@ -481,3 +481,10 @@ test('distributed tokens preserve the documented brand palette', () => {
   assert.equal(colors.evergreenLight.token, '--cr-evergreen-light');
   assert.ok(spacing.every(space => space.value % 4 === 0));
 });
+
+test('large icon buttons stay square instead of taking the text button padding', async () => {
+  const markup = renderToStaticMarkup(React.createElement(system.IconButton, { icon: () => null, label: 'Toggle sidebar', size: 'lg' }));
+  assert.match(markup, /class="cr-button cr-icon-button[^"]*"[^>]*data-size="lg"|data-size="lg"[^>]*class="cr-button cr-icon-button/);
+  const css = await readFile(new URL('../dist/lib/chartreuse.css', import.meta.url), 'utf8');
+  assert.match(css, /\.cr-icon-button\[data-size=['"]?lg['"]?\]\{min-inline-size:46px;padding:\.75rem\}/);
+});
