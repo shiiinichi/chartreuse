@@ -199,6 +199,19 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.14.0',
+    date: '2026-11-23',
+    title: 'Persistent workspace sidebars and link buttons',
+    summary: 'Workspace sidebars drop the pin button and stay open until toggled, sidebar toggles can change icon when open, and Button adds a link variant.',
+    changes: [
+      'Workspace Navbar sidebars no longer have a pin button. A sidebar stays open until its Navbar toggle closes it; clicking the center and pressing Escape leave it open. The pinned, defaultPinned, and onPinnedChange props are removed.',
+      'Navbar sidebars add storageKey to remember the open state in localStorage across visits.',
+      'Navbar sidebars add openToggleIcon to show a different toggle icon while open. The Navbar reference now lists every sidebar field, including toggleIcon.',
+      'Workspace sidebar headers are at least as tall as the Navbar and grow when their content wraps.',
+      'Button adds variant="link": a native button that reads as link-colored text, with no padding, border, text decoration, or hover background, so it can sit inside a sentence.',
+    ],
+  },
+  {
     version: '1.13.0',
     date: '2026-11-23',
     title: 'List component, icon avatars, and hidden text field labels',
