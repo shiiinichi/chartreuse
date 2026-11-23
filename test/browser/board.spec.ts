@@ -162,3 +162,17 @@ test('centers comfortable table group headings in their rows', async ({ page }) 
   // The row's bottom border adds 1px below, so allow a 1px difference.
   for (const row of rows) expect(Math.abs(row.above - row.below)).toBeLessThanOrEqual(1);
 });
+
+test('lines up lane header content with the lane body in every density', async ({ page }) => {
+  await open(page);
+  const offsets = await page.locator('.cr-swimlane:not([data-collapsed])').evaluateAll((lanes) => lanes.flatMap((lane) => {
+    const header = lane.querySelector(':scope > .cr-swimlane-header');
+    const heading = header?.querySelector('.cr-swimlane-heading');
+    const body = lane.querySelector(':scope > .cr-swimlane-body > *');
+    if (!header || !heading || !body || !body.getBoundingClientRect().width) return [];
+    const b = body.getBoundingClientRect();
+    return [{ density: (lane as HTMLElement).dataset.density ?? 'default', start: Math.round(heading.getBoundingClientRect().left - b.left), end: Math.round(b.right - header.lastElementChild!.getBoundingClientRect().right) }];
+  }));
+  expect(offsets.some((o) => o.density === 'compact')).toBe(true);
+  for (const o of offsets) expect([o.start, o.end]).toEqual([0, 0]);
+});

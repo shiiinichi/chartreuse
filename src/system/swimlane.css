@@ -47,7 +47,7 @@
   .cr-swimlane[data-variant='flush'] .cr-swimlane-rail { padding-block-start: var(--cr-swimlane-header-padding-block-start); }
 
   /* Compact density. */
-  .cr-swimlane[data-density='compact'] > .cr-swimlane-header { padding: var(--cr-swimlane-header-padding-block-start) 10px 10px 14px; }
+  .cr-swimlane[data-density='compact'] > .cr-swimlane-header { padding: var(--cr-swimlane-header-padding-block-start) 8px 10px; }
   .cr-swimlane[data-density='compact'] > .cr-swimlane-body { gap: 6px; padding: 0 8px 8px; }
 
   /* SwimlaneGroup. */
