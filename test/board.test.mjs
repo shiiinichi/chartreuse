@@ -139,6 +139,8 @@ test('Table rows can link, and truncated cells carry their full text', () => {
   assert.match(markup, /<span class="cr-table-truncate" title="A long title">A long title<\/span>/);
   const buttons = render(Table, { label: 'Buttons', columns, rows: [{ id: 'T-1', title: 'x' }], getRowKey: row => row.id, onRowClick() {} });
   assert.match(buttons, /<button type="button" class="cr-table-row-link">T-1<\/button>/);
+  assert.doesNotMatch(css, /\.cr-table-row-link:hover/, 'the row has its own hover state, so the row link does not underline');
+  assert.match(css, /th\[scope=['"]?rowgroup['"]?\]\{padding:11px 20px\}/, 'comfortable group headings use symmetric padding');
 });
 
 test('TaskCard keeps its legacy output and adds links, selection, completion, and compact density', () => {

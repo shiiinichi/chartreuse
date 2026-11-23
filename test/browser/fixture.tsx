@@ -1,7 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Plus } from 'lucide-react';
-import { Button, ChipGroup, IconButton, List, SegmentedProgress, Swimlane, SwimlaneGroup, TaskCard, ToggleChip } from '../../src/system';
+import { Button, ChipGroup, IconButton, List, SegmentedProgress, Swimlane, SwimlaneGroup, Table, TaskCard, ToggleChip } from '../../src/system';
 import { KanbanBoardRecipe } from '../../src/docs/board-recipes/KanbanBoardRecipe';
 import { CompactBoardRecipe } from '../../src/docs/board-recipes/CompactBoardRecipe';
 import { GroupedTableRecipe } from '../../src/docs/board-recipes/GroupedTableRecipe';
@@ -79,6 +79,15 @@ function Fixture() {
       <NarrowLanes style="dot" />
       <NarrowLanes style="tag" />
       <div data-testid="table"><GroupedTableRecipe /></div>
+      <div data-testid="comfortable-table">
+        <Table label="Comfortable groups" density="comfortable" getRowKey={(row: { id: number; name: string }) => row.id}
+          columns={[{ id: 'name', header: 'Name', rowHeader: true, render: (row: { id: number; name: string }) => row.name }]}
+          groups={[
+            { id: 'todo', heading: 'To do', count: 1, accent: 'cat-2', collapsible: true, rows: [{ id: 1, name: 'Write the spec' }],
+              action: <IconButton icon={Plus} size="sm" variant="ghost" label="Add to To do" /> },
+            { id: 'done', heading: 'Done', count: 1, accent: 'cat-6', collapsible: true, rows: [{ id: 2, name: 'Ship it' }] },
+          ]} />
+      </div>
       <div data-testid="controls"><Controls /></div>
     </main>
   );

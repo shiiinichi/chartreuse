@@ -150,3 +150,15 @@ test('clips off-screen collapsed lanes inside the group scroller instead of wide
   expect(await scroller.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
 });
+
+test('centers comfortable table group headings in their rows', async ({ page }) => {
+  await open(page);
+  const rows = await page.getByTestId('comfortable-table').locator('tr[data-group-heading]').evaluateAll((els) => els.map((row) => {
+    const r = row.getBoundingClientRect();
+    const h = row.querySelector('.cr-table-group-heading')!.getBoundingClientRect();
+    return { above: h.top - r.top, below: r.bottom - h.bottom };
+  }));
+  expect(rows.length).toBe(2);
+  // The row's bottom border adds 1px below, so allow a 1px difference.
+  for (const row of rows) expect(Math.abs(row.above - row.below)).toBeLessThanOrEqual(1);
+});
