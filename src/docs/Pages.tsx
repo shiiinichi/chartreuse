@@ -199,6 +199,19 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.16.0',
+    date: '2026-11-23',
+    title: 'Collapsible text fields, composer controls, and even sidebar toggles',
+    summary: 'TextField can collapse to a square icon control, and MessageComposer takes footer controls; both are opt-in. Workspace Navbar sidebar toggles change their default icons, drop the open-state highlight, and use a tighter side inset, and MessageComposer uses tighter padding.',
+    changes: [
+      'TextField adds collapsible. While empty and unfocused the field is a square icon control the size of its size preset; on focus it expands to the free space in a flex row or the full width of a block container. It stays open while it has a value and collapses on blur, or on Escape while empty. The label is always visually hidden.',
+      'MessageComposer adds controls, a slot at the start of the footer for controls such as a ButtonSelect for the model or mode, kept apart from the hint. The textarea and footer padding is tighter.',
+      'Workspace Navbar sidebar toggles default to a Menu icon on the left and a PanelRight icon on the right. toggleIcon and openToggleIcon still replace them.',
+      'Workspace Navbar sidebar toggles no longer show a highlight while their sidebar is open; aria-expanded still reports the state.',
+      'A workspace Navbar end with a sidebar toggle uses the same inline padding as its block padding, so the toggle sits as far from the side edge as from the top and bottom.',
+    ],
+  },
+  {
     version: '1.15.0',
     date: '2026-11-23',
     title: 'Collapsible lanes, category colors, chips, and grouped tables',
