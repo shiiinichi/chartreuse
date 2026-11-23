@@ -199,6 +199,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.16.2',
+    date: '2026-11-23',
+    title: 'Centered Table group headings and quieter row links',
+    summary: 'Two Table fixes. Nothing else changes.',
+    changes: [
+      'Table group heading rows in the comfortable density now have even padding (11px top and bottom, 20px sides). Their content was 3px low before. The row stays 55px tall.',
+      'Row header links and buttons in an interactive Table no longer underline on hover. The whole row is the click target and already has its own hover background.',
+    ],
+  },
+  {
     version: '1.16.1',
     date: '2026-11-23',
     title: 'Square large icon buttons',
