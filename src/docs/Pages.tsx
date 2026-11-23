@@ -200,6 +200,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.17.1',
+    date: '2026-11-24',
+    title: 'No empty band under overflowing tabs',
+    summary: 'Fixes a blank strip under overflowing Tabs on platforms with classic scrollbars, such as Windows. Markup and props are unchanged.',
+    changes: [
+      'Tabs hides its scrollbar with scrollbar-width: none, so a row that overflows no longer reserves scrollbar height and the selected underline sits on the bottom border.',
+      'A horizontal wheel or trackpad scroll still reveals the scrollbar where scrollbars overlay the content, as on macOS. Classic scrollbars stay hidden so the row never grows. Drag-to-scroll and keyboard selection are unchanged.',
+    ],
+  },
+  {
     version: '1.17.0',
     date: '2026-11-24',
     title: 'Segmented navbar links, one corner radius, and popup fixes',
