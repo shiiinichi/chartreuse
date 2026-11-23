@@ -199,6 +199,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.16.4',
+    date: '2026-11-23',
+    title: 'Aligned collapsed lane dots',
+    summary: 'A fix for collapsed Swimlane rails, whose dot sat higher than the dots of the expanded lanes beside them. Nothing else changes.',
+    changes: [
+      'The collapsed Swimlane toggle now has 12px top padding, so its dot is centered on the 32px header row of expanded collapsible lanes. It sat 2px high before.',
+      'In a SwimlaneGroup that has a collapsible lane, every lane header now has a 32px row. Lanes that could not collapse had a 24px row, so their dots sat 4px higher and their headers were shorter than their neighbours\'.',
+    ],
+  },
+  {
     version: '1.16.3',
     date: '2026-11-23',
     title: 'Aligned compact lane headers',
