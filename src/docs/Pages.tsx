@@ -199,6 +199,15 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.16.3',
+    date: '2026-11-23',
+    title: 'Aligned compact lane headers',
+    summary: 'A fix for compact Swimlane headers, which sat 6px further in than the lane content. Nothing else changes.',
+    changes: [
+      'Swimlane with density="compact" now pads its header 8px on both sides, matching the lane body. The title was 14px in, so the dot or tag sat 6px right of the cards and empty state, and the collapse button sat 2px inside their right edge.',
+    ],
+  },
+  {
     version: '1.16.2',
     date: '2026-11-23',
     title: 'Centered Table group headings and quieter row links',
