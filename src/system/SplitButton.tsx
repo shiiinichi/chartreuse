@@ -21,6 +21,8 @@ export interface SplitButtonProps extends Omit<ButtonProps,
   menuDisabled?: boolean;
   /** Icon on the menu segment. Defaults to ChevronDown. */
   menuIcon?: IconSource;
+  /** Draws a line between the segments. Set false for a seamless control, such as ghost breadcrumb items. Defaults to true. */
+  divider?: boolean;
   /** Accessible name of the group. Defaults to the action segment's text. */
   groupLabel?: string;
   /** Choices displayed in the built-in popover. */
@@ -42,14 +44,14 @@ export interface SplitButtonProps extends Omit<ButtonProps,
 
 /** A primary action Button joined to a menu segment that opens choices or custom content. */
 export function SplitButton({ children, variant = 'primary', size = 'md', menuLabel, menuTitle, menuDisabled, menuIcon = ChevronDown,
-  groupLabel, options, value, defaultValue, onValueChange, checkmark, emptyMessage, content, matchTriggerWidth, panelClassName,
+  divider = true, groupLabel, options, value, defaultValue, onValueChange, checkmark, emptyMessage, content, matchTriggerWidth, panelClassName,
   fullWidth = false, className, id, ...props }: SplitButtonProps) {
   const generatedId = useId();
   const actionId = id ?? `${generatedId}-action`;
   const group = useRef<HTMLDivElement>(null);
   return <div ref={group} role="group" className={['cr-split-button', className].filter(Boolean).join(' ')}
     aria-label={groupLabel} aria-labelledby={groupLabel ? undefined : actionId}
-    data-variant={variant} data-size={size} data-full-width={fullWidth || undefined}>
+    data-variant={variant} data-size={size} data-divider={divider ? undefined : 'false'} data-full-width={fullWidth || undefined}>
     <Button {...props} id={actionId} variant={variant} size={size} className="cr-split-button-action">{children}</Button>
     <ButtonSelectCore anchor={group} variant={variant} size={size} className="cr-split-button-menu" iconRight={menuIcon}
       aria-label={menuLabel} title={menuTitle ?? menuLabel} disabled={menuDisabled}

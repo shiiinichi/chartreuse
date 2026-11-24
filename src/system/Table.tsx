@@ -138,7 +138,16 @@ export function Table<Row>({
       group.onCollapsedChange?.(next);
     };
     return <tbody key={group.id} data-collapsed={collapsed ? 'true' : undefined}>
-      <tr data-group-heading="true"><th scope="rowgroup" colSpan={columnSpan}>
+      <tr data-group-heading="true" data-collapsible={collapsible || undefined} onClick={collapsible ? event => {
+        // A click anywhere on the heading toggles the group, like the chevron, which stays the keyboard
+        // and accessible control. Interactive content (the chevron, the action) and text selections keep their own behavior.
+        if (event.defaultPrevented || event.button !== 0) return;
+        const target = event.target as Element;
+        if (target.closest('a, button, input, select, textarea, label, summary, [role="button"], [contenteditable=""], [contenteditable="true"], .cr-table-group-action')) return;
+        const selection = window.getSelection();
+        if (selection && !selection.isCollapsed && event.currentTarget.contains(selection.anchorNode)) return;
+        toggle();
+      } : undefined}><th scope="rowgroup" colSpan={columnSpan}>
         <div className="cr-table-group-heading">
           {collapsible && <button type="button" className="cr-table-group-toggle" aria-expanded={!collapsed} aria-controls={[...rowIds, hasSummary && `${prefix}-summary`].filter(Boolean).join(' ')} aria-labelledby={`${prefix}-title`} onClick={toggle}>
             <ChevronRight size={16} aria-hidden="true" />

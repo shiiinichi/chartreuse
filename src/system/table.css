@@ -79,6 +79,10 @@
   .cr-table-group-title { min-inline-size: 0; overflow-wrap: anywhere; }
   .cr-table-group-count { flex: 0 0 auto; color: var(--cr-color-muted); font-weight: 500; font-variant-numeric: tabular-nums; }
   .cr-table-group-action { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; margin-inline-start: auto; font-weight: 400; }
+  /* The whole heading of a collapsible group toggles it; the action keeps its own cursor and clicks. */
+  .cr-table > tbody > tr[data-group-heading][data-collapsible] > th { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .cr-table > tbody > tr[data-group-heading][data-collapsible]:hover:not(:has(.cr-table-group-action:hover)) > th { background: var(--cr-color-subtle); }
+  .cr-table > tbody > tr[data-group-heading][data-collapsible] .cr-table-group-action { cursor: auto; }
   .cr-table > tbody > tr[data-summary] > td { color: var(--cr-color-muted); }
 
   /* With collapse chevrons, the first column's content starts under the group dot. */
@@ -115,5 +119,6 @@
     .cr-table-group-dot { background: CanvasText; }
     .cr-table-row-link { color: LinkText; }
     .cr-table > tbody > tr[data-interactive]:hover > * { background: Canvas; }
+    .cr-table > tbody > tr[data-group-heading][data-collapsible]:hover > th { background: Canvas; }
   }
 }

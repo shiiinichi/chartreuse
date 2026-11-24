@@ -73,10 +73,11 @@ const splitButtonDivider: TokenDefinition = {
     { file: splitButtonCss, selector: ".cr-split-button[data-variant='accent']", detail: '#c5e49d' },
     { file: splitButtonCss, selector: ".cr-split-button[data-variant='ghost']", detail: 'var(--cr-color-border)' },
     { file: splitButtonCss, selector: ".cr-split-button[data-variant='danger']", detail: 'color-mix(in srgb, var(--cr-color-surface) 28%, var(--cr-color-danger))' },
+    { file: splitButtonCss, selector: ".cr-split-button[data-divider='false']", detail: 'transparent, set by divider={false}' },
     { file: splitButtonCss, selector: '.cr-split-button > .cr-split-button-menu', detail: 'Consumed as border-inline-start-color.' },
   ],
   references: ['--cr-color-on-primary', '--cr-color-primary', '--cr-color-input-border', '--cr-color-border', '--cr-color-surface', '--cr-color-danger'],
-  notes: ['Filled variants mix their content color into the surface; secondary and accent reuse their border color, so the seam reads as one shared border. Set it on .cr-split-button with a variant selector to override it.', 'Forced-colors mode draws the seam in ButtonText.'],
+  notes: ['Filled variants mix their content color into the surface; secondary and accent reuse their border color, so the seam reads as one shared border. Set it on .cr-split-button with a variant selector to override it.', 'Prefer divider={false} over a transparent override to hide the seam: it also hides the action segment’s end border.', 'Forced-colors mode draws the seam in ButtonText, including with divider={false}.'],
 };
 
 const dialogRuntime: RuntimeVariableDefinition[] = [

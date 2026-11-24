@@ -27,6 +27,7 @@ export function MergeButton({ onMerge }: { onMerge: (method: string) => void }) 
     { name: 'menuTitle', type: 'string', defaultValue: 'menuLabel', description: 'Native tooltip on the menu segment.' },
     { name: 'menuDisabled', type: 'boolean', defaultValue: 'false', description: 'Disables the menu segment and closes its popover. It is independent of disabled.' },
     { name: 'menuIcon', type: 'IconSource', defaultValue: 'ChevronDown', description: 'Icon on the menu segment.' },
+    { name: 'divider', type: 'boolean', defaultValue: 'true', description: 'Draws a line between the segments. Set false for a seamless control, such as ghost breadcrumb items; the segments keep their 1px join, so size and alignment do not change. Forced-colors mode still outlines each segment.' },
     { name: 'groupLabel', type: 'string', description: 'Accessible name of the group. By default the group is labeled by the action segment.' },
     { name: 'options', type: 'readonly ButtonSelectOption[]', description: 'Choices for the built-in picker, the same shape as ButtonSelect options. The action label does not change by itself; render the chosen option in children.' },
     { name: 'value', type: 'string', description: 'Controlled option ID in the built-in picker.' },
@@ -47,7 +48,7 @@ export function MergeButton({ onMerge }: { onMerge: (method: string) => void }) 
   ],
   notes: [
     'Use SplitButton when one action is the common choice and a menu changes how it runs or which agent, method, or target it uses. Use ButtonSelect when the button only opens a menu.',
-    'The segments share one border at the seam, with squared inner corners. Filled variants draw the seam in --cr-split-button-divider; secondary and accent reuse their border color. Pressing either segment moves the whole control so the seam stays aligned.',
+    'The segments share one border at the seam, with squared inner corners. Filled variants draw the seam in --cr-split-button-divider; secondary and accent reuse their border color. Pressing either segment moves the whole control so the seam stays aligned. Set divider={false} to hide the seam, for example on ghost breadcrumb items.',
     'Both segments are in the tab order. The menu segment behaves like ButtonSelect: Enter, Space, or ArrowDown opens it, Escape closes it and returns focus, and the built-in picker supports Arrow keys, Home, End, and typing.',
     'The popover aligns to the start of the whole control, not the menu segment. Custom content sizes to its contents; give width-filling content a definite width.',
     'Pass size="sm" inside MessageComposer controls to match an sm send button, or the size of the Buttons beside it elsewhere. On coarse pointers both segments follow Button’s touch sizing, and an md menu segment widens to 44px.',

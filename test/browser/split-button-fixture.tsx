@@ -22,6 +22,11 @@ function Fixture() {
           <SplitButton variant={variant} icon={Play} menuLabel={`${variant} options, menu disabled`} options={runs} menuDisabled>Run</SplitButton>
         </div>
       ))}
+      {variants.map(variant => (
+        <div key={variant} style={row} data-testid={`no-divider-${variant}`}>
+          <SplitButton variant={variant} size="sm" divider={false} menuLabel={`Switch ${variant} board`} options={runs}>GA-003</SplitButton>
+        </div>
+      ))}
       {sizes.map(size => (
         <div key={size} style={row} data-testid={`size-${size}`}>
           <Button variant="secondary" size={size}>Cancel</Button>

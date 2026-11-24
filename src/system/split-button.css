@@ -18,6 +18,11 @@
   .cr-split-button[data-variant='ghost'] { --cr-split-button-divider: var(--cr-color-border); }
   .cr-split-button[data-variant='danger'] { --cr-split-button-divider: color-mix(in srgb, var(--cr-color-surface) 28%, var(--cr-color-danger)); }
 
+  /* Without a divider, the seam takes no color and the action's own end border is hidden under it,
+     so bordered variants read as one control. The 1px join stays, so geometry does not change. */
+  .cr-split-button[data-divider='false'] { --cr-split-button-divider: transparent; }
+  .cr-split-button[data-divider='false'] > .cr-split-button-action { border-inline-end-color: transparent; }
+
   .cr-split-button[data-full-width] { inline-size: 100%; }
 
   /* Press the whole control rather than one segment, so the seam stays aligned. */
@@ -50,6 +55,7 @@
     .cr-split-button > .cr-split-button-menu[data-size='md'] { min-inline-size: 44px; }
   }
 
+  /* Forced colors draw every button border, so the segments stay distinct even without a divider. */
   @media (forced-colors: active) {
     .cr-split-button > .cr-split-button-menu { border-inline-start-color: ButtonText; }
   }

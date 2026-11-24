@@ -140,7 +140,7 @@ export function TableDemo() {
         <Table label="Checks by validation target" columns={columns} groups={groups}
           getRowKey={run => run.id} />
       </Showcase>
-      <Showcase span="full" title="Tasks grouped by stage" description="A list view of a board: category-colored group headings with counts, add actions, and chevrons that collapse a stage to a one-line summary. Rows link to their task pages, long titles truncate, and comfortable density gives 48px rows."
+      <Showcase span="full" title="Tasks grouped by stage" description="A list view of a board: category-colored group headings with counts, add actions, and headings that collapse a stage to a one-line summary when clicked anywhere outside the add action. Rows link to their task pages, long titles truncate, and comfortable density gives 48px rows."
         code={recipeCode(groupedTableRecipeSource)}>
         <GroupedTableRecipe />
       </Showcase>

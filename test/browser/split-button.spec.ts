@@ -24,7 +24,7 @@ function geometry(group: Locator) {
       overlap: Math.round((a.right - m.left) * 100) / 100,
       widthSum: Math.round((a.width + m.width - 1 - g.width) * 100) / 100,
       actionRadii: radii(as), menuRadii: radii(ms),
-      seamWidth: ms.borderInlineStartWidth, seamColor: ms.borderInlineStartColor,
+      seamWidth: ms.borderInlineStartWidth, seamColor: ms.borderInlineStartColor, actionEndColor: as.borderInlineEndColor,
       actionTranslate: as.translate, menuTranslate: ms.translate, groupTranslate: getComputedStyle(element).translate,
     };
   });
@@ -187,6 +187,42 @@ test('an sm split button sits at the height of the sm send button in MessageComp
   const box = await geometry(composer.getByRole('group', { name: 'Ask agent' }));
   expectJoined(box, heights.sm);
   expect(send?.height).toBe(heights.sm);
+});
+
+test('divider={false} hides the seam in every state and keeps the 1px join', async ({ page }) => {
+  await open(page);
+  for (const variant of variants) {
+    const group = page.getByTestId(`no-divider-${variant}`).getByRole('group', { name: 'GA-003' });
+    await expect(group).toHaveAttribute('data-divider', 'false');
+    const action = group.getByRole('button', { name: 'GA-003' });
+    const menu = group.getByRole('combobox', { name: `Switch ${variant} board` });
+    const states = [
+      async () => {},
+      async () => action.hover(),
+      async () => menu.hover(),
+      async () => { await page.mouse.move(0, 0); await action.focus(); },
+      async () => menu.focus(),
+    ];
+    for (const enter of states) {
+      await enter();
+      const box = await geometry(group);
+      expectJoined(box, heights.sm);
+      expect(box.menuWidth, variant).toBe(heights.sm);
+      expect(box.seamColor, variant).toBe('rgba(0, 0, 0, 0)');
+      expect(box.actionEndColor, variant).toBe('rgba(0, 0, 0, 0)');
+    }
+  }
+  // The default still draws the seam.
+  const withDivider = await geometry(page.getByTestId('variant-ghost').getByRole('group').first());
+  expect(withDivider.seamColor).not.toBe('rgba(0, 0, 0, 0)');
+});
+
+test('forced colors keep each segment outlined without a divider', async ({ page }) => {
+  await page.emulateMedia({ forcedColors: 'active' });
+  await open(page);
+  const box = await geometry(page.getByTestId('no-divider-ghost').getByRole('group'));
+  expectJoined(box, heights.sm);
+  expect(box.seamColor).not.toBe('rgba(0, 0, 0, 0)');
 });
 
 test.describe('coarse pointers', () => {

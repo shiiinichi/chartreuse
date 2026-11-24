@@ -1,6 +1,8 @@
 import { ExampleGallery, Showcase } from './shared';
 import { AskAgentExample } from './split-button/AskAgentExample';
 import askAgentSource from './split-button/AskAgentExample.tsx?raw';
+import { BreadcrumbExample } from './split-button/BreadcrumbExample';
+import breadcrumbSource from './split-button/BreadcrumbExample.tsx?raw';
 import { ComposerExample } from './split-button/ComposerExample';
 import composerSource from './split-button/ComposerExample.tsx?raw';
 import { MergeExample } from './split-button/MergeExample';
@@ -22,6 +24,9 @@ export function SplitButtonDemo() {
     </Showcase>
     <Showcase title="Composer controls" description="An sm SplitButton in the MessageComposer footer sits at the height of the sm send button." code={published(composerSource)}>
       <ComposerExample />
+    </Showcase>
+    <Showcase title="Breadcrumb without a divider" description="Ghost, sm SplitButtons with divider={false}: the ID opens its page and the chevron switches to another one." code={published(breadcrumbSource)}>
+      <BreadcrumbExample />
     </Showcase>
     <Showcase title="Sizes" description="Each size matches the Button beside it." code={published(sizesSource)}>
       <SplitButtonSizes />
