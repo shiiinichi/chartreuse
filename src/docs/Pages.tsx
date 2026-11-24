@@ -200,6 +200,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.20.0',
+    date: '2026-11-25',
+    title: 'SplitButton divider option and clickable Table group headings',
+    summary: 'SplitButton adds an opt-in divider prop to hide the line between its segments. Collapsible Table groups now toggle from a click anywhere on the heading row; the chevron stays the keyboard and accessible control.',
+    changes: [
+      'SplitButton adds divider (default true). divider={false} hides the line between the action and menu segments, including the action’s end border, while keeping the 1px join, so size and alignment do not change. Forced-colors mode still outlines each segment.',
+      'Table groups with a collapse prop toggle when any part of the heading row is clicked, and show a pointer and hover background. The action keeps its own clicks and hover, dragging to select heading text does not toggle, and the chevron keeps aria-expanded and aria-controls as the only keyboard control. Heading rows of collapsible groups carry data-collapsible.',
+    ],
+  },
+  {
     version: '1.19.0',
     date: '2026-11-24',
     title: 'Contained Dialog, one-line AgentActivity rows, and a quieter composer footer',
