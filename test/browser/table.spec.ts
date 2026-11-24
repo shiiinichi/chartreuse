@@ -82,3 +82,36 @@ test('selecting heading text does not toggle the group', async ({ page }) => {
   expect(await page.evaluate(() => window.getSelection()?.toString())).toContain('Don');
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
 });
+
+for (const kind of ['click', 'href'] as const) {
+  test(`a truncated row-header cell clips its row ${kind === 'click' ? 'button' : 'link'} with an ellipsis`, async ({ page }) => {
+    await open(page);
+    const cells = await page.getByTestId(`truncate-${kind}`).locator('tbody tr').first().evaluate(row => [...row.children].map(cell => {
+      const box = cell.getBoundingClientRect();
+      const link = cell.querySelector<HTMLElement>('.cr-table-row-link');
+      const span = cell.querySelector<HTMLElement>('.cr-table-truncate')!;
+      const style = getComputedStyle(cell);
+      const contentRight = box.right - parseFloat(style.paddingRight);
+      return {
+        right: box.right, contentRight,
+        linkRight: link?.getBoundingClientRect().right, spanRight: span.getBoundingClientRect().right,
+        truncated: span.scrollWidth > span.clientWidth, overflow: getComputedStyle(span).textOverflow,
+      };
+    }));
+    expect(cells).toHaveLength(3);
+    for (const cell of cells) {
+      expect(cell.truncated).toBe(true);
+      expect(cell.overflow).toBe('ellipsis');
+      expect(cell.spanRight).toBeLessThanOrEqual(cell.contentRight + .5);
+    }
+    // The row header's link or button fills its cell and no more, so it cannot spill into the next column.
+    expect(cells[0].linkRight).toBeLessThanOrEqual(cells[0].contentRight + .5);
+    expect(cells[0].contentRight - cells[0].linkRight!).toBeLessThan(.5);
+    // The whole row stays clickable through the stretched link.
+    // The stretched link covers the other cells, so click the last cell by position.
+    const last = (await page.getByTestId(`truncate-${kind}`).locator('tbody td').last().boundingBox())!;
+    await page.mouse.click(last.x + last.width / 2, last.y + last.height / 2);
+    if (kind === 'click') await expect(page.getByTestId('state')).toContainText('adds:1');
+    else await expect(page).toHaveURL(/#runs\/R-1$/);
+  });
+}

@@ -99,6 +99,8 @@
   .cr-table > tbody > tr > [data-truncate] { max-inline-size: 0; }
   .cr-table-truncate { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cr-table-row-link > .cr-table-truncate { display: block; }
+  /* A block button sizes to its content, unlike a block link, so pin both to the cell's width to let the text ellipsize. */
+  .cr-table > tbody > tr > [data-truncate] > .cr-table-row-link { box-sizing: border-box; inline-size: 100%; min-inline-size: 0; max-inline-size: 100%; }
 
   /* Interactive rows: one link or button per row, stretched across the row. */
   .cr-table > tbody > tr[data-interactive] { position: relative; }
