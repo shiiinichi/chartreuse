@@ -28,6 +28,7 @@ const floatingContent: Readonly<Record<string, readonly ('tooltip' | 'toast' | '
   Select: ['popup'],
   Autocomplete: ['popup'],
   ButtonSelect: ['popup'],
+  SplitButton: ['popup'],
   Tooltip: ['tooltip'],
   TaskCard: ['tooltip'],
   ToastProvider: ['toast'],
@@ -43,7 +44,7 @@ const primitiveNote = 'Override brand primitives such as --cr-evergreen only on 
 const scopeNotes = {
   tooltip: 'Tooltip renders into the enclosing native dialog or document.body, so a wrapper override reaches a tooltip only when the wrapper contains that dialog; otherwise set tooltip overrides on :root. TaskCard metadata tooltips behave the same way.',
   toast: 'Toasts render where ToastProvider sits, usually near the application root, so set toast overrides on :root or on an element that contains ToastProvider.',
-  popup: 'Select, Autocomplete, and ButtonSelect popups restore the root --cr-color-* tokens and color scheme, so a wrapper override or an evergreen Navbar restyles the trigger but not its popup. Set popup colors on :root, or target the popup itself, for example .my-feature .cr-option-list-popup or a ButtonSelect panelClassName. Popups follow the color-scheme meta tag, not a color-scheme set in application CSS.',
+  popup: 'Select, Autocomplete, ButtonSelect, and SplitButton popups restore the root --cr-color-* tokens and color scheme, so a wrapper override or an evergreen Navbar restyles the trigger but not its popup. Set popup colors on :root, or target the popup itself, for example .my-feature .cr-option-list-popup or a ButtonSelect or SplitButton panelClassName. Popups follow the color-scheme meta tag, not a color-scheme set in application CSS.',
 };
 
 function componentHooksNote({ name, hooks }: CustomizationTarget) {

@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { ActivityItemDemo, BlockquoteDemo } from './ContentBlocksDemo';
 import { AgentActivityDemo } from './AgentActivityDemo';
 import { ButtonSelectDemo } from './ButtonSelectDemo';
+import { SplitButtonDemo } from './SplitButtonDemo';
 import { DisclosurePage } from './DisclosurePage';
 import { FieldsetPage } from './FieldsetPage';
 import { GridDemo } from './GridDemo';
@@ -46,7 +47,7 @@ const demosWithOwnShowcases = new Set([
   'Masonry', 'MasonryItem', 'MasonrySpacer',
   'IconButton', 'List', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel', 'Pagination',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
-  'Slider', 'Spinner', 'Stat', 'StatGroup', 'Swimlane', 'SwimlaneGroup', 'Switch', 'Table', 'Tabs', 'TaskCard',
+  'Slider', 'Spinner', 'SplitButton', 'Stat', 'StatGroup', 'Swimlane', 'SwimlaneGroup', 'Switch', 'Table', 'Tabs', 'TaskCard',
   'Steps', 'Text', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
 ]);
 
@@ -98,6 +99,7 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'AgentActivity': return <AgentActivityDemo />;
     case 'Blockquote': return <BlockquoteDemo />;
     case 'ButtonSelect': return <ButtonSelectDemo />;
+    case 'SplitButton': return <SplitButtonDemo />;
     case 'Conversation': return <Suspense fallback={<Text size="body" className="muted">Loading conversation example…</Text>}><ConversationDemo /></Suspense>;
     case 'Dialog': return <ModalsPage showGuidance={false} />;
     case 'Disclosure': return <DisclosurePage showGuidance={false} />;

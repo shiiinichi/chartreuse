@@ -27,6 +27,8 @@ export const componentSynonyms: Readonly<Record<string, readonly string[]>> = {
   menu: ['ButtonSelect'],
   'dropdown menu': ['ButtonSelect'],
   'context menu': ['ButtonSelect'],
+  'split button': ['SplitButton'],
+  'button with menu': ['SplitButton', 'ButtonSelect'],
   dropdown: ['Select', 'ButtonSelect', 'Autocomplete'],
   'drop down': ['Select', 'ButtonSelect', 'Autocomplete'],
   combobox: ['Autocomplete'],

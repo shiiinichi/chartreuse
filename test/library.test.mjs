@@ -9,7 +9,7 @@ import * as system from '@chartreuse/ui';
 import { colors, tokens, spacing } from '@chartreuse/ui/tokens';
 
 test('the built package exposes the documented public components and notification hook', () => {
-  const expected = ['Button', 'ButtonSelect', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'List', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'NavbarItemGroup', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'SwimlaneGroup', 'ToggleChip', 'ChipGroup', 'SegmentedProgress', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps', 'Table', 'Pagination'];
+  const expected = ['Button', 'ButtonSelect', 'SplitButton', 'IconButton', 'BrandMark', 'Badge', 'Text', 'TextField', 'TextArea', 'Select', 'Checkbox', 'Switch', 'Avatar', 'AvatarGroup', 'Progress', 'Tabs', 'Card', 'Alert', 'Divider', 'Skeleton', 'Spinner', 'Dialog', 'ToastProvider', 'Breadcrumbs', 'TaskCard', 'AgentCard', 'EmptyState', 'Autocomplete', 'MessageComposer', 'Drawer', 'MarkdownRenderer', 'Disclosure', 'Fieldset', 'Form', 'FormLayout', 'Tooltip', 'FilePicker', 'PagePanel', 'CalloutBanner', 'PathSelector', 'Grid', 'GridItem', 'GridSpacer', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'Flex', 'Blockquote', 'List', 'ActivityItem', 'Tree', 'AgentActivity', 'SegmentedControl', 'Slider', 'Navbar', 'NavbarItem', 'NavbarItemGroup', 'Sidebar', 'WorkspaceContent', 'WorkspaceLayout', 'Conversation', 'Swimlane', 'SwimlaneGroup', 'ToggleChip', 'ChipGroup', 'SegmentedProgress', 'NumberInput', 'Stat', 'StatGroup', 'Timeline', 'Steps', 'Table', 'Pagination'];
   // BrandMark and ToastProvider are counted as reusable components, alongside the
   // component-specific APIs. Validate the public boundary, not private helpers.
   for (const name of expected) assert.equal(typeof system[name], 'function', `${name} is importable`);
@@ -83,6 +83,45 @@ test('ButtonSelect preserves Button styling and connects the trigger to arbitrar
   assert.doesNotMatch(markup, /Grid view|role="listbox"/);
 });
 
+test('SplitButton joins an action Button and a labeled menu segment in a group', () => {
+  const h = React.createElement;
+  const markup = renderToStaticMarkup(h(system.SplitButton, {
+    variant: 'secondary', size: 'sm', icon: props => h('svg', props), className: 'ask-agent', title: 'Post and ask Claude',
+    disabled: true, name: 'intent', menuLabel: 'Agent for this request: Claude · Opus', panelClassName: 'agent-panel',
+    content: ({ close }) => h('div', { role: 'group', 'aria-label': 'Agent' }, h(system.Button, { onClick: close }, 'Done')),
+  }, 'Ask agent'));
+
+  const group = markup.match(/^<div\b[^>]*>/)?.[0] ?? '';
+  const [action, menu] = markup.match(/<button\b[^>]*>/g) ?? [];
+  const actionId = action.match(/\bid="([^"]+)"/)?.[1];
+  assert.ok(actionId);
+  assert.match(group, /role="group" class="cr-split-button ask-agent"/);
+  assert.ok(group.includes(`aria-labelledby="${actionId}"`));
+  assert.match(group, /data-variant="secondary" data-size="sm"/);
+  assert.match(action, /title="Post and ask Claude"/);
+  assert.match(action, /name="intent"/);
+  assert.match(action, /disabled=""/);
+  assert.match(action, /class="cr-button cr-split-button-action" data-variant="secondary" data-size="sm"/);
+  const panelId = menu.match(/popovertarget="([^"]+)"/i)?.[1];
+  assert.ok(panelId);
+  assert.match(menu, /aria-label="Agent for this request: Claude · Opus" title="Agent for this request: Claude · Opus"/);
+  assert.match(menu, /class="cr-button cr-button-select-trigger cr-split-button-menu" data-variant="secondary" data-size="sm"/);
+  assert.doesNotMatch(menu, /disabled/);
+  assert.ok(markup.includes(`id="${panelId}" popover="auto" class="cr-button-select-panel agent-panel"`));
+  assert.match(markup, /role="group" aria-label="Agent"/);
+
+  const labeled = renderToStaticMarkup(h(system.SplitButton, {
+    groupLabel: 'Merge', menuLabel: 'Merge method', menuTitle: 'Choose a method', menuDisabled: true,
+    options: [{ value: 'squash', label: 'Squash and merge' }], defaultValue: 'squash',
+  }, 'Squash and merge'));
+  assert.match(labeled, /^<div role="group" class="cr-split-button" aria-label="Merge" data-variant="primary" data-size="md">/);
+  const labeledMenu = labeled.match(/<button\b[^>]*>/g)[1];
+  assert.match(labeledMenu, /role="combobox"/);
+  assert.match(labeledMenu, /title="Choose a method"/);
+  assert.match(labeledMenu, /disabled=""/);
+  assert.match(labeled, /role="listbox" aria-label="Merge method"/);
+});
+
 test('ButtonSelect options render the shared listbox and selected label', () => {
   const markup = renderToStaticMarkup(React.createElement(system.ButtonSelect, {
     'aria-label': 'View layout',
@@ -145,8 +184,8 @@ async function readReferenceModule(filename) {
 }
 
 test('every public component has exactly one alphabetical page, API reference, and live preview', async () => {
-  const [core, extended, grid, content, tree, activity, segmented, slider, navbar, sidebar, workspaceContent, conversation, swimlane, number, stats, timeline, steps, masonry, flex, form, tooltip, navigation, table, pagination, chips] = await Promise.all(['core', 'extended', 'grid', 'content', 'tree', 'agent-activity', 'segmented-control', 'slider', 'navbar', 'sidebar', 'workspace-content', 'conversation', 'swimlane', 'number-input', 'stats', 'timeline', 'steps', 'masonry', 'flex', 'form', 'tooltip', 'navigation', 'table', 'pagination', 'chips'].map(readReferenceModule));
-  const references = [...core.coreReferences, ...extended.extendedReferences, ...grid.gridReferences, ...content.contentReferences, ...tree.treeReferences, ...activity.agentActivityReferences, ...segmented.segmentedControlReferences, ...slider.sliderReferences, ...navbar.navbarReferences, ...sidebar.sidebarReferences, ...workspaceContent.workspaceContentReferences, ...conversation.conversationReferences, ...swimlane.swimlaneReferences, ...number.numberInputReferences, ...stats.statsReferences, ...timeline.timelineReferences, ...steps.stepsReferences, ...masonry.masonryReferences, ...flex.flexReferences, ...form.formReferences, ...tooltip.tooltipReferences, ...table.tableReferences, ...pagination.paginationReferences, ...chips.chipReferences];
+  const [core, extended, grid, content, tree, activity, segmented, slider, navbar, sidebar, workspaceContent, conversation, swimlane, number, stats, timeline, steps, masonry, flex, form, tooltip, navigation, table, pagination, chips, splitButton] = await Promise.all(['core', 'extended', 'grid', 'content', 'tree', 'agent-activity', 'segmented-control', 'slider', 'navbar', 'sidebar', 'workspace-content', 'conversation', 'swimlane', 'number-input', 'stats', 'timeline', 'steps', 'masonry', 'flex', 'form', 'tooltip', 'navigation', 'table', 'pagination', 'chips', 'split-button'].map(readReferenceModule));
+  const references = [...core.coreReferences, ...extended.extendedReferences, ...grid.gridReferences, ...content.contentReferences, ...tree.treeReferences, ...activity.agentActivityReferences, ...segmented.segmentedControlReferences, ...slider.sliderReferences, ...navbar.navbarReferences, ...sidebar.sidebarReferences, ...workspaceContent.workspaceContentReferences, ...conversation.conversationReferences, ...swimlane.swimlaneReferences, ...number.numberInputReferences, ...stats.statsReferences, ...timeline.timelineReferences, ...steps.stepsReferences, ...masonry.masonryReferences, ...flex.flexReferences, ...form.formReferences, ...tooltip.tooltipReferences, ...table.tableReferences, ...pagination.paginationReferences, ...chips.chipReferences, ...splitButton.splitButtonReferences];
   const actual = Object.entries(system).filter(([name, value]) => /^[A-Z]/.test(name) && typeof value === 'function').map(([name]) => name).sort((a, b) => a.localeCompare(b));
   assert.deepEqual(references.map(reference => reference.name).sort((a, b) => a.localeCompare(b)), actual);
   assert.equal(new Set(references.map(reference => reference.slug)).size, actual.length, 'each reference has a unique route slug');

@@ -64,6 +64,7 @@ export const componentSidebarIcons: Record<string, LucideIcon> = {
   PathSelector: componentIcon('PathSelector', <><rect x="2" y="6" width="20" height="12" rx="2" /><path d="m7 9-2 6m5-3h3m3-2 2 2-2 2" /></>),
   Progress: componentIcon('Progress', <><rect x="2" y="9" width="20" height="6" rx="3" /><path d="M5 12h8" strokeWidth="3" /></>),
   SegmentedControl: componentIcon('SegmentedControl', <><rect x="2" y="6" width="20" height="12" rx="3" /><path d="M9 6v12m7-12v12" /><rect x="4" y="8" width="3" height="8" rx="1" fill="currentColor" stroke="none" /></>),
+  SplitButton: componentIcon('SplitButton', <><rect x="2" y="6" width="20" height="12" rx="3" /><path d="M6 12h6m3-6v12m2.5-7 1.5 1.5 1.5-1.5" /></>),
   Select: componentIcon('Select', <><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M6 12h5m4-1 2 2 2-2" /></>),
   Sidebar: componentIcon('Sidebar', <><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M8 3v18M4.5 7h1m-1 4h1m-1 4h1M12 7h6m-6 5h4" /></>),
   Skeleton: componentIcon('Skeleton', <><rect x="3" y="3" width="18" height="4" rx="2" /><rect x="3" y="10" width="13" height="4" rx="2" /><rect x="3" y="17" width="16" height="4" rx="2" /></>),

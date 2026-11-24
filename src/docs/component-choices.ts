@@ -33,6 +33,14 @@ export const componentChoices: readonly ComponentChoice[] = [
     ],
   },
   {
+    label: 'Button vs ButtonSelect vs SplitButton',
+    options: [
+      { name: 'Button', reason: 'Use Button for a single action that runs when pressed, with no menu of alternatives.' },
+      { name: 'ButtonSelect', reason: 'Use ButtonSelect when pressing the button only opens a menu of choices or custom popover content and runs nothing by itself.' },
+      { name: 'SplitButton', reason: 'Use SplitButton when one action runs on press and a joined menu segment changes how it runs, such as the merge method or the agent and model to ask; both segments share the Button variant and size.' },
+    ],
+  },
+  {
     label: 'PathSelector vs FilePicker',
     options: [
       { name: 'PathSelector', reason: 'Use PathSelector to type or paste a file or folder path as a string, with optional browsing supplied by the host through onBrowse.' },

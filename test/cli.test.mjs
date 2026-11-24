@@ -449,7 +449,7 @@ test('the choosing guide and info seeAlso share one decision table', () => {
     ['Alert', 'CalloutBanner', 'ToastProvider', 'EmptyState'], ['Grid', 'Flex', 'Masonry'], ['Progress', 'Spinner', 'Skeleton'], ['Switch', 'Checkbox'],
     ['Tabs', 'SegmentedControl', 'Navbar'], ['Card', 'TaskCard', 'AgentCard'], ['Stat', 'StatGroup'], ['Timeline', 'Steps', 'ActivityItem'],
     ['TextField', 'TextArea', 'NumberInput', 'Slider'], ['Navbar', 'NavbarItem', 'Breadcrumbs', 'Pagination', 'Tabs'], ['Form', 'FormLayout', 'Fieldset', 'Grid'],
-    ['Tooltip', 'Disclosure', 'ButtonSelect'], ['Timeline', 'ActivityItem', 'Conversation', 'AgentActivity'], ['Text', 'Blockquote', 'MarkdownRenderer'],
+    ['Tooltip', 'Disclosure', 'ButtonSelect'], ['Button', 'ButtonSelect', 'SplitButton'], ['Timeline', 'ActivityItem', 'Conversation', 'AgentActivity'], ['Text', 'Blockquote', 'MarkdownRenderer'],
     ['Card', 'PagePanel', 'CalloutBanner']]) {
     assert.ok(componentChoices.some(choice => set.every(name => choice.options.some(option => option.name === name))), set.join(' vs '));
   }
@@ -476,10 +476,12 @@ test('the choosing guide and info seeAlso share one decision table', () => {
       assert.equal(entry.reason, shared.options.find(option => option.name === entry.name).reason);
     }
   }
-  assert.deepEqual(info('Button').seeAlso, []);
+  assert.deepEqual(info('IconButton').seeAlso, []);
+  assert.deepEqual(info('Button').seeAlso.map(entry => entry.name), ['ButtonSelect', 'SplitButton']);
+  assert.deepEqual(info('SplitButton').seeAlso.map(entry => entry.name), ['Button', 'ButtonSelect']);
   assert.deepEqual(info('Drawer').seeAlso.map(entry => entry.name), ['Dialog', 'Sidebar', 'Navbar']);
   assert.match(run('info', 'Drawer').stdout, /\nSee also\n- Use Dialog for [^\n]+\n- Use Sidebar for /);
-  assert.doesNotMatch(run('info', 'Button').stdout, /See also/);
+  assert.doesNotMatch(run('info', 'IconButton').stdout, /See also/);
   for (const term of ['which component', 'vs', 'difference between dialog and drawer', 'choose', 'dialog vs drawer', 'choosing']) {
     assert.equal(query('search', term).results[0]?.id, 'choosing', term);
   }
@@ -664,7 +666,7 @@ test('floating popups restore every root semantic color and the root color schem
     assert.ok(reset.includes(`${name}: var(${alias});`), `${name} is restored on popups`);
   }
   for (const scheme of ['light', 'dark']) assert.ok(floating.includes(`meta[name='color-scheme'][content='${scheme}'])) { --_cr-root-color-scheme: ${scheme}; }`), scheme);
-  for (const component of ['OptionList', 'ButtonSelect']) {
+  for (const component of ['OptionList', 'button-select-core']) {
     assert.match(readFileSync(new URL(`../src/system/${component}.tsx`, import.meta.url), 'utf8'), /import '\.\/floating-surface\.css';/, component);
   }
 });

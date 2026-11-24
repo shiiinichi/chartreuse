@@ -7,7 +7,7 @@ export interface ComponentGroup {
 }
 
 export const componentGroups: readonly ComponentGroup[] = [
-  { name: 'Actions', components: ['Button', 'IconButton', 'ButtonSelect', 'ToggleChip', 'ChipGroup'] },
+  { name: 'Actions', components: ['Button', 'IconButton', 'ButtonSelect', 'SplitButton', 'ToggleChip', 'ChipGroup'] },
   {
     name: 'Forms',
     // SegmentedControl is a native radio group with a label, hint, error, and form submission, so it sits with the inputs.

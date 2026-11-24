@@ -62,6 +62,23 @@ function toneAliases(defaultTone: 'neutral' | typeof tones[number], background =
   }));
 }
 
+const splitButtonCss = 'src/system/split-button.css';
+const splitButtonDivider: TokenDefinition = {
+  name: '--cr-split-button-divider', type: 'color',
+  defaultValue: 'color-mix(in srgb, var(--cr-color-on-primary) 28%, var(--cr-color-primary))',
+  description: 'Color of the single border line between the action and menu segments.',
+  source: { file: splitButtonCss, selector: '.cr-split-button' },
+  sources: [
+    { file: splitButtonCss, selector: ".cr-split-button[data-variant='secondary']", detail: 'var(--cr-color-input-border)' },
+    { file: splitButtonCss, selector: ".cr-split-button[data-variant='accent']", detail: '#c5e49d' },
+    { file: splitButtonCss, selector: ".cr-split-button[data-variant='ghost']", detail: 'var(--cr-color-border)' },
+    { file: splitButtonCss, selector: ".cr-split-button[data-variant='danger']", detail: 'color-mix(in srgb, var(--cr-color-surface) 28%, var(--cr-color-danger))' },
+    { file: splitButtonCss, selector: '.cr-split-button > .cr-split-button-menu', detail: 'Consumed as border-inline-start-color.' },
+  ],
+  references: ['--cr-color-on-primary', '--cr-color-primary', '--cr-color-input-border', '--cr-color-border', '--cr-color-surface', '--cr-color-danger'],
+  notes: ['Filled variants mix their content color into the surface; secondary and accent reuse their border color, so the seam reads as one shared border. Set it on .cr-split-button with a variant selector to override it.', 'Forced-colors mode draws the seam in ButtonText.'],
+};
+
 const dialogRuntime: RuntimeVariableDefinition[] = [
   {
     name: '--dialog-width', description: 'Dialog width controlled by size and maxWidth. CSS starts at 520px, with sm 420px, lg 760px, and xl 1600px; a valid maxWidth prop writes an inline px value.',
@@ -112,6 +129,11 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     component: 'ButtonSelect', componentTokens: buttonAliases(),
     globalTokens: [...buttonGlobals, ...globals('color-border', 'color-muted', 'shadow-lg', 'space-2')],
     notes: ['The trigger renders Button, so it shares its sizes, variants, and local color aliases. The built-in option list shares Autocomplete’s popover and active option colors. The custom panel uses shared surface, text, border, radius, shadow, and spacing tokens.'],
+  },
+  {
+    component: 'SplitButton', componentTokens: [...buttonAliases(), splitButtonDivider],
+    globalTokens: [...buttonGlobals, ...globals('color-border', 'color-muted', 'shadow-lg', 'space-2')],
+    notes: ['Both segments render Button, so they share its sizes, variants, and local color aliases; set them on .cr-split-button > .cr-button to restyle both. The popover is ButtonSelect’s, with the same option list and custom panel tokens.', 'The menu segment overlaps the action by 1px and its start border is the seam. Inner corners are 0; outer corners keep --cr-radius-md. The menu segment is as wide as it is tall, 44px wide at md on coarse pointers.'],
   },
   {
     component: 'IconButton', componentTokens: buttonAliases(true), globalTokens: buttonGlobals,

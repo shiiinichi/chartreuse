@@ -1,0 +1,56 @@
+@layer cr-components {
+  /* Two Buttons joined into one control. The menu segment overlaps the action by 1px, so the
+     segments share a single border line at the seam; its start border is that line, drawn in
+     --cr-split-button-divider. Squared inner corners keep the outer outline at --cr-radius-md. */
+  .cr-split-button {
+    display: inline-flex;
+    align-items: stretch;
+    inline-size: fit-content;
+    max-inline-size: 100%;
+    vertical-align: middle;
+    isolation: isolate;
+    /* Filled variants mix their content color into the surface; bordered variants reuse their border. */
+    --cr-split-button-divider: color-mix(in srgb, var(--cr-color-on-primary) 28%, var(--cr-color-primary));
+  }
+
+  .cr-split-button[data-variant='secondary'] { --cr-split-button-divider: var(--cr-color-input-border); }
+  .cr-split-button[data-variant='accent'] { --cr-split-button-divider: #c5e49d; }
+  .cr-split-button[data-variant='ghost'] { --cr-split-button-divider: var(--cr-color-border); }
+  .cr-split-button[data-variant='danger'] { --cr-split-button-divider: color-mix(in srgb, var(--cr-color-surface) 28%, var(--cr-color-danger)); }
+
+  .cr-split-button[data-full-width] { inline-size: 100%; }
+
+  /* Press the whole control rather than one segment, so the seam stays aligned. */
+  .cr-split-button:has(> .cr-button:active:not(:disabled)) { translate: 0 1px; }
+  .cr-split-button > .cr-button:active:not(:disabled) { translate: none; }
+
+  .cr-split-button > .cr-split-button-action {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .cr-split-button[data-full-width] > .cr-split-button-action { flex-grow: 1; }
+
+  .cr-split-button > .cr-split-button-menu {
+    flex: none;
+    margin-inline-start: -1px;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-inline-start-color: var(--cr-split-button-divider);
+  }
+
+  /* The menu segment is square, like IconButton at the same size, and widens with it on coarse pointers. */
+  .cr-split-button > .cr-split-button-menu[data-size='sm'] { min-inline-size: 32px; padding: .375rem; }
+  .cr-split-button > .cr-split-button-menu[data-size='md'] { min-inline-size: 40px; padding: .5rem; }
+  .cr-split-button > .cr-split-button-menu[data-size='lg'] { min-inline-size: 46px; padding: .75rem; }
+
+  @media (pointer: coarse) {
+    .cr-split-button > .cr-split-button-menu[data-size='md'] { min-inline-size: 44px; }
+  }
+
+  @media (forced-colors: active) {
+    .cr-split-button > .cr-split-button-menu { border-inline-start-color: ButtonText; }
+  }
+}
