@@ -318,6 +318,7 @@
   .cr-dialog[open] { display: flex; flex-direction: column; }
   .cr-dialog[open][data-freeze-height='true'] { block-size: var(--cr-dialog-height, auto); }
   .cr-dialog:modal { overscroll-behavior: contain; }
+  .cr-dialog[data-placement='contained'] { position: fixed; inset: auto; top: var(--cr-dialog-container-top, 0px); left: var(--cr-dialog-container-left, 0px); z-index: 50; inline-size: var(--cr-dialog-container-width, 100%); block-size: var(--cr-dialog-container-height, 100%); max-inline-size: none; max-block-size: none; margin: 0; border: 0; border-radius: 0; box-shadow: none; }
   .cr-dialog::backdrop { background: #082f2b66; overflow: hidden; overscroll-behavior: contain; backdrop-filter: blur(3px); }
   .cr-dialog-header { display: flex; flex-shrink: 0; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.5rem 1.5rem 1rem; }
   .cr-dialog-header h2 { font-size: 1.25rem; font-weight: 550; line-height: inherit; letter-spacing: -.035em; margin: 0; }

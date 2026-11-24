@@ -30,7 +30,7 @@ export interface AgentActivityEvent {
 
 type AgentActivityBase = {
   events: readonly AgentActivityEvent[];
-  /** Use 'single' to show event titles on one line with an ellipsis. Defaults to 'multiple'. */
+  /** Use 'single' to keep each event row on one line at every width: the title ends in an ellipsis and the duration, status and chevron stay beside it. Defaults to 'multiple', which stacks the status under the title in containers 440px or narrower. */
   titleLines?: 'single' | 'multiple';
   /** Custom group heading. Also names the list group for assistive technology. */
   label?: string;
@@ -103,7 +103,7 @@ function ActivityRow({ event, singleLineTitle }: { event: AgentActivityEvent; si
   return <li className="cr-agent-activity-item" data-status={status}>
     {expandable ? <details className="cr-agent-activity-event" open={open} onToggle={event => {
       if (event.target === event.currentTarget) setOpen(event.currentTarget.open);
-    }}><summary className="cr-agent-activity-row">{content}</summary><div className="cr-agent-activity-detail">
+    }}><summary className="cr-agent-activity-row" data-single-line={singleLineTitle || undefined}>{content}</summary><div className="cr-agent-activity-detail">
       {singleLineTitle && fullTitle && fullTitle !== detailText && <Text size="body" className="cr-agent-activity-detail-title">{fullTitle}</Text>}
       {detailText && <Text size="body" className="cr-agent-activity-description">{detailText}</Text>}
       {hasLogFields && <dl>
@@ -114,7 +114,7 @@ function ActivityRow({ event, singleLineTitle }: { event: AgentActivityEvent; si
       {waitingForOutput && <Text size="body" className="cr-agent-activity-note">Waiting for output…</Text>}
       {event.outputTruncated && <Text size="body" className="cr-agent-activity-note">Some output was omitted from the recorded preview.</Text>}
       {event.exitCode !== undefined && <Text size="body" className="cr-agent-activity-exit">Exit code <code>{event.exitCode}</code></Text>}
-    </div></details> : <div className="cr-agent-activity-row">{content}</div>}
+    </div></details> : <div className="cr-agent-activity-row" data-single-line={singleLineTitle || undefined}>{content}</div>}
   </li>;
 }
 

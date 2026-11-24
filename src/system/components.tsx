@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode, WheelEvent as ReactWheelEvent } from 'react';
 import { AlertCircle, CheckCheck, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
 import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip as TaskAttachmentsIcon } from 'lucide-react';
@@ -454,22 +454,49 @@ function DialogSplit({ open, children, sideContent, contentLabel, sideContentLab
   </div>;
 }
 
-export interface DialogProps { open: boolean; onOpenChange: (open: boolean) => void; title: string; description?: string; children: ReactNode; footer?: ReactNode; className?: string; size?: 'sm' | 'md' | 'lg' | 'xl'; freezeHeight?: boolean; sideContent?: ReactNode; contentLabel?: string; sideContentLabel?: string; resizableSplit?: boolean; sideContentMinWidth?: number; sideContentMaxWidth?: number; maxWidth?: number }
-export function Dialog({ open, onOpenChange, title, description, children, footer, className, size = 'md', freezeHeight = false, sideContent, contentLabel = 'Details', sideContentLabel = 'Related content', resizableSplit = false, sideContentMinWidth = 260, sideContentMaxWidth = 640, maxWidth }: DialogProps) {
+export interface DialogProps { open: boolean; onOpenChange: (open: boolean) => void; title: string; description?: string; children: ReactNode; footer?: ReactNode; className?: string; size?: 'sm' | 'md' | 'lg' | 'xl'; freezeHeight?: boolean; sideContent?: ReactNode; contentLabel?: string; sideContentLabel?: string; resizableSplit?: boolean; sideContentMinWidth?: number; sideContentMaxWidth?: number; maxWidth?: number;
+  /** Opens the dialog without a modal backdrop, covering this element's box. The rest of the page stays usable. `null` keeps it closed until the element is available. */
+  container?: HTMLElement | null }
+export function Dialog({ open, onOpenChange, title, description, children, footer, className, size = 'md', freezeHeight = false, sideContent, contentLabel = 'Details', sideContentLabel = 'Related content', resizableSplit = false, sideContentMinWidth = 260, sideContentMaxWidth = 640, maxWidth, container }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const id = useId();
-  const widthStyle = Number.isFinite(maxWidth) && (maxWidth ?? 0) > 0 ? { '--dialog-width': `${maxWidth}px` } as CSSProperties : undefined;
+  const contained = container !== undefined;
+  const widthStyle = !contained && Number.isFinite(maxWidth) && (maxWidth ?? 0) > 0 ? { '--dialog-width': `${maxWidth}px` } as CSSProperties : undefined;
+  useLayoutEffect(() => {
+    const dialog = ref.current;
+    if (!dialog || !container || !open) return;
+    // A non-modal dialog is not in the top layer, so it tracks the container's box from a fixed position.
+    const place = () => {
+      const box = container.getBoundingClientRect();
+      for (const [name, value] of [['top', box.top], ['left', box.left], ['width', box.width], ['height', box.height]] as const) {
+        dialog.style.setProperty(`--cr-dialog-container-${name}`, `${value}px`);
+      }
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(container);
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', place, true);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', place, true);
+    };
+  }, [container, open]);
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (!open) {
+    if (!open || (contained && !container)) {
       if (dialog.open) dialog.close();
       dialog.style.removeProperty('--cr-dialog-height');
       return;
     }
     const opening = !dialog.open;
-    if (opening) dialog.showModal();
-    if (freezeHeight) {
+    if (opening) {
+      if (contained) dialog.show();
+      else dialog.showModal();
+    }
+    if (freezeHeight && !contained) {
       if (opening || !dialog.style.getPropertyValue('--cr-dialog-height')) {
         dialog.style.setProperty('--cr-dialog-height', `${dialog.getBoundingClientRect().height}px`);
       }
@@ -481,8 +508,14 @@ export function Dialog({ open, onOpenChange, title, description, children, foote
       // native dialog cannot receive focus then, so honor that intent on opening.
       dialog.querySelector<HTMLElement>('[autofocus], [data-cr-autofocus="true"]')?.focus();
     }
-  }, [open, freezeHeight]);
-  return <dialog ref={ref} className={cx('cr-dialog', className)} data-size={size} data-freeze-height={freezeHeight} style={widthStyle} aria-labelledby={`${id}-title`} aria-describedby={description ? `${id}-description` : undefined} onClose={() => onOpenChange(false)}>
+  }, [open, freezeHeight, contained, container]);
+  return <dialog ref={ref} className={cx('cr-dialog', className)} data-size={size} data-freeze-height={freezeHeight && !contained} data-placement={contained ? 'contained' : 'modal'} style={widthStyle}
+    onKeyDown={contained ? event => {
+      // A non-modal native dialog has no Escape dismissal of its own.
+      if (event.key !== 'Escape' || event.defaultPrevented || event.nativeEvent.isComposing) return;
+      event.preventDefault();
+      event.currentTarget.close();
+    } : undefined} aria-labelledby={`${id}-title`} aria-describedby={description ? `${id}-description` : undefined} onClose={() => onOpenChange(false)}>
     <header className="cr-dialog-header"><div><Text size="heading-2" id={`${id}-title`}>{title}</Text>{description && <Text size="body" id={`${id}-description`}>{description}</Text>}</div><IconButton icon={X} label="Close dialog" onClick={() => ref.current?.close()} /></header>
     {sideContent ? <DialogSplit open={open} sideContent={sideContent} contentLabel={contentLabel} sideContentLabel={sideContentLabel} resizable={resizableSplit} minWidth={sideContentMinWidth} maxWidth={sideContentMaxWidth}>{children}</DialogSplit> : <div className="cr-dialog-body">{children}</div>}{footer && <footer className="cr-dialog-footer">{footer}</footer>}
   </dialog>;

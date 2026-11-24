@@ -149,7 +149,7 @@ export function ModalsPage({ showGuidance = true }: { showGuidance?: boolean } =
   const completed = checks.filter(Boolean).length;
 
   return <>
-    <div className="modal-page-intro"><Text size="body">Five controlled examples demonstrate content, forms, confirmation, height behavior, and split panes using the <code>Dialog</code> component.</Text><span><kbd>esc</kbd> to close</span></div>
+    <div className="modal-page-intro"><Text size="body">Six controlled examples demonstrate content, forms, confirmation, height behavior, split panes, and a workspace-contained dialog using the <code>Dialog</code> component.</Text><span><kbd>esc</kbd> to close</span></div>
 
     <ExampleGallery className="two-column modal-gallery" maxColumns={4}>
       <Showcase title="Controlled dialog with one close action" description="Default size with controlled open state and an auto-focused footer button." code={simpleDialogCode}>
@@ -176,6 +176,19 @@ export function ModalsPage({ showGuidance = true }: { showGuidance?: boolean } =
         <div className="modal-example-preview" aria-hidden="true"><div className="modal-miniature modal-split-miniature"><Text bold>Card details</Text><div className="modal-split-miniature-body"><div><span className="eyebrow">TASK-024</span><Text bold>Implement the workspace task board</Text><div className="modal-miniature-lines"><span /><span /><span /></div><Badge tone="info" dot>In progress</Badge></div><div><Text bold><MessageSquare size={12} />Comments</Text><div className="modal-miniature-lines"><span /><span /></div><div className="modal-miniature-input">Enter a review comment…</div></div></div><div className="modal-split-miniature-footer"><span>One shared footer</span><span className="modal-miniature-action">Close</span></div></div></div>
         <div className="modal-launch"><span>Both panes scroll within the dialog body.</span><Button variant="secondary" size="sm" iconRight={ArrowUpRight} onClick={() => setExample('split')}>Open split content</Button></div>
       </Showcase>
+      <Showcase span="full" title="Dialog contained in a workspace area" description="A non-modal dialog that covers one element, such as the workspace content, while the navigation beside it stays usable." code={`const [workspace, setWorkspace] = useState(null);
+
+<WorkspaceContent ref={setWorkspace}>…</WorkspaceContent>
+<Dialog open={open} onOpenChange={setOpen} container={workspace}
+  title="Card details" description="TASK-024"
+  footer={<Button onClick={() => setOpen(false)}>Done</Button>}>
+  <CardDetails />
+</Dialog>
+
+// No backdrop: the navbar and sidebars stay clickable.
+// Escape and the close button still dismiss it.`}>
+        <ContainedDialogExample />
+      </Showcase>
     </ExampleGallery>
 
     {createdTask && <div className="document-section"><Alert tone="success" title="Task created locally">“{createdTask}” was created in this example.</Alert></div>}
@@ -201,4 +214,25 @@ export function ModalsPage({ showGuidance = true }: { showGuidance?: boolean } =
       ]} />
     </Dialog>
   </>;
+}
+
+function ContainedDialogExample() {
+  const [open, setOpen] = useState(false);
+  const [area, setArea] = useState<HTMLElement | null>(null);
+  const [clicks, setClicks] = useState(0);
+  return <div className="modal-contained-frame">
+    <nav className="modal-contained-nav" aria-label="Example navigation">
+      <Text bold>Navigation</Text>
+      <Button variant="ghost" size="sm" onClick={() => setClicks(count => count + 1)}>Still clickable</Button>
+      <Text size="body">{clicks} {clicks === 1 ? 'click' : 'clicks'}</Text>
+    </nav>
+    <section className="modal-contained-area" ref={setArea} aria-label="Example workspace content">
+      <Text size="body">The dialog covers this area only.</Text>
+      <Button variant="secondary" size="sm" iconRight={ArrowUpRight} onClick={() => setOpen(true)}>Open in this area</Button>
+    </section>
+    <Dialog open={open} onOpenChange={setOpen} container={area} title="Card details" description="TASK-024 · Sample workspace"
+      footer={<Button icon={Check} onClick={() => setOpen(false)}>Done</Button>}>
+      <Text size="body">Add status lanes, task search, and task detail dialogs.</Text>
+    </Dialog>
+  </div>;
 }

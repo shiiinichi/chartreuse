@@ -81,6 +81,23 @@ export function ActivityListExample() {
   return <AgentActivity variant="list" titleLines="single" events={events} />;
 }`;
 
+const narrowEvents: AgentActivityEvent[] = [
+  { id: 'cards', kind: 'tool', title: 'Called list_cards', status: 'completed', durationMs: 420, input: '{ "board": "TASK-002" }', output: '{ "cards": 3 }' },
+  { id: 'comment', kind: 'tool', title: 'Called add_comment on the order summary review card', status: 'completed', durationMs: 1250, output: 'Comment saved.' },
+  { id: 'tests', kind: 'command', title: 'Running order summary tests', status: 'running', command: 'npm test -- --run order-summary' },
+];
+
+const narrowCode = `import { AgentActivity, type AgentActivityEvent } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
+
+const events: AgentActivityEvent[] = ${JSON.stringify(narrowEvents, null, 2)};
+
+export function NarrowActivityExample() {
+  return <div style={{ inlineSize: 340 }}>
+    <AgentActivity variant="list" titleLines="single" events={events} />
+  </div>;
+}`;
+
 const recordedCode = `import { AgentActivity, type AgentActivityEvent } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
@@ -105,6 +122,12 @@ export function AgentActivityDemo() {
     </Showcase>
     <Showcase title="Activity list" description="The footer lets you collapse long lists or scroll to their heading. Expand a row to read its full title." code={listCode}>
       <div className="agent-activity-demo-panel"><AgentActivity variant="list" titleLines="single" events={listEvents} /></div>
+    </Showcase>
+    <Showcase title="Narrow containers" description="In containers 440px or narrower, titleLines=&quot;single&quot; keeps each row on one line and ends long titles in an ellipsis. The default stacks the status under the title." code={narrowCode}>
+      <div className="agent-activity-demo-narrow">
+        <div><Text size="body" className="agent-activity-demo-caption">titleLines="single"</Text><AgentActivity variant="list" titleLines="single" label="Single-line activity" events={narrowEvents} /></div>
+        <div><Text size="body" className="agent-activity-demo-caption">titleLines="multiple" (default)</Text><AgentActivity variant="list" label="Multi-line activity" events={narrowEvents} /></div>
+      </div>
     </Showcase>
     <Showcase title="Interrupted events and empty output" description="Interrupted events retain their status. An event with no description or output shows its title in the details. The group header highlights on hover." code={recordedCode}>
       <div className="agent-activity-demo-panel"><AgentActivity label="Recorded session" events={recordedEvents} headerHighlight="hover" /></div>

@@ -491,7 +491,9 @@ test('agent activity single-line titles are available in full in both variants',
       events, variant, titleLines: 'single', initialVisibleCount: 2,
     }));
 
-    assert.equal([...markup.matchAll(/data-single-line="true"/g)].length, events.length);
+    // Both the row and its title are marked, so the row stays on one line and the title ends in an ellipsis.
+    assert.equal([...markup.matchAll(/class="cr-agent-activity-row" data-single-line="true"/g)].length, events.length);
+    assert.equal([...markup.matchAll(/class="cr-agent-activity-title" data-single-line="true"/g)].length, events.length);
     const detailTitles = [...markup.matchAll(/class="cr-text cr-agent-activity-detail-title"[^>]*>([^<]+)</g)].map(([, title]) => title);
     assert.deepEqual(detailTitles, [events[0].title, events[1].title]);
     assert.ok(markup.includes('<p class="cr-text cr-agent-activity-description" data-size="body">The totals agree.</p>'));

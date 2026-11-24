@@ -785,3 +785,7 @@
   }
   .example-gallery .showcase > .showcase-preview { min-block-size: 0; }
 }
+
+.modal-contained-frame { display: grid; grid-template-columns: 180px minmax(0, 1fr); block-size: 320px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); overflow: hidden; }
+.modal-contained-nav { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-2); padding: var(--cr-space-4); border-inline-end: 1px solid var(--cr-color-border); background: var(--cr-color-subtle); }
+.modal-contained-area { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--cr-space-3); }

@@ -515,7 +515,7 @@ export const coreReferences: ComponentReference[] = [
   {
     name: 'Dialog',
     slug: 'dialog',
-    summary: 'A controlled native modal dialog with a header, scrolling body, optional footer, and optional second pane.',
+    summary: 'A controlled native dialog with a header, scrolling body, optional footer, and optional second pane. Modal by default, or contained in one region of the page.',
     importCode: "import { useState } from 'react';\nimport { Button, Dialog, TextField } from '@chartreuse/ui';",
     usageCode: `export function DialogExample() {
   const [open, setOpen] = useState(false);
@@ -545,9 +545,10 @@ export const coreReferences: ComponentReference[] = [
       { name: 'resizableSplit', type: 'boolean', defaultValue: 'false', description: 'Adds a 10px divider with a centered grip for pointer and keyboard resizing on wide layouts.' },
       { name: 'sideContentMinWidth', type: 'number', defaultValue: '260', description: 'The preferred minimum side-pane width in CSS pixels, bounded by the available body width.' },
       { name: 'sideContentMaxWidth', type: 'number', defaultValue: '640', description: 'The maximum side-pane width in CSS pixels. Also applies when resizing is off.' },
+      { name: 'container', type: 'HTMLElement | null', description: 'Opens the dialog without a modal backdrop and covers this element’s box, such as the workspace content. The rest of the page stays usable. `null` keeps it closed until the element is available. size, maxWidth, and freezeHeight do not apply.' },
       { name: 'className', type: 'string', description: 'Additional classes on the native dialog.' },
     ],
-    notes: ['Choose small (420px), medium (520px), large (760px), or extra large (1600px maximum) to suit the content. Each size fits the available viewport.', 'Native showModal keeps focus inside, handles Escape, and returns focus to the opener. Use autoFocus on the first form field or the least destructive action in a destructive confirmation.', 'Long content scrolls inside the body while the heading, close button, and footer stay visible. The footer has 24px padding on every side.', 'Optional sideContent splits only the body; the shared footer stays full width. Below 700px of modal content width, the panes become a content switcher and the divider is hidden.', 'Height follows content by default. Enable freezeHeight when content changes should preserve the opening height.', 'For an optional resizable split, Arrow keys change the side width by 16px, Shift+Arrow by 48px, and Home/End use the current bounds. Horizontal direction respects RTL.', 'The main pane keeps roughly 280px of room on wide layouts; configured pane bounds are clamped to fit.'],
+    notes: ['Choose small (420px), medium (520px), large (760px), or extra large (1600px maximum) to suit the content. Each size fits the available viewport.', 'Native showModal keeps focus inside, handles Escape, and returns focus to the opener. Use autoFocus on the first form field or the least destructive action in a destructive confirmation.', 'Long content scrolls inside the body while the heading, close button, and footer stay visible. The footer has 24px padding on every side.', 'Optional sideContent splits only the body; the shared footer stays full width. Below 700px of modal content width, the panes become a content switcher and the divider is hidden.', 'Height follows content by default. Enable freezeHeight when content changes should preserve the opening height.', 'For an optional resizable split, Arrow keys change the side width by 16px, Shift+Arrow by 48px, and Home/End use the current bounds. Horizontal direction respects RTL.', 'The main pane keeps roughly 280px of room on wide layouts; configured pane bounds are clamped to fit.', 'Set container to open a non-modal dialog over one region, such as WorkspaceContent, while the navbar and sidebars stay usable. It fills that region with square corners and no shadow, follows its size and position, closes on Escape, and returns focus to the opener.'],
   },
   {
     name: 'ToastProvider',
