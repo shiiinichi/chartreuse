@@ -200,6 +200,18 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.18.0',
+    date: '2026-11-24',
+    title: 'SplitButton',
+    summary: 'Adds SplitButton, a primary action joined to a menu segment that opens choices or custom popover content. It is a new, opt-in component; existing components keep their props, markup, and visuals.',
+    changes: [
+      'SplitButton joins an action Button to a menu segment that opens the ButtonSelect popover: pass options with value and onValueChange, or content for custom controls with close().',
+      'Button props such as onClick, icon, disabled, title, and loading apply to the action segment. menuLabel names the menu segment, menuDisabled disables it independently, and groupLabel overrides the group name.',
+      'Both segments take the Button variant (primary, secondary, accent, ghost, or danger) and size, so an sm SplitButton matches an sm Button or MessageComposer send button. The segments share one border at the seam, drawn in --cr-split-button-divider.',
+      'The popover aligns to the start of the whole control. Enter, Space, or ArrowDown opens the menu segment, and Escape closes it and returns focus.',
+    ],
+  },
+  {
     version: '1.17.1',
     date: '2026-11-24',
     title: 'No empty band under overflowing tabs',
