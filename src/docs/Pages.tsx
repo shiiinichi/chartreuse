@@ -200,6 +200,17 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.19.0',
+    date: '2026-11-24',
+    title: 'Contained Dialog, one-line AgentActivity rows, and a quieter composer footer',
+    summary: 'Dialog adds an opt-in container prop for a non-modal dialog over one region of the page. AgentActivity rows with titleLines="single" now stay on one line in narrow containers, and MessageComposer no longer reflows its footer while a send is pending with the hint hidden.',
+    changes: [
+      'Dialog adds container: pass an element, such as WorkspaceContent, to open the dialog with show() over that element only. It has no backdrop, square corners, and no shadow, follows the element as it moves or resizes, closes on Escape, and returns focus to the opener. null keeps it closed until the element exists; size, maxWidth, and freezeHeight do not apply.',
+      'AgentActivity with titleLines="single" keeps each row on one line at every width: the title ends in an ellipsis and the duration, status, and chevron stay beside it. Rows also carry data-single-line. The default titleLines="multiple" still moves the status under the title in containers 440px or narrower.',
+      'MessageComposer with hint={null} or false announces “Sending message…” to assistive technology only, so the footer layout no longer changes while a send is pending. A visible hint is still replaced by that text.',
+    ],
+  },
+  {
     version: '1.18.0',
     date: '2026-11-24',
     title: 'SplitButton',
