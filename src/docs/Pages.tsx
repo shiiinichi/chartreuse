@@ -200,6 +200,15 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.20.1',
+    date: '2026-11-25',
+    title: 'Truncated Table cells with onRowClick',
+    summary: 'Fixes truncate on Table cells whose row link is a button. No props or markup change.',
+    changes: [
+      'Table columns with truncate now end in an ellipsis when onRowClick renders the row link as a button, including a row-header column with no width. Before, the button kept its full text width and spilled into the next columns. Row links from getRowHref also fill their cell explicitly.',
+    ],
+  },
+  {
     version: '1.20.0',
     date: '2026-11-25',
     title: 'SplitButton divider option and clickable Table group headings',
