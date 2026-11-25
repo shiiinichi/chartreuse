@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { Bot, Check, Clock3, MessageSquare, Users, X } from 'lucide-react';
 import { Avatar, AvatarGroup, Badge, BrandMark, Button, Card, Divider, Select } from '../system/components';
+import { Flex } from '../system/Flex';
 import { ExampleGallery, Showcase } from './shared';
 import { Text } from '../system';
 
@@ -189,6 +190,25 @@ export function CardScenarios() {
         </section>
       </Card>
     </Showcase>
+    <Showcase title="Highlighted card and danger footer" description="highlighted rings a card opened from a link. A danger footerTone tints an inline confirmation." code={snippet(
+      'import { Button, Card, Flex, Text } from "@chartreuse/ui";',
+      '',
+      '<Card highlighted><Text size="body">Opened from a link to #1.</Text></Card>',
+      '<Card footerTone="danger" footer={<Flex align="center" gap={2} wrap>',
+      '  <Text size="body" style={{ flex: "1 1 140px", color: "inherit" }}><Text bold>Delete #4?</Text> Its 2 replies stay visible.</Text>',
+      '  <Button size="sm" variant="secondary">Keep</Button>',
+      '  <Button size="sm" variant="danger">Delete</Button>',
+      '</Flex>}>',
+      '  <Text size="body">Corrected the p95 figure in the discovery report.</Text>',
+      '</Card>',
+    )}><div style={{ display: 'grid', gap: 'var(--cr-space-4)' }}>
+      <Card highlighted header={<Text size="body">Opened from a link to #1.</Text>} />
+      <Card footerTone="danger" footer={<Flex align="center" gap={2} wrap>
+        <Text size="body" style={{ flex: '1 1 140px', color: 'inherit' }}><Text bold>Delete #4?</Text> Its 2 replies stay visible.</Text>
+        <Button size="sm" variant="secondary">Keep</Button>
+        <Button size="sm" variant="danger">Delete</Button>
+      </Flex>}><Text size="body">Corrected the p95 figure in the discovery report.</Text></Card>
+    </div></Showcase>
     <Showcase title="Card content" description="Card renders an article element. Supply content as children and control spacing with classes or styles." code={snippet(
       'import { Card, Text } from "@chartreuse/ui";',
       '',

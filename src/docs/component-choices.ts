@@ -33,11 +33,19 @@ export const componentChoices: readonly ComponentChoice[] = [
     ],
   },
   {
-    label: 'Button vs ButtonSelect vs SplitButton',
+    label: 'Button vs ButtonSelect vs SplitButton vs Menu',
     options: [
       { name: 'Button', reason: 'Use Button for a single action that runs when pressed, with no menu of alternatives.' },
       { name: 'ButtonSelect', reason: 'Use ButtonSelect when pressing the button only opens a menu of choices or custom popover content and runs nothing by itself.' },
       { name: 'SplitButton', reason: 'Use SplitButton when one action runs on press and a joined menu segment changes how it runs, such as the merge method or the agent and model to ask; both segments share the Button variant and size.' },
+      { name: 'Menu', reason: 'Use Menu for a list of actions behind one trigger, such as Edit, Copy link, and Delete on a comment; it runs an action and keeps no selected value.' },
+    ],
+  },
+  {
+    label: 'Conversation vs CommentThread',
+    options: [
+      { name: 'Conversation', reason: 'Use Conversation for a chat log of turns between a person and an agent, with Markdown agent replies and work shown between turns.' },
+      { name: 'CommentThread', reason: 'Use CommentThread for a comment with replies on a card or document, with per-comment actions, a collapsible replies band, and a reply composer.' },
     ],
   },
   {

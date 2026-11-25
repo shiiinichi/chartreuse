@@ -4,6 +4,10 @@ import { MessageComposer } from '../../system/MessageComposer';
 import { Grid, GridItem } from '../../system/Grid';
 import { ExampleGallery, FormScenario, formCode } from './shared';
 import { ButtonSelect, Text } from '../../system';
+import { InlineReplyThread } from './InlineComposerExample';
+import inlineSource from './InlineComposerExample.tsx?raw';
+
+const published = (source: string) => source.replace("from '../../system'", "from '@chartreuse/ui'").trim();
 
 function SimpleComposer() {
   const [sent, setSent] = useState('');
@@ -158,6 +162,12 @@ function RetryComposer() {
 
 export function MessageComposerScenarios() {
   return <ExampleGallery className="form-scenarios">
+    <FormScenario title="One-row reply field in a comment thread" description="layout inline puts the field, the Ask agent SplitButton, and send on one row. The field grows with the draft; the controls stay on its bottom line." wide code={published(inlineSource)}>
+      <InlineReplyThread />
+    </FormScenario>
+    <FormScenario title="One-row reply field at 320px" description="In a narrow pane, iconOnly narrow keeps only the Ask agent icon, named by its text." code={published(inlineSource)}>
+      <div style={{ inlineSize: 320, maxInlineSize: '100%' }}><InlineReplyThread /></div>
+    </FormScenario>
     <SimpleComposer />
     <ControlledComposer />
     <PendingComposer />

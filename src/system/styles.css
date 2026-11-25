@@ -299,6 +299,9 @@
     background-color: var(--cr-color-surface);
   }
   .cr-card[data-divided='true'] > .cr-card-region { flex-basis: 100%; }
+  .cr-card[data-highlighted] { border-color: var(--cr-color-focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cr-color-focus) 22%, transparent); }
+  .cr-card[data-footer-tone='danger'] > footer.cr-card-region { border-block-start-color: color-mix(in srgb, var(--cr-color-danger) 22%, var(--cr-color-border)); border-end-start-radius: inherit; border-end-end-radius: inherit; background: var(--cr-color-danger-bg); color: var(--cr-color-danger); }
+  .cr-card[data-divided='true'][data-footer-tone='danger'] > footer.cr-card-region { background: var(--cr-color-danger-bg); }
   .cr-alert { display: flex; gap: .75rem; align-items: flex-start; padding: .875rem 1rem; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: var(--cr-radius-md); font: 450 .75rem/1.6 var(--cr-font-sans); color: var(--cr-color-muted); background: var(--cr-color-subtle); }
   .cr-alert > svg { margin-block-start: 1px; flex-shrink: 0; }
   .cr-alert > div { flex: 1; }

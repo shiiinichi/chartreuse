@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, FormEvent, ReactNode } from 'react';
 import { AlertCircle, ArrowUp } from 'lucide-react';
 import { Button } from './components';
@@ -18,6 +18,12 @@ export interface MessageComposerProps extends Omit<ComponentPropsWithRef<'textar
   sendLabel?: string;
   /** Size of the send button. Defaults to md. */
   sendSize?: ControlSize;
+  /**
+   * 'inline' puts the field, controls, and send on one row with no footer: the field starts one
+   * line tall and grows with the draft while the controls and send stay on its bottom line. The hint
+   * stays available to assistive technology only. Defaults to 'stacked'.
+   */
+  layout?: 'stacked' | 'inline';
 }
 
 // The selection each composer had when it last lost focus. A quote goes there, or to the end of a
@@ -75,6 +81,7 @@ export function MessageComposer({
   disabled = false,
   sendLabel = 'Send message',
   sendSize = 'md',
+  layout = 'stacked',
   rows = 4,
   className,
   id: suppliedId,
@@ -84,6 +91,7 @@ export function MessageComposer({
   onCompositionStart,
   onCompositionEnd,
   onBlur,
+  ref,
   ...textareaProps
 }: MessageComposerProps) {
   const generatedId = useId();
@@ -97,6 +105,41 @@ export function MessageComposer({
   const mountedRef = useRef(true);
   const sentCountRef = useRef(0);
   const text = value ?? draft;
+  const inline = layout === 'inline';
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useImperativeHandle(ref, () => textareaRef.current!, []);
+  // Once the draft no longer fits beside the controls, it takes the full width and the controls and
+  // send move to the bottom line below it.
+  const [wrapped, setWrapped] = useState(false);
+  useLayoutEffect(() => {
+    const field = textareaRef.current;
+    const form = field?.form;
+    const view = field?.ownerDocument.defaultView;
+    if (!inline || !field || !form || !view) { setWrapped(false); return; }
+    const canvas = field.ownerDocument.createElement('canvas').getContext('2d');
+    const check = () => {
+      const formStyle = view.getComputedStyle(form);
+      const gap = parseFloat(formStyle.columnGap) || 0;
+      const inner = form.clientWidth - parseFloat(formStyle.paddingInlineStart) - parseFloat(formStyle.paddingInlineEnd);
+      const actions = Array.from(form.children).filter(child => child.matches('.cr-message-composer-controls, .cr-message-composer-send'))
+        .reduce((total, child) => total + (child as HTMLElement).offsetWidth + gap, 0);
+      const value = field.value;
+      if (canvas) canvas.font = view.getComputedStyle(field).font;
+      const width = canvas ? canvas.measureText(value).width : 0;
+      setWrapped(value.includes('\n') || width > inner - actions - 4);
+    };
+    check();
+    const observer = new view.ResizeObserver(check);
+    observer.observe(form);
+    return () => observer.disconnect();
+  }, [inline, text]);
+  // The inline field grows with its draft, up to its max-block-size.
+  useLayoutEffect(() => {
+    const field = textareaRef.current;
+    if (!inline || !field) return;
+    field.style.blockSize = 'auto';
+    field.style.blockSize = `${field.scrollHeight + field.offsetHeight - field.clientHeight}px`;
+  }, [inline, text, wrapped]);
   const hasHint = hint !== undefined && hint !== null && hint !== false;
 
   useEffect(() => {
@@ -142,9 +185,10 @@ export function MessageComposer({
     }
   };
 
-  return <form className={['cr-message-composer', className].filter(Boolean).join(' ')} aria-label={`${label} composer`} aria-busy={pending || undefined} data-disabled={disabled || undefined} data-error={Boolean(error) || undefined} onSubmit={send}>
+  return <form className={['cr-message-composer', className].filter(Boolean).join(' ')} aria-label={`${label} composer`} aria-busy={pending || undefined} data-disabled={disabled || undefined} data-error={Boolean(error) || undefined}
+    data-layout={inline ? 'inline' : undefined} data-wrapped={inline && wrapped || undefined} onSubmit={send}>
     <label className="cr-sr-only" htmlFor={id}>{label}</label>
-    <textarea {...textareaProps} id={id} name={name} rows={rows} placeholder={placeholder} value={text} disabled={disabled} className="cr-message-composer-input"
+    <textarea {...textareaProps} ref={textareaRef} id={id} name={name} rows={inline ? 1 : rows} placeholder={placeholder} value={text} disabled={disabled} className="cr-message-composer-input"
       aria-invalid={error ? true : textareaProps['aria-invalid']}
       aria-describedby={[textareaProps['aria-describedby'], hasHint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined}
       onChange={event => {
@@ -164,7 +208,12 @@ export function MessageComposer({
           if (!disabled && !sendingRef.current && event.currentTarget.value.trim()) event.currentTarget.form?.requestSubmit();
         }
       }} />
-    <div className="cr-message-composer-footer">{controls !== undefined && controls !== null && controls !== false && <div className="cr-message-composer-controls">{controls}</div>}<div className="cr-message-composer-hint" id={hasHint ? `${id}-hint` : undefined}>{pending ? <span className={hasHint ? undefined : 'cr-sr-only'}>Sending message…</span> : hint}</div><div className="cr-message-composer-actions"><div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <Text size="body" className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></Text>}</div><Button type="submit" size={sendSize} icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} /></div></div>
+    {inline ? <>
+      {controls !== undefined && controls !== null && controls !== false && <div className="cr-message-composer-controls">{controls}</div>}
+      <Button type="submit" size={sendSize} icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} />
+      <div className="cr-sr-only" id={hasHint ? `${id}-hint` : undefined}>{pending ? 'Sending message…' : hint}</div>
+      <div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <Text size="body" className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></Text>}</div>
+    </> : <div className="cr-message-composer-footer">{controls !== undefined && controls !== null && controls !== false && <div className="cr-message-composer-controls">{controls}</div>}<div className="cr-message-composer-hint" id={hasHint ? `${id}-hint` : undefined}>{pending ? <span className={hasHint ? undefined : 'cr-sr-only'}>Sending message…</span> : hint}</div><div className="cr-message-composer-actions"><div className="cr-message-composer-error-region" id={`${id}-error`} role="alert" aria-atomic="true">{error && <Text size="body" className="cr-message-composer-error"><AlertCircle size={14} aria-hidden="true" /><span>{error}</span></Text>}</div><Button type="submit" size={sendSize} icon={ArrowUp} loading={pending} disabled={disabled || !text.trim()} className="cr-message-composer-send" aria-label={pending ? 'Sending message' : sendLabel} title={sendLabel} /></div></div>}
     <span className="cr-sr-only" role="status" aria-atomic="true">{announcement}</span>
   </form>;
 }

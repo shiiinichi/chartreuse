@@ -449,7 +449,7 @@ test('the choosing guide and info seeAlso share one decision table', () => {
     ['Alert', 'CalloutBanner', 'ToastProvider', 'EmptyState'], ['Grid', 'Flex', 'Masonry'], ['Progress', 'Spinner', 'Skeleton'], ['Switch', 'Checkbox'],
     ['Tabs', 'SegmentedControl', 'Navbar'], ['Card', 'TaskCard', 'AgentCard'], ['Stat', 'StatGroup'], ['Timeline', 'Steps', 'ActivityItem'],
     ['TextField', 'TextArea', 'NumberInput', 'Slider'], ['Navbar', 'NavbarItem', 'Breadcrumbs', 'Pagination', 'Tabs'], ['Form', 'FormLayout', 'Fieldset', 'Grid'],
-    ['Tooltip', 'Disclosure', 'ButtonSelect'], ['Button', 'ButtonSelect', 'SplitButton'], ['Timeline', 'ActivityItem', 'Conversation', 'AgentActivity'], ['Text', 'Blockquote', 'MarkdownRenderer'],
+    ['Tooltip', 'Disclosure', 'ButtonSelect'], ['Button', 'ButtonSelect', 'SplitButton', 'Menu'], ['Conversation', 'CommentThread'], ['Timeline', 'ActivityItem', 'Conversation', 'AgentActivity'], ['Text', 'Blockquote', 'MarkdownRenderer'],
     ['Card', 'PagePanel', 'CalloutBanner']]) {
     assert.ok(componentChoices.some(choice => set.every(name => choice.options.some(option => option.name === name))), set.join(' vs '));
   }
@@ -477,8 +477,8 @@ test('the choosing guide and info seeAlso share one decision table', () => {
     }
   }
   assert.deepEqual(info('IconButton').seeAlso, []);
-  assert.deepEqual(info('Button').seeAlso.map(entry => entry.name), ['ButtonSelect', 'SplitButton']);
-  assert.deepEqual(info('SplitButton').seeAlso.map(entry => entry.name), ['Button', 'ButtonSelect']);
+  assert.deepEqual(info('Button').seeAlso.map(entry => entry.name), ['ButtonSelect', 'SplitButton', 'Menu']);
+  assert.deepEqual(info('SplitButton').seeAlso.map(entry => entry.name), ['Button', 'ButtonSelect', 'Menu']);
   assert.deepEqual(info('Drawer').seeAlso.map(entry => entry.name), ['Dialog', 'Sidebar', 'Navbar']);
   assert.match(run('info', 'Drawer').stdout, /\nSee also\n- Use Dialog for [^\n]+\n- Use Sidebar for /);
   assert.doesNotMatch(run('info', 'IconButton').stdout, /See also/);

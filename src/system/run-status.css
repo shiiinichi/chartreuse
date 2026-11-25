@@ -1,0 +1,21 @@
+@layer cr-components {
+  .cr-run-status { container-type: inline-size; min-inline-size: 0; }
+  .cr-run-status-row {
+    display: flex; align-items: center; gap: var(--cr-space-2); box-sizing: border-box; min-inline-size: 0; min-block-size: 42px;
+    padding: 4px 4px 4px 10px; border: 1px solid var(--cr-color-border); border-radius: 6px;
+    background: var(--cr-color-surface); color: var(--cr-color-text); font: 400 .8125rem/1.6 var(--cr-font-sans);
+  }
+  .cr-run-status-spinner { flex: none; color: var(--cr-color-muted); }
+  .cr-run-status-label { flex: 1; min-inline-size: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cr-run-status-label code { font-family: var(--cr-font-mono); font-size: .75rem; }
+  .cr-run-status-elapsed { flex: none; color: var(--cr-color-muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
+  /* A standard sm Button, so the row matches an inline MessageComposer with sm controls. */
+  .cr-run-status-row > .cr-run-status-stop { flex: none; }
+  @container (max-width: 359.98px) {
+    .cr-run-status-row { gap: 6px; padding-inline-start: 8px; }
+    .cr-run-status-row > .cr-run-status-stop { min-inline-size: 32px; padding: .375rem; justify-content: center; }
+    .cr-run-status-stop-text { position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  }
+  @media (pointer: coarse) { .cr-run-status-row > .cr-run-status-stop { min-block-size: 44px; min-inline-size: 44px; } }
+  @media (forced-colors: active) { .cr-run-status-row { border-color: CanvasText; } }
+}

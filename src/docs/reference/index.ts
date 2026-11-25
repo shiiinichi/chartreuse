@@ -23,7 +23,10 @@ import { tableReferences } from './table';
 import { paginationReferences } from './pagination';
 import { chipReferences } from './chips';
 import { splitButtonReferences } from './split-button';
+import { menuReferences } from './menu';
+import { commentThreadReferences } from './comment-thread';
+import { runStatusReferences } from './run-status';
 
-export const componentReferences = [...coreReferences, ...extendedReferences, ...gridReferences, ...masonryReferences, ...flexReferences, ...formReferences, ...tooltipReferences, ...contentReferences, ...treeReferences, ...agentActivityReferences, ...segmentedControlReferences, ...sliderReferences, ...navbarReferences, ...sidebarReferences, ...workspaceContentReferences, ...conversationReferences, ...swimlaneReferences, ...numberInputReferences, ...statsReferences, ...timelineReferences, ...stepsReferences, ...tableReferences, ...paginationReferences, ...chipReferences, ...splitButtonReferences].sort((a, b) => a.name.localeCompare(b.name));
+export const componentReferences = [...coreReferences, ...extendedReferences, ...gridReferences, ...masonryReferences, ...flexReferences, ...formReferences, ...tooltipReferences, ...contentReferences, ...treeReferences, ...agentActivityReferences, ...segmentedControlReferences, ...sliderReferences, ...navbarReferences, ...sidebarReferences, ...workspaceContentReferences, ...conversationReferences, ...swimlaneReferences, ...numberInputReferences, ...statsReferences, ...timelineReferences, ...stepsReferences, ...tableReferences, ...paginationReferences, ...chipReferences, ...splitButtonReferences, ...menuReferences, ...commentThreadReferences, ...runStatusReferences].sort((a, b) => a.name.localeCompare(b.name));
 export { createComponentNavigation } from './navigation';
 export type { ComponentReference, PropDefinition } from './types';

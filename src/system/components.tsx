@@ -303,10 +303,14 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
   header?: ReactNode;
   footer?: ReactNode;
   divided?: boolean;
+  /** Rings the card in the focus colour, such as a comment opened from a link. Defaults to false. */
+  highlighted?: boolean;
+  /** Tints the footer, such as 'danger' for an inline delete confirmation. Defaults to 'neutral'. */
+  footerTone?: 'neutral' | 'danger';
 }
 
 export function Card(cardProps: CardProps) {
-  const { header, children, footer, className, divided = false, ...props } = cardProps;
+  const { header, children, footer, className, divided = false, highlighted = false, footerTone = 'neutral', ...props } = cardProps;
   // Keep the body mounted when slot content appears or disappears.
   const hasSlots = 'header' in cardProps || 'footer' in cardProps;
   const hasHeader = header != null && typeof header !== 'boolean';
@@ -318,7 +322,8 @@ export function Card(cardProps: CardProps) {
     {hasFooter && <footer className="cr-card-region">{footer}</footer>}
   </> : children;
 
-  return <article {...props} className={cx('cr-card', className)} data-divided={divided ? 'true' : undefined}>
+  return <article {...props} className={cx('cr-card', className)} data-divided={divided ? 'true' : undefined}
+    data-highlighted={highlighted || undefined} data-footer-tone={footerTone === 'danger' ? 'danger' : undefined}>
     {content}
   </article>;
 }

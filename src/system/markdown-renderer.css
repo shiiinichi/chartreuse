@@ -52,4 +52,13 @@
     .cr-markdown blockquote { border-inline-start-color: CanvasText; }
     .cr-markdown :not(pre) > code { border: 1px solid CanvasText; }
   }
+  .cr-markdown-clamp { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cr-space-1); min-inline-size: 0; }
+  .cr-markdown-clamp > .cr-markdown { align-self: stretch; }
+  .cr-markdown[data-clamped] {
+    max-block-size: calc(var(--cr-markdown-max-lines) * 1lh);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 max(50%, calc(100% - 2lh)), rgb(0 0 0 / .12));
+    mask-image: linear-gradient(to bottom, #000 max(50%, calc(100% - 2lh)), rgb(0 0 0 / .12));
+  }
+  .cr-markdown-clamp > .cr-markdown-toggle { font-weight: 550; }
 }

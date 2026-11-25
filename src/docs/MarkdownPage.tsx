@@ -107,6 +107,18 @@ const safetyMarkdown = [
   'A normal [React documentation](https://react.dev/) link remains available.',
 ].join('\n');
 
+const longMarkdown = [
+  '**Changes suggested.** SPEC-1 matches the verified discovery. Five gaps would leave an implementer guessing.',
+  '',
+  '1. No error state for a failed load.',
+  '2. No limit on the preview length.',
+  '3. No owner for the migration.',
+  '4. The p95 target has no measurement method.',
+  '5. The rollout has no flag.',
+  '',
+  'Fix these and the spec is ready to plan.',
+].join('\n');
+
 function markdownUsage(markdown: string) {
   return `import { MarkdownRenderer } from '@chartreuse/ui';\n\nconst markdown = [\n${markdown.split('\n').map(line => `  ${JSON.stringify(line)},`).join('\n')}\n].join('\\n');\n\n<MarkdownRenderer>{markdown}</MarkdownRenderer>`;
 }
@@ -143,6 +155,7 @@ export function MarkdownPage() {
       <section className="markdown-source-panel"><header><Text size="heading-2"><Code2 size={15} aria-hidden="true" />Source</Text><Button variant="ghost" size="sm" icon={copied ? Check : Copy} onClick={async () => setCopied(await copyText(source))}>{copied ? 'Copied' : 'Copy source'}</Button></header><div><TextArea label="Markdown source" name="markdownSource" value={source} onChange={event => { setSource(event.target.value); setCopied(false); }} rows={24} spellCheck={false} autoCapitalize="none" autoCorrect="off" /></div><Text size="body">Edit the source to preview headings, lists, tables, task lists, and code blocks.</Text></section>
       <section className="markdown-preview-panel" aria-busy={source !== deferredSource || undefined}><header><Text size="heading-2"><BookOpen size={15} aria-hidden="true" />Preview</Text><span>Live rendering</span></header><div onClick={followPreviewFragment}><MarkdownRenderer>{deferredSource}</MarkdownRenderer></div></section>
     </div></Showcase>
+    <Showcase title="Clamped long content" description="maxLines clamps the content with a fade; the toggle appears only when it overflows." code={markdownUsage(longMarkdown).replace('<MarkdownRenderer>', '<MarkdownRenderer maxLines={4} expandLabel="Show full reply">')}><div className="markdown-focused-sample"><MarkdownRenderer maxLines={4} expandLabel="Show full reply">{longMarkdown}</MarkdownRenderer></div></Showcase>
     <Showcase title="Tables and task lists" description="GFM checklist items retain their read-only checkbox state; wide tables scroll within the rendered content." code={markdownUsage(gfmMarkdown)}><div className="markdown-focused-sample"><MarkdownRenderer>{gfmMarkdown}</MarkdownRenderer></div></Showcase>
     <Showcase title="Inline and fenced code" description="Language labels, copy actions, and keyboard-scrollable code blocks are supplied by the renderer." code={markdownUsage(codeMarkdown)}><div className="markdown-focused-sample"><MarkdownRenderer>{codeMarkdown}</MarkdownRenderer></div></Showcase>
     <Showcase title="Raw HTML and link protocols" description="Raw HTML is skipped, unsupported link protocols become text, and inline markup stays literal code." code={markdownUsage(safetyMarkdown)}><div className="markdown-focused-sample"><MarkdownRenderer>{safetyMarkdown}</MarkdownRenderer></div></Showcase></ExampleGallery>

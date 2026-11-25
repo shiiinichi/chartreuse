@@ -7,7 +7,7 @@ export interface ComponentGroup {
 }
 
 export const componentGroups: readonly ComponentGroup[] = [
-  { name: 'Actions', components: ['Button', 'IconButton', 'ButtonSelect', 'SplitButton', 'ToggleChip', 'ChipGroup'] },
+  { name: 'Actions', components: ['Button', 'IconButton', 'ButtonSelect', 'SplitButton', 'Menu', 'ToggleChip', 'ChipGroup'] },
   {
     name: 'Forms',
     // SegmentedControl is a native radio group with a label, hint, error, and form submission, so it sits with the inputs.
@@ -29,5 +29,5 @@ export const componentGroups: readonly ComponentGroup[] = [
     components: ['Grid', 'GridItem', 'GridSpacer', 'Flex', 'Masonry', 'MasonryItem', 'MasonrySpacer', 'WorkspaceLayout',
       'WorkspaceContent', 'PagePanel', 'Swimlane', 'SwimlaneGroup'],
   },
-  { name: 'Agents', components: ['AgentActivity', 'AgentCard', 'Conversation', 'TaskCard'] },
+  { name: 'Agents', components: ['AgentActivity', 'AgentCard', 'CommentThread', 'Conversation', 'RunStatus', 'TaskCard'] },
 ];

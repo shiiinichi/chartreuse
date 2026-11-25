@@ -29,6 +29,7 @@ export function MergeButton({ onMerge }: { onMerge: (method: string) => void }) 
     { name: 'menuIcon', type: 'IconSource', defaultValue: 'ChevronDown', description: 'Icon on the menu segment.' },
     { name: 'divider', type: 'boolean', defaultValue: 'true', description: 'Draws a line between the segments. Set false for a seamless control, such as ghost breadcrumb items; the segments keep their 1px join, so size and alignment do not change. Forced-colors mode still outlines each segment.' },
     { name: 'groupLabel', type: 'string', description: 'Accessible name of the group. By default the group is labeled by the action segment.' },
+    { name: 'iconOnly', type: "boolean | 'narrow'", defaultValue: 'false', description: "Shows only the action segment's icon; its text stays as the accessible name and, for text children, the tooltip. 'narrow' does so only when the nearest size container is under 360px wide, such as a MessageComposer footer in a narrow pane. Needs icon." },
     { name: 'options', type: 'readonly ButtonSelectOption[]', description: 'Choices for the built-in picker, the same shape as ButtonSelect options. The action label does not change by itself; render the chosen option in children.' },
     { name: 'value', type: 'string', description: 'Controlled option ID in the built-in picker.' },
     { name: 'defaultValue', type: 'string', description: 'Initial option ID for an uncontrolled picker.' },

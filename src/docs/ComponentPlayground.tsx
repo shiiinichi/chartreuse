@@ -3,6 +3,9 @@ import { ActivityItemDemo, BlockquoteDemo } from './ContentBlocksDemo';
 import { AgentActivityDemo } from './AgentActivityDemo';
 import { ButtonSelectDemo } from './ButtonSelectDemo';
 import { SplitButtonDemo } from './SplitButtonDemo';
+import { MenuDemo } from './MenuDemo';
+import { CommentThreadDemo } from './CommentThreadDemo';
+import { RunStatusDemo } from './RunStatusDemo';
 import { DisclosurePage } from './DisclosurePage';
 import { FieldsetPage } from './FieldsetPage';
 import { GridDemo } from './GridDemo';
@@ -42,12 +45,12 @@ const StepsDemo = lazy(() => import('./StepsDemo').then(module => ({ default: mo
 const demosWithOwnShowcases = new Set([
   'ActivityItem', 'AgentActivity', 'AgentCard', 'Alert', 'Autocomplete', 'Avatar',
   'AvatarGroup', 'Badge', 'Blockquote', 'BrandMark', 'Breadcrumbs', 'Button', 'ButtonSelect',
-  'CalloutBanner', 'Card', 'Checkbox', 'Conversation', 'Dialog', 'Disclosure',
+  'CalloutBanner', 'Card', 'Checkbox', 'CommentThread', 'Conversation', 'Dialog', 'Disclosure',
   'Divider', 'Drawer', 'EmptyState', 'Fieldset', 'FilePicker', 'Flex', 'Form', 'FormLayout', 'Grid', 'GridItem', 'GridSpacer',
   'Masonry', 'MasonryItem', 'MasonrySpacer',
   'IconButton', 'List', 'MarkdownRenderer', 'MessageComposer', 'Navbar', 'NumberInput', 'PagePanel', 'Pagination',
   'PathSelector', 'Progress', 'SegmentedControl', 'Select', 'Sidebar', 'Skeleton',
-  'Slider', 'Spinner', 'SplitButton', 'Stat', 'StatGroup', 'Swimlane', 'SwimlaneGroup', 'Switch', 'Table', 'Tabs', 'TaskCard',
+  'Menu', 'RunStatus', 'Slider', 'Spinner', 'SplitButton', 'Stat', 'StatGroup', 'Swimlane', 'SwimlaneGroup', 'Switch', 'Table', 'Tabs', 'TaskCard',
   'Steps', 'Text', 'TextArea', 'TextField', 'Timeline', 'ToastProvider', 'Tooltip', 'Tree', 'WorkspaceContent', 'WorkspaceLayout',
 ]);
 
@@ -100,6 +103,9 @@ function ComponentPlaygroundContent({ name }: { name: string }) {
     case 'Blockquote': return <BlockquoteDemo />;
     case 'ButtonSelect': return <ButtonSelectDemo />;
     case 'SplitButton': return <SplitButtonDemo />;
+    case 'Menu': return <MenuDemo />;
+    case 'CommentThread': return <CommentThreadDemo />;
+    case 'RunStatus': return <RunStatusDemo />;
     case 'Conversation': return <Suspense fallback={<Text size="body" className="muted">Loading conversation example…</Text>}><ConversationDemo /></Suspense>;
     case 'Dialog': return <ModalsPage showGuidance={false} />;
     case 'Disclosure': return <DisclosurePage showGuidance={false} />;

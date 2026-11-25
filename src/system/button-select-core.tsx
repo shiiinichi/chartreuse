@@ -34,7 +34,7 @@ export interface ButtonSelectProps extends Omit<ButtonProps,
   panelClassName?: string;
 }
 
-function positionCustomPanel(button: HTMLElement, panel: HTMLDivElement, view: Window, matchTriggerWidth: boolean) {
+function positionCustomPanel(button: HTMLElement, panel: HTMLDivElement, view: Window, matchTriggerWidth: boolean, align: 'start' | 'end' = 'start') {
   const { left, top, right, bottom } = optionListViewport(view, panel.ownerDocument);
   const inset = 8;
   const gap = 6;
@@ -55,10 +55,44 @@ function positionCustomPanel(button: HTMLElement, panel: HTMLDivElement, view: W
   const available = opensAbove ? above : below;
   panel.style.maxHeight = `${available}px`;
   const { width, height } = panel.getBoundingClientRect();
-  const start = view.getComputedStyle(button).direction === 'rtl' ? anchor.right - width : anchor.left;
+  const rtl = view.getComputedStyle(button).direction === 'rtl';
+  const start = rtl === (align === 'start') ? anchor.right - width : anchor.left;
   panel.style.left = `${Math.max(left + inset, Math.min(start, right - inset - width))}px`;
   panel.style.top = `${opensAbove ? aboveEnd - height : belowStart}px`;
   panel.dataset.positioned = '';
+}
+
+
+/** Keeps an open custom popover beside its anchor while the page scrolls or resizes. Returns the cleanup. */
+export function trackCustomPanel(target: HTMLElement, popup: HTMLDivElement, view: Window & typeof globalThis, matchTriggerWidth: boolean, align: 'start' | 'end' = 'start') {
+  popup.style.direction = '';
+  popup.style.minWidth = '';
+  popup.style.bottom = '';
+  let frame = 0;
+  const place = () => {
+    if (popup.matches(':popover-open')) positionCustomPanel(target, popup, view, matchTriggerWidth, align);
+  };
+  const schedule = () => {
+    view.cancelAnimationFrame(frame);
+    frame = view.requestAnimationFrame(place);
+  };
+  const observer = new view.ResizeObserver(schedule);
+  observer.observe(target);
+  observer.observe(popup);
+  view.addEventListener('scroll', schedule, true);
+  view.addEventListener('resize', schedule);
+  view.visualViewport?.addEventListener('resize', schedule);
+  view.visualViewport?.addEventListener('scroll', schedule);
+  place();
+  return () => {
+    observer.disconnect();
+    view.cancelAnimationFrame(frame);
+    view.removeEventListener('scroll', schedule, true);
+    view.removeEventListener('resize', schedule);
+    view.visualViewport?.removeEventListener('resize', schedule);
+    view.visualViewport?.removeEventListener('scroll', schedule);
+    delete popup.dataset.positioned;
+  };
 }
 
 const noOptions: readonly ButtonSelectOption[] = [];
@@ -107,34 +141,7 @@ export function ButtonSelectCore({ anchor, children, content, options = noOption
     if (builtIn) return trackOptionListAnchor(target, popup, view,
       hit => target.contains(hit) || popup.contains(hit), close, matchTriggerWidth);
 
-    popup.style.direction = '';
-    popup.style.minWidth = '';
-    popup.style.bottom = '';
-    let frame = 0;
-    const place = () => {
-      if (popup.matches(':popover-open')) positionCustomPanel(target, popup, view, matchTriggerWidth);
-    };
-    const schedule = () => {
-      view.cancelAnimationFrame(frame);
-      frame = view.requestAnimationFrame(place);
-    };
-    const observer = new view.ResizeObserver(schedule);
-    observer.observe(target);
-    observer.observe(popup);
-    view.addEventListener('scroll', schedule, true);
-    view.addEventListener('resize', schedule);
-    view.visualViewport?.addEventListener('resize', schedule);
-    view.visualViewport?.addEventListener('scroll', schedule);
-    place();
-    return () => {
-      observer.disconnect();
-      view.cancelAnimationFrame(frame);
-      view.removeEventListener('scroll', schedule, true);
-      view.removeEventListener('resize', schedule);
-      view.visualViewport?.removeEventListener('resize', schedule);
-      view.visualViewport?.removeEventListener('scroll', schedule);
-      delete popup.dataset.positioned;
-    };
+    return trackCustomPanel(target, popup, view, matchTriggerWidth);
   }, [expanded, matchTriggerWidth, builtIn, close, anchor]);
 
   useLayoutEffect(() => {

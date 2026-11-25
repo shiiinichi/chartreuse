@@ -1,10 +1,10 @@
-import { useEffect, useId, useState } from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, FocusEvent } from 'react';
 import Markdown, { defaultUrlTransform } from 'react-markdown';
 import type { Components, ExtraProps } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Check, Copy } from 'lucide-react';
-import { IconButton } from './components';
+import { Button, IconButton } from './components';
 import { Text } from './Text';
 import type { TextProps } from './Text';
 import './markdown-renderer.css';
@@ -12,6 +12,15 @@ import './markdown-renderer.css';
 export interface MarkdownRendererProps {
   children: string;
   className?: string;
+  /**
+   * Clamps the content to this many lines, with a fade at the edge and a toggle that appears only
+   * when the content overflows. Focusing a link past the edge expands it.
+   */
+  maxLines?: number;
+  /** Text of the toggle that shows the rest. Defaults to 'Show more'. */
+  expandLabel?: string;
+  /** Text of the toggle that clamps the content again. Defaults to 'Show less'. */
+  collapseLabel?: string;
 }
 
 function nodeText(node: unknown): string {
@@ -61,12 +70,68 @@ const baseComponents: Components = {
   img: ({ node: _node, src, alt, ...props }) => src ? <img {...props} src={src} alt={alt || ''} loading="lazy" decoding="async" referrerPolicy="no-referrer" /> : <span className="cr-markdown-unavailable-image">{alt || 'Image unavailable'}</span>,
 };
 
+function useOverflow(content: HTMLDivElement | null, maxLines: number | undefined, source: string) {
+  const [overflowing, setOverflowing] = useState(false);
+  useLayoutEffect(() => {
+    const view = content?.ownerDocument.defaultView;
+    if (!content || !view || !maxLines) { setOverflowing(false); return; }
+    // Compared with the clamp height rather than the box, so it holds while expanded too.
+    const measure = () => {
+      const lineHeight = parseFloat(view.getComputedStyle(content).lineHeight) || 24;
+      setOverflowing(content.scrollHeight > Math.ceil(maxLines * lineHeight) + 1);
+    };
+    measure();
+    const observer = new view.ResizeObserver(measure);
+    observer.observe(content);
+    for (const child of Array.from(content.children)) observer.observe(child);
+    content.addEventListener('load', measure, true);
+    return () => {
+      observer.disconnect();
+      content.removeEventListener('load', measure, true);
+    };
+  }, [content, maxLines, source]);
+  return overflowing;
+}
+
 /** Renders CommonMark and GFM with raw HTML skipped and URL schemes filtered. */
-export function MarkdownRenderer({ children, className }: MarkdownRendererProps) {
+export function MarkdownRenderer({ children, className, maxLines, expandLabel = 'Show more', collapseLabel = 'Show less' }: MarkdownRendererProps) {
   const id = useId();
   const prefix = `cr-markdown-${id.replace(/[^a-zA-Z0-9_-]/g, '')}-`;
   const footnoteLabelId = `${prefix}footnotes`;
-  return <div className={['cr-markdown', className].filter(Boolean).join(' ')}><Markdown
+  const clamp = maxLines !== undefined && maxLines > 0 ? Math.floor(maxLines) : undefined;
+  const [content, setContent] = useState<HTMLDivElement | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const overflowing = useOverflow(content, clamp, children);
+  const markdown = renderMarkdown(children, className, prefix, footnoteLabelId, clamp ? {
+    ref: setContent,
+    id: `${prefix}content`,
+    'data-clamped': overflowing && !expanded ? '' : undefined,
+    style: { '--cr-markdown-max-lines': clamp } as CSSProperties,
+    onFocus: (event: FocusEvent<HTMLDivElement>) => {
+      if (expanded || !overflowing) return;
+      // Focus scrolls the clipped box, so measure from its content top rather than its visible edge.
+      const box = event.currentTarget;
+      const bottom = event.target.getBoundingClientRect().bottom - box.getBoundingClientRect().top + box.scrollTop;
+      if (bottom > box.clientHeight + 1) setExpanded(true);
+      box.scrollTop = 0;
+    },
+  } : undefined);
+  if (!clamp) return markdown;
+  return <div className="cr-markdown-clamp" data-expanded={expanded || undefined}>
+    {markdown}
+    {overflowing && <Button ref={toggle} variant="link" size="sm" className="cr-markdown-toggle" aria-expanded={expanded} aria-controls={`${prefix}content`}
+      onClick={() => {
+        setExpanded(!expanded);
+        // Collapsing can leave the reader below the shortened content.
+        if (expanded) requestAnimationFrame(() => toggle.current?.scrollIntoView({ block: 'nearest' }));
+      }}>{expanded ? collapseLabel : expandLabel}</Button>}
+  </div>;
+}
+
+function renderMarkdown(children: string, className: string | undefined, prefix: string, footnoteLabelId: string,
+  clampProps?: { ref: (element: HTMLDivElement | null) => void; id: string; style: CSSProperties; onFocus: (event: FocusEvent<HTMLDivElement>) => void; 'data-clamped'?: string }) {
+  return <div {...clampProps} className={['cr-markdown', className].filter(Boolean).join(' ')}><Markdown
     remarkPlugins={[remarkGfm]}
     remarkRehypeOptions={{ clobberPrefix: prefix, footnoteLabelProperties: { className: ['cr-sr-only'] } }}
     skipHtml

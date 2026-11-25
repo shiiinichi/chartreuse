@@ -25,6 +25,12 @@ export interface SplitButtonProps extends Omit<ButtonProps,
   divider?: boolean;
   /** Accessible name of the group. Defaults to the action segment's text. */
   groupLabel?: string;
+  /**
+   * Shows only the action segment's icon, keeping its text as the accessible name and tooltip.
+   * 'narrow' does so when the nearest size container is under 360px wide, such as a MessageComposer
+   * footer in a narrow pane. Needs an icon. Defaults to false.
+   */
+  iconOnly?: boolean | 'narrow';
   /** Choices displayed in the built-in popover. */
   options?: readonly ButtonSelectOption[];
   /** Controlled option ID in the built-in popover. */
@@ -44,15 +50,19 @@ export interface SplitButtonProps extends Omit<ButtonProps,
 
 /** A primary action Button joined to a menu segment that opens choices or custom content. */
 export function SplitButton({ children, variant = 'primary', size = 'md', menuLabel, menuTitle, menuDisabled, menuIcon = ChevronDown,
-  divider = true, groupLabel, options, value, defaultValue, onValueChange, checkmark, emptyMessage, content, matchTriggerWidth, panelClassName,
-  fullWidth = false, className, id, ...props }: SplitButtonProps) {
+  divider = true, groupLabel, iconOnly = false, options, value, defaultValue, onValueChange, checkmark, emptyMessage, content, matchTriggerWidth, panelClassName,
+  fullWidth = false, className, id, title, ...props }: SplitButtonProps) {
   const generatedId = useId();
   const actionId = id ?? `${generatedId}-action`;
   const group = useRef<HTMLDivElement>(null);
   return <div ref={group} role="group" className={['cr-split-button', className].filter(Boolean).join(' ')}
     aria-label={groupLabel} aria-labelledby={groupLabel ? undefined : actionId}
-    data-variant={variant} data-size={size} data-divider={divider ? undefined : 'false'} data-full-width={fullWidth || undefined}>
-    <Button {...props} id={actionId} variant={variant} size={size} className="cr-split-button-action">{children}</Button>
+    data-variant={variant} data-size={size} data-divider={divider ? undefined : 'false'} data-full-width={fullWidth || undefined}
+    data-icon-only={iconOnly === true ? 'true' : iconOnly === 'narrow' ? 'narrow' : undefined}>
+    <Button {...props} id={actionId} variant={variant} size={size} className="cr-split-button-action"
+      title={title ?? (iconOnly && (typeof children === 'string' || typeof children === 'number') ? String(children) : undefined)}>
+      {iconOnly ? <span className="cr-split-button-text">{children}</span> : children}
+    </Button>
     <ButtonSelectCore anchor={group} variant={variant} size={size} className="cr-split-button-menu" iconRight={menuIcon}
       aria-label={menuLabel} title={menuTitle ?? menuLabel} disabled={menuDisabled}
       options={options} value={value} defaultValue={defaultValue} onValueChange={onValueChange} checkmark={checkmark}

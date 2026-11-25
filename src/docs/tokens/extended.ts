@@ -370,6 +370,21 @@ export const extendedTokenDocs: ComponentTokenDoc[] = [
     notes: ['The user message card uses the shared subtle background, border, shared radius, and spacing tokens. conversation.css also consumes shared text, muted, font, and radius tokens.', 'MarkdownRenderer renders Markdown messages (agent messages by default), so its code/link/table/checkbox/copy-action globals are included transitively. Conversation overrides the Markdown root font to inherit its own 13px style; code still uses the mono token.', 'The activity slot is supplied content, not an automatically instantiated AgentActivity. Its arbitrary child tokens are not included here. Pending-spin duration and role-specific type sizes remain literal CSS.'],
   },
   {
+    component: 'CommentThread', componentTokens: [],
+    globalTokens: globals(markdownGlobals, names('color-border color-canvas color-subtle color-muted color-text color-surface color-focus color-danger color-danger-bg font-sans radius-md shadow-sm space-1 space-2 space-3 space-4')),
+    notes: ['comment-thread.css draws the replies band on --cr-color-canvas below a --cr-color-border divider, and each reply\u2019s 2px start rule in --cr-color-border. It renders Card, so highlighted and footerTone use Card\u2019s --cr-color-focus ring and danger footer.', 'Markdown bodies use MarkdownRenderer with the font inherited from the 13px thread. Header gaps, the 28px row height, and the 360px narrow breakpoint are literal CSS.'],
+  },
+  {
+    component: 'RunStatus', componentTokens: [],
+    globalTokens: names('color-border color-surface color-text color-muted font-sans font-mono space-2').sort(),
+    notes: ['The row is a --cr-color-surface box with a --cr-color-border outline; the spinner and elapsed time use --cr-color-muted. The Stop button is a secondary Button and inherits its tokens.', 'The 6px radius, 42px row height (the height of an inline MessageComposer with sm controls), and the 360px narrow breakpoint are literal CSS. Stop is a standard sm Button.'],
+  },
+  {
+    component: 'Menu', componentTokens: [],
+    globalTokens: names('color-text color-muted color-subtle color-border color-input-border color-surface color-danger color-danger-bg font-sans radius-md shadow-lg space-2').sort(),
+    notes: ['The trigger is a Button (ghost by default) and inherits its tokens. The panel is the option-list popup surface shared with Select, Autocomplete, and ButtonSelect: a --cr-color-input-border outline and an outer radius of --cr-radius-md + 6px around --cr-radius-md rows. Hovered items use --cr-color-subtle, and danger items use --cr-color-danger on --cr-color-danger-bg. Like the rest of the library, Menu draws no focus styles.', 'Rows are 38px tall (44px on coarse pointers), the same as option rows. Padding and the 10rem minimum width are literal CSS.'],
+  },
+  {
     component: 'Swimlane', componentTokens: swimlaneHooks,
     globalTokens: names('color-muted color-subtle color-border radius-md color-canvas color-text font-sans color-info color-info-bg color-warning color-warning-bg color-success color-success-bg color-danger color-danger-bg radius-md color-surface color-input-border radius-md').sort(),
     notes: ['swimlane.css declares two lane-scoped tone aliases; use tone or accent rather than overriding them. Its instantiated Badge adds the shared shared radius/font/status palette.', 'Lane minimum heights, header/card gaps, count size, top-border width, and padding are literal CSS. Supplied cards/actions/empty content have independent component token contracts.'],

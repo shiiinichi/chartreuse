@@ -434,6 +434,8 @@ export const coreReferences: ComponentReference[] = [
       { name: 'children', type: 'ReactNode', description: 'The card body. For a divided card, use one direct element child per section.' },
       { name: 'footer', type: 'ReactNode', description: 'Content in a full-width footer below the body.' },
       { name: 'divided', type: 'boolean', defaultValue: 'false', description: 'Place padded sections side by side with shared dividers. Sections wrap to fit the card width.' },
+      { name: 'highlighted', type: 'boolean', defaultValue: 'false', description: 'Rings the card in the focus colour, such as a comment opened from a #reference.' },
+      { name: 'footerTone', type: "'neutral' | 'danger'", defaultValue: "'neutral'", description: "Tints the footer. 'danger' suits an inline confirmation, such as \"Delete #4? [Keep] [Delete]\"." },
       { name: 'className', type: 'string', description: 'Additional classes on the article surface.' },
     ],
     notes: [

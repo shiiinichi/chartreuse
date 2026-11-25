@@ -29,6 +29,7 @@ const floatingContent: Readonly<Record<string, readonly ('tooltip' | 'toast' | '
   Autocomplete: ['popup'],
   ButtonSelect: ['popup'],
   SplitButton: ['popup'],
+  Menu: ['popup'],
   Tooltip: ['tooltip'],
   TaskCard: ['tooltip'],
   ToastProvider: ['toast'],

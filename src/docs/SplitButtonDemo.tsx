@@ -6,6 +6,8 @@ import breadcrumbSource from './split-button/BreadcrumbExample.tsx?raw';
 import { ComposerExample } from './split-button/ComposerExample';
 import composerSource from './split-button/ComposerExample.tsx?raw';
 import { MergeExample } from './split-button/MergeExample';
+import { NarrowComposerExample } from './split-button/NarrowComposerExample';
+import narrowComposerSource from './split-button/NarrowComposerExample.tsx?raw';
 import mergeSource from './split-button/MergeExample.tsx?raw';
 import { SplitButtonSizes } from './split-button/SplitButtonSizes';
 import sizesSource from './split-button/SplitButtonSizes.tsx?raw';
@@ -24,6 +26,9 @@ export function SplitButtonDemo() {
     </Showcase>
     <Showcase title="Composer controls" description="An sm SplitButton in the MessageComposer footer sits at the height of the sm send button." code={published(composerSource)}>
       <ComposerExample />
+    </Showcase>
+    <Showcase title="Icon-only in a narrow composer" description="An inline MessageComposer keeps the field, controls, and send on one row. At 300px, iconOnly narrow keeps only the Ask agent icon, named by its text." code={published(narrowComposerSource)}>
+      <NarrowComposerExample />
     </Showcase>
     <Showcase title="Breadcrumb without a divider" description="Ghost, sm SplitButtons with divider={false}: the ID opens its page and the chevron switches to another one." code={published(breadcrumbSource)}>
       <BreadcrumbExample />

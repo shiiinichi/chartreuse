@@ -129,7 +129,7 @@ function blocks(parent: Node): string {
 /** Markdown for the selected part of a message body, or the selection's plain text. */
 export function selectionText(range: Range, body: Element) {
   const plain = range.toString();
-  if (!body.querySelector(':scope > .cr-markdown')) return plain;
+  if (!body.querySelector(':scope > .cr-markdown, :scope > .cr-markdown-clamp > .cr-markdown')) return plain;
   try {
     // Rebuild the ancestors a partial selection lost, such as the code or list it sits in.
     let content: Node = range.cloneContents();

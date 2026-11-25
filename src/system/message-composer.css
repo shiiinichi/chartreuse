@@ -5,7 +5,7 @@
   .cr-message-composer-input { display: block; box-sizing: border-box; inline-size: 100%; min-inline-size: 0; min-block-size: 128px; max-block-size: min(45dvh, 360px); margin: 0; padding: 10px 12px 6px; border: 0; border-radius: var(--cr-radius-md) var(--cr-radius-md) 0 0; outline: none; background: transparent; color: inherit; font: 400 .8125rem/1.7 var(--cr-font-sans); resize: vertical; }
   .cr-message-composer-input::placeholder { color: var(--cr-color-muted); opacity: 1; }
   .cr-message-composer-input:disabled { cursor: not-allowed; }
-  .cr-message-composer-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 10px; padding: 6px 8px 8px 12px; }
+  .cr-message-composer-footer { container-type: inline-size; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 10px; padding: 6px 8px 8px 12px; }
   .cr-message-composer-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-inline-size: 0; max-inline-size: 100%; }
   .cr-message-composer-footer:has(> .cr-message-composer-controls) { align-items: flex-end; padding-inline-start: 8px; }
   .cr-message-composer-footer:has(> .cr-message-composer-controls) > .cr-message-composer-hint { align-self: center; }
@@ -22,6 +22,17 @@
   .cr-message-composer-error { display: flex; align-items: center; justify-content: flex-end; gap: 7px; margin: 0; color: var(--cr-color-danger); font: 450 .75rem/1.6 var(--cr-font-sans); text-align: end; }
   .cr-message-composer-error > svg { flex-shrink: 0; }
   .cr-message-composer-error > span { min-inline-size: 0; overflow-wrap: anywhere; }
+  /* Inline: field, controls, and send on one row; the field grows and the actions stay on its bottom line. */
+  .cr-message-composer[data-layout='inline'] { container-type: inline-size; flex-direction: row; flex-wrap: wrap; align-items: flex-end; gap: 6px; padding: 4px 4px 4px 10px; }
+  .cr-message-composer[data-layout='inline'] > .cr-message-composer-input { flex: 1 1 0; inline-size: auto; min-block-size: 0; max-block-size: min(40dvh, 240px); padding: 5px 0; border-radius: 0; line-height: 22px; resize: none; overflow-y: auto; }
+  .cr-message-composer[data-layout='inline'] > .cr-message-composer-controls { flex: none; flex-wrap: nowrap; }
+  .cr-message-composer[data-layout='inline'][data-wrapped] > .cr-message-composer-input { flex-basis: 100%; }
+  .cr-message-composer[data-layout='inline'][data-wrapped] > .cr-message-composer-controls { margin-inline-start: auto; }
+  .cr-message-composer[data-layout='inline'][data-wrapped] > .cr-message-composer-controls:empty + .cr-message-composer-send,
+  .cr-message-composer[data-layout='inline'][data-wrapped] > .cr-message-composer-input + .cr-message-composer-send { margin-inline-start: auto; }
+  .cr-message-composer[data-layout='inline'] > .cr-message-composer-error-region { flex: 1 0 100%; order: 1; padding: 0 4px 4px 0; }
+  .cr-message-composer[data-layout='inline'] > .cr-message-composer-error-region:empty { display: none; }
+  .cr-message-composer[data-layout='inline'] .cr-message-composer-error { justify-content: flex-start; text-align: start; }
   @media (pointer: coarse) {
     .cr-message-composer-input { font-size: 1rem; }
     .cr-message-composer .cr-message-composer-send:is(*, [data-size]) { min-inline-size: 44px; min-block-size: 44px; inline-size: 44px; block-size: 44px; }
