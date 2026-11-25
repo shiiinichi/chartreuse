@@ -17,6 +17,7 @@ export const agentActivityReferences: ComponentReference[] = [{
   props: [
     { name: 'events', type: 'readonly AgentActivityEvent[]', required: true, description: 'Chronological events, oldest first. Each event needs a stable id and a brief human-readable title.' },
     { name: 'variant', type: "'default' | 'list'", defaultValue: "'default'", description: 'Use "list" to show all events under a group heading with a left connector. Lists with more than six events start open and can collapse from the heading or the footer below the last row. The footer also links back to the heading. The default uses a collapsible group heading and groups earlier events separately.' },
+    { name: 'header', type: 'boolean', defaultValue: 'true', description: 'List variant only. Set false when a host, such as a Card, already titles the list: the heading row, its status counts, and the collapse footer are removed, every row stays visible, and the rows lose the left connector. label still names the group for assistive technology. Use countAgentActivity to show counts in the host header.' },
     { name: 'titleLines', type: "'single' | 'multiple'", defaultValue: "'multiple'", description: 'Use "single" to keep each event row on one line at every width: the title ends in an ellipsis and the duration, status, and chevron stay beside it without wrapping or shrinking. Expand a row to read its full title. "multiple" wraps titles and, in containers 440px or narrower, moves the duration and status under the title. Applies to both variants.' },
     { name: 'label', type: 'string', description: 'Overrides the group heading (Working, Waiting, Worked, or Activity). In the list variant it also names the group for assistive technology.' },
     { name: 'headerHighlight', type: "'none' | 'hover'", defaultValue: "'none'", description: 'Use "hover" to show a subtle background when the pointer is over the activity group header.' },
@@ -32,7 +33,8 @@ export const agentActivityReferences: ComponentReference[] = [{
   nativeElement: 'details for the default variant or div for the list variant, with ordered lists and optional event disclosures',
   nativeProps: 'Native attributes and className target the outer details or div. The component reserves children, title, and onToggle on both variants, plus name and open on the details element.',
   notes: [
-    'The open, defaultOpen, onOpenChange, headerHighlight, and initialVisibleCount props apply to the default variant.',
+    'The open, defaultOpen, onOpenChange, headerHighlight, and initialVisibleCount props apply to the default variant. The list variant always shows every row; header applies only to it.',
+    'countAgentActivity(events) from @chartreuse/ui returns { total, queued, running, completed, failed, interrupted, info }, counted the way AgentActivity shows each status: a missing status is info and a nonzero exitCode is failed.',
     'AgentActivityEvent uses id/title with optional kind (agent, command, tool, file, search, message), status (queued, running, completed, failed, interrupted, info), description, command, input, output, outputTruncated, durationMs, exitCode, icon, and defaultOpen.',
     'Give each event a brief title describing the recorded action, such as “Read project guidance”; put the exact command and recorded output in its details. All command/input/output strings render as plain text and ANSI escape sequences are removed.',
     'When an event has no description or visible output, its expanded details show the event title.',

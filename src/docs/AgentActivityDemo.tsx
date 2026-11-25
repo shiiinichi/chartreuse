@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Check, Plus, RotateCcw, TriangleAlert } from 'lucide-react';
-import { Button } from '../system/components';
-import { AgentActivity } from '../system/AgentActivity';
+import { Button, Card } from '../system/components';
+import { AgentActivity, countAgentActivity } from '../system/AgentActivity';
 import type { AgentActivityEvent } from '../system/AgentActivity';
 import { ExampleGallery, Showcase } from './shared';
 import { Text } from '../system';
@@ -81,6 +81,28 @@ export function ActivityListExample() {
   return <AgentActivity variant="list" titleLines="single" events={events} />;
 }`;
 
+function HostedStatus({ events }: { events: readonly AgentActivityEvent[] }) {
+  const counts = countAgentActivity(events);
+  return <Text size="body" className="agent-activity-demo-caption">{[`${counts.total} activities`, counts.running && `${counts.running} running`, counts.failed && `${counts.failed} failed`].filter(Boolean).join(' · ')}</Text>;
+}
+
+const hostedCode = `import { AgentActivity, Card, Text, countAgentActivity, type AgentActivityEvent } from '@chartreuse/ui';
+import '@chartreuse/ui/styles.css';
+
+const events: AgentActivityEvent[] = ${JSON.stringify(listEvents, null, 2)};
+
+export function HostedActivityExample() {
+  const counts = countAgentActivity(events);
+  const status = [counts.total + ' activities', counts.running && counts.running + ' running',
+    counts.failed && counts.failed + ' failed'].filter(Boolean).join(' · ');
+  return <Card divided header={<>
+    <Text size="heading-3">Activity</Text>
+    <Text size="body" style={{ margin: 0, color: 'var(--cr-color-muted)', fontSize: 12 }}>{status}</Text>
+  </>}>
+    <AgentActivity variant="list" header={false} titleLines="single" label="Tool activity" events={events} />
+  </Card>;
+}`;
+
 const narrowEvents: AgentActivityEvent[] = [
   { id: 'cards', kind: 'tool', title: 'Called list_cards', status: 'completed', durationMs: 420, input: '{ "board": "TASK-002" }', output: '{ "cards": 3 }' },
   { id: 'comment', kind: 'tool', title: 'Called add_comment on the order summary review card', status: 'completed', durationMs: 1250, output: 'Comment saved.' },
@@ -122,6 +144,9 @@ export function AgentActivityDemo() {
     </Showcase>
     <Showcase title="Activity list" description="The footer lets you collapse long lists or scroll to their heading. Expand a row to read its full title." code={listCode}>
       <div className="agent-activity-demo-panel"><AgentActivity variant="list" titleLines="single" events={listEvents} /></div>
+    </Showcase>
+    <Showcase title="List without a header" description="When a host card already titles the list, header={false} drops the heading row. Every row stays visible, label still names the group, and countAgentActivity supplies the status counts for the host's own header." code={hostedCode}>
+      <div className="agent-activity-demo-panel"><Card divided header={<><Text size="heading-3">Activity</Text><HostedStatus events={listEvents} /></>}><AgentActivity variant="list" header={false} titleLines="single" label="Tool activity" events={listEvents} /></Card></div>
     </Showcase>
     <Showcase title="Narrow containers" description="In containers 440px or narrower, titleLines=&quot;single&quot; keeps each row on one line and ends long titles in an ellipsis. The default stacks the status under the title." code={narrowCode}>
       <div className="agent-activity-demo-narrow">

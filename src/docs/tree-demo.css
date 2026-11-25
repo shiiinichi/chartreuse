@@ -10,7 +10,9 @@
   .tree-demo-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-block-end: 16px; }
   .tree-demo-call { display: grid; gap: 12px; min-inline-size: 0; }
   .tree-demo-call-title, .tree-demo-call-state, .tree-demo-call-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 16px; min-inline-size: 0; }
-  .tree-demo-call-title > strong { font-size: 14px; font-weight: 600; }
+  .tree-demo-call-name { display: inline-flex; align-items: center; gap: 4px; min-inline-size: 0; }
+  .tree-demo-call-name > strong { font-size: 14px; font-weight: 600; }
+  .tree-demo-switches { display: flex; flex-wrap: wrap; gap: 12px 20px; }
   .tree-demo-call-title > span, .tree-demo-call-state > span { font-size: 12px; color: var(--cr-color-muted); }
   .tree-demo-call p { margin: 0; font-size: 13px; line-height: 1.7; }
   .tree-demo-call-meta { justify-content: flex-start; color: var(--cr-color-muted); font-size: 12px; }

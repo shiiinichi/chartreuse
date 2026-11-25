@@ -45,7 +45,11 @@ type AgentActivityBase = {
 
 type AgentActivityRootProps =
   | (Omit<ComponentPropsWithRef<'details'>, 'children' | 'title' | 'open' | 'onToggle' | 'name'> & { variant?: 'default' })
-  | (Omit<ComponentPropsWithRef<'div'>, 'children' | 'title' | 'onToggle'> & { variant: 'list' });
+  | (Omit<ComponentPropsWithRef<'div'>, 'children' | 'title' | 'onToggle'> & {
+    variant: 'list';
+    /** Set false to drop the heading row when the host already titles the list. Rows stay expanded, without the collapse footer or status counts; label still names the group. Defaults to true. */
+    header?: boolean;
+  });
 
 export type AgentActivityProps = AgentActivityBase & AgentActivityRootProps & (
   | { open: boolean; onOpenChange: (open: boolean) => void; defaultOpen?: never }
@@ -62,6 +66,15 @@ const defaultVisibleCount = 6;
 
 function statusOf(event: AgentActivityEvent): AgentActivityStatus {
   return typeof event.exitCode === 'number' && event.exitCode !== 0 ? 'failed' : event.status ?? 'info';
+}
+
+export type AgentActivityCounts = Record<AgentActivityStatus, number> & { total: number };
+
+/** Counts events by the status AgentActivity shows: a missing status is info, and a nonzero exitCode is failed. */
+export function countAgentActivity(events: readonly AgentActivityEvent[]): AgentActivityCounts {
+  const counts: AgentActivityCounts = { total: events.length, queued: 0, running: 0, completed: 0, failed: 0, interrupted: 0, info: 0 };
+  for (const event of events) counts[statusOf(event)] += 1;
+  return counts;
 }
 
 function durationText(milliseconds: number | undefined) {
@@ -148,11 +161,7 @@ export function AgentActivity({
     const limit = Number.isFinite(initialVisibleCount) ? Math.max(1, Math.floor(initialVisibleCount)) : defaultVisibleCount;
     return Math.max(0, events.length - limit);
   });
-  const statusCounts: Record<AgentActivityStatus, number> = { queued: 0, running: 0, completed: 0, failed: 0, interrupted: 0, info: 0 };
-  for (const event of events) {
-    statusCounts[statusOf(event)] += 1;
-  }
-  const { running, queued, failed, interrupted } = statusCounts;
+  const { running, queued, failed, interrupted } = countAgentActivity(events);
   const heading = label ?? (running ? 'Working' : queued ? 'Waiting' : events.length ? 'Worked' : 'Activity');
   const activityCount = `${events.length} ${events.length === 1 ? 'activity' : 'activities'}`;
   const counts = [activityCount, running && `${running} running`, queued && `${queued} queued`, failed && `${failed} failed`, interrupted && `${interrupted} interrupted`].filter(Boolean).join(' · ');
@@ -176,7 +185,15 @@ export function AgentActivity({
   </>;
 
   if (props.variant === 'list') {
-    const { variant, ...listProps } = props;
+    const { variant, header = true, ...listProps } = props;
+    if (!header) {
+      return <>
+        <div role="group" aria-label={label ?? 'Agent activity'} {...listProps} className={rootClassName} data-variant={variant} data-header="false">
+          {events.length > 0 ? <div className="cr-agent-activity-content"><ActivityList events={events} singleLineTitle={singleLineTitle} /></div> : empty}
+        </div>
+        {announcement}
+      </>;
+    }
     const listHeadingId = `${listContentId}-header`;
     const headingLink = `#${listHeadingId}`;
     const moveToListHeading = (event: MouseEvent<HTMLAnchorElement>, collapse = false) => {

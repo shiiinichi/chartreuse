@@ -20,6 +20,12 @@ export interface TreeNodeState {
   selected: boolean;
   expanded: boolean;
   level: number;
+  /**
+   * With togglePosition="end", the expand chevron for a node with children, to place beside the
+   * title (null for leaves). Left unused, the chevron goes at the end of the row's first line.
+   * Undefined with the default start position.
+   */
+  toggle?: ReactNode;
 }
 
 export interface TreeProps extends Omit<ComponentPropsWithRef<'ul'>, 'children' | 'role' | 'onSelect' | 'aria-label' | 'tabIndex'> {
@@ -33,6 +39,10 @@ export interface TreeProps extends Omit<ComponentPropsWithRef<'ul'>, 'children' 
   onExpandedChange?: (ids: string[]) => void;
   variant?: 'outline' | 'plain';
   connectors?: boolean;
+  /** Where the expand chevron goes: before the content (default) or after the title. Leaves reserve no space at the end. */
+  togglePosition?: 'start' | 'end';
+  /** With the start position, leaves keep an empty chevron slot so sibling text lines up. Set false to start leaf content at the row padding. */
+  alignLeaves?: boolean;
   /** Display content only: include node.label and keep links/actions outside the tree. */
   renderNode?: (node: TreeNode, state: TreeNodeState) => ReactNode;
   emptyMessage?: ReactNode;
@@ -50,7 +60,7 @@ interface IndexedNode {
 /** A single-selection hierarchy. Focus moves independently of selection. */
 export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSelectionChange,
   expandedIds, defaultExpandedIds = [], onExpandedChange, variant = 'outline', connectors = true,
-  renderNode, emptyMessage = 'No items available.', className, ref, onKeyDown, onKeyUp,
+  togglePosition = 'start', alignLeaves = true, renderNode, emptyMessage = 'No items available.', className, ref, onKeyDown, onKeyUp,
   onBlur, onFocus, ...props }: TreeProps) {
   const instance = useId();
   const root = useRef<HTMLUListElement>(null);
@@ -169,29 +179,38 @@ export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSel
     const isExpanded = hasChildren && expanded.has(node.id);
     const isSelected = selected === node.id;
     const descriptionId = node.description ? `${item.domId}-description` : undefined;
+    const atEnd = togglePosition === 'end';
+    const chevron = hasChildren ? <span className="cr-tree-toggle" data-position={atEnd ? 'end' : undefined} aria-hidden="true"><ChevronDown size={16} focusable="false" /></span> : null;
+    // renderNode reads state.toggle when it places the chevron itself; otherwise the row places it.
+    let togglePlaced = false;
+    const state: TreeNodeState = { selected: isSelected, expanded: isExpanded, level: item.level };
+    if (atEnd) Object.defineProperty(state, 'toggle', { enumerable: true, get: () => { togglePlaced = true; return chevron; } });
+    const content = renderNode ? renderNode(node, state) : null;
     return <li key={node.id} id={item.domId} role="treeitem" data-cr-tree-node={node.id}
       aria-label={node.label} aria-describedby={descriptionId} aria-selected={isSelected}
       aria-expanded={hasChildren ? isExpanded : undefined} aria-level={item.level}
       aria-posinset={item.position} aria-setsize={item.siblings}
       tabIndex={tabStop === node.id ? 0 : -1} className="cr-tree-item"
       ref={element => { if (element) itemRefs.current.set(node.id, element); else itemRefs.current.delete(node.id); }}>
-      <div className="cr-tree-row" onClick={event => {
+      <div className="cr-tree-row" onClick={() => {
         focus(node.id);
-        if (hasChildren && event.target instanceof Element && event.target.closest('.cr-tree-toggle')) toggle(node);
+        // The chevron is only a picture: the first click selects, and a click on the selected branch toggles it.
+        if (hasChildren && isSelected) toggle(node);
         else select(node);
       }}>
-        <span className="cr-tree-toggle" data-empty={!hasChildren || undefined} aria-hidden="true">{hasChildren && <ChevronDown size={16} focusable="false" />}</span>
-        <div className="cr-tree-content">{renderNode ? <>{renderNode(node, { selected: isSelected, expanded: isExpanded, level: item.level })}{node.description && <span id={descriptionId} className="cr-sr-only">{node.description}</span>}</> : <>
-          <div className="cr-tree-label">{renderIcon(node.icon, { size: 16 })}<span>{node.label}</span></div>
+        {!atEnd && (chevron ?? (alignLeaves && <span className="cr-tree-toggle" data-empty aria-hidden="true" />))}
+        <div className="cr-tree-content">{renderNode ? <>{content}{node.description && <span id={descriptionId} className="cr-sr-only">{node.description}</span>}</> : <>
+          <div className="cr-tree-label">{renderIcon(node.icon, { size: 16 })}<span>{node.label}</span>{atEnd && chevron}</div>
           {node.description && <Text size="body" id={descriptionId} className="cr-tree-description">{node.description}</Text>}
         </>}</div>
+        {atEnd && renderNode && !togglePlaced && chevron}
       </div>
       {hasChildren && <ul className="cr-tree-group" role="group" hidden={!isExpanded}>{renderItems(node.children!)}</ul>}
     </li>;
   });
 
   return <ul {...props} ref={root} role="tree" aria-label={label} tabIndex={-1}
-    className={['cr-tree', className].filter(Boolean).join(' ')} data-variant={variant} data-connectors={connectors}
+    className={['cr-tree', className].filter(Boolean).join(' ')} data-variant={variant} data-connectors={connectors} data-toggle-position={togglePosition}
     onKeyDown={handleKeyDown} onKeyUp={event => {
       onKeyUp?.(event);
       if (event.defaultPrevented || event.nativeEvent.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.key !== ' ') return;

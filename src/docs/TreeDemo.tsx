@@ -42,6 +42,7 @@ export function TreeDemo() {
   const [selected, setSelected] = useState<string | null>('coordinator');
   const [expanded, setExpanded] = useState<string[]>(['coordinator']);
   const [connectors, setConnectors] = useState(true);
+  const [chevronAfter, setChevronAfter] = useState(false);
   const [selectedFile, setSelectedFile] = useState('tree-file');
   const call = calls.find(item => item.id === selected);
   const hierarchyCode = `import { useState } from 'react';
@@ -56,6 +57,7 @@ export function CallHierarchy() {
   const [selected, setSelected] = useState<string | null>(${JSON.stringify(selected)});
   const [expanded, setExpanded] = useState<string[]>(${JSON.stringify(expanded)});
   const [connectors, setConnectors] = useState(${connectors});
+  const [chevronAfter, setChevronAfter] = useState(${chevronAfter});
   const call = calls.find(item => item.id === selected);
   return <section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
     <header className="tree-demo-heading">
@@ -66,16 +68,23 @@ export function CallHierarchy() {
     <div className="tree-demo-controls">
       <Switch label="Show branch connectors" checked={connectors}
         onChange={event => setConnectors(event.target.checked)} />
+      <Switch label="Place chevrons after titles" checked={chevronAfter}
+        onChange={event => setChevronAfter(event.target.checked)} />
       <Button variant="ghost" size="sm" icon={RotateCcw}
         onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button>
     </div>
     <Tree label="Call hierarchy" nodes={nodes}
       selectedId={selected} onSelectionChange={setSelected}
       expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors}
-      renderNode={node => {
+      togglePosition={chevronAfter ? 'end' : 'start'}
+      renderNode={(node, state) => {
         const item = calls.find(entry => entry.id === node.id)!;
+        // With togglePosition="end", state.toggle is the chevron to place beside the title.
         return <div className="tree-demo-call">
-          <div className="tree-demo-call-title"><Text bold>{item.name}</Text><span>{item.call}</span></div>
+          <div className="tree-demo-call-title">
+            <span className="tree-demo-call-name"><Text bold>{item.name}</Text>{state.toggle}</span>
+            <span>{item.call}</span>
+          </div>
           <div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div>
           <Text size="body">{item.description}</Text>
           <div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>
@@ -128,14 +137,14 @@ export function WorkspaceFiles() {
 }`;
   return <div className="tree-demo">
     <ExampleGallery >
-    <Showcase title="Controlled call hierarchy" description="Control selectedId and expandedIds to manage call selection and expansion. Connectors show parent-child relationships." code={hierarchyCode}><section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
+    <Showcase title="Controlled call hierarchy" description="Control selectedId and expandedIds to manage call selection and expansion. Connectors show parent-child relationships. togglePosition=&quot;end&quot; moves each chevron beside its title, and leaves reserve no chevron space." code={hierarchyCode}><section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
       <header className="tree-demo-heading"><div><Text size="heading-3" id="tree-demo-hierarchy-title"><GitBranch size={19} aria-hidden="true" />Call hierarchy</Text><Text size="body">Choose a call to inspect its result. The connecting lines show which call started the others.</Text></div><span>4 calls · 0 active</span></header>
-      <div className="tree-demo-controls"><Switch label="Show branch connectors" checked={connectors} onChange={event => setConnectors(event.target.checked)} /><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button></div>
+      <div className="tree-demo-controls"><div className="tree-demo-switches"><Switch label="Show branch connectors" checked={connectors} onChange={event => setConnectors(event.target.checked)} /><Switch label="Place chevrons after titles" checked={chevronAfter} onChange={event => setChevronAfter(event.target.checked)} /></div><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button></div>
       <Tree label="Call hierarchy" nodes={callNodes} selectedId={selected} onSelectionChange={setSelected}
-        expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors}
-        renderNode={node => {
+        expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors} togglePosition={chevronAfter ? 'end' : 'start'}
+        renderNode={(node, state) => {
           const item = calls.find(entry => entry.id === node.id)!;
-          return <div className="tree-demo-call"><div className="tree-demo-call-title"><Text bold>{item.name}</Text><span>{item.call}</span></div><div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div><Text size="body">{item.description}</Text><div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>{item.tool && <span><Terminal size={14} aria-hidden="true" />{item.tool}</span>}</div></div>;
+          return <div className="tree-demo-call"><div className="tree-demo-call-title"><span className="tree-demo-call-name"><Text bold>{item.name}</Text>{state.toggle}</span><span>{item.call}</span></div><div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div><Text size="body">{item.description}</Text><div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>{item.tool && <span><Terminal size={14} aria-hidden="true" />{item.tool}</span>}</div></div>;
         }} />
       <div className="tree-demo-detail" role="status" aria-live="polite" aria-atomic="true"><Text bold>{call ? `${call.name} · ${call.call}` : 'Select a call'}</Text><Text size="body">{call?.result ?? 'The selected call’s result appears here.'}</Text></div>
     </section></Showcase>

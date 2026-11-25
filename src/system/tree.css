@@ -9,11 +9,12 @@
   .cr-tree-item[aria-selected='true'] > .cr-tree-row > * { color-scheme: dark; }
   .cr-tree-row .cr-badge[data-variant='soft'] { color-scheme: light; }
   .cr-tree-toggle { display: grid; flex: 0 0 24px; place-items: center; inline-size: 24px; block-size: 24px; margin-block-start: -1px; border-radius: var(--cr-radius-md); color: var(--cr-color-muted); }
-  .cr-tree-toggle:not([data-empty]):hover { background: color-mix(in srgb, var(--cr-color-text) 8%, transparent); }
   .cr-tree-toggle > svg { rotate: var(--cr-tree-closed-rotation, -90deg); pointer-events: none; }
   .cr-tree:dir(rtl) { --cr-tree-closed-rotation: 90deg; }
-  .cr-tree-item[aria-expanded='true'] > .cr-tree-row > .cr-tree-toggle > svg { rotate: 0deg; }
+  .cr-tree-item[aria-expanded='true'] > .cr-tree-row .cr-tree-toggle > svg { rotate: 0deg; }
   .cr-tree-content { min-inline-size: 0; flex: 1; overflow-wrap: anywhere; }
+  /* At the end, the chevron sits in a text line without making it taller. */
+  .cr-tree-toggle[data-position='end'] { display: inline-grid; flex: none; vertical-align: middle; margin-block: -4px; }
   .cr-tree-label { display: flex; align-items: center; gap: 8px; font-weight: 550; }
   .cr-tree-label > svg { flex: 0 0 auto; }
   .cr-tree-description { margin: 8px 0 0; color: var(--cr-color-muted); font: inherit; }
@@ -35,7 +36,7 @@
   }
   @media (pointer: coarse) {
     .cr-tree[data-variant='plain'] .cr-tree-row { min-block-size: 44px; align-items: center; }
-    .cr-tree-toggle { flex-basis: 28px; inline-size: 28px; min-block-size: 28px; }
+    .cr-tree-toggle:not([data-position='end']) { flex-basis: 28px; inline-size: 28px; min-block-size: 28px; }
   }
   @media (forced-colors: active) {
     .cr-tree-item[aria-selected='true'] > .cr-tree-row { border-color: Highlight; outline: 1px solid Highlight; }

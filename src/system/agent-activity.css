@@ -40,6 +40,7 @@
   .cr-agent-activity:dir(rtl) .cr-agent-activity-group-chevron, .cr-agent-activity:dir(rtl) .cr-agent-activity-chevron, .cr-agent-activity:dir(rtl) .cr-agent-activity-earlier > summary > svg { rotate: 180deg; }
   .cr-agent-activity[open] > summary .cr-agent-activity-group-chevron, .cr-agent-activity-summary[aria-expanded='true'] .cr-agent-activity-group-chevron, .cr-agent-activity-event[open] > summary > .cr-agent-activity-chevron, .cr-agent-activity-earlier[open] > summary > svg { rotate: 90deg; }
   .cr-agent-activity-content { min-inline-size: 0; margin-inline-start: 15px; padding-inline-start: var(--cr-space-3); border-inline-start: 1px solid var(--cr-color-border); }
+  .cr-agent-activity[data-header='false'] > .cr-agent-activity-content { margin-inline-start: 0; padding-inline-start: 0; border-inline-start: 0; }
   .cr-agent-activity-list { margin: 0; padding: 0; list-style: none; min-inline-size: 0; }
   .cr-agent-activity-item { min-inline-size: 0; color: var(--cr-color-text); }
   .cr-agent-activity-row { padding: var(--cr-space-2); }
