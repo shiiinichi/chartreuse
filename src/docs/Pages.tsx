@@ -200,6 +200,19 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.22.0',
+    date: '2026-11-25',
+    title: 'Headerless AgentActivity lists and Tree chevrons after titles',
+    summary: 'AgentActivity lists can drop their heading row, with a countAgentActivity helper for host headers, and Tree can place its chevron after the title. Both additions are opt-in. Tree chevrons are no longer a separate click target: a click selects a row, and a click on the selected branch expands or collapses it.',
+    changes: [
+      'AgentActivity adds header for variant="list". header={false} removes the heading row, its status counts, and the collapse footer, keeps every row visible without the left connector, and keeps label as the group name. Row details, streaming output, and announce work as before.',
+      'countAgentActivity(events) returns { total, queued, running, completed, failed, interrupted, info }, counted as rows show them: a missing status is info and a nonzero exitCode is failed.',
+      'Tree adds togglePosition="end", which places the chevron after the title and reserves no space on leaf rows. renderNode receives state.toggle to place beside its own title; unused, the chevron ends the row\'s first line.',
+      'Tree adds alignLeaves. With the default start position, alignLeaves={false} drops the empty 24px chevron slot on leaf rows.',
+      'Tree chevrons are decoration only and lose their hover background. The first click on a row selects it, including on the chevron; a click on the selected branch expands or collapses it. Before, a chevron click toggled without selecting. Keyboard behavior is unchanged.',
+    ],
+  },
+  {
     version: '1.21.0',
     date: '2026-11-25',
     title: 'Quote selected Conversation text into MessageComposer',
