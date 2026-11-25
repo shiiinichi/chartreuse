@@ -1,5 +1,7 @@
 @layer cr-components {
   .cr-conversation { min-inline-size: 0; max-inline-size: 100%; color: var(--cr-color-text); font: 400 .8125rem/1.85 var(--cr-font-sans); overflow-wrap: anywhere; }
+  .cr-conversation[data-quotable] { position: relative; }
+  .cr-conversation .cr-conversation-quote { position: absolute; z-index: 1; box-shadow: var(--cr-shadow-md); user-select: none; -webkit-user-select: none; }
   .cr-conversation-list { display: grid; gap: var(--cr-space-8); margin: 0; padding: 0; list-style: none; min-inline-size: 0; }
   .cr-conversation-turn { display: grid; min-inline-size: 0; }
   .cr-conversation-message, .cr-conversation-activity, .cr-conversation-body { min-inline-size: 0; max-inline-size: 100%; }

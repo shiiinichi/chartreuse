@@ -4,7 +4,7 @@ export const conversationReferences: ComponentReference[] = [{
   name: 'Conversation',
   slug: 'conversation',
   summary: 'A chronological transcript with sender and time labels, Markdown agent messages, and optional activity before the message body.',
-  importCode: "import { useState } from 'react';\nimport { AgentActivity, Conversation, MessageComposer } from '@chartreuse/ui';\nimport type { AgentActivityEvent, ConversationMessage } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+  importCode: "import { useRef, useState } from 'react';\nimport { AgentActivity, Conversation, MessageComposer, insertQuote } from '@chartreuse/ui';\nimport type { AgentActivityEvent, ConversationMessage } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
   usageCode: `const events: AgentActivityEvent[] = [
   { id: 'review', kind: 'agent', title: 'Reviewed the workspace',
     status: 'completed', durationMs: 17900 },
@@ -19,15 +19,19 @@ const [messages, setMessages] = useState<ConversationMessage[]>([
     timeLabel: '10:52 AM', dateTime: '2026-11-18T10:52:00+08:00' },
 ]);
 const [draft, setDraft] = useState('');
+const composerRef = useRef<HTMLTextAreaElement>(null);
 
 function sendMessage(body: string) {
   setMessages(current => [...current, { id: \`m-\${current.length}\`, role: 'user', body }]);
 }
 
 // The agent is working until its reply follows the latest user turn.
+// Selected message text can be quoted into the composer as Markdown.
 <Conversation messages={messages} label="Task conversation"
-  pending={messages.at(-1)?.role === 'user'} />
-<MessageComposer value={draft} onValueChange={setDraft} onSend={sendMessage} />`,
+  pending={messages.at(-1)?.role === 'user'}
+  onQuote={text => insertQuote(composerRef.current, text)} />
+<MessageComposer ref={composerRef} value={draft} onValueChange={setDraft}
+  onSend={sendMessage} />`,
   props: [
     { name: 'messages', type: 'readonly ConversationMessage[]', required: true, description: 'Chronological turns, oldest first. Each requires a unique stable id, role, and string body.' },
     { name: 'label', type: 'string', defaultValue: '"Conversation"', description: 'Accessible name for the transcript log.' },
@@ -35,6 +39,8 @@ function sendMessage(body: string) {
     { name: 'pending', type: 'boolean', defaultValue: 'false', description: 'Shows a pending-response indicator after the existing turns without moving focus or scrolling.' },
     { name: 'pendingLabel', type: 'string', defaultValue: '"Agent is working…"', description: 'Visible pending-response text. Use the actual sender name when known.' },
     { name: 'announce', type: 'boolean', defaultValue: 'false', description: 'Opt-in polite announcements of message count, last sender, and pending state. Streaming body changes are not reread.' },
+    { name: 'onQuote', type: '(text: string, message: ConversationMessage) => void', description: 'Opt-in. Shows a Quote button beside text selected within one message body and calls this with the selection and its message. Markdown messages give the selection as Markdown; text messages give plain text. Pass the text to insertQuote to add it to a MessageComposer.' },
+    { name: 'quoteLabel', type: 'string', defaultValue: '"Quote"', description: 'Visible text and accessible name of the Quote button.' },
     { name: 'className', type: 'string', description: 'Additional classes on the transcript log wrapper.' },
     { name: 'ref', type: 'Ref<HTMLDivElement>', description: 'Native React 19 ref to the transcript log wrapper.' },
   ],
@@ -47,6 +53,8 @@ function sendMessage(body: string) {
     'The activity slot appears between the message header and body. Compose AgentActivity there and supply recorded work in chronological order.',
     'Supply timeLabel for human-readable time and dateTime for an optional native time value. The component does not parse dates, infer a timezone, or generate changing relative labels.',
     'Conversation displays the transcript; MessageComposer, Drawer, and application state own sending, hosting, and scrolling. New messages never force focus or scroll. Only enable announcements for the active transcript when its host does not already announce new turns.',
+    'With onQuote, a Quote button appears beside a nonempty selection inside one message body, below its end (above its start for a backward selection). It hides when the selection collapses, leaves the body, or spans several messages; headers, activity, and code-block toolbars are not quotable. Tab from a pointer selection reaches the button; Escape dismisses it and clears the selection. Pressing it clears the selection, so onQuote should move focus, as insertQuote does.',
+    'Quoted Markdown keeps emphasis, inline code, links, lists, tables, block quotes, and fenced code with its language. A selection inside inline code, a list item, or a code block keeps that wrapper. Anything else falls back to its text.',
     'Markdown fragment links retain native navigation. An application using hashes for routing should handle same-document Markdown links within its preview; the documentation example does so without changing its route.',
   ],
 }];

@@ -20,6 +20,48 @@ export interface MessageComposerProps extends Omit<ComponentPropsWithRef<'textar
   sendSize?: ControlSize;
 }
 
+// The selection each composer had when it last lost focus. A quote goes there, or to the end of a
+// composer that has never been focused.
+const lastSelections = new WeakMap<HTMLTextAreaElement, readonly [number, number]>();
+
+/** Formats text as a Markdown blockquote: every line gets `> `, and blank lines stay in the quote. */
+export function formatQuote(text: string) {
+  const body = text.replace(/\r\n?/g, '\n').replace(/^(?:[ \t]*\n)+/, '').trimEnd();
+  return body ? body.split('\n').map(line => (line.trim() ? `> ${line}` : '>')).join('\n') : '';
+}
+
+/**
+ * Inserts text into a MessageComposer textarea as a Markdown blockquote followed by a blank line.
+ * It inserts at the cursor once the composer has been focused and appends otherwise, then focuses
+ * the composer with the cursor after the quote. The edit goes through the browser's undo history,
+ * so Command/Ctrl+Z removes it. Returns false when nothing was inserted.
+ */
+export function insertQuote(textarea: HTMLTextAreaElement | null | undefined, text: string) {
+  const quote = formatQuote(text);
+  if (!textarea || !quote || textarea.disabled || textarea.readOnly) return false;
+  const original = textarea.value;
+  const saved = textarea.ownerDocument.activeElement === textarea ? [textarea.selectionStart, textarea.selectionEnd] : lastSelections.get(textarea);
+  const end = Math.min(saved?.[1] ?? original.length, original.length);
+  const start = Math.min(saved?.[0] ?? original.length, end);
+  const before = original.slice(0, start);
+  const lead = !before || before.endsWith('\n\n') ? '' : before.endsWith('\n') ? '\n' : '\n\n';
+  // The blank line ends the quote, so text typed after it is not a lazy continuation of the quote.
+  const insertion = `${lead}${quote}\n\n`;
+  textarea.focus();
+  textarea.setSelectionRange(start, end);
+  let inserted = false;
+  try { inserted = textarea.ownerDocument.execCommand('insertText', false, insertion) && textarea.value !== original; }
+  catch { inserted = false; }
+  if (!inserted && textarea.value === original) {
+    // Without execCommand the edit is not undoable, but the input event still reaches React.
+    textarea.setRangeText(insertion, start, end, 'end');
+    textarea.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: insertion }));
+  }
+  const caret = start + insertion.length;
+  textarea.setSelectionRange(caret, caret);
+  return true;
+}
+
 /** A labeled multiline field with a send action. */
 export function MessageComposer({
   label = 'Message',
@@ -41,6 +83,7 @@ export function MessageComposer({
   onKeyDown,
   onCompositionStart,
   onCompositionEnd,
+  onBlur,
   ...textareaProps
 }: MessageComposerProps) {
   const generatedId = useId();
@@ -110,6 +153,7 @@ export function MessageComposer({
         changeValue(next);
         if (error) setError('');
       }}
+      onBlur={event => { lastSelections.set(event.currentTarget, [event.currentTarget.selectionStart, event.currentTarget.selectionEnd]); onBlur?.(event); }}
       onCompositionStart={event => { composingRef.current = true; onCompositionStart?.(event); }}
       onCompositionEnd={event => { composingRef.current = false; onCompositionEnd?.(event); }}
       onKeyDown={event => {

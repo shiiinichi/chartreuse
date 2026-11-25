@@ -7,7 +7,7 @@ import type { AgentActivityEvent } from '../system/AgentActivity';
 import { Conversation } from '../system/Conversation';
 import type { ConversationMessage } from '../system/Conversation';
 import { Drawer } from '../system/Drawer';
-import { MessageComposer } from '../system/MessageComposer';
+import { MessageComposer, insertQuote } from '../system/MessageComposer';
 import { ExampleGallery, Showcase } from './shared';
 import { Text } from '../system';
 import './conversation-demo.css';
@@ -105,7 +105,7 @@ function conversationSource(technical: boolean) {
   return `import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { Check, RotateCcw } from 'lucide-react';
-import { AgentActivity, Button, Conversation, MessageComposer, Switch, Text } from '@chartreuse/ui';
+import { AgentActivity, Button, Conversation, MessageComposer, Switch, Text, insertQuote } from '@chartreuse/ui';
 import type { AgentActivityEvent, ConversationMessage } from '@chartreuse/ui';
 import '@chartreuse/ui/styles.css';
 
@@ -124,6 +124,7 @@ export function TaskConversationExample() {
   const [technical, setTechnical] = useState(${technical});
   const nextId = useRef(1);
   const finishSend = useRef<(() => void) | null>(null);
+  const composerRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => () => { finishSend.current?.(); }, []);
 
   const sendMessage = (body: string) => {
@@ -166,12 +167,13 @@ export function TaskConversationExample() {
     <Conversation label="Task conversation example" announce
       messages={messages.map(message => message.id === 'agent-1' && technical
         ? { ...message, body: technicalReply } : message)}
-      pending={pending} pendingLabel="Codex is preparing a local sample reply…" />
+      pending={pending} pendingLabel="Codex is preparing a local sample reply…"
+      onQuote={text => insertQuote(composerRef.current, text)} />
     <div style={{ marginTop: 32, paddingTop: 24,
       borderTop: '1px solid var(--cr-color-border)' }}>
-      <MessageComposer label="Message in the conversation example" rows={3}
+      <MessageComposer ref={composerRef} label="Message in the conversation example" rows={3}
         value={draft} onValueChange={setDraft} onSend={sendMessage}
-        hint="Messages stay in this local example."
+        hint="Select message text to quote it. Messages stay in this local example."
         placeholder="Add a note to this conversation…" />
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap',
         gap: 12, marginTop: 12 }}>
@@ -263,6 +265,7 @@ export function ConversationDemo() {
   const [emptyPending, setEmptyPending] = useState(false);
   const nextId = useRef(1);
   const finishSend = useRef<(() => void) | null>(null);
+  const composerRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => () => { finishSend.current?.(); }, []);
   const finishReply = () => {
     if (!finishSend.current) return;
@@ -273,10 +276,10 @@ export function ConversationDemo() {
     finishSend.current = null;
   };
   return <ExampleGallery className="conversation-demo" onClick={followConversationFragment}>
-    <Showcase title="Messages with Markdown and activity groups" description="User messages render as plain text. Agent messages render Markdown, with optional activity groups before each reply." code={conversationSource(technical)}>
+    <Showcase title="Messages with Markdown and activity groups" description="User messages render as plain text. Agent messages render Markdown, with optional activity groups before each reply. Select text in a message to quote it into the composer." code={conversationSource(technical)}>
       <div className="conversation-demo-panel"><div className="conversation-demo-options"><Switch label="Show code, table, and footnote example" checked={technical} onChange={event => setTechnical(event.target.checked)} /><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { finishSend.current?.(); finishSend.current = null; setMessages(initialMessages()); setDraft(''); setPending(false); setTechnical(false); }}>Reset conversation</Button></div>
-        <Conversation messages={messages.map(message => message.id === 'agent-1' && technical ? { ...message, body: technicalReply } : message)} label="Task conversation example" pending={pending} pendingLabel="Codex is preparing a local sample reply…" announce />
-        <div className="conversation-demo-composer"><MessageComposer label="Message in the conversation example" value={draft} onValueChange={setDraft} hint="Messages stay in this local example." placeholder="Add a note to this conversation…" rows={3} onSend={body => {
+        <Conversation messages={messages.map(message => message.id === 'agent-1' && technical ? { ...message, body: technicalReply } : message)} label="Task conversation example" pending={pending} pendingLabel="Codex is preparing a local sample reply…" announce onQuote={text => insertQuote(composerRef.current, text)} />
+        <div className="conversation-demo-composer"><MessageComposer ref={composerRef} label="Message in the conversation example" value={draft} onValueChange={setDraft} hint="Select message text to quote it. Messages stay in this local example." placeholder="Add a note to this conversation…" rows={3} onSend={body => {
           const id = nextId.current++;
           setMessages(previous => [...previous, { id: `user-${id + 1}`, role: 'user', body, timeLabel: 'Just now' }]);
           setPending(true);

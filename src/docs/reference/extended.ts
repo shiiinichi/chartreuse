@@ -98,6 +98,8 @@ async function sendMessage(text: string) {
       'The send action waits for onSend. Rejections show an error and preserve the draft.',
       'A successful send clears the submitted draft; a newer draft typed during the request is retained.',
       'Pending and success/error announcements are handled inside the composer.',
+      'insertQuote(textarea, text) from @chartreuse/ui adds text as a Markdown blockquote: every line gets "> ", and a blank line follows so the reply starts a new paragraph. Pass the composer ref. It inserts at the cursor the composer last had, or appends when the composer was never focused, then focuses the composer with the cursor after the quote. It goes through the browser undo history, so Command/Ctrl+Z removes it, and it works for controlled and uncontrolled composers. It returns false without a textarea, for empty text, or while disabled or read-only.',
+      'formatQuote(text) returns the blockquote text alone, for hosts that build the draft themselves. Pair insertQuote with the onQuote prop of Conversation.',
     ],
   },
   {
