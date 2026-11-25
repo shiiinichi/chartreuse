@@ -156,7 +156,7 @@ Run `npm run build:lib`, then `npm run --silent query -- info Button --format js
 
 ### Chartreuse agent skill
 
-The [Chartreuse skill](.agents/skills/chartreuse/SKILL.md) is available to Codex in this repository. Invoke it with a prompt such as `$chartreuse Which component should I use to enter a repository folder path?`
+The [Chartreuse skill](.agents/skills/chartreuse/SKILL.md) is available in this repository. Ask your agent a question such as `Which Chartreuse component should I use to enter a repository folder path?` and it will query the CLI for the answer.
 
 For a consuming project, copy the bundled skill into its repository after installing a Chartreuse release that includes it. Run these commands from the project root.
 

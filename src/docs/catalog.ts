@@ -1,4 +1,4 @@
-import { Activity, BookOpen, Box, Braces, CircleDot, ClipboardList, Component, Grid2X2, History, Layers, LayoutDashboard, LayoutTemplate, MousePointer2, Palette, Search, Settings, FileText, PanelTop, Radius, Ruler, Sparkles, TextCursorInput, Type } from 'lucide-react';
+import { Activity, Terminal, BookOpen, Box, Braces, CircleDot, ClipboardList, Component, Grid2X2, History, Layers, LayoutDashboard, LayoutTemplate, MousePointer2, Palette, Search, Settings, FileText, PanelTop, Radius, Ruler, Sparkles, TextCursorInput, Type } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { componentReferences, createComponentNavigation } from './reference';
 import type { ComponentReference } from './reference/types';
@@ -11,7 +11,7 @@ import { version as chartreuseVersion } from '../../package.json';
 
 export { chartreuseVersion };
 
-export type LegacyPageId = 'overview' | 'getting-started' | 'changelog' | 'colors' | 'typography' | 'spacing' | 'elevation' | 'icons' | 'buttons' | 'forms' | 'fieldsets' | 'badges' | 'cards' | 'markdown' | 'disclosures' | 'navigation' | 'modals' | 'drawers' | 'feedback' | 'task-board' | 'agent-monitor' | 'workspace' | 'page-panels';
+export type LegacyPageId = 'overview' | 'getting-started' | 'cli-and-skill' | 'changelog' | 'colors' | 'typography' | 'spacing' | 'elevation' | 'icons' | 'buttons' | 'forms' | 'fieldsets' | 'badges' | 'cards' | 'markdown' | 'disclosures' | 'navigation' | 'modals' | 'drawers' | 'feedback' | 'task-board' | 'agent-monitor' | 'workspace' | 'page-panels';
 export type ComponentPageId = `components/${string}`;
 export type PageId = LegacyPageId | ComponentPageId | SamplePatternId | 'common-props' | 'layout' | 'tokens';
 export interface Page { id: PageId; label: string; group: string; category?: string; icon: LucideIcon; description: string; tag?: string; hidden?: boolean; component?: ComponentReference }
@@ -36,6 +36,7 @@ const samplePatternIcons: Record<SamplePatternId, LucideIcon> = { 'settings-edit
 export const pages: Page[] = [
   { id: 'overview', label: 'Overview', group: 'Start here', icon: Grid2X2, description: 'React components, design tokens, and interface patterns.' },
   { id: 'getting-started', label: 'Getting started', group: 'Start here', icon: BookOpen, description: 'Build and package the library, install its archive, and import components and styles.' },
+  { id: 'cli-and-skill', label: 'CLI & agent skill', group: 'Start here', icon: Terminal, description: 'Query components, props, tokens, and guides from the terminal, and give coding agents the Chartreuse skill.' },
   { id: 'common-props', label: 'Common DOM props', group: 'Start here', icon: Braces, description: 'A single reference for inherited attributes, events, and explicitly supported native refs.' },
   { id: 'changelog', label: 'Changelog', group: 'Start here', icon: History, description: 'Release history and changes to the component library and documentation.', tag: chartreuseVersion.split('.').slice(0, 2).join('.') },
   { id: 'colors', label: 'Color', group: 'Foundations', icon: Palette, description: 'Brand palette, semantic color roles, and light and dark theme tokens.' },

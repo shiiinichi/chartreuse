@@ -16,6 +16,7 @@ import { PagePanelPage } from './PagePanelPage';
 import { CodeBlock, copyText, DownloadButton, SectionTitle, Showcase } from './shared';
 import { agentMonitorPatternCode, taskBoardPatternCode, workspacePatternCode } from './pattern-example-sources';
 import { PatternPreview } from './PatternPreview';
+import { CliSkillPage } from './CliSkillPage';
 import { CustomIconGuide } from './CustomIconGuide';
 import { CommonPropsPage, ComponentReferencePage } from './ComponentReferencePage';
 import { SegmentedControl } from '../system/SegmentedControl';
@@ -94,6 +95,7 @@ function PageContent({ id, navigate }: { id: PageId; navigate: Navigate }) {
       <PatternPreview page={id}><AgentMonitor /></PatternPreview>
     </Showcase>
   </>;
+  if (id === 'cli-and-skill') return <CliSkillPage />;
   if (id === 'changelog') return <Changelog />;
   return <GettingStarted navigate={navigate} />;
 }
