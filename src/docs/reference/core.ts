@@ -501,16 +501,26 @@ export const coreReferences: ComponentReference[] = [
     name: 'Spinner',
     slug: 'spinner',
     summary: 'A loading icon in a status region with visually hidden text.',
-    importCode: "import { Spinner } from '@chartreuse/ui';",
-    usageCode: `<Spinner label="Loading workspace" size={20} />`,
+    importCode: "import { Flex, Spinner, Text } from '@chartreuse/ui';",
+    usageCode: `<Spinner label="Loading workspace" size={20} />
+
+// Beside text that can wrap, keep it on the first line.
+<Flex align="center" gap={2}>
+  <Spinner size={16} align="first-line" label="Agent is working on a reply" />
+  <Text size="body" style={{ margin: 0 }}>Running the order summary checks and recording the results on the task</Text>
+</Flex>`,
     nativeElement: 'span[role="status"]',
     nativeProps: 'Only the listed props are accepted. Additional native attributes and ref are not forwarded.',
     props: [
       { name: 'label', type: 'string', defaultValue: "'Loading'", description: 'The visually hidden text announced by the status region.' },
       { name: 'size', type: 'number', defaultValue: '18', description: 'The icon’s width and height in CSS pixels.' },
+      { name: 'align', type: "'center' | 'first-line'", defaultValue: "'center'", description: 'Use "first-line" beside text that can wrap: the spinner becomes one line tall (1lh) and aligns to the start of the row, so it stays centered on the first line. It takes the line height of its container, so set the text font on that container.' },
       { name: 'className', type: 'string', description: 'Additional classes on the status span.' },
     ],
-    notes: ['Use a specific label when it helps explain what is loading. The rotation stops when reduced motion is requested.'],
+    notes: [
+      'Use a specific label when it helps explain what is loading. The rotation stops when reduced motion is requested.',
+      'The spinner never shrinks below size, so it keeps its width in a Flex row beside text that truncates or wraps.',
+    ],
   },
   {
     name: 'Dialog',

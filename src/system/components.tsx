@@ -337,8 +337,14 @@ export function Skeleton({ className, ...props }: HTMLAttributes<HTMLSpanElement
   return <span {...props} className={cx('cr-skeleton', className)} aria-hidden="true" />;
 }
 
-export function Spinner({ label = 'Loading', size = 18, className }: { label?: string; size?: number; className?: string }) {
-  return <span className={cx('cr-spinner', className)} role="status"><LoaderCircle className="cr-spin" size={size} aria-hidden="true" /><span className="cr-sr-only">{label}</span></span>;
+export function Spinner({ label = 'Loading', size = 18, align = 'center', className }: {
+  label?: string;
+  size?: number;
+  /** 'first-line' centers the spinner on the first line of text beside it instead of the whole row. */
+  align?: 'center' | 'first-line';
+  className?: string;
+}) {
+  return <span className={cx('cr-spinner', className)} role="status" data-align={align === 'first-line' ? align : undefined}><LoaderCircle className="cr-spin" size={size} aria-hidden="true" /><span className="cr-sr-only">{label}</span></span>;
 }
 
 interface DialogSplitProps {

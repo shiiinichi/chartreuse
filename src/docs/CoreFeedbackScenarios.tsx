@@ -6,7 +6,7 @@ import { SegmentedControl } from '../system/SegmentedControl';
 import { BreadcrumbsDemo } from './BreadcrumbsDemo';
 import { ProgressDemo } from './ProgressDemo';
 import { ExampleGallery, Showcase } from './shared';
-import { Text } from '../system';
+import { Flex, Text } from '../system';
 
 const snippet = (...lines: string[]) => lines.join('\n');
 
@@ -90,6 +90,28 @@ export function SpinnerScenarios() {
       '',
       '<Spinner size={28} label="Loading the task details" />',
     )}><Spinner size={28} label="Loading the task details" /></Showcase>
+    <Showcase title="Spinner beside status text" description="The spinner keeps its size beside text that truncates. align=&quot;first-line&quot; keeps it on the first line of text that wraps." code={snippet(
+      'import { Flex, Spinner, Text } from "@chartreuse/ui";',
+      '',
+      '<Flex align="center" gap={2}>',
+      '  <Spinner size={16} label="Running the command" />',
+      '  <Text size="body" style={{ flex: "1 1 auto", minInlineSize: 0, margin: 0, overflow: "hidden",',
+      '    textOverflow: "ellipsis", whiteSpace: "nowrap" }}>',
+      '    Running npm test -- --run order-summary --reporter verbose --coverage',
+      '  </Text>',
+      '</Flex>',
+      '',
+      '<Flex align="center" gap={2}>',
+      '  <Spinner size={16} align="first-line" label="Agent is working on a reply" />',
+      '  <Text size="body" style={{ margin: 0 }}>',
+      '    Reviewing the order summary, checking the totals against the checklist,',
+      '    and recording the results on the task card',
+      '  </Text>',
+      '</Flex>',
+    )}><div style={{ display: 'grid', gap: 16, maxInlineSize: 320 }}>
+      <Flex align="center" gap={2}><Spinner size={16} label="Running the command" /><Text size="body" style={{ flex: '1 1 auto', minInlineSize: 0, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Running npm test -- --run order-summary --reporter verbose --coverage</Text></Flex>
+      <Flex align="center" gap={2}><Spinner size={16} align="first-line" label="Agent is working on a reply" /><Text size="body" style={{ margin: 0 }}>Reviewing the order summary, checking the totals against the checklist, and recording the results on the task card</Text></Flex>
+    </div></Showcase>
     <Showcase title="Spinner with controlled content" description="The parent controls loading, updates aria-busy, and replaces the spinner with the result." code={snippet(
       'import { useState } from "react";',
       'import { Button, Card, Spinner, Text } from "@chartreuse/ui";',
