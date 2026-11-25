@@ -200,6 +200,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.21.0',
+    date: '2026-11-25',
+    title: 'Quote selected Conversation text into MessageComposer',
+    summary: 'Conversation adds an opt-in onQuote prop that shows a Quote button beside selected message text, and MessageComposer adds insertQuote and formatQuote helpers that add it to the draft as a Markdown blockquote. Without onQuote, Conversation is unchanged apart from a data-message-id attribute on each message body.',
+    changes: [
+      'Conversation adds onQuote(text, message) and quoteLabel (default "Quote"). A Quote button appears below text selected within one message body and hides when the selection collapses or spans several messages. Tab reaches it after a pointer selection, and Escape dismisses it. Markdown messages give the selection as Markdown, keeping emphasis, inline code, links, lists, tables and fenced code; text messages give plain text.',
+      'insertQuote(textarea, text) adds text to a MessageComposer, given its ref, as a Markdown blockquote followed by a blank line. It inserts at the cursor the composer last had, or appends when it was never focused, then focuses the composer with the cursor after the quote. Command/Ctrl+Z removes it. formatQuote(text) returns the quote text alone.',
+    ],
+  },
+  {
     version: '1.20.1',
     date: '2026-11-25',
     title: 'Truncated Table cells with onRowClick',
