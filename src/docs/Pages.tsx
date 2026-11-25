@@ -200,6 +200,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.23.0',
+    date: '2026-11-25',
+    title: 'Spinner keeps its size and aligns to the first line',
+    summary: 'Fixes Spinner shrinking beside truncating text in a flex row, and adds an opt-in align prop. No markup changes for existing spinners.',
+    changes: [
+      'Spinner no longer shrinks in a flex row: it and its icon keep their size beside text that truncates or wraps. Before, a truncating sibling could squeeze it to a sliver.',
+      'Spinner adds align. align="first-line" makes it one line tall and aligns it to the start of the row, so it stays centered on the first line of wrapping text. It uses its container\'s line height.',
+    ],
+  },
+  {
     version: '1.22.0',
     date: '2026-11-25',
     title: 'Headerless AgentActivity lists and Tree chevrons after titles',
