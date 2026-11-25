@@ -200,6 +200,22 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.24.0',
+    date: '2026-11-25',
+    title: 'Menu, CommentThread, RunStatus, inline MessageComposer, and Markdown clamp',
+    summary: 'Adds three components, Menu, CommentThread, and RunStatus, plus an inline MessageComposer layout, a MarkdownRenderer line clamp, an icon-only SplitButton, and highlighted and danger-footer Cards. All additions are opt-in; existing defaults and markup are unchanged.',
+    changes: [
+      "Menu is a new action menu behind a trigger button (⋯ by default), with icon items, separators, disabled items, and tone: 'danger'. It follows the menu button keyboard pattern: arrow keys, Home and End, typeahead, Escape returning focus to the trigger, and Tab closing it. It uses the option-list popup surface and, like the rest of the library, draws no focus styles.",
+      'CommentThread is a new component: a comment in a Card with its replies in a tinted band below, each marked by a 2px start rule. Header rows hold the sender Badge, a reference, the time and meta, and an actions slot. Only the latest visibleReplies (2) show until "Show N earlier replies"; Collapse hides the replies while its toggle stays in place and reads Expand, with a summary in the bar. Below 360px it tightens its padding and shows time.shortLabel.',
+      'A CommentThread reply can carry ask: a quiet "You asked" line above the reply in the same item, with the agent summary, its own reference, time, actions, anchor id, and a 2-line clamp. Leave out the reply body to show the ask with a running status before the agent answers.',
+      'RunStatus is a new live row for running work: a spinner, the current step, the elapsed time, and an optional Stop button that goes icon-only below 360px. Only the step is announced, never the timer.',
+      'MessageComposer adds layout="inline": the field, controls, and send share one row with no footer. The field grows with the draft, and once the draft no longer fits beside the controls it takes the full width with the controls on the line below.',
+      'MarkdownRenderer adds maxLines, expandLabel, and collapseLabel. The content clamps with a fade, and the toggle appears only when it overflows; focusing a link past the edge expands it.',
+      'SplitButton adds iconOnly (true or \'narrow\'). \'narrow\' shows only the action icon in a size container under 360px, such as an inline MessageComposer, keeping the text as the accessible name.',
+      'Card adds highlighted, a focus-colour ring for a card opened from a link, and footerTone="danger", a tinted footer for inline confirmations. A CommentThread footer sets its text to the comment body size.',
+    ],
+  },
+  {
     version: '1.23.0',
     date: '2026-11-25',
     title: 'Spinner keeps its size and aligns to the first line',
