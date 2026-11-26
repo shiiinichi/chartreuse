@@ -202,6 +202,15 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.24.1',
+    date: '2026-11-26',
+    title: 'Vertical scrolling over wide Markdown tables and code blocks',
+    summary: 'Fixes MarkdownRenderer tables and code blocks that stopped the page or panel behind them from scrolling. No props or markup change.',
+    changes: [
+      'A MarkdownRenderer table or code block wider than its container no longer traps the vertical wheel. Both now set overscroll-behavior-inline: contain instead of overscroll-behavior: contain, as Table already does, so sideways overscroll stays in the block while vertical scrolling passes to the page or panel around it, such as a narrow chat panel.',
+    ],
+  },
+  {
     version: '1.24.0',
     date: '2026-11-25',
     title: 'Menu, CommentThread, RunStatus, inline MessageComposer, and Markdown clamp',
