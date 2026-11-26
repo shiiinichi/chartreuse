@@ -173,7 +173,7 @@ function sendMessage(body: string) {
       'Supports CommonMark and GFM features including tables, task lists, strikethrough, and footnotes.',
       'maxLines measures against the rendered line height and rechecks when the content or its width changes, so streamed content gains the toggle once it overflows. The toggle is a link Button with aria-expanded; collapsing scrolls it back into view when needed.',
       'Raw HTML is skipped and URLs pass through react-markdown’s default URL filter.',
-      'Code blocks provide a copy action; wide tables and code blocks remain scrollable.',
+      'Code blocks provide a copy action; wide tables and code blocks scroll sideways. They contain only sideways overscroll, so a vertical wheel over one still scrolls the page or panel around it.',
       'External web links open in a new tab with noopener and noreferrer. Footnote IDs are unique per instance.',
     ],
   },

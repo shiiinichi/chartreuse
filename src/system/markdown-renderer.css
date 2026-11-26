@@ -31,9 +31,9 @@
   .cr-markdown-copy-status { margin-inline-start: auto; font: .625rem/1.5 var(--cr-font-sans); text-align: end; }
   .cr-markdown-code-bar > .cr-button { min-block-size: 28px; min-inline-size: 28px; padding: 5px; }
   .cr-markdown-code-bar > .cr-button > svg { inline-size: 13px; block-size: 13px; }
-  .cr-markdown pre { min-inline-size: 0; max-inline-size: 100%; max-block-size: min(60dvh, 480px); margin: 0; padding: 17px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; color: var(--cr-color-text); font: .75rem/1.85 var(--cr-font-mono); white-space: pre; tab-size: 2; }
+  .cr-markdown pre { min-inline-size: 0; max-inline-size: 100%; max-block-size: min(60dvh, 480px); margin: 0; padding: 17px; overflow: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; color: var(--cr-color-text); font: .75rem/1.85 var(--cr-font-mono); white-space: pre; tab-size: 2; }
   .cr-markdown pre code { display: block; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; white-space: pre; overflow-wrap: normal; }
-  .cr-markdown-table { min-inline-size: 0; max-inline-size: 100%; max-block-size: 480px; margin-block: 20px; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); scrollbar-width: thin; }
+  .cr-markdown-table { min-inline-size: 0; max-inline-size: 100%; max-block-size: 480px; margin-block: 20px; overflow: auto; overscroll-behavior-inline: contain; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); scrollbar-width: thin; }
   .cr-markdown table { inline-size: 100%; min-inline-size: 480px; border-collapse: collapse; font-size: .8125rem; line-height: 1.7; }
   .cr-markdown :is(th, td) { padding: 10px 13px; border-inline-end: 1px solid var(--cr-color-border); border-block-end: 1px solid var(--cr-color-border); text-align: start; vertical-align: top; }
   .cr-markdown :is(th, td):last-child { border-inline-end: 0; }
