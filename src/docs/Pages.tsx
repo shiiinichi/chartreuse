@@ -202,6 +202,17 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.25.0',
+    date: '2026-11-27',
+    title: 'TaskCard actions, icon checklist progress and count tooltips',
+    summary: 'Adds an actions slot and an icon checklist display to TaskCard, and shows icon-only counts in Tooltip. Cards without the new props render the same markup as before.',
+    changes: [
+      'TaskCard takes actions: controls shown at the right end of the counts row, outside the card’s main button, so a card can carry its own buttons. Clicking an action never runs the card’s onClick or follows its href, and the row keeps its height.',
+      'TaskCard progressDisplay accepts "icon": a checklist icon with the completed/total ratio, shown as one item in the counts row.',
+      'Counts shown as an icon and number only (hideMetadataLabels, compact density and the icon checklist) now show their full label in Tooltip instead of a native title.',
+    ],
+  },
+  {
     version: '1.24.1',
     date: '2026-11-26',
     title: 'Vertical scrolling over wide Markdown tables and code blocks',
