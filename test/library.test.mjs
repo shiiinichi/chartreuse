@@ -352,6 +352,7 @@ test('EmptyState defaults to centered content and supports alignment in both var
       const markup = render({ variant, align });
       assert.match(markup, new RegExp(`data-variant="${variant}" data-align="${align}"`));
       assert.match(markup, /<svg[^>]*aria-hidden="true"/);
+      assert.match(markup, /<span class="cr-empty-state-icon"><svg[^>]*width="26"/);
       assert.match(markup, /<h3 class="cr-text" data-size="heading-3">No tasks yet<\/h3><p class="cr-text" data-size="body">Create your first task\.<\/p><button type="button">Create task<\/button>/);
     }
   }

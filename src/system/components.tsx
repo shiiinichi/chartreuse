@@ -760,7 +760,7 @@ export interface EmptyStateProps {
 
 export function EmptyState({ title, description, icon = Circle, action, variant = 'default', align = 'center' }: EmptyStateProps) {
   return <div className="cr-empty-state" data-variant={variant} data-align={align}>
-    <span className="cr-empty-state-icon">{renderIcon(icon, { size: variant === 'dashed' ? 24 : 26 })}</span>
+    <span className="cr-empty-state-icon">{renderIcon(icon, { size: 26 })}</span>
     <Text size="heading-3">{title}</Text>
     <Text size="body">{description}</Text>
     {action}

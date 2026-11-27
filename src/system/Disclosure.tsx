@@ -8,6 +8,11 @@ type DisclosureBase = Omit<ComponentPropsWithRef<'details'>, 'title' | 'children
   children: ReactNode;
   /** Keep the summary surface highlighted while open, or in both states. */
   headerHighlight?: 'hover' | 'open' | 'always';
+  /**
+   * 'aligned' indents the content past the chevron so it lines up with the title. 'even' gives the content the
+   * summary's 20px start padding on both inline sides. Defaults to 'aligned'.
+   */
+  contentInset?: 'aligned' | 'even';
 };
 
 export type DisclosureProps = DisclosureBase & (
@@ -16,10 +21,10 @@ export type DisclosureProps = DisclosureBase & (
 );
 
 /** A native disclosure. Shared names opt uncontrolled items into an exclusive group. */
-export function Disclosure({ title, children, open, defaultOpen = false, onOpenChange, name, headerHighlight = 'hover', className, ...props }: DisclosureProps) {
+export function Disclosure({ title, children, open, defaultOpen = false, onOpenChange, name, headerHighlight = 'hover', contentInset = 'aligned', className, ...props }: DisclosureProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const expanded = open ?? internalOpen;
-  return <details {...props} name={name} open={expanded} data-header-highlight={headerHighlight} className={['cr-disclosure', className].filter(Boolean).join(' ')} onToggle={event => {
+  return <details {...props} name={name} open={expanded} data-header-highlight={headerHighlight} data-content-inset={contentInset} className={['cr-disclosure', className].filter(Boolean).join(' ')} onToggle={event => {
     const next = event.currentTarget.open;
     if (open !== undefined) {
       // Native find-in-page can reveal a closed item. Request the new state

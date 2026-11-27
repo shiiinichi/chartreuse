@@ -12,6 +12,8 @@
   .cr-disclosure[open] > .cr-disclosure-summary { border-end-start-radius: 0; border-end-end-radius: 0; }
   .cr-disclosure[open] > .cr-disclosure-summary > .cr-disclosure-chevron { rotate: 0deg; }
   .cr-disclosure-content { padding: var(--cr-space-3) var(--cr-space-5) var(--cr-space-5) calc(var(--cr-space-5) + var(--cr-space-4) + var(--cr-space-3)); color: var(--cr-color-muted); font-size: inherit; line-height: 1.75; overflow-wrap: break-word; }
+  /* Even: the summary's start padding on both inline sides; the block padding is unchanged. */
+  .cr-disclosure[data-content-inset='even'] > .cr-disclosure-content { padding-inline: var(--cr-space-5); }
   .cr-disclosure-content > :where(p, ul, ol, blockquote, pre) { max-inline-size: 72ch; margin: 0; }
   .cr-disclosure-content > :not(:first-child) { margin-block-start: var(--cr-space-3); }
   .cr-disclosure-content :where(ul, ol) { padding-inline-start: var(--cr-space-5); }

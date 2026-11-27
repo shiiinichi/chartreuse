@@ -26,6 +26,10 @@ export function DisclosurePage({ showGuidance = true }: { showGuidance?: boolean
       <div className="disclosure-example"><Disclosure title="Open-state header highlight" headerHighlight="open" defaultOpen><Text size="body">The header remains highlighted while expanded. Collapse it to restore hover-only feedback.</Text></Disclosure></div>
     </Showcase>
 
+    <Showcase title="Even content inset" description="contentInset=even gives the content the summary’s 20px start padding on both sides instead of indenting it past the chevron." code={`import { Disclosure, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\n<Disclosure title="Run output" contentInset="even" defaultOpen>\n  <Text size="body">The content starts at the same 20px inset as the\n    summary, so wide content uses the full width.</Text>\n</Disclosure>`}>
+      <div className="disclosure-example"><Disclosure title="Run output" contentInset="even" defaultOpen><Text size="body">The content starts at the same 20px inset as the summary, so wide content uses the full width.</Text></Disclosure></div>
+    </Showcase>
+
     <Showcase title="Highlight the header in both states" description="headerHighlight=always applies the header background in both states without changing the content surface." code={`import { Disclosure, Text } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';\n\n<Disclosure title="Persistent header highlight" headerHighlight="always">\n  <Text size="body">The header remains highlighted in both states.\n    Toggling changes only content visibility.</Text>\n</Disclosure>`}>
       <div className="disclosure-example"><Disclosure title="Persistent header highlight" headerHighlight="always"><Text size="body">The header remains highlighted in both states. Toggling changes only content visibility.</Text></Disclosure></div>
     </Showcase>

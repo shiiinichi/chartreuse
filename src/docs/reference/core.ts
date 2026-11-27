@@ -706,7 +706,7 @@ export function ToastExample() {
       { name: 'description', type: 'string', required: true, description: 'Supporting context for the current state.' },
       { name: 'icon', type: 'IconSource', defaultValue: 'Circle', description: 'The decorative IconSource: Lucide icon, custom SVG component, or inline SVG JSX element.' },
       { name: 'action', type: 'ReactNode', description: 'Optional interactive content, such as a Button with a real callback.' },
-      { name: 'variant', type: "'default' | 'dashed'", defaultValue: "'default'", description: 'Use dashed for a compact panel with a dashed border.' },
+      { name: 'variant', type: "'default' | 'dashed'", defaultValue: "'default'", description: 'Use dashed for a compact panel with a dashed border, tighter padding, and a smaller heading. Both variants show the icon in the same 58px tile.' },
       { name: 'align', type: "'start' | 'center' | 'end'", defaultValue: "'center'", description: 'Aligns the icon, heading, description, and action in either variant. Start and end follow the writing direction.' },
     ],
     notes: ['Use action for the next step; the component does not create data or navigate by itself.'],

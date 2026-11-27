@@ -19,6 +19,20 @@ test('Disclosure defaults to hover highlighting and retains a native summary wit
   assert.ok(!markup.includes('headerHighlight') && !/^<details[^>]*\bopen(?:=|\s|>)/.test(markup));
 });
 
+test('Disclosure exposes its content inset on the details element and defaults to aligned', async () => {
+  const render = props => renderToStaticMarkup(React.createElement(Disclosure, { title: 'Run output', ...props }, 'Output.'));
+  assert.match(render(), /^<details\b[^>]*data-content-inset="aligned"/);
+  for (const contentInset of ['aligned', 'even']) {
+    const markup = render({ contentInset, headerHighlight: 'open', defaultOpen: true });
+    const details = markup.match(/^<details\b[^>]*>/)?.[0];
+    assert.ok(details.includes(`data-content-inset="${contentInset}"`) && details.includes('data-header-highlight="open"'));
+    assert.ok(!markup.includes('contentInset'), 'the prop is not forwarded as an attribute');
+    assert.ok(markup.includes('<div class="cr-disclosure-content">Output.</div>'));
+  }
+  const css = await readFile(new URL('../src/system/disclosure.css', import.meta.url), 'utf8');
+  assert.match(css, /\.cr-disclosure\[data-content-inset='even'\] > \.cr-disclosure-content \{ padding-inline: var\(--cr-space-5\); \}/);
+});
+
 test('Disclosure highlighting options are independent of controlled and uncontrolled open state', () => {
   for (const headerHighlight of ['hover', 'open', 'always']) {
     for (const expanded of [false, true]) {
@@ -50,7 +64,8 @@ test('Disclosure header-highlight examples are public, copyable TSX', async () =
     ts.forEachChild(node, visit);
   };
   visit(source);
-  assert.equal(snippets.length, 4, 'the two existing scenarios and two header options have source');
+  assert.equal(snippets.length, 5, 'the two existing scenarios, two header options, and the even inset have source');
+  assert.ok(snippets.some(code => code.includes('contentInset="even"')), 'the even inset example has source');
   for (const mode of ['open', 'always']) {
     const snippet = snippets.find(code => code.includes(`headerHighlight="${mode}"`));
     assert.ok(snippet?.includes("from '@chartreuse/ui'"));

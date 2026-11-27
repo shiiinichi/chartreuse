@@ -486,7 +486,8 @@
     border: 1px dashed var(--cr-color-border);
     border-radius: var(--cr-radius-md);
   }
-  .cr-empty-state[data-variant='dashed'] > .cr-empty-state-icon { inline-size: auto; block-size: auto; margin: 0; background: transparent; color: var(--cr-color-muted); }
+  /* The dashed panel keeps the default tile; a 4px end margin on its 12px gap leaves 16px to the heading (default: 8px + 12px). */
+  .cr-empty-state[data-variant='dashed'] > .cr-empty-state-icon { margin-block-end: var(--cr-space-1); }
   .cr-empty-state[data-variant='dashed'] > h3 { font-size: .875rem; line-height: 1.5; }
   .cr-empty-state[data-variant='dashed'] > p { max-inline-size: 100%; margin: 0; }
   .cr-empty-state[data-variant='dashed'] > .cr-button { max-inline-size: 100%; white-space: normal; overflow-wrap: anywhere; }

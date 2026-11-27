@@ -231,7 +231,7 @@ export const coreTokenDocs: ComponentTokenDoc[] = [
     notes: ['The pressed card uses the solid active fill and its paired foreground. The status badge uses its own info, success, warning, or neutral tone.', 'Badge tone aliases belong to the nested Badge. The card has no local CSS variables.', 'Card padding, icon surface size/7px radius, type sizes, and runtime data spacing are literal rules. elapsed and tokens are display props.'],
   },
   {
-    component: 'EmptyState', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-success-bg', 'color-muted', 'color-border', 'radius-md', 'space-3', 'space-5', 'space-6'),
-    notes: ['The default variant uses --cr-color-success-bg for the icon surface. The description and the dashed variant’s icon use --cr-color-muted.', 'The dashed panel uses --cr-color-border and --cr-radius-md for its outline, --cr-space-3 for the content gap, and --cr-space-5 and --cr-space-6 for padding.'],
+    component: 'EmptyState', componentTokens: [], globalTokens: globals('font-sans', 'color-text', 'color-success-bg', 'color-muted', 'color-border', 'radius-md', 'space-1', 'space-3', 'space-5', 'space-6'),
+    notes: ['Both variants use --cr-color-success-bg and --cr-radius-md for the 58px icon tile. The description uses --cr-color-muted.', 'The dashed panel uses --cr-color-border and --cr-radius-md for its outline, --cr-space-3 for the content gap, --cr-space-1 below the icon tile, and --cr-space-5 and --cr-space-6 for padding.'],
   },
 ];

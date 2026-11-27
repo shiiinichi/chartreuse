@@ -207,7 +207,7 @@ Component galleries use Masonry to arrange previews of different heights in resp
 
 `TaskCard` presents checklist, dependency, related-card, comment, and attachment counts in a wrapping metadata row with 12px top padding. Use `completed`/`total` for checklist counts and optional `dependencies`, `relatedCount`, `commentCount`, and `attachmentCount` for other counts. Explicit zero counts are visible. Set `hideMetadataLabels` to show icons and counts, with full labels in a `Tooltip` on hover and keyboard focus. `progressDisplay="icon"` shows the checklist as a `ListChecks` icon with its ratio. With `onClick`, the metadata and status footer also activate the card. Put other controls, such as a small ghost `IconButton`, in `actions`: they sit at the right end of the metadata row, outside the main button, and do not activate the card.
 
-`EmptyState` supports a compact panel with `variant="dashed"`. Use `align="start"`, `"center"`, or `"end"` to align the icon, message, and optional action in either variant.
+`EmptyState` supports a compact panel with `variant="dashed"`: a dashed border, tighter padding, and a smaller heading, with the same 58px icon tile as the default variant. Use `align="start"`, `"center"`, or `"end"` to align the icon, message, and optional action in either variant.
 
 `Progress` renders a thin native bar by default. Set `showLabel`, `valueText`, and `description` to add a visible heading, formatted value, and supporting text. Value text supplies the accessible value wording unless `aria-valuetext` overrides it, and descriptions merge with native `aria-describedby` relationships. Native props and refs target the bar. The caller defines units and meaning; context-window progress and accumulated token usage are separate measures. Set `size` to `sm` (4px, the default), `md` (6px), or `lg` (8px).
 
@@ -326,6 +326,8 @@ import { Disclosure, Text } from '@chartreuse/ui';
 For controlled visibility, use `open` and `onOpenChange`. Controlled disclosures omit native `name`; if a controlled group should be exclusive, the parent owns which item is open. Native Enter/Space activation and find-in-page behavior are retained. Chevron motion respects reduced-motion preferences.
 
 `headerHighlight="open"` keeps the summary shaded while its content is expanded. `headerHighlight="always"` shades the summary in both open and closed states. The default `"hover"` uses hover feedback. Both variants use the shared subtle-surface color and affect only the header; the gallery includes a separate Preview/Code example for each.
+
+By default the content is indented past the chevron so it lines up with the title (`contentInset="aligned"`). `contentInset="even"` gives it the summary's 20px start padding on both sides instead, for content such as tables, code, or full-width controls. The block padding is the same in both. The value is exposed as `data-content-inset` on the `details` element.
 
 The [Fieldsets gallery](http://127.0.0.1:5173/#fieldsets) provides `Fieldset` with a required native `legend`, optional `description`, `hint`, and `actions`. Related controls share a named group, and the native `disabled` attribute covers the controls and actions inside it. The first child remains a real `legend`; actions stay in the group body. The editable rules example is local.
 

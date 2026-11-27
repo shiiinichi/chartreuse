@@ -190,6 +190,7 @@ function sendMessage(body: string) {
       { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Reports expansion changes; required when open is controlled.' },
       { name: 'defaultOpen', type: 'boolean', defaultValue: 'false', description: 'Initial expansion state when uncontrolled.' },
       { name: 'headerHighlight', type: "'hover' | 'open' | 'always'", defaultValue: "'hover'", description: 'Controls the summary background: hover shows hover feedback; open also keeps the background while expanded; always applies it in both states. The body surface is unchanged.' },
+      { name: 'contentInset', type: "'aligned' | 'even'", defaultValue: "'aligned'", description: 'Inline padding of the content. aligned indents it 48px from the start edge, past the chevron, so it lines up with the title, with 20px at the end. even uses 20px on both sides, the same as the summary’s start padding. The block padding is the same in both. Sets data-content-inset on the details element.' },
       { name: 'name', type: 'string', description: 'Shared name for an exclusive group of uncontrolled disclosures.' },
       { name: 'className', type: 'string', description: 'Additional classes on the details element.' },
       { name: 'ref', type: 'Ref<HTMLDetailsElement>', description: 'Native ref to the details element.' },
