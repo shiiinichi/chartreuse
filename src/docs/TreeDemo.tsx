@@ -43,6 +43,7 @@ export function TreeDemo() {
   const [expanded, setExpanded] = useState<string[]>(['coordinator']);
   const [connectors, setConnectors] = useState(true);
   const [chevronAfter, setChevronAfter] = useState(false);
+  const [flush, setFlush] = useState(false);
   const [selectedFile, setSelectedFile] = useState('tree-file');
   const call = calls.find(item => item.id === selected);
   const hierarchyCode = `import { useState } from 'react';
@@ -58,6 +59,7 @@ export function CallHierarchy() {
   const [expanded, setExpanded] = useState<string[]>(${JSON.stringify(expanded)});
   const [connectors, setConnectors] = useState(${connectors});
   const [chevronAfter, setChevronAfter] = useState(${chevronAfter});
+  const [flush, setFlush] = useState(${flush});
   const call = calls.find(item => item.id === selected);
   return <section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
     <header className="tree-demo-heading">
@@ -70,13 +72,15 @@ export function CallHierarchy() {
         onChange={event => setConnectors(event.target.checked)} />
       <Switch label="Place chevrons after titles" checked={chevronAfter}
         onChange={event => setChevronAfter(event.target.checked)} />
+      <Switch label="Flush rows" checked={flush}
+        onChange={event => setFlush(event.target.checked)} />
       <Button variant="ghost" size="sm" icon={RotateCcw}
         onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button>
     </div>
     <Tree label="Call hierarchy" nodes={nodes}
       selectedId={selected} onSelectionChange={setSelected}
       expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors}
-      togglePosition={chevronAfter ? 'end' : 'start'}
+      togglePosition={chevronAfter ? 'end' : 'start'} flush={flush}
       renderNode={(node, state) => {
         const item = calls.find(entry => entry.id === node.id)!;
         // With togglePosition="end", state.toggle is the chevron to place beside the title.
@@ -139,9 +143,9 @@ export function WorkspaceFiles() {
     <ExampleGallery >
     <Showcase title="Controlled call hierarchy" description="Control selectedId and expandedIds to manage call selection and expansion. Connectors show parent-child relationships. togglePosition=&quot;end&quot; moves each chevron beside its title, and leaves reserve no chevron space." code={hierarchyCode}><section className="tree-demo-hierarchy" aria-labelledby="tree-demo-hierarchy-title">
       <header className="tree-demo-heading"><div><Text size="heading-3" id="tree-demo-hierarchy-title"><GitBranch size={19} aria-hidden="true" />Call hierarchy</Text><Text size="body">Choose a call to inspect its result. The connecting lines show which call started the others.</Text></div><span>4 calls · 0 active</span></header>
-      <div className="tree-demo-controls"><div className="tree-demo-switches"><Switch label="Show branch connectors" checked={connectors} onChange={event => setConnectors(event.target.checked)} /><Switch label="Place chevrons after titles" checked={chevronAfter} onChange={event => setChevronAfter(event.target.checked)} /></div><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button></div>
+      <div className="tree-demo-controls"><div className="tree-demo-switches"><Switch label="Show branch connectors" checked={connectors} onChange={event => setConnectors(event.target.checked)} /><Switch label="Place chevrons after titles" checked={chevronAfter} onChange={event => setChevronAfter(event.target.checked)} /><Switch label="Flush rows" checked={flush} onChange={event => setFlush(event.target.checked)} /></div><Button variant="ghost" size="sm" icon={RotateCcw} onClick={() => { setSelected('coordinator'); setExpanded(['coordinator']); }}>Reset hierarchy</Button></div>
       <Tree label="Call hierarchy" nodes={callNodes} selectedId={selected} onSelectionChange={setSelected}
-        expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors} togglePosition={chevronAfter ? 'end' : 'start'}
+        expandedIds={expanded} onExpandedChange={setExpanded} connectors={connectors} togglePosition={chevronAfter ? 'end' : 'start'} flush={flush}
         renderNode={(node, state) => {
           const item = calls.find(entry => entry.id === node.id)!;
           return <div className="tree-demo-call"><div className="tree-demo-call-title"><span className="tree-demo-call-name"><Text bold>{item.name}</Text>{state.toggle}</span><span>{item.call}</span></div><div className="tree-demo-call-state"><Badge tone="success" dot>Succeeded</Badge><span>{item.elapsed}</span></div><Text size="body">{item.description}</Text><div className="tree-demo-call-meta"><span>{item.tokens} tokens</span>{item.tool && <span><Terminal size={14} aria-hidden="true" />{item.tool}</span>}</div></div>;

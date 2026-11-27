@@ -42,7 +42,7 @@ for (const variant of ['outline', 'plain'] as const) {
 
 test('selectable rows are native buttons with aria-current and keyboard activation', async ({ page }) => {
   await open(page);
-  const list = page.getByRole('list', { name: 'Runs' });
+  const list = page.getByRole('list', { name: 'Runs', exact: true });
   const first = list.getByRole('button', { name: /Refactor the board/ });
   const second = list.getByRole('button', { name: /Fix the composer height/ });
   const third = list.getByRole('button', { name: 'Run 3: clickable chevrons' });
@@ -137,4 +137,46 @@ test('Lists work inside Flex, and Flex works inside row content', async ({ page 
   const [itemBox, badgeBox] = [await item.boundingBox(), await item.locator('.cr-badge').boundingBox()];
   expect(Math.round(itemBox!.x + itemBox!.width - (badgeBox!.x + badgeBox!.width))).toBe(17);
   expect(Math.round(badgeBox!.y - itemBox!.y)).toBeLessThanOrEqual(20);
+});
+
+test('flush rows sit on the container content edge and nothing clips them', async ({ page }) => {
+  await open(page);
+  const sidebar = page.getByTestId('sidebar');
+  const search = (await page.getByTestId('search').boundingBox())!;
+  const firstRow = async (name: string, role: 'list' | 'tree') => (await sidebar.getByRole(role, { name, exact: true })
+    .locator(role === 'list' ? ':scope > li' : '.cr-tree-row').first().boundingBox())!;
+  for (const [name, role] of [['Flush runs', 'list'], ['Flush outline runs', 'list'], ['Flush tree', 'tree']] as const) {
+    const row = await firstRow(name, role);
+    expect([row.x, row.x + row.width], name).toEqual([search.x, search.x + search.width]);
+  }
+  for (const [name, role] of [['Default runs', 'list'], ['Default tree', 'tree']] as const) {
+    const row = await firstRow(name, role);
+    expect([row.x - search.x, search.x + search.width - (row.x + row.width)], name).toEqual([4, 4]);
+  }
+
+  // The app's focus ring (outline-offset -2px) and the selected surface draw inside the row, inside every clip box.
+  // Bring the sidebar on screen first, as in the app; focusing an off-screen row makes the browser centre it.
+  await sidebar.scrollIntoViewIfNeeded();
+  const clip = await sidebar.evaluate(element => { const box = element.getBoundingClientRect(); return { left: box.left + element.clientLeft, right: box.left + element.clientLeft + element.clientWidth }; });
+  for (const name of ['Flush runs', 'Flush outline runs']) {
+    const list = sidebar.getByRole('list', { name, exact: true });
+    const action = list.getByRole('button', { name: 'Run A' });
+    await page.getByTestId('search').focus();
+    // Tab through the rows until this list's first row has keyboard focus, so :focus-visible applies.
+    for (let index = 0; index < 10 && !await action.evaluate(element => element === document.activeElement); index += 1) await page.keyboard.press('Tab');
+    await expect(action).toBeFocused();
+    const ring = await action.evaluate(element => {
+      const style = getComputedStyle(element);
+      const box = element.getBoundingClientRect();
+      const outset = parseFloat(style.outlineOffset) + parseFloat(style.outlineWidth);
+      const listBox = element.closest('.cr-list')!.getBoundingClientRect();
+      return { style: `${style.outlineStyle} ${style.outlineWidth} ${style.outlineOffset}`, left: box.left - outset, right: box.right + outset, top: box.top - outset, listTop: listBox.top, listLeft: listBox.left, listRight: listBox.right };
+    });
+    expect(ring.style).toBe('solid 2px -2px');
+    expect(ring.left).toBeGreaterThanOrEqual(Math.max(clip.left, ring.listLeft));
+    expect(ring.right).toBeLessThanOrEqual(Math.min(clip.right, ring.listRight));
+    expect(ring.top).toBeGreaterThanOrEqual(ring.listTop);
+    const shadow = await list.locator('li[data-selected]').evaluate(element => getComputedStyle(element).boxShadow);
+    expect(shadow === 'none' || shadow.includes('inset')).toBe(true);
+  }
 });

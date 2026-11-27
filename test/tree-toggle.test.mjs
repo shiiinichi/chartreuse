@@ -38,3 +38,8 @@ test('renderNode places state.toggle, or the row appends the chevron when it is 
   const start = renderToStaticMarkup(h(Tree, { label: 'Calls', nodes, renderNode: (node, state) => h('p', null, node.label, String(state.toggle)) }));
   assert.match(start, /<p>Parentundefined<\/p>/, 'toggle is undefined at the start position');
 });
+
+test('flush marks the tree so its outer padding drops; the default keeps it', () => {
+  assert.match(renderToStaticMarkup(h(Tree, { label: 'Calls', nodes, flush: true })), /data-toggle-position="start" data-flush="true"/);
+  assert.ok(!renderToStaticMarkup(h(Tree, { label: 'Calls', nodes })).includes('data-flush'));
+});

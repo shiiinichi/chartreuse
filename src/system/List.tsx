@@ -58,6 +58,8 @@ export interface ListProps extends ListSizeProps, Omit<HTMLAttributes<HTMLElemen
   dividers?: boolean;
   /** 'outline' and 'plain' draw each item as a Tree-style row; the default keeps text list items. */
   variant?: 'default' | 'outline' | 'plain';
+  /** With the outline and plain variants, drop the list's 4px outer padding, so row borders sit on the container's content edge. Defaults to false. */
+  flush?: boolean;
   /** The selected item (controlled). Pass null for none. */
   selectedId?: string | null;
   /** The initially selected item when selectedId is not set. */
@@ -79,7 +81,7 @@ const sizeStyle = ({ minWidth, maxWidth, minHeight, maxHeight }: ListSizeProps):
 };
 
 /** A semantic bulleted or numbered list, or a list of Tree-style rows that can be links, buttons, and a single selection. */
-export function List({ items, ordered = false, marker, start, size = 'md', dividers = false, variant = 'default',
+export function List({ items, ordered = false, marker, start, size = 'md', dividers = false, variant = 'default', flush = false,
   selectedId, defaultSelectedId = null, onSelectionChange, minWidth, maxWidth, minHeight, maxHeight, className, style, ref, ...props }: ListProps) {
   const instance = useId();
   const [internalSelected, setInternalSelected] = useState<string | null>(defaultSelectedId);
@@ -102,6 +104,7 @@ export function List({ items, ordered = false, marker, start, size = 'md', divid
     data-size={size}
     data-dividers={!rows && dividers || undefined}
     data-variant={rows ? variant : undefined}
+    data-flush={rows && flush || undefined}
     data-max-height={maxHeight !== undefined || undefined}
   >
     {items.map((item, index) => {

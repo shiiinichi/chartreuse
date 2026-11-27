@@ -36,6 +36,20 @@ function Selectable() {
     items={[run('run-1', 'Refactor the board', 'Done'), run('run-2', 'Fix the composer height', 'Done'), { ...run('run-3', 'Clickable chevrons', 'Done'), label: 'Run 3: clickable chevrons' }]} />;
 }
 
+/** Like a Sidebar body: 16px padding, a scrolling box, a search field above the rows, and an app focus ring. */
+function SidebarBody() {
+  const runs: ListItem[] = [{ id: 'a', content: <Text bold>Run A</Text> }, { id: 'b', content: <Text bold>Run B</Text> }, { id: 'c', content: <Text bold>Run C</Text> }];
+  return <div data-testid="sidebar" style={{ inlineSize: 320, blockSize: 640, padding: 16, overflow: 'auto', boxSizing: 'border-box', display: 'grid', gap: 12, alignContent: 'start', border: '1px solid' }}>
+    <style>{'.cr-list-row-action:focus-visible, .cr-tree-item:focus-visible > .cr-tree-row { outline: 2px solid rgb(255, 0, 0); outline-offset: -2px; }'}</style>
+    <input data-testid="search" aria-label="Search runs" style={{ boxSizing: 'border-box', inlineSize: '100%', margin: 0 }} />
+    <List aria-label="Flush runs" variant="plain" flush defaultSelectedId="a" onSelectionChange={() => {}} items={runs} />
+    <List aria-label="Default runs" variant="plain" defaultSelectedId="a" onSelectionChange={() => {}} items={runs} />
+    <List aria-label="Flush outline runs" variant="outline" flush maxHeight={120} defaultSelectedId="a" onSelectionChange={() => {}} items={runs} />
+    <Tree label="Flush tree" nodes={treeNodes} variant="plain" flush alignLeaves={false} defaultSelectedId="a" />
+    <Tree label="Default tree" nodes={treeNodes} variant="plain" alignLeaves={false} defaultSelectedId="a" />
+  </div>;
+}
+
 createRoot(document.getElementById('root')!).render(<StrictMode>
   <main style={{ display: 'grid', gap: 32, padding: 24, inlineSize: 900 }}>
     <h1>List rows fixture</h1>
@@ -44,6 +58,7 @@ createRoot(document.getElementById('root')!).render(<StrictMode>
       <Parity width={560} variant="plain" /><Parity width={320} variant="plain" />
     </div>
     <div data-testid="selectable" style={{ inlineSize: 480 }}><Selectable /></div>
+    <SidebarBody />
     <div data-testid="links" style={{ inlineSize: 480 }}>
       <List aria-label="Threads" variant="plain" items={[
         { id: 't1', href: '#thread-1', selected: true, content: <Text bold>Thread one</Text> },

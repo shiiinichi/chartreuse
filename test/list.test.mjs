@@ -87,3 +87,9 @@ test('The default List keeps its title link and gains aria-current only when sel
   assert.match(markup, /<a class="cr-list-link" href="#b">B<\/a>/);
   assert.match(markup, /data-marker="auto"/);
 });
+
+test('flush drops the outer padding only for row variants', () => {
+  assert.match(renderToStaticMarkup(h(List, { variant: 'plain', flush: true, items })), /data-variant="plain" data-flush="true"/);
+  assert.ok(!renderToStaticMarkup(h(List, { variant: 'plain', items })).includes('data-flush'));
+  assert.ok(!renderToStaticMarkup(h(List, { flush: true, items })).includes('data-flush'), 'the default variant has no outer padding to drop');
+});

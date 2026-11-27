@@ -202,6 +202,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.26.1',
+    date: '2026-11-27',
+    title: 'Flush List and Tree rows',
+    summary: 'List row variants and Tree take flush, which drops their 4px outer padding so rows line up with the content around them. The default is unchanged.',
+    changes: [
+      'flush on List (outline and plain) and Tree removes the 4px outer padding, so each row’s border sits on the container’s content edge, in line with a search field or heading above it.',
+      'Row hover, the selected surface and an app focus ring all draw inside the row, so flush rows are never clipped by a scrolling ancestor.',
+    ],
+  },
+  {
     version: '1.26.0',
     date: '2026-11-27',
     title: 'Selectable List rows shared with Tree',

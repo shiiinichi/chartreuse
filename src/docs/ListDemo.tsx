@@ -146,11 +146,11 @@ const runs = [
   { id: 'run-11', title: 'Fix the reply composer height', status: 'Done', tone: 'success' as const, summary: 'Re-measures the inline field when its width changes.', files: '3 files', time: '1:02 PM' },
   { id: 'run-10', title: 'Clickable tree chevrons', status: 'Failed', tone: 'danger' as const, summary: 'Two browser tests timed out waiting for the preview server.', files: '4 files', time: '11:40 AM' },
 ];
-const runRowsCode = (variant: string) => `import { Badge, Flex, List, Text } from '@chartreuse/ui';
+const runRowsCode = (variant: string, flush: boolean) => `import { Badge, Flex, List, Text } from '@chartreuse/ui';
 
 const [selectedId, setSelectedId] = useState<string | null>('run-12');
 
-<List aria-label="Run history" variant="${variant}" selectedId={selectedId}
+<List aria-label="Run history" variant="${variant}"${flush ? ' flush' : ''} selectedId={selectedId}
   onSelectionChange={setSelectedId}
   items={runs.map(run => ({
     id: run.id,
@@ -168,6 +168,7 @@ const [selectedId, setSelectedId] = useState<string | null>('run-12');
 
 export function ListDemo() {
   const [variant, setVariant] = useState<'outline' | 'plain'>('outline');
+  const [flush, setFlush] = useState(false);
   const [selectedRun, setSelectedRun] = useState<string | null>('run-12');
   const [ordered, setOrdered] = useState(false);
   const [dividers, setDividers] = useState(true);
@@ -202,11 +203,12 @@ export function ListDemo() {
           { id: 'activity', title: 'Activity', description: <List size="sm" marker="none" items={[{ id: 'today', title: '12 updates today' }]} /> },
         ]} />
       </Showcase>
-      <Showcase title="Selectable rows" description='variant="outline" or "plain" draws each item as a Tree-style row. With onSelectionChange, each row is a button that selects it; content can be any layout, such as a Flex with a status pinned top right.' code={runRowsCode(variant)}>
+      <Showcase title="Selectable rows" description='variant="outline" or "plain" draws each item as a Tree-style row. With onSelectionChange, each row is a button that selects it; content can be any layout, such as a Flex with a status pinned top right.' code={runRowsCode(variant, flush)}>
         <div className="list-demo-controls">
           <SegmentedControl label="Variant" name={`list-variant-${groupId}`} value={variant} onValueChange={value => setVariant(value === 'plain' ? 'plain' : 'outline')} options={[{ value: 'outline', label: 'Outline' }, { value: 'plain', label: 'Plain' }]} />
+          <Switch label="Flush rows" checked={flush} onChange={event => setFlush(event.target.checked)} />
         </div>
-        <List aria-label="Run history" variant={variant} maxWidth={480} selectedId={selectedRun} onSelectionChange={setSelectedRun}
+        <List aria-label="Run history" variant={variant} flush={flush} maxWidth={480} selectedId={selectedRun} onSelectionChange={setSelectedRun}
           items={runs.map(run => ({
             id: run.id,
             content: <Flex direction="column" gap={2}>

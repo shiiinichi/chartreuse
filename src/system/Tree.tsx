@@ -44,6 +44,8 @@ export interface TreeProps extends Omit<ComponentPropsWithRef<'ul'>, 'children' 
   togglePosition?: 'start' | 'end';
   /** With the start position, leaves keep an empty chevron slot so sibling text lines up. Set false to start leaf content at the row padding. */
   alignLeaves?: boolean;
+  /** Drop the tree's 4px outer padding, so row borders sit on the container's content edge. Defaults to false. */
+  flush?: boolean;
   /** Display content only: include node.label and keep links/actions outside the tree. */
   renderNode?: (node: TreeNode, state: TreeNodeState) => ReactNode;
   emptyMessage?: ReactNode;
@@ -61,7 +63,7 @@ interface IndexedNode {
 /** A single-selection hierarchy. Focus moves independently of selection. */
 export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSelectionChange,
   expandedIds, defaultExpandedIds = [], onExpandedChange, variant = 'outline', connectors = true,
-  togglePosition = 'start', alignLeaves = true, renderNode, emptyMessage = 'No items available.', className, ref, onKeyDown, onKeyUp,
+  togglePosition = 'start', alignLeaves = true, flush = false, renderNode, emptyMessage = 'No items available.', className, ref, onKeyDown, onKeyUp,
   onBlur, onFocus, ...props }: TreeProps) {
   const instance = useId();
   const root = useRef<HTMLUListElement>(null);
@@ -214,7 +216,7 @@ export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSel
   });
 
   return <ul {...props} ref={root} role="tree" aria-label={label} tabIndex={-1}
-    className={['cr-tree', className].filter(Boolean).join(' ')} data-variant={variant} data-connectors={connectors} data-toggle-position={togglePosition}
+    className={['cr-tree', className].filter(Boolean).join(' ')} data-variant={variant} data-connectors={connectors} data-toggle-position={togglePosition} data-flush={flush || undefined}
     onKeyDown={handleKeyDown} onKeyUp={event => {
       onKeyUp?.(event);
       if (event.defaultPrevented || event.nativeEvent.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.key !== ' ') return;
