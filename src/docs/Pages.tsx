@@ -202,6 +202,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.27.0',
+    date: '2026-11-27',
+    title: 'Dashed empty-state tiles and even Disclosure insets',
+    summary: 'The dashed EmptyState keeps the default icon tile, and Disclosure takes contentInset for an even content inset.',
+    changes: [
+      'EmptyState variant="dashed" shows the same 58px tinted icon tile and 26px icon as the default variant, with 16px between the tile and the heading. The dashed border, tighter padding and smaller heading are unchanged.',
+      'Disclosure contentInset="even" gives the revealed content the summary’s 20px start padding on both sides. The default, "aligned", keeps the content lined up with the title past the chevron.',
+    ],
+  },
+  {
     version: '1.26.1',
     date: '2026-11-27',
     title: 'Flush List and Tree rows',
