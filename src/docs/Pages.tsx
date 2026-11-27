@@ -202,6 +202,15 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.25.2',
+    date: '2026-11-27',
+    title: 'Inline MessageComposer height after a width change',
+    summary: 'Fixes an inline MessageComposer that kept a stale height after it widened. No props or markup change.',
+    changes: [
+      'An inline MessageComposer now measures its field again when its width changes, so an empty field whose placeholder wrapped while narrow returns to one row once it widens, and a draft rewraps to its new height.',
+    ],
+  },
+  {
     version: '1.25.1',
     date: '2026-11-27',
     title: 'Even insets in TaskCard counts and CommentThread',
