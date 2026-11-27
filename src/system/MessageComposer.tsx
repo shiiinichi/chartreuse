@@ -133,12 +133,30 @@ export function MessageComposer({
     observer.observe(form);
     return () => observer.disconnect();
   }, [inline, text]);
-  // The inline field grows with its draft, up to its max-block-size.
+  // The inline field grows with its draft, up to its max-block-size. A width change rewraps the draft or
+  // placeholder, so the field re-measures then too.
   useLayoutEffect(() => {
     const field = textareaRef.current;
+    const view = field?.ownerDocument.defaultView;
     if (!inline || !field) return;
-    field.style.blockSize = 'auto';
-    field.style.blockSize = `${field.scrollHeight + field.offsetHeight - field.clientHeight}px`;
+    const measure = () => {
+      field.style.blockSize = 'auto';
+      field.style.blockSize = `${field.scrollHeight + field.offsetHeight - field.clientHeight}px`;
+    };
+    measure();
+    if (!view?.ResizeObserver) return;
+    let width = field.offsetWidth;
+    let frame = 0;
+    // Only width changes re-measure, and in the next frame: changing the height inside the observer's own
+    // callback would notify it again and log a ResizeObserver loop error.
+    const observer = new view.ResizeObserver(() => {
+      if (field.offsetWidth === width) return;
+      width = field.offsetWidth;
+      view.cancelAnimationFrame(frame);
+      frame = view.requestAnimationFrame(measure);
+    });
+    observer.observe(field);
+    return () => { observer.disconnect(); view.cancelAnimationFrame(frame); };
   }, [inline, text, wrapped]);
   const hasHint = hint !== undefined && hint !== null && hint !== false;
 
