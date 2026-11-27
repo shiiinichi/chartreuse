@@ -180,7 +180,10 @@ export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSel
     const isSelected = selected === node.id;
     const descriptionId = node.description ? `${item.domId}-description` : undefined;
     const atEnd = togglePosition === 'end';
-    const chevron = hasChildren ? <span className="cr-tree-toggle" data-position={atEnd ? 'end' : undefined} aria-hidden="true"><ChevronDown size={16} focusable="false" /></span> : null;
+    // A pointer shortcut for the arrow keys: it toggles this branch without selecting it. It stays out of the
+    // tab order and hidden from assistive technology, since the treeitem's aria-expanded carries the state.
+    const chevron = hasChildren ? <span className="cr-tree-toggle" data-position={atEnd ? 'end' : undefined} aria-hidden="true"
+      onClick={event => { event.stopPropagation(); focus(node.id); toggle(node); }}><ChevronDown size={16} focusable="false" /></span> : null;
     // renderNode reads state.toggle when it places the chevron itself; otherwise the row places it.
     let togglePlaced = false;
     const state: TreeNodeState = { selected: isSelected, expanded: isExpanded, level: item.level };
@@ -194,7 +197,7 @@ export function Tree({ nodes, label, selectedId, defaultSelectedId = null, onSel
       ref={element => { if (element) itemRefs.current.set(node.id, element); else itemRefs.current.delete(node.id); }}>
       <div className="cr-tree-row" onClick={() => {
         focus(node.id);
-        // The chevron is only a picture: the first click selects, and a click on the selected branch toggles it.
+        // The first click selects, and a click on the selected branch toggles it. The chevron toggles directly.
         if (hasChildren && isSelected) toggle(node);
         else select(node);
       }}>

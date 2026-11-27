@@ -4,11 +4,15 @@
   .cr-tree-item { position: relative; min-inline-size: 0; padding: 0; }
   .cr-tree-item + .cr-tree-item { margin-block-start: 12px; }
   .cr-tree-row { display: flex; align-items: flex-start; gap: 8px; min-block-size: 48px; min-inline-size: 0; box-sizing: border-box; padding: 16px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); cursor: pointer; }
-  .cr-tree-row:hover { background: var(--cr-color-subtle); }
+  .cr-tree-row:hover:not(:has(.cr-tree-toggle:not([data-empty]):hover)) { background: var(--cr-color-subtle); }
   .cr-tree-item[aria-selected='true'] > .cr-tree-row { border-color: var(--cr-color-active-border); background: var(--cr-color-active); color: var(--cr-color-on-active); box-shadow: inset 0 0 0 1px var(--cr-color-active-border); }
   .cr-tree-item[aria-selected='true'] > .cr-tree-row > * { color-scheme: dark; }
   .cr-tree-row .cr-badge[data-variant='soft'] { color-scheme: light; }
   .cr-tree-toggle { display: grid; flex: 0 0 24px; place-items: center; inline-size: 24px; block-size: 24px; margin-block-start: -1px; border-radius: var(--cr-radius-md); color: var(--cr-color-muted); }
+  /* The chevron is a small ghost control: while it is hovered, it takes the hover instead of its row. */
+  .cr-tree-toggle:not([data-empty]) { cursor: pointer; }
+  .cr-tree-toggle:not([data-empty]):hover { background: var(--cr-color-subtle); color: var(--cr-color-text); }
+  .cr-tree-item[aria-selected='true'] > .cr-tree-row .cr-tree-toggle:not([data-empty]):hover { background: color-mix(in srgb, var(--cr-paper) 10%, transparent); color: var(--cr-color-on-active); }
   .cr-tree-toggle > svg { rotate: var(--cr-tree-closed-rotation, -90deg); pointer-events: none; }
   .cr-tree:dir(rtl) { --cr-tree-closed-rotation: 90deg; }
   .cr-tree-item[aria-expanded='true'] > .cr-tree-row .cr-tree-toggle > svg { rotate: 0deg; }
