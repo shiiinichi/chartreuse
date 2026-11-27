@@ -418,8 +418,14 @@
   .cr-task-button p { font-size: .6875rem; line-height: 1.7; color: var(--cr-color-muted); margin: 0; }
   .cr-task-branch { display: flex; gap: .375rem; align-items: center; color: var(--cr-color-muted); font-size: .625rem; margin-block-start: 1rem; overflow-wrap: anywhere; }
   .cr-task-branch > svg { flex-shrink: 0; }
-  .cr-task-card[data-has-metadata='true'] > .cr-task-button { padding-block-end: .75rem; }
+  .cr-task-card:is([data-has-metadata='true'], [data-has-actions='true']) > .cr-task-button { padding-block-end: .75rem; }
   .cr-task-metadata { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .75rem; margin: 0; padding: .75rem 1rem 1rem; list-style: none; color: var(--cr-color-muted); font: 450 .6875rem/1.5 var(--cr-font-sans); }
+  /* With actions, the row owns the metadata padding. The list takes the free space and the actions sit at its right end. */
+  .cr-task-metadata-row { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem 1rem; }
+  .cr-task-metadata-row > .cr-task-metadata { flex: 1 1 auto; min-inline-size: 0; padding: 0; }
+  /* Negative margins let a 32px small icon button overhang the 16.5px text line, so the row keeps its height
+     and the icon's inline end meets the content edge. */
+  .cr-task-actions { display: flex; align-items: center; gap: .25rem; flex-shrink: 0; margin-block: -.5rem; margin-inline: auto -.5rem; }
   .cr-task-metadata > li, .cr-task-metadata-trigger { display: inline-flex; align-items: center; gap: 5px; }
   .cr-task-metadata > li { position: relative; max-inline-size: 100%; white-space: nowrap; }
   .cr-task-metadata > li > svg, .cr-task-metadata-trigger > svg { flex-shrink: 0; }
@@ -442,11 +448,15 @@
   .cr-task-priority { display: inline-flex; align-items: center; gap: 4px; color: var(--tone-fg); font: 600 .6875rem/1.2 var(--cr-font-sans); white-space: nowrap; }
   .cr-task-card[data-density='compact'] { border-radius: var(--cr-radius-md); }
   .cr-task-card[data-density='compact'] > .cr-task-button { padding: 9px 10px; border-radius: var(--cr-radius-md) var(--cr-radius-md) 0 0; }
-  .cr-task-card[data-density='compact'][data-has-metadata='true'] > .cr-task-button { padding-block-end: 6px; }
+  .cr-task-card[data-density='compact']:is([data-has-metadata='true'], [data-has-actions='true']) > .cr-task-button { padding-block-end: 6px; }
   .cr-task-card[data-density='compact'] .cr-task-meta { font-size: .6875rem; }
   .cr-task-card[data-density='compact'] .cr-task-button h3 { font-size: .8125rem; font-weight: 550; line-height: 1.45; margin: 4px 0 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; text-wrap: pretty; }
   .cr-task-card[data-density='compact'] .cr-task-branch { margin-block-start: 6px; }
   .cr-task-card[data-density='compact'] .cr-task-metadata { gap: 6px 10px; padding: 0 10px 9px; font-size: .6875rem; }
+  .cr-task-card[data-density='compact'] .cr-task-metadata-row { gap: 10px; padding: 0 10px 9px; }
+  .cr-task-card[data-density='compact'] .cr-task-metadata-row > .cr-task-metadata { padding: 0; }
+  /* Compact tooltip triggers keep their 24px target but overhang the text line, so the dense row keeps its height. */
+  .cr-task-card[data-density='compact'] .cr-task-metadata-trigger { justify-content: flex-start; margin-block: calc((1.5em - 24px) / 2); }
   .cr-task-card[data-density='compact'] .cr-task-progress { block-size: 4px; }
   .cr-task-card[data-density='compact'] .cr-task-footer { padding: 6px 10px; min-block-size: 24px; }
   .cr-agent-card { inline-size: 100%; display: flex; flex-direction: column; gap: 1rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); padding: 1rem; text-align: start; line-height: 1.5; }

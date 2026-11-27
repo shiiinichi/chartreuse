@@ -162,7 +162,8 @@ test('TaskCard keeps its legacy output and adds links, selection, completion, an
   assert.ok(!compact.includes('Hidden'), 'compact hides the description');
   assert.ok(!compact.includes('Medium'), 'compact shows only high priority');
   assert.ok(compact.includes('data-display="bar"'), 'compact draws the checklist as a bar');
-  assert.ok(compact.includes('title="3 comments."'));
+  assert.ok(compact.includes('<div class="cr-tooltip-content">3 comments</div>'), 'icon-only compact counts use a Chartreuse tooltip');
+  assert.ok(!compact.includes('title="3 comments."'), 'and no native title');
   assert.match(render(TaskCard, { taskId: 'T-1', title: 'Task', priority: 'high', density: 'compact' }), /cr-task-priority" data-tone="warning"/);
   assert.match(render(TaskCard, { taskId: 'T-1', title: 'Task', description: 'Long', descriptionLines: 2 }), /data-clamp="true"/);
 });

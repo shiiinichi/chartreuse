@@ -608,15 +608,19 @@ export function ToastExample() {
     name: 'TaskCard',
     slug: 'task-card',
     summary: 'A task summary with compact wrapping metadata, status, priority, and assignee avatars.',
-    importCode: "import { useState } from 'react';\nimport { Button, Dialog, TaskCard, Text } from '@chartreuse/ui';",
+    importCode: "import { useState } from 'react';\nimport { AtSign } from 'lucide-react';\nimport { Button, Dialog, IconButton, TaskCard, Text, Tooltip } from '@chartreuse/ui';",
     usageCode: `export function TaskCardExample() {
   const [open, setOpen] = useState(false);
   return <>
     <TaskCard taskId="TASK-024" title="Implement the workspace task board"
       status="done" completed={4} total={4} hideMetadataLabels
-      dependencies={{ completed: 1, total: 1 }}
+      progressDisplay="icon" dependencies={{ completed: 1, total: 2 }}
       relatedCount={1} commentCount={2} attachmentCount={1}
-      assignees={['Alex Morgan', 'Sam Lee']} onClick={() => setOpen(true)} />
+      assignees={['Alex Morgan', 'Sam Lee']} onClick={() => setOpen(true)}
+      actions={<Tooltip content="Add to chat context">
+        <IconButton variant="ghost" size="sm" icon={AtSign} label="Add to chat context"
+          onClick={() => console.log('Add TASK-024 to chat context')} />
+      </Tooltip>} />
     <Dialog open={open} onOpenChange={setOpen} title="Implement the workspace task board"
       footer={<Button onClick={() => setOpen(false)}>Done</Button>}>
       <Text size="body">Add status lanes, task search, and task detail dialogs.</Text>
@@ -644,18 +648,19 @@ export function ToastExample() {
       { name: 'relatedCount', type: 'number', description: 'Related card count. Omitted values hide the stat; an explicit zero remains visible.' },
       { name: 'commentCount', type: 'number', description: 'Comment count. Omitted values hide the stat; an explicit zero remains visible.' },
       { name: 'attachmentCount', type: 'number', description: 'Attached file count. Omitted values hide the stat; an explicit zero remains visible.' },
-      { name: 'hideMetadataLabels', type: 'boolean', defaultValue: 'false', description: 'Displays each count beside its icon. Hover over or focus an indicator to read its full label.' },
+      { name: 'hideMetadataLabels', type: 'boolean', defaultValue: 'false', description: 'Displays each count beside its icon without its label. Hover over or focus an indicator to read its full label, such as “1 of 2 dependencies complete”, in a Tooltip.' },
       { name: 'assignees', type: 'string[]', defaultValue: '[]', description: 'Names displayed with AvatarGroup.' },
-      { name: 'progressDisplay', type: "'text' | 'bar'", defaultValue: "'text' ('bar' when compact)", description: 'Shows checklist progress as a ratio or as a 5px bar (4px in compact density). The bar keeps the ratio as text for assistive technology.' },
+      { name: 'progressDisplay', type: "'text' | 'bar' | 'icon'", defaultValue: "'text' ('bar' when compact)", description: 'Shows checklist progress as a labelled ratio, as a 5px bar (4px in compact density), or as a ListChecks icon with the completed/total ratio. icon is one inline item like the other counts, with its full label in a Tooltip. Every mode keeps the same screen-reader text.' },
       { name: 'descriptionLines', type: 'number', description: 'Clamps the description to this many lines. Unset leaves it unclamped, as before.' },
       { name: 'completedState', type: 'boolean', defaultValue: 'false', description: 'Marks the task finished: a check icon before the task id, a muted title, and “Completed” for assistive technology.' },
       { name: 'href', type: 'string', description: 'Renders the main action as a native link to this URL instead of a button. Clicks elsewhere on the card follow the link.' },
       { name: 'selected', type: 'boolean', defaultValue: 'false', description: 'Marks the card as the current selection with aria-current="true" on its main action and an active border.' },
-      { name: 'density', type: "'default' | 'compact'", defaultValue: "'default'", description: 'compact is a dense board card: no description, priority shown only when high, icon-only metadata with titles and screen-reader text, and a progress bar.' },
-      { name: 'onClick', type: '() => void', description: 'Runs when any part of the card is clicked or the main button is activated with the keyboard. The button is disabled when this callback and href are both omitted.' },
+      { name: 'density', type: "'default' | 'compact'", defaultValue: "'default'", description: 'compact is a dense board card: no description, priority shown only when high, icon-only metadata with Tooltip labels and screen-reader text, and a progress bar.' },
+      { name: 'onClick', type: '() => void', description: 'Runs when any part of the card is clicked or the main button is activated with the keyboard, except the actions slot. The button is disabled when this callback and href are both omitted.' },
+      { name: 'actions', type: 'ReactNode', description: 'Controls at the right end of the metadata row, such as a small ghost IconButton wrapped in a Tooltip. They render outside the main button, so they are valid nested controls, and clicking them never runs onClick or follows href. A 32px small button overhangs the row with negative block margins, so the row keeps its height, and its icon lines up with the content edge. Without metadata, the actions get a row of their own.' },
     ],
     notes: [
-      'Metadata is one wrapping list. Each icon and short label stay together, avoiding a tall row for every count.', 'Dependencies use a network icon and related cards use a link icon. Checklist progress uses a ratio.', 'Omit optional metadata props to hide their counts. Explicit zero values are included. The checklist appears when its total is greater than zero.', 'Counts are normalized to nonnegative whole numbers, with completed counts capped at their totals.', 'Screen readers receive the full meanings of abbreviated stats, which also describe the main card button.', 'Status and priority are display props; the component does not update task data itself.', 'Provide onClick for an actionable card. Keep other interactive controls outside its main button.', 'Use href when the card opens a task page, so it works with middle-click and open-in-new-tab. Use selected for the card whose detail is open beside the board.', 'In compact density, metadata counts are icon-only. Each keeps a title and full screen-reader text, so meaning never depends on the icon alone.'],
+      'Metadata is one wrapping list. Each icon and short label stay together, avoiding a tall row for every count.', 'Dependencies use a network icon and related cards use a link icon. Checklist progress uses a ratio.', 'Omit optional metadata props to hide their counts. Explicit zero values are included. The checklist appears when its total is greater than zero.', 'Counts are normalized to nonnegative whole numbers, with completed counts capped at their totals.', 'Screen readers receive the full meanings of abbreviated stats, which also describe the main card button.', 'Status and priority are display props; the component does not update task data itself.', 'Provide onClick for an actionable card. Put other interactive controls in actions, which sits outside its main button.', 'Actions are vertically centred on the metadata row. When the counts wrap onto several lines, the actions centre on the whole row.', 'Use href when the card opens a task page, so it works with middle-click and open-in-new-tab. Use selected for the card whose detail is open beside the board.', 'In compact density, metadata counts are icon-only. Each shows its full label in a Tooltip (never also a native title) and keeps full screen-reader text, so meaning never depends on the icon alone. The progress bar keeps its native title.'],
   },
   {
     name: 'AgentCard',

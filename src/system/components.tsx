@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode, WheelEvent as ReactWheelEvent } from 'react';
-import { AlertCircle, CheckCheck, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
+import { AlertCircle, CheckCheck, ChevronRight, Circle, CircleCheck, Clock3, GitBranch, Info, ListChecks, LoaderCircle, Network, TriangleAlert, X } from 'lucide-react';
 import { Link2 as TaskRelatedIcon, MessageSquare as TaskCommentsIcon, Paperclip as TaskAttachmentsIcon } from 'lucide-react';
 import type { ControlSize } from './control-size';
 import { renderIcon } from './icons';
@@ -595,8 +595,8 @@ export interface TaskCardProps extends Omit<HTMLAttributes<HTMLElement>, 'title'
   branch?: string;
   completed?: number;
   total?: number;
-  /** Show checklist progress as text or as a 5px bar (4px in compact). Defaults to 'text', or 'bar' when density is compact. */
-  progressDisplay?: 'text' | 'bar';
+  /** Show checklist progress as a labelled ratio, a 5px bar (4px in compact), or a ListChecks icon with the ratio. Defaults to 'text', or 'bar' when density is compact. */
+  progressDisplay?: 'text' | 'bar' | 'icon';
   dependencies?: TaskCardDependencies;
   relatedCount?: number;
   commentCount?: number;
@@ -614,14 +614,17 @@ export interface TaskCardProps extends Omit<HTMLAttributes<HTMLElement>, 'title'
   /** 'compact' is a dense board card: no description, high priority only, icon-only metadata. Defaults to 'default'. */
   density?: 'default' | 'compact';
   onClick?: () => void;
+  /** Controls at the right end of the metadata row, outside the main action, such as a small ghost IconButton. Clicking them does not open the card. */
+  actions?: ReactNode;
 }
 export function TaskCard({
   taskId, title, description, status = 'todo', statusLabel, statusTone, statusAccent, hideStatus = false, priority = 'medium', branch, completed = 0, total = 0,
   progressDisplay, dependencies, relatedCount, commentCount, attachmentCount, hideMetadataLabels = false, assignees = [], descriptionLines, completedState = false,
-  href, selected = false, density = 'default', onClick, className, ...rest
+  href, selected = false, density = 'default', onClick, actions, className, ...rest
 }: TaskCardProps) {
   const metadataId = useId();
   const actionButton = useRef<HTMLButtonElement & HTMLAnchorElement>(null);
+  const actionsSlot = useRef<HTMLDivElement>(null);
   const compact = density === 'compact';
   const legacyTones: Record<LegacyTaskStatus, Tone> = { todo: 'neutral', 'in-progress': 'info', review: 'warning', done: 'success' };
   const labels: Record<LegacyTaskStatus, string> = { todo: 'To do', 'in-progress': 'In progress', review: 'In review', done: 'Done' };
@@ -631,16 +634,19 @@ export function TaskCard({
   const count = (value: number) => Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
   const checklistTotal = count(total);
   const checklistCompleted = Math.min(count(completed), checklistTotal);
-  const showBar = (progressDisplay ?? (compact ? 'bar' : 'text')) === 'bar';
+  const checklistDisplay = progressDisplay ?? (compact ? 'bar' : 'text');
+  const showBar = checklistDisplay === 'bar';
+  const checklistIcon = checklistDisplay === 'icon';
   const iconSize = compact ? 11 : undefined;
-  const metadata: { key: string; icon: ReactNode; value: number | string; label: string; description: string; bar?: number }[] = [];
+  const metadata: { key: string; icon: ReactNode; value: number | string; label: string; description: string; bar?: number; iconOnly?: boolean }[] = [];
   if (checklistTotal > 0) metadata.push({
     key: 'checklist',
-    icon: <CheckCheck size={iconSize ?? 14} aria-hidden="true" />,
+    icon: checklistIcon ? <ListChecks size={iconSize ?? 13} aria-hidden="true" /> : <CheckCheck size={iconSize ?? 14} aria-hidden="true" />,
     value: `${checklistCompleted}/${checklistTotal}`,
     label: 'checklist',
     description: `${checklistCompleted} of ${checklistTotal} checklist ${checklistTotal === 1 ? 'item' : 'items'} complete.`,
     bar: showBar ? checklistCompleted / checklistTotal : undefined,
+    iconOnly: checklistIcon,
   });
   if (dependencies) {
     const dependencyTotal = count(dependencies.total);
@@ -685,11 +691,31 @@ export function TaskCard({
     'aria-current': selected ? 'true' as const : undefined,
   };
   const showFooter = !hideStatus || assignees.length > 0;
-  const iconOnly = compact || hideMetadataLabels;
+  const hasActions = actions !== undefined && actions !== null && actions !== false;
+  const metadataList = metadata.length > 0 && <ul className="cr-task-metadata" id={metadataId}>
+    {metadata.map(item => {
+      if (item.bar !== undefined) return <li key={item.key} data-info={item.key} data-display="bar" title={item.description}>
+        <span className="cr-task-progress" aria-hidden="true"><span className="cr-task-progress-value" style={{ inlineSize: `${Math.round(item.bar * 100)}%` }} /></span>
+        <span aria-hidden="true">{item.value}</span>
+        <span className="cr-sr-only">{item.description}</span>
+      </li>;
+      // Icon-only counts show their full meaning in a Chartreuse tooltip, never also in a native title.
+      const iconOnly = compact || hideMetadataLabels || item.iconOnly;
+      const content = <>{item.icon}<span aria-hidden="true">{iconOnly ? item.value : `${item.value} ${item.label}`}</span></>;
+      return <li key={item.key} data-info={item.key} data-display={item.iconOnly ? 'icon' : undefined}>
+        {iconOnly ? <Tooltip content={item.description.replace(/\.$/, '')} aria-label={item.description}>
+          <span className="cr-task-metadata-trigger" tabIndex={0}>{content}</span>
+        </Tooltip> : content}
+        <span className="cr-sr-only">{item.description}</span>
+      </li>;
+    })}
+  </ul>;
+  const actionsContent = hasActions && <div ref={actionsSlot} className="cr-task-actions">{actions}</div>;
   return <Card
     {...rest}
     className={cx('cr-task-card', className)}
     data-has-metadata={metadata.length > 0 || undefined}
+    data-has-actions={hasActions || undefined}
     data-density={compact ? 'compact' : undefined}
     data-selected={selected || undefined}
     data-completed={completedState || undefined}
@@ -698,7 +724,7 @@ export function TaskCard({
       const target = event.target as Node;
       const action = actionButton.current;
       // Clicks from portaled tooltip bubbles also reach this React handler.
-      if (event.defaultPrevented || !action || (action instanceof HTMLButtonElement && action.disabled) || !event.currentTarget.contains(target) || action.contains(target)) return;
+      if (event.defaultPrevented || !action || (action instanceof HTMLButtonElement && action.disabled) || !event.currentTarget.contains(target) || action.contains(target) || actionsSlot.current?.contains(target)) return;
       action.focus({ preventScroll: true });
       if (href) action.click(); else onClick?.();
     }) : undefined}
@@ -706,23 +732,9 @@ export function TaskCard({
     {href
       ? <a ref={actionButton} href={href} {...actionProps}>{actionContent}</a>
       : <button ref={actionButton} type="button" {...actionProps} disabled={!onClick}>{actionContent}</button>}
-    {metadata.length > 0 && <ul className="cr-task-metadata" id={metadataId}>
-      {metadata.map(item => {
-        const itemLabel = `${item.value} ${item.label}`;
-        if (item.bar !== undefined) return <li key={item.key} data-info={item.key} data-display="bar" title={item.description}>
-          <span className="cr-task-progress" aria-hidden="true"><span className="cr-task-progress-value" style={{ inlineSize: `${Math.round(item.bar * 100)}%` }} /></span>
-          <span aria-hidden="true">{item.value}</span>
-          <span className="cr-sr-only">{item.description}</span>
-        </li>;
-        const content = <>{item.icon}<span aria-hidden="true">{iconOnly ? item.value : itemLabel}</span></>;
-        return <li key={item.key} data-info={item.key} title={compact ? item.description : undefined}>
-          {hideMetadataLabels && !compact ? <Tooltip content={itemLabel} aria-label={item.description}>
-            <span className="cr-task-metadata-trigger" tabIndex={0}>{content}</span>
-          </Tooltip> : content}
-          <span className="cr-sr-only">{item.description}</span>
-        </li>;
-      })}
-    </ul>}
+    {metadataList && hasActions
+      ? <div className="cr-task-metadata-row">{metadataList}{actionsContent}</div>
+      : metadataList || (hasActions && <div className="cr-task-metadata-row">{actionsContent}</div>)}
     {showFooter && <div className="cr-task-footer">{hideStatus ? <span /> : <Badge tone={tone} accent={statusAccent} dot>{label}</Badge>}{assignees.length > 0 && <AvatarGroup names={assignees} />}</div>}
   </Card>;
 }
