@@ -24,14 +24,28 @@
   .cr-list :where(.cr-list-title, .cr-list-description) a:hover { text-decoration-thickness: 2px; }
   :where(.cr-list-title, .cr-list-description) > .cr-list { margin-block-start: var(--cr-space-1); }
   /* Interactive items: one link or button per item, stretched across the item. */
-  .cr-list-item[data-interactive] { position: relative; margin-inline: calc(-1 * var(--cr-space-2)); padding-inline: var(--cr-space-2); border-radius: var(--cr-radius-md); }
-  .cr-list-item[data-interactive]:hover { background: var(--cr-color-subtle); }
+  .cr-list-item[data-interactive]:not(.cr-list-row) { position: relative; margin-inline: calc(-1 * var(--cr-space-2)); padding-inline: var(--cr-space-2); border-radius: var(--cr-radius-md); }
+  .cr-list-item[data-interactive]:not(.cr-list-row):hover { background: var(--cr-color-subtle); }
   .cr-list .cr-list-link { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 500; text-align: inherit; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .cr-list .cr-list-link:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .cr-list-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  /* Free content is a plain block; long text wraps. */
+  .cr-list-item[data-content] { display: block; }
+  .cr-list-row-content { min-inline-size: 0; overflow-wrap: anywhere; }
+  /* Rows (variant="outline" | "plain") share Tree's surface, padding, hover, and selection from row.css. */
+  .cr-list[data-variant] { container: cr-list cr-rows / inline-size; }
+  .cr-list[data-variant='outline'] > .cr-list-item + .cr-list-item { margin-block-start: 12px; }
+  .cr-list[data-variant='plain'] > .cr-list-item + .cr-list-item { margin-block-start: 4px; }
+  .cr-list-row { position: relative; }
+  .cr-list-row[data-interactive] { cursor: pointer; }
+  /* An empty native link or button stretched over the item: it takes the clicks and the keyboard focus. */
+  .cr-list-row-action { position: absolute; inset: 0; margin: 0; padding: 0; border: 0; border-radius: inherit; background: transparent; color: inherit; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  /* A row taller than maxHeight clips; a list taller than maxHeight scrolls. */
+  .cr-list-item[data-max-height] { overflow: clip; }
+  .cr-list[data-max-height] { overflow-x: clip; overflow-y: auto; }
   @media (forced-colors: active) {
     .cr-list .cr-list-link { color: LinkText; }
-    .cr-list-item[data-interactive]:hover { background: Canvas; outline: 1px solid CanvasText; }
+    .cr-list-item[data-interactive]:not(.cr-list-row):hover { background: Canvas; outline: 1px solid CanvasText; }
     .cr-list-marker { color: CanvasText; }
     .cr-list[data-dividers] > .cr-list-item + .cr-list-item { border-block-start-color: CanvasText; }
   }

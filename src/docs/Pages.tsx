@@ -202,6 +202,19 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.26.0',
+    date: '2026-11-27',
+    title: 'Selectable List rows shared with Tree',
+    summary: 'List gains outline and plain row variants with free content, button or link rows, single selection and size props. Tree and List now share one row stylesheet. The default List is unchanged.',
+    changes: [
+      'List variant="outline" and variant="plain" draw each item as a Tree-style row. An item’s content can be any layout, such as a Flex, and the whole row activates through a native button or link stretched over it.',
+      'Rows select with selectedId, defaultSelectedId and onSelectionChange, or per item with selected; the selected row is marked aria-current="true". Link rows take href.',
+      'minWidth, maxWidth, minHeight and maxHeight size the list and each row. A row taller than its maxHeight clips; a list taller than its maxHeight scrolls.',
+      'Tree and List rows share one stylesheet, so their padding (16px, or 12px under 400px wide), borders, hover and selected states match exactly. Each List resolves its padding against its own width, including inside Flex.',
+      'A selected Tree row keeps its surface when hovered again, fixing a regression from 1.25.3.',
+    ],
+  },
+  {
     version: '1.25.3',
     date: '2026-11-27',
     title: 'Clickable Tree chevrons',

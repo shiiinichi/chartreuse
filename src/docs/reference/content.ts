@@ -80,8 +80,8 @@ export const contentReferences: ComponentReference[] = [
   {
     name: 'List',
     slug: 'list',
-    summary: 'A semantic bulleted or numbered list with optional icons, descriptions, trailing content, and dividers.',
-    importCode: "import { CheckCircle2, CircleAlert } from 'lucide-react';\nimport { Badge, List, type ListItem } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
+    summary: 'A semantic bulleted or numbered list with optional icons, descriptions, trailing content, and dividers, or a list of Tree-style rows that can be links, buttons, and a single selection.',
+    importCode: "import { CheckCircle2, CircleAlert } from 'lucide-react';\nimport { Badge, Flex, List, Text, type ListItem } from '@chartreuse/ui';\nimport '@chartreuse/ui/styles.css';",
     usageCode: `const checks: ListItem[] = [
   { id: 'types', title: 'Type check', description: 'No errors in 214 files.',
     icon: CheckCircle2, tone: 'success', trailing: <Badge tone="success">Passed</Badge> },
@@ -95,23 +95,42 @@ export const contentReferences: ComponentReference[] = [
 <List items={[
   { id: 'scope', title: 'Confirm the release scope' },
   { id: 'notes', title: 'Draft the release notes' },
-]} ordered />`,
+]} ordered />
+
+// Selectable Tree-style rows with free content. Keep selectedId in state.
+<List aria-label="Run history" variant="outline" maxWidth={480}
+  selectedId="run-12" onSelectionChange={id => console.log('select', id)}
+  items={[{ id: 'run-12', content: <Flex direction="column" gap={2}>
+    <Flex direction="row" justify="space-between" align="start" gap={3}>
+      <Text bold>Refactor the board columns</Text><Badge tone="info">Running</Badge>
+    </Flex>
+    <Flex direction="row" justify="space-between" gap={3}><span>6 files</span><time>2:14 PM</time></Flex>
+  </Flex> }]} />`,
     props: [
       { name: 'items', type: 'readonly ListItem[]', required: true, description: 'Items in their rendered order.' },
       { name: 'items[].id', type: 'string', required: true, description: 'Unique stable identity used as the item’s React key.' },
-      { name: 'items[].title', type: 'ReactNode', required: true, description: 'Primary item text or caller-owned content, such as a link.' },
+      { name: 'items[].title', type: 'ReactNode', description: 'Primary item text or caller-owned content, such as a link. Optional when content is set.' },
+      { name: 'items[].content', type: 'ReactNode', description: 'Free item content that replaces the marker, icon, title, description, and trailing slots. It lays out as a plain block with min-inline-size: 0, so arrange anything inside, such as a Flex with a status pinned top right. Keep it free of links and buttons when the item is interactive.' },
+      { name: 'items[].label', type: 'string', description: 'Accessible name for an interactive item. Defaults to the text of content, or of title (with description as its description).' },
+      { name: 'items[].selected', type: 'boolean', description: 'Marks the item as the current one: aria-current="true" on its link or button, and the selected surface in row variants. Overrides selectedId for this item.' },
+      { name: 'items[].minWidth / maxWidth / minHeight / maxHeight', type: 'number | string', description: 'Inline min-inline-size, max-inline-size, min-block-size, and max-block-size on the item. Numbers are pixels; strings are any CSS length. An item taller than maxHeight is clipped (overflow: clip).' },
       { name: 'items[].description', type: 'ReactNode', description: 'Secondary muted text below the title. A nested List can go here.' },
       { name: 'items[].icon', type: 'IconSource', description: 'Decorative leading icon that replaces the bullet or number for this item: Lucide, React SVG component, or SVG JSX.' },
       { name: 'items[].leading', type: 'ReactNode', description: 'Decorative leading content, such as an Avatar. It replaces the icon and marker, is hidden from assistive technology, and keeps its own size.' },
       { name: 'items[].tone', type: "'neutral' | 'success' | 'info' | 'warning' | 'danger'", defaultValue: "'neutral'", description: 'Colors the bullet, number, or icon from the shared semantic palette. Text keeps its own colors.' },
       { name: 'items[].trailing', type: 'ReactNode', description: 'End-aligned content, such as a Badge, a count, a time, or a small action. Keep it non-interactive when the item has href or onClick.' },
-      { name: 'items[].href', type: 'string', description: 'Makes the title a native link to this URL. The whole item is clickable and shows a hover surface; focus stays on the link.' },
-      { name: 'items[].onClick', type: '() => void', description: 'Makes the title a native button that runs this callback, with the same full-item hit area as href. With href, it runs on the link click.' },
+      { name: 'items[].href', type: 'string', description: 'Makes the item a native link to this URL. The whole item is clickable and shows a hover surface. In the default variant the title is the link; in row variants, or with content, an empty link stretched over the item is named by its text.' },
+      { name: 'items[].onClick', type: '() => void', description: 'Makes the item a native button that runs this callback, with the same full-item hit area as href. With href, it runs on the link click.' },
       { name: 'ordered', type: 'boolean', defaultValue: 'false', description: 'Renders a numbered ol instead of a bulleted ul.' },
       { name: 'marker', type: "'auto' | 'none'", defaultValue: "'auto'", description: 'Auto shows bullets for unordered lists and numbers for ordered lists. None hides them; item icons still render.' },
       { name: 'start', type: 'number', description: 'First number of an ordered list, applied to the native start attribute and the visible numbers.' },
       { name: 'size', type: "'sm' | 'md'", defaultValue: "'md'", description: 'Text size and spacing, matching the sm and md sizes of Button, TextField, Tabs, and SegmentedControl: 13px titles for md and 12px for sm. Descriptions are 12px in both sizes.' },
-      { name: 'dividers', type: 'boolean', defaultValue: 'false', description: 'Draws a rule between items and adds block padding to each item.' },
+      { name: 'dividers', type: 'boolean', defaultValue: 'false', description: 'Draws a rule between items and adds block padding to each item. Ignored by the outline and plain variants.' },
+      { name: 'variant', type: "'default' | 'outline' | 'plain'", defaultValue: "'default'", description: 'outline draws each item as a Tree outline row (card surface, border, 16px padding, 12px when the list is under 400px wide) and plain as a Tree plain row. Both share Tree’s hover and selected surface, and default marker to none.' },
+      { name: 'selectedId', type: 'string | null', description: 'The selected item (controlled). Pass null for none.' },
+      { name: 'defaultSelectedId', type: 'string | null', defaultValue: 'null', description: 'The initially selected item when selectedId is not set.' },
+      { name: 'onSelectionChange', type: '(id: string, item: ListItem) => void', description: 'Makes every item without href a native button that selects it. Called only when the selection changes.' },
+      { name: 'minWidth / maxWidth / minHeight / maxHeight', type: 'number | string', description: 'Inline min-inline-size, max-inline-size, min-block-size, and max-block-size on the list. Numbers are pixels. A list taller than maxHeight scrolls vertically.' },
       { name: 'aria-label', type: 'string', description: 'Optional accessible name, for a list without a visible heading.' },
       { name: 'className', type: 'string', description: 'Additional classes on the list element.' },
       { name: 'ref', type: 'Ref<HTMLUListElement | HTMLOListElement>', description: 'Native ref to the ul, or to the ol when ordered.' },
@@ -123,8 +142,12 @@ export const contentReferences: ComponentReference[] = [
       'Use Table when items have several comparable columns, Tree for nested items people expand and select, and Timeline or Steps for events over time or a process.',
       'Use ordered when the order matters. The numbers are drawn with CSS counters that follow start, while screen readers announce position from the native ol.',
       'An item icon or leading content replaces that item’s bullet or number and is decorative. Put meaning, such as a person’s name, in the title or description, not only in the icon, avatar, or tone.',
-      'The list has no selection or arrow-key navigation. Give an item href or onClick to make the whole item a link or button, or put native controls in title or trailing yourself.',
-      'An item with href or onClick stretches its link or button over the item. Its description, leading, and trailing content must not contain other links or buttons.',
+      'Give an item href or onClick to make the whole item a link or button, or onSelectionChange to make every item a button that selects it. Each item is its own Tab stop with native Enter and Space or link behavior; there is no arrow-key navigation, unlike Tree.',
+      'The selected item carries aria-current="true" on its link or button: the current item among a set of actions or links, not a pressed toggle. Use Tree when people need arrow-key navigation through a hierarchy.',
+      'An interactive item stretches its link or button over the item. Its description, leading, trailing content, and content must not contain other links or buttons.',
+      'Like every Chartreuse component, List draws no focus indicator; supply your own for .cr-list-row-action:focus-visible and .cr-list-link:focus-visible.',
+      'variant="outline" and "plain" share their row surface, padding, hover, and selection with Tree through one stylesheet, so the two stay identical. The list is a size container and resolves the 12px narrow padding against its own width, also inside Flex.',
+      'Size props are inline styles. A row taller than its maxHeight is clipped, so clamp long text inside it; a list taller than its maxHeight scrolls.',
       'MarkdownRenderer styles lists inside rendered Markdown. Use List for lists the application builds from data.',
       'Titles and descriptions wrap within the available width; trailing content keeps its size and takes at most half the row.',
     ],

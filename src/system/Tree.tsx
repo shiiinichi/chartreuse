@@ -4,6 +4,7 @@ import { ChevronDown } from 'lucide-react';
 import { renderIcon } from './icons';
 import type { IconSource } from './icons';
 import { Text } from './Text';
+import './row.css';
 import './tree.css';
 
 export interface TreeNode {

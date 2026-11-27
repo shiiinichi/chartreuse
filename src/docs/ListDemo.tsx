@@ -5,7 +5,7 @@ import { List } from '../system/List';
 import type { ListItem } from '../system/List';
 import { SegmentedControl } from '../system/SegmentedControl';
 import { ExampleGallery, Showcase } from './shared';
-import { Text } from '../system';
+import { Flex, Text } from '../system';
 import './list-demo.css';
 
 const steps: ListItem[] = [
@@ -141,7 +141,34 @@ const threads: ListItem[] = [
 .chat-thread-list a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
 */`;
 
+const runs = [
+  { id: 'run-12', title: 'Refactor the board columns', status: 'Running', tone: 'info' as const, summary: 'Moving the lane header actions into a shared component and updating the snapshots.', files: '6 files', time: '2:14 PM' },
+  { id: 'run-11', title: 'Fix the reply composer height', status: 'Done', tone: 'success' as const, summary: 'Re-measures the inline field when its width changes.', files: '3 files', time: '1:02 PM' },
+  { id: 'run-10', title: 'Clickable tree chevrons', status: 'Failed', tone: 'danger' as const, summary: 'Two browser tests timed out waiting for the preview server.', files: '4 files', time: '11:40 AM' },
+];
+const runRowsCode = (variant: string) => `import { Badge, Flex, List, Text } from '@chartreuse/ui';
+
+const [selectedId, setSelectedId] = useState<string | null>('run-12');
+
+<List aria-label="Run history" variant="${variant}" selectedId={selectedId}
+  onSelectionChange={setSelectedId}
+  items={runs.map(run => ({
+    id: run.id,
+    content: <Flex direction="column" gap={2}>
+      <Flex direction="row" justify="space-between" align="start" gap={3}>
+        <Text bold>{run.title}</Text>
+        <Badge tone={run.tone}>{run.status}</Badge>
+      </Flex>
+      <Text size="body">{run.summary}</Text>
+      <Flex direction="row" justify="space-between" gap={3}>
+        <span>{run.files}</span><time>{run.time}</time>
+      </Flex>
+    </Flex>,
+  }))} />`;
+
 export function ListDemo() {
+  const [variant, setVariant] = useState<'outline' | 'plain'>('outline');
+  const [selectedRun, setSelectedRun] = useState<string | null>('run-12');
   const [ordered, setOrdered] = useState(false);
   const [dividers, setDividers] = useState(true);
   const [size, setSize] = useState<'sm' | 'md'>('md');
@@ -174,6 +201,20 @@ export function ListDemo() {
           { id: 'board', title: 'Task board', description: <List size="sm" items={[{ id: 'todo', title: 'To do · 4 tasks' }, { id: 'doing', title: 'In progress · 2 tasks' }]} /> },
           { id: 'activity', title: 'Activity', description: <List size="sm" marker="none" items={[{ id: 'today', title: '12 updates today' }]} /> },
         ]} />
+      </Showcase>
+      <Showcase title="Selectable rows" description='variant="outline" or "plain" draws each item as a Tree-style row. With onSelectionChange, each row is a button that selects it; content can be any layout, such as a Flex with a status pinned top right.' code={runRowsCode(variant)}>
+        <div className="list-demo-controls">
+          <SegmentedControl label="Variant" name={`list-variant-${groupId}`} value={variant} onValueChange={value => setVariant(value === 'plain' ? 'plain' : 'outline')} options={[{ value: 'outline', label: 'Outline' }, { value: 'plain', label: 'Plain' }]} />
+        </div>
+        <List aria-label="Run history" variant={variant} maxWidth={480} selectedId={selectedRun} onSelectionChange={setSelectedRun}
+          items={runs.map(run => ({
+            id: run.id,
+            content: <Flex direction="column" gap={2}>
+              <Flex direction="row" justify="space-between" align="start" gap={3}><Text bold>{run.title}</Text><Badge tone={run.tone}>{run.status}</Badge></Flex>
+              <Text size="body" className="list-demo-run-summary">{run.summary}</Text>
+              <Flex direction="row" justify="space-between" gap={3} className="list-demo-run-meta"><span>{run.files}</span><time>{run.time}</time></Flex>
+            </Flex>,
+          }))} />
       </Showcase>
       <Showcase title="Sidebar navigation" description="Grouped lists of icon links with a trailing tag inside a nav landmark. Example styles add hover and current-page row highlights like the documentation sidebar." code={navigationCode}>
         <nav aria-label="Documentation example" className="list-demo-nav">

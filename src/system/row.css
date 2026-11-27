@@ -1,0 +1,22 @@
+@layer cr-components {
+  /* Shared row surface for Tree rows and List rows (variant="outline" | "plain"), so the two can't drift.
+     Each host is a size container named cr-rows; its rows drop to 12px padding below 400px. */
+  :is(.cr-tree, .cr-list[data-variant]) { inline-size: 100%; padding: 4px; box-sizing: border-box; font: 400 .8125rem/1.65 var(--cr-font-sans); }
+  :is(.cr-tree-row, .cr-list-row) { min-block-size: 48px; min-inline-size: 0; box-sizing: border-box; padding: 16px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); }
+  :is(.cr-tree-row, .cr-list-row) .cr-badge[data-variant='soft'] { color-scheme: light; }
+  :where(.cr-tree[data-variant='plain'], .cr-list[data-variant='plain']) :is(.cr-tree-row, .cr-list-row) { min-block-size: 36px; padding: 6px 8px; background: transparent; border-color: transparent; }
+  @container cr-rows (max-width: 400px) {
+    :is(.cr-tree-row, .cr-list-row) { padding: 12px; }
+  }
+  /* Hover stays below selection: a hovered selected row keeps its selected surface. A hovered Tree chevron takes the hover from its row. */
+  :where(.cr-tree-row:not(:has(.cr-tree-toggle:not([data-empty]):hover)), .cr-list-row[data-interactive]):hover { background: var(--cr-color-subtle); }
+  :is(.cr-tree-item[aria-selected='true'] > .cr-tree-row, .cr-list-row[data-selected]) { border-color: var(--cr-color-active-border); background: var(--cr-color-active); color: var(--cr-color-on-active); box-shadow: inset 0 0 0 1px var(--cr-color-active-border); }
+  :is(.cr-tree-item[aria-selected='true'] > .cr-tree-row, .cr-list-row[data-selected]) > * { color-scheme: dark; }
+  :is(.cr-tree[data-variant='plain'] .cr-tree-item[aria-selected='true'] > .cr-tree-row, .cr-list[data-variant='plain'] .cr-list-row[data-selected]) { box-shadow: none; }
+  @media (pointer: coarse) {
+    :where(.cr-tree[data-variant='plain'], .cr-list[data-variant='plain']) :is(.cr-tree-row, .cr-list-row) { min-block-size: 44px; }
+  }
+  @media (forced-colors: active) {
+    :is(.cr-tree-item[aria-selected='true'] > .cr-tree-row, .cr-list-row[data-selected]) { border-color: Highlight; outline: 1px solid Highlight; }
+  }
+}

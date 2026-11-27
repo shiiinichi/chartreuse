@@ -1,13 +1,10 @@
 @layer cr-components {
-  .cr-tree { container: cr-tree / inline-size; inline-size: 100%; min-inline-size: 0; margin: 0; padding: 4px; box-sizing: border-box; list-style: none; color: var(--cr-color-text); font: 400 .8125rem/1.65 var(--cr-font-sans); }
+  .cr-tree { container: cr-tree cr-rows / inline-size; min-inline-size: 0; margin: 0; list-style: none; color: var(--cr-color-text); }
   .cr-tree :where(ul, li) { margin: 0; list-style: none; }
   .cr-tree-item { position: relative; min-inline-size: 0; padding: 0; }
   .cr-tree-item + .cr-tree-item { margin-block-start: 12px; }
-  .cr-tree-row { display: flex; align-items: flex-start; gap: 8px; min-block-size: 48px; min-inline-size: 0; box-sizing: border-box; padding: 16px; border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); background: var(--cr-color-surface); cursor: pointer; }
-  .cr-tree-row:hover:not(:has(.cr-tree-toggle:not([data-empty]):hover)) { background: var(--cr-color-subtle); }
-  .cr-tree-item[aria-selected='true'] > .cr-tree-row { border-color: var(--cr-color-active-border); background: var(--cr-color-active); color: var(--cr-color-on-active); box-shadow: inset 0 0 0 1px var(--cr-color-active-border); }
-  .cr-tree-item[aria-selected='true'] > .cr-tree-row > * { color-scheme: dark; }
-  .cr-tree-row .cr-badge[data-variant='soft'] { color-scheme: light; }
+  /* The row surface, padding, hover, and selection are shared with List rows in row.css. */
+  .cr-tree-row { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
   .cr-tree-toggle { display: grid; flex: 0 0 24px; place-items: center; inline-size: 24px; block-size: 24px; margin-block-start: -1px; border-radius: var(--cr-radius-md); color: var(--cr-color-muted); }
   /* The chevron is a small ghost control: while it is hovered, it takes the hover instead of its row. */
   .cr-tree-toggle:not([data-empty]) { cursor: pointer; }
@@ -27,23 +24,20 @@
   .cr-tree-group > .cr-tree-item::before { content: ''; position: absolute; inset-inline-start: -20px; inset-block-start: 28px; inline-size: 16px; border-block-start: 1px solid var(--cr-color-input-border); pointer-events: none; }
   .cr-tree[data-connectors='false'] .cr-tree-group { border-inline-start-color: transparent; }
   .cr-tree[data-connectors='false'] .cr-tree-group > .cr-tree-item::before { display: none; }
-  :where(.cr-tree[data-variant='plain']) .cr-tree-row { min-block-size: 36px; padding: 6px 8px; background: transparent; border-color: transparent; }
-  .cr-tree[data-variant='plain'] .cr-tree-item[aria-selected='true'] > .cr-tree-row { box-shadow: none; }
   .cr-tree[data-variant='plain'] .cr-tree-item + .cr-tree-item { margin-block-start: 4px; }
   .cr-tree[data-variant='plain'] .cr-tree-group { margin-block-start: 4px; }
   .cr-tree[data-variant='plain'] .cr-tree-group > .cr-tree-item::before { inset-block-start: 18px; }
   .cr-tree-empty { padding: 16px; color: var(--cr-color-muted); }
   @container cr-tree (max-width: 400px) {
-    .cr-tree-row { padding: 12px; gap: 4px; }
+    .cr-tree-row { gap: 4px; }
     .cr-tree-group { margin-inline-start: 8px; padding-inline-start: 12px; }
     .cr-tree-group > .cr-tree-item::before { inset-inline-start: -12px; inline-size: 8px; inset-block-start: 24px; }
   }
   @media (pointer: coarse) {
-    .cr-tree[data-variant='plain'] .cr-tree-row { min-block-size: 44px; align-items: center; }
+    .cr-tree[data-variant='plain'] .cr-tree-row { align-items: center; }
     .cr-tree-toggle:not([data-position='end']) { flex-basis: 28px; inline-size: 28px; min-block-size: 28px; }
   }
   @media (forced-colors: active) {
-    .cr-tree-item[aria-selected='true'] > .cr-tree-row { border-color: Highlight; outline: 1px solid Highlight; }
     .cr-tree-group, .cr-tree-group > .cr-tree-item::before { border-color: CanvasText; }
   }
 }
