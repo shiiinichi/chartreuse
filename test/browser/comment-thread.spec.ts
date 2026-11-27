@@ -254,3 +254,29 @@ test('RunStatus spans the reply, truncates its step, and shows an icon-only Stop
   await page.getByTestId('asks-wide').getByRole('button', { name: 'Stop agent reply' }).click();
   expect(await log(page)).toEqual(['stop 10']);
 });
+
+test('CommentThread keeps 16px between its content and every card edge', async ({ page }) => {
+  await open(page);
+  const insets = (testId: string) => page.getByTestId(testId).locator('.cr-comment-thread').evaluate(thread => {
+    const card = thread.getBoundingClientRect();
+    const border = parseFloat(getComputedStyle(thread).borderTopWidth);
+    const header = thread.querySelector('.cr-comment-thread-main > .cr-comment-header')!.getBoundingClientRect();
+    const composer = [...thread.querySelectorAll('.cr-comment-thread-composer')].pop()!.getBoundingClientRect();
+    const round = (value: number) => Math.round(value * 100) / 100;
+    return {
+      top: round(header.top - card.top - border), bottom: round(card.bottom - border - composer.bottom),
+      left: round(composer.left - card.left - border), right: round(card.right - border - composer.right),
+      headerLeft: round(header.left - card.left - border), headerRight: round(card.right - border - header.right),
+    };
+  });
+  const before = { noReplies: await insets('no-replies'), withReplies: await insets('wide') };
+  // The composer's own focus treatment must not move it.
+  await page.getByTestId('no-replies').getByRole('textbox').focus();
+  const focused = await insets('no-replies');
+  for (const value of [before.noReplies, before.withReplies, focused]) {
+    expect(value).toEqual({ top: 16, bottom: 16, left: 16, right: 16, headerLeft: 16, headerRight: 16 });
+  }
+  // Narrow threads keep their dense 10px by 12px padding.
+  const narrow = await insets('narrow');
+  expect(narrow).toMatchObject({ top: 10, bottom: 10, left: 12, right: 12 });
+});

@@ -35,10 +35,10 @@ const askReplies: ThreadComment[] = [
     ask: { id: '9', label: 'Your ask #9', agent: 'Codex · gpt-5.2 · High', reference: '#9', time: { label: 'Nov 25, 6:52 PM', shortLabel: '6:52 PM' }, body: longAsk } },
 ];
 
-function Thread({ width, testId }: { width: number; testId: string }) {
+function Thread({ width, testId, withReplies = true }: { width: number; testId: string; withReplies?: boolean }) {
   const [draft, setDraft] = useState('');
   return <div style={{ inlineSize: width }} data-testid={testId}>
-    <CommentThread comment={comment} replies={replies} composer={<MessageComposer layout="inline" label="Reply to #5" placeholder="Reply…" hint="Type # for comments"
+    <CommentThread comment={comment} replies={withReplies ? replies : []} composer={<MessageComposer layout="inline" label="Reply to #5" placeholder="Reply…" hint="Type # for comments"
       value={draft} onValueChange={setDraft} onSend={() => setDraft('')} sendSize="sm"
       controls={<SplitButton variant="secondary" size="sm" icon={Sparkles} iconOnly="narrow" menuLabel="Agent for this request: Codex" content="Agent settings">Ask agent</SplitButton>} />} />
   </div>;
@@ -48,6 +48,7 @@ createRoot(document.getElementById('root')!).render(<StrictMode>
   <main style={{ display: 'flex', flexWrap: 'wrap', gap: 24, padding: 24, alignItems: 'flex-start' }}>
     <Thread width={460} testId="wide" />
     <Thread width={320} testId="narrow" />
+    <Thread width={460} testId="no-replies" withReplies={false} />
     <div style={{ display: 'grid', gap: 16 }}>
       <div style={{ inlineSize: 460 }} data-testid="asks-wide"><CommentThread comment={{ ...comment, meta: ['asked Codex'] }} replies={askReplies} visibleReplies={5} /></div>
       <div style={{ inlineSize: 320 }} data-testid="asks-narrow"><CommentThread comment={comment} replies={askReplies} visibleReplies={5} /></div>

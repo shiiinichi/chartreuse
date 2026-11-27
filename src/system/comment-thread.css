@@ -1,6 +1,6 @@
 @layer cr-components {
   .cr-comment-thread { container: cr-comment-thread / inline-size; display: flex; flex-direction: column; min-inline-size: 0; font: 400 .8125rem/1.6 var(--cr-font-sans); overflow-wrap: anywhere; }
-  .cr-card.cr-comment-thread > .cr-card-region { padding: var(--cr-space-3) var(--cr-space-4); }
+  .cr-card.cr-comment-thread > .cr-card-region { padding: var(--cr-space-4); }
   .cr-comment-thread-main { display: flex; flex-direction: column; gap: 6px; }
   .cr-comment-header { display: flex; align-items: center; gap: var(--cr-space-2); min-inline-size: 0; min-block-size: 28px; font-size: .75rem; line-height: 1.5; }
   .cr-comment-header > .cr-comment-sender { flex: none; }
@@ -17,7 +17,7 @@
   .cr-comment-content { min-inline-size: 0; }
   .cr-comment-thread-composer { margin-block-start: var(--cr-space-1); }
 
-  .cr-card.cr-comment-thread > .cr-comment-thread-replies { display: flex; flex-direction: column; padding-block: var(--cr-space-1) var(--cr-space-3); background: var(--cr-color-canvas); }
+  .cr-card.cr-comment-thread > .cr-comment-thread-replies { display: flex; flex-direction: column; padding-block: var(--cr-space-1) var(--cr-space-4); background: var(--cr-color-canvas); }
   .cr-card.cr-comment-thread > .cr-comment-thread-replies:last-child { border-end-start-radius: inherit; border-end-end-radius: inherit; }
   .cr-comment-thread-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--cr-space-2); padding-block: 4px 2px; }
   .cr-comment-thread-bar > .cr-comment-thread-collapse { margin-inline-start: auto; }

@@ -429,7 +429,9 @@
   .cr-task-metadata > li, .cr-task-metadata-trigger { display: inline-flex; align-items: center; gap: 5px; }
   .cr-task-metadata > li { position: relative; max-inline-size: 100%; white-space: nowrap; }
   .cr-task-metadata > li > svg, .cr-task-metadata-trigger > svg { flex-shrink: 0; }
-  .cr-task-metadata-trigger { justify-content: center; min-inline-size: 24px; min-block-size: 24px; border-radius: var(--cr-radius-md); cursor: help; }
+  /* Tooltip triggers keep a 24px target but overhang the 1.5em text line with negative block margins, and start-align
+     their content, so icon-only counts sit exactly where labelled counts do and the row keeps its natural height. */
+  .cr-task-metadata-trigger { justify-content: flex-start; min-inline-size: 24px; min-block-size: 24px; margin-block: calc((1.5em - 24px) / 2); border-radius: var(--cr-radius-md); cursor: help; }
   .cr-task-card:has(> .cr-task-button:enabled) .cr-task-metadata-trigger { cursor: inherit; }
   .cr-task-footer { display: flex; justify-content: space-between; align-items: center; padding: .625rem .875rem; border-block-start: 1px solid var(--cr-color-border); min-block-size: 26px; }
   .cr-task-card:has(> a.cr-task-button) { cursor: pointer; }
@@ -455,8 +457,6 @@
   .cr-task-card[data-density='compact'] .cr-task-metadata { gap: 6px 10px; padding: 0 10px 9px; font-size: .6875rem; }
   .cr-task-card[data-density='compact'] .cr-task-metadata-row { gap: 10px; padding: 0 10px 9px; }
   .cr-task-card[data-density='compact'] .cr-task-metadata-row > .cr-task-metadata { padding: 0; }
-  /* Compact tooltip triggers keep their 24px target but overhang the text line, so the dense row keeps its height. */
-  .cr-task-card[data-density='compact'] .cr-task-metadata-trigger { justify-content: flex-start; margin-block: calc((1.5em - 24px) / 2); }
   .cr-task-card[data-density='compact'] .cr-task-progress { block-size: 4px; }
   .cr-task-card[data-density='compact'] .cr-task-footer { padding: 6px 10px; min-block-size: 24px; }
   .cr-agent-card { inline-size: 100%; display: flex; flex-direction: column; gap: 1rem; background: var(--cr-color-surface); border: 1px solid var(--cr-color-border); border-radius: var(--cr-radius-md); padding: 1rem; text-align: start; line-height: 1.5; }
