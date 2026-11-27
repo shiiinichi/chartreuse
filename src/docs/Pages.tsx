@@ -202,6 +202,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.25.3',
+    date: '2026-11-27',
+    title: 'Clickable Tree chevrons',
+    summary: 'A Tree branch’s chevron now expands or collapses it on click without selecting it. No props or markup change.',
+    changes: [
+      'Clicking a Tree branch’s chevron toggles that branch without changing the selection, so an unselected branch no longer needs a click to select it first. Row clicks and keyboard behaviour are unchanged, and the chevron stays out of the tab order.',
+      'The chevron shows a pointer cursor and its own ghost hover in normal and selected rows; its row drops its hover background meanwhile.',
+    ],
+  },
+  {
     version: '1.25.2',
     date: '2026-11-27',
     title: 'Inline MessageComposer height after a width change',
