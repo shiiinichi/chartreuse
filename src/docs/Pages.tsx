@@ -202,6 +202,16 @@ function GettingStarted({ navigate }: { navigate: Navigate }) {
 
 const releases = [
   {
+    version: '1.25.1',
+    date: '2026-11-27',
+    title: 'Even insets in TaskCard counts and CommentThread',
+    summary: 'Restores the TaskCard counts row height in default density and gives CommentThread content 16px from every edge. No props or markup change.',
+    changes: [
+      'In default density, a TaskCard count shown in Tooltip no longer makes the counts row taller: its 24px target overhangs the text line, as it already did in compact density, so the row’s bottom inset matches its top.',
+      'CommentThread’s card region and reply band now keep 16px between their content and each card edge, so a reply composer at the bottom of a thread is no longer 12px from the edge. Narrow threads keep their tighter spacing.',
+    ],
+  },
+  {
     version: '1.25.0',
     date: '2026-11-27',
     title: 'TaskCard actions, icon checklist progress and count tooltips',
